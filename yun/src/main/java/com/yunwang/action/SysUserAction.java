@@ -33,6 +33,7 @@ public class SysUserAction extends AbstractLoginAction{
 	public String updateUserRoleDefault(){
 		try{
 			success("更新默认角色成功!");
+			int i=0;
 			sysUserService.updateUserRoleDefault(sessionAdm.getId(),roleId);
 			success("更新默认角色成功!");
 			sysUserService.updateUserRoleDefault(sessionAdm.getId(),roleId);
