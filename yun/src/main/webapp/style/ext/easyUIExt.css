@@ -1,0 +1,97 @@
+@CHARSET "UTF-8";
+.layout-panel-center>.panel-header>.panel-tool{
+	left:5px;
+}
+.panel-tool a{
+    float: left;
+    width: auto;
+    opacity:1.0;
+    font-size: 12px;
+    font-weight: bold;
+    *font-weight:bolder;
+    line-height: 15px;
+    padding-left: 18px;
+	margin-left: 10px;
+	color: rgb(106, 96, 101);
+	*color: black;
+	filter:none;
+}
+
+.icon-save{background-position: 0px;}
+.icon-add{background-position: 0px;}
+.icon-remove{background-position: 0px;}
+.icon-edit{background-position: 0px;}
+.icon-cancel{background-position: 0px;}
+.icon-ok{background-position: 0px;}
+.icon-quxiao{
+	background: url('../images/icon/icon-reset.png') no-repeat;
+}
+.icon-setup{
+	background: url('../images/icon/icon-setting.png') no-repeat;
+}
+.icon-up{
+	background: url('../images/icon/icon-up.png') no-repeat;
+}
+.icon-down{
+	background: url('../images/icon/icon-down.png') no-repeat;
+}
+.icon-reload{
+	background: url('../images/icon/icon-reset.png') no-repeat;
+}
+.icon-confirm{
+	background: url('../images/icon/icon-confirm.png') no-repeat ;
+}
+.icon-operation{
+	background: url('../images/icon/icon-operation.png') no-repeat ;
+}
+.icon-search {
+    background: url(../images/icon/icon-search.png) no-repeat;
+}
+
+.tree-folder{
+	background: url('../images/icon/icon-folder.png') no-repeat center center;
+}
+
+.tree-file{
+	background: url('../images/icon/icon-item.png') no-repeat center center;
+}
+
+
+.icon-user {background: url('../images/icon/icon-user.png') no-repeat;}
+
+.icon-release {background: url('../images/icon/icon-release.png') no-repeat;}
+.icon-log {background: url('../images/icon/icon-log.png') no-repeat;}
+.icon-file{
+	background: url('../images/icon/icon-file.png') no-repeat ;
+}
+
+
+/* .vds_and_bom {background: url('../images/mine_icons/Product.bmp') no-repeat;}
+.vds {background: url('../images/mine_icons/VDS.png') no-repeat;}
+.bom {background: url('../images/mine_icons/BOM.png') no-repeat;}
+.process_planning {background: url('../images/mine_icons/Factory.png') no-repeat;}
+.pam {background: url('../images/mine_icons/PAM.png') no-repeat;}
+.factory_process {background: url('../images/mine_icons/planning_variant.bmp') no-repeat;}
+*/
+.exit-24 {background: url('../images/icon/Exit-24.png') no-repeat;}
+.user-24 {background: url('../images/icon/User-24.png') no-repeat;} 
+
+.icon-min-delete{
+	background: url('../images/icon/icon-delete.png') no-repeat ;
+}
+.icon-min-add{
+	background: url('../images/icon/icon-add-2.png') no-repeat ;
+}
+.icon-min-remove{
+	background: url('../images/icon/icon-delete-2.png') no-repeat ;
+}
+
+.tabs li a.tabs-inner {
+  	-moz-border-radius: 5px 5px 0 0;
+  	-webkit-border-radius: 5px 5px 0 0;
+  	border-radius: 5px 5px 0 0;
+}
+.table{
+    background: #c0c4c7;
+}
+

@@ -1,0 +1,243 @@
+﻿@CHARSET "UTF-8";
+/* menu icon begin */
+.icon-user {
+	background: url('icon-user.png') no-repeat center center;
+}
+
+.icon-user-department {
+	background: url('icon-department.png') no-repeat center center;
+}
+
+.icon-user-search {
+	background: url('icon-search_user.png') no-repeat center center;
+}
+
+.icon-client {
+	background: url('icon-client.png') no-repeat center center;
+}
+
+.icon-user-project {
+	background: url('icon-project.png') no-repeat center center;
+}
+
+.icon-user-log {
+	background: url('icon-log.png') no-repeat center center;
+}
+
+.icon-software-license {
+	background: url('icon-license.png') no-repeat center center;
+}
+
+.icon-software {
+	background: url('icon-software.png') no-repeat center center;
+}
+
+.icon-setting {
+	background: url('icon-setting.png') no-repeat center center;
+}
+
+.icon-server {
+	background: url('icon-server.png') no-repeat center center;
+}
+
+.icon-parameter {
+	background: url('icon-parameter.png') no-repeat center center;
+}
+
+.icon-rights {
+	background: url('icon-data_right.png') no-repeat center center;
+}
+
+.icon-report {
+	background: url('icon-report.png') no-repeat center center;
+}
+
+.icon-notice {
+	background: url('icon-notice.png') no-repeat center center;
+}
+
+.icon-notice-mobile {
+	background: url('icon-SMS.png') no-repeat center center;
+}
+
+.icon-notice-email {
+	background: url('icon-email.png') no-repeat center center;
+}
+
+.icon-policy-record {
+	background: url('icon-manage_record.png') no-repeat center center;
+}
+
+.icon-client-upclient {
+	background: url('icon-upload.png') no-repeat center center;
+}
+
+.icon-client-cltlog {
+	background: url('icon-log.png') no-repeat center center;
+}
+
+.icon-system-monitor {
+	background: url('icon-monitor.png') no-repeat center center;
+}
+
+.icon-system-config {
+	background: url('icon-setting-2.png') no-repeat center center;
+}
+
+.icon-search {
+	background: url('icon-search.png') no-repeat center center;
+}
+
+.icon-licconfig-config {
+	background: url('icon-config.png') no-repeat center center;
+}
+
+.icon-config_edit {
+	background: url('icon-config_edit.png') no-repeat center center;
+}
+
+.icon-unreasonable {
+	background: url('icon-unreasonable.png') no-repeat center center;
+}
+
+.icon-central {
+	background: url('icon-central.png') no-repeat center center;
+}
+
+.icon-lock {
+	background: url('icon-lock.png') no-repeat center center;
+}
+
+.icon-launcher {
+	background: url('icon-launcher.png') no-repeat center center;
+}
+
+/* 自定义图标覆盖系统图标 */
+.icon-add {
+	background: url('icon-add.png') no-repeat center center;
+}
+
+.icon-edit {
+	background: url('icon-edit.png') no-repeat center center;
+}
+
+.icon-remove {
+	background: url('icon-delete.png') no-repeat center center;
+}
+
+.icon-ok {
+	background: url('icon-confirm.png') no-repeat center center;
+}
+
+.icon-cancel {
+	background: url('icon-cancel.png') no-repeat center center;
+}
+
+.icon-config {
+	background: url('icon-config.png') no-repeat center center;
+}
+.icon-upload {
+	background: url('icon-upload.png') no-repeat center center;
+}
+.icon-save {
+	background: url('icon-save.png') no-repeat center center;
+}
+
+.icon-time {
+	background: url('icon-time.png') no-repeat center center;
+}
+
+.icon-idle-occupation {
+	background: url('icon-idle-occupation.png') no-repeat center center;
+}
+
+.icon-long-term {
+	background: url('icon-long-term.png') no-repeat center center;
+}
+
+.icon-nodelock {
+	background: url('icon-nodelock.png') no-repeat center center;
+}
+
+.icon-repeated {
+	background: url('icon-repeated.png') no-repeat center center;
+}
+
+.icon-request-failure {
+	background: url('icon-request-failure.png') no-repeat center center;
+}
+
+.icon-software-usage {
+	background: url('icon-software-usage.png') no-repeat center center;
+}
+
+.icon-timepoint {
+	background: url('icon-timepoint.png') no-repeat center center;
+}
+
+.icon-usagerate {
+	background: url('icon-usagerate.png') no-repeat center center;
+}
+
+.iocn-uk-catia {
+	background: url('iocn-uk-catia.png') no-repeat center center;
+}
+.icon-excel {
+	background: url('excel.png') no-repeat center center;
+}
+.icon-help {
+	background: url('icon-help.png') no-repeat ;
+}
+.icon-reflesh {
+	background: url('icon-reflesh.png') no-repeat ;
+}
+.icon-group {
+	background: url('icon-group.png') no-repeat ;
+}
+.icon-ungroup {
+	background: url('icon-ungroup.png') no-repeat ;
+}
+
+.icon-download {
+	background: url('icon-download.png') no-repeat ;
+}
+.icon-upload {
+	background: url('icon-upload.png') no-repeat ;
+}
+.icon-project{
+	background: url('icon-project.png') no-repeat ;
+}
+.icon-resource{
+	background: url('icon-resource.png') no-repeat ;
+}
+.icon-plant-layout{
+	background: url('icon-factory.png') no-repeat ;
+}
+.icon-balance{
+	background: url('icon-report.png') no-repeat ;
+}
+.process_planning{
+	background: url('icon-factory-process.png') no-repeat ;
+}
+.process_planning{
+	background: url('icon-factory-process.png') no-repeat ;
+}
+.icon-vds-bom{
+	background: url('icon-ebom-package.png') no-repeat ;
+}
+.icon-vds{
+	background: url('icon-VDS.png') no-repeat ;
+}
+.icon-bom{
+	background: url('icon-parts.png') no-repeat ;
+}
+.icon-pam{
+	background: url('icon-pam.png') no-repeat ;
+}
+.icon-process{
+	background: url('icon-process.png') no-repeat ;
+}
+
+.icon-preview{
+	background: url('icon-preview.png') no-repeat ;
+}

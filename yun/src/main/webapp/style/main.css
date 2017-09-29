@@ -1,0 +1,21 @@
+/**
+*主框架样式
+*2013年11月28日 16:56:33
+*/
+#top_menu{
+	margin-top:35px;
+	margin-right:50px;
+	float: right;
+	height:auto;
+	width:auto;
+}
+#top_menu li{
+	float: left;
+	list-style: none;
+	width: auto;
+	height: auto;
+	margin-left: 9px;
+	color: #15428b;
+	margin-right: 10px;
+	cursor: pointer;
+}

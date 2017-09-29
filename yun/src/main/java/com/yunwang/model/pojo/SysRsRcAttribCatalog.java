@@ -1,0 +1,201 @@
+package com.yunwang.model.pojo;
+
+import java.math.BigDecimal;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
+/**
+ * @author YBF
+ * @date 2017-9-27
+ * <p>资源类别的属性定义表</p>
+ */
+@Entity
+@Table(name = "SYS_RSRC_ATTRIB_CATALOG")
+public class SysRsRcAttribCatalog extends AbstractRowVersionModel{ 
+	
+	@Id
+    @GeneratedValue(strategy = GenerationType.AUTO, generator="my_entity_seq_gen")
+    @SequenceGenerator(name="my_entity_seq_gen", sequenceName="SEQ_SYS_RSRC_ATTRIB_CATALOG")
+	private Integer id;   //属性目录ID
+	
+	@Column(name="RSRC_CATALOG_ID", nullable = false)
+	private Integer rsrcCatalogId;//类型ID   RSRC_CATALOG_ID	资源类型ID	number(10)		X
+
+	@Column(name="RSRC_ATTRIB_CODE", nullable = false,length=32)
+	private String rsrcAttribCode;//属性代号 RSRC_ATTRIB_CODE	属性代号	varchar2(32)		X
+	
+	@Column(name="RSRC_ATTRIB_NAME", nullable = false,length=128)
+	private String rsrcAttribName;//属性名称 RSRC_ATTRIB_NAME	属性名称	varchar2(128)		X
+	
+	@Column(name="CTRL_TYPE_ID", nullable = false)
+	private Integer controlTypeId;//控件类型 CTRL_TYPE_ID	控件类型ID	number(10)		X
+	
+	@Column(name="DATA_TYPE_ID", nullable = false)
+	private Integer dataTypeId;//数据类型ID  DATA_TYPE_ID	数据类型ID	number(10)		X
+	
+	@Column(name="DATA_LENGTH")
+	private BigDecimal dataLength;//数据长度 DATA_LENGTH	数据长度	number(5)	
+	
+	@Column(name="UNIT_ID")
+	private Integer unitId;//单位   UNIT_ID	单位ID	number(10)
+	
+	@Column(name="ORDER_NO", nullable = false)
+	private Integer orderNo;//顺序号	
+	
+	@Column(name="SHOW_IN_LISTVIEW", precision=1,nullable = false,columnDefinition = "number default 1")
+	private BigDecimal showInListView;//是否在列表中显示  SHOW_IN_LISTVIEW	列表显示	number(1)	1	X
+	
+	@Column(name="SHOW_IN_FINDER", precision=1,nullable = false,columnDefinition = "number default 1")
+	private BigDecimal showInFinder;//是否在查找中出现  SHOW_IN_FINDER	在查找条件中出现	number(1)	1	X
+	
+	@Column(name="DATA_PRECISION", precision=5)
+	private BigDecimal dataPrecision;//小数点位数  PRECISION	小数点位数	number(5)
+	
+	@Column(name="DEFAULT_VALUE", length = 1024)
+	private String defaultValue;//默认值   DEFAULT_VALUE	默认值	varchar2(1024)	
+	
+	@Column(name="CTRL_WIDTH", precision=5)
+	private BigDecimal controlHeight;// CTRL_WIDTH	控件高度	number(5)
+	
+	@Column(name="CTRL_HEIGHT", precision=5)
+	private BigDecimal controlWidth;//CTRL_HEIGHT	控件宽度	number(5)
+	
+	@Transient
+	private String unitGroupName;
+	
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getRsrcAttribCode() {
+		return rsrcAttribCode;
+	}
+
+	public void setRsrcAttribCode(String rsrcAttribCode) {
+		this.rsrcAttribCode = rsrcAttribCode;
+	}
+
+	public String getRsrcAttribName() {
+		return rsrcAttribName;
+	}
+
+	public void setRsrcAttribName(String rsrcAttribName) {
+		this.rsrcAttribName = rsrcAttribName;
+	}
+
+	public Integer getControlTypeId() {
+		return controlTypeId;
+	}
+
+	public void setControlTypeId(Integer controlTypeId) {
+		this.controlTypeId = controlTypeId;
+	}
+
+	public Integer getDataTypeId() {
+		return dataTypeId;
+	}
+
+	public void setDataTypeId(Integer dataTypeId) {
+		this.dataTypeId = dataTypeId;
+	}
+
+	public BigDecimal getDataLength() {
+		return dataLength;
+	}
+
+	public void setDataLength(BigDecimal dataLength) {
+		this.dataLength = dataLength;
+	}
+
+	public Integer getUnitId() {
+		return unitId;
+	}
+
+	public void setUnitId(Integer unitId) {
+		this.unitId = unitId;
+	}
+
+	public BigDecimal getShowInListView() {
+		return showInListView;
+	}
+
+	public void setShowInListView(BigDecimal showInListView) {
+		this.showInListView = showInListView;
+	}
+
+	public BigDecimal getShowInFinder() {
+		return showInFinder;
+	}
+
+	public void setShowInFinder(BigDecimal showInFinder) {
+		this.showInFinder = showInFinder;
+	}
+
+	public BigDecimal getDataPrecision() {
+		return dataPrecision;
+	}
+
+	public void setDataPrecision(BigDecimal dataPrecision) {
+		this.dataPrecision = dataPrecision;
+	}
+
+	public String getDefaultValue() {
+		return defaultValue;
+	}
+
+	public void setDefaultValue(String defaultValue) {
+		this.defaultValue = defaultValue;
+	}
+
+	public BigDecimal getControlHeight() {
+		return controlHeight;
+	}
+
+	public void setControlHeight(BigDecimal controlHeight) {
+		this.controlHeight = controlHeight;
+	}
+
+	public BigDecimal getControlWidth() {
+		return controlWidth;
+	}
+
+	public void setControlWidth(BigDecimal controlWidth) {
+		this.controlWidth = controlWidth;
+	}
+
+	public String getUnitGroupName() {
+		return unitGroupName;
+	}
+
+	public void setUnitGroupName(String unitGroupName) {
+		this.unitGroupName = unitGroupName;
+	}
+
+	public Integer getRsrcCatalogId() {
+		return rsrcCatalogId;
+	}
+
+	public void setRsrcCatalogId(Integer rsrcCatalogId) {
+		this.rsrcCatalogId = rsrcCatalogId;
+	}
+
+	public Integer getOrderNo() {
+		return orderNo;
+	}
+
+	public void setOrderNo(Integer orderNo) {
+		this.orderNo = orderNo;
+	}
+}

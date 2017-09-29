@@ -1,0 +1,72 @@
+/**
+*����easyui.css��ʽ
+*2013��11��29�� 14:24:39
+*/
+.layout-panel-center>.panel-header>.panel-tool{
+	left:5px ;
+}
+.panel-tool a{
+    float: left;
+    width: auto;
+    opacity:1.0;
+    font-size: 12px;
+    font-weight: bold;
+    *font-weight:bolder;
+    line-height: 15px;
+    padding-left: 16px;
+	margin-left: 10px;
+	color: rgb(106, 96, 101);
+	*color: black;
+	filter:none;
+}
+.datagrid-body .datagrid-editable .datagrid-editable-input{
+	border: 1px solid #A4BED4;
+    font-size: 12px;
+    padding: 3px 2px;
+	
+} 
+
+
+.navlist{list-style-type:none;margin:0px; padding:10px;}
+.navlist li{ padding:0px;}
+.navlist li a{line-height:24px;color:#404040}
+.navlist li div{margin:2px 0px;padding-left:10px;padding-top:2px;}
+.navlist li div.hover{border:1px dashed #ced0d4; padding-top:0px;padding-bottom:0px; background:#ededef;cursor:pointer;}
+.navlist li div.hover a{color:#416AA3;}
+.navlist li div.selected{border:1px solid #a5aab1;padding-top:0px;padding-bottom:0px; background:#e4e4e4;cursor:default;}
+.navlist li div.selected a{color:#484848; font-weight:bold;}
+
+
+
+
+.accordion .accordion-header-selected {
+	background: none repeat scroll 0 0 #c5c5c5;
+    filter: none;
+}
+.some-tc-table-root{
+	border:1px solid #d0d2d4 !important;
+}
+
+.some-tc-table-root tr {
+	border-color: #d0d2d4 !important;
+}
+.some-tc-table-root tr td {
+	border-color: #d0d2d4 !important;
+}
+.tree li.checkbox-li{
+	width: auto;
+	height:auto;
+}
+
+.tree li.Y{
+	float: none;
+	width: 100%;
+}
+.tree li.X{
+	float: left;
+}
+.span-loading{
+	background: url('images/loading.gif') no-repeat;
+	width: 16px;
+	height: 16px;
+ }
