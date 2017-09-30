@@ -4,9 +4,12 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.yunwang.dao.SysMenuDaoI;
 import com.yunwang.dao.SysRoleDaoI;
 import com.yunwang.dao.SysUserDaoI;
@@ -118,5 +121,11 @@ public class SysUserServiceImpl implements SysUserService{
 	@Override
 	public SysRole getDefaultRoleByUserId(Integer userId) {
 		return sysRoleDao.getDefaultRoleByUserId(userId);
+	}
+
+	@Override
+	public Pager<SysUser> findBySysUserId(String filterJsons, int page, int rows) {
+		JSONObject json = JSONObject.parseObject(filterJsons);
+		return sysUserDao.findBySysUserId(json, page, rows);
 	}
 }

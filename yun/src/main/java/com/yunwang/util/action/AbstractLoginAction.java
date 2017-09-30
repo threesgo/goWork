@@ -21,6 +21,17 @@ public abstract class AbstractLoginAction extends BaseAction{
     
     protected String message;
     
+    /**
+ 	 * 分页查询当前页数
+ 	 */
+	protected int page;
+	
+	/**
+	 * 分页查询的每页显示数.
+	 */
+	protected int rows;
+	
+    
     protected ActionTransfer actionTransfer = new ActionTransfer ( ) ;
 
     public void setSession(Map<String,Object> sessionMap){
@@ -65,5 +76,21 @@ public abstract class AbstractLoginAction extends BaseAction{
 
 	public void setActionTransfer(ActionTransfer actionTransfer) {
 		this.actionTransfer = actionTransfer;
+	}
+
+	public int getPage() {
+		return page;
+	}
+
+	public void setPage(int page) {
+		this.page = page;
+	}
+
+	public int getRows() {
+		return rows;
+	}
+
+	public void setRows(int rows) {
+		this.rows = rows;
 	}
 }

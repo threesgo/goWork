@@ -28,4 +28,6 @@ public class SysRoleDaoImpl extends BaseDaoImpl<SysRole> implements SysRoleDaoI{
 		map.put("userId",userId);
 		return get(hql,map);
 	}
+	
+	
 }
