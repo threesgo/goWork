@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import com.yunwang.dao.impl.BaseDaoImpl.OriginalQuerior;
 import com.yunwang.model.page.Pager;
 
 /**
@@ -281,5 +282,12 @@ public interface BaseDaoI<T> {
 	public void deleteByProperty(String property, Object value);
 	
 	public void deleteByPropertys(String property,String values);
-	
+
+	public <N> N getUniqueResult(String hql, Object[] values);
+
+	public <N> List<N> findByIdsToPaging(String ids, OriginalQuerior<N> sqlQuery);
+
+	public Integer findMaxSeqByPfield(String seqField, String pField, Integer pValue);
+
+	public Integer findMaxSeq(String field, Object[] values);
 }

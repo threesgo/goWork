@@ -105,6 +105,45 @@
 		});
 	};
 	
+	window.handlerResult=function(data,fn1,fn2,fn3){
+		var json={};
+		if(typeof data =="string"){
+			try{
+				json = (new Function("return " + data))();
+			}catch (e) {
+				json={message:data,status:"crash"};
+			}				
+		}
+		else{
+			json=data;
+		}
+		switch (json.status) {
+			case "success":
+				if(fn1){
+					return fn1(json);
+				}
+				break;
+			case "error":
+				if(fn2){
+					return fn2(json);
+				}
+				break;
+			case "crash":
+				var fn=fn3||fn2;
+				if(fn){
+					return fn(json);
+				}
+				break;
+			case "warn":
+				if(fn3){
+					return fn3(json);
+				}
+				break;
+			default:
+				break;
+		}
+	};
+	
 	document.onkeydown = function () {
         if (window.event && window.event.keyCode == 13) {
             window.event.returnValue = false;

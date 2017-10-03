@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * @author YBF
@@ -39,6 +40,9 @@ public class SysRsRcCatalog extends AbstractRowVersionModel{
 	
 	@Column(name="CATALOG_TYPE",precision=2, nullable = false)
 	private Integer catalogType;//资源类别
+	
+	@Transient
+	private String state = "closed";
 	
 	public SysRsRcCatalog(){
 		
@@ -98,5 +102,13 @@ public class SysRsRcCatalog extends AbstractRowVersionModel{
 
 	public void setCatalogType(Integer catalogType) {
 		this.catalogType = catalogType;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
 	}
 }

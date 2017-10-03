@@ -4,7 +4,7 @@
 <html lang="zh-cn">
 	<head>
 		<meta charset="utf-8" />
-		<title>YunNet Decorate</title>
+		<title>云网装饰</title>
 
 		<meta name="description" content="User login page" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -37,7 +37,7 @@
 										     -->
 												<h1>
 													<i class="icon-leaf green"></i>
-													<span class="red">YunDecorate</span>
+													<span class="red" style="font-weight: bold;">云网装饰平台</span>
 												</h1>											
 											<h4 class="header blue lighter bigger" style="font-weight: bold;">
 												<i class="icon-coffee green"></i>

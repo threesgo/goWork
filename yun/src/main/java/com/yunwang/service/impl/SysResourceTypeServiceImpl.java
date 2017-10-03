@@ -1,5 +1,7 @@
 package com.yunwang.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,8 +26,7 @@ public class SysResourceTypeServiceImpl implements SysResourceTypeService{
 	
 	@Override
 	public void saveRsRcCatalog(SysRsRcCatalog sysRsRcCatalog) {
-		// TODO Auto-generated method stub
-		
+		sysRsRcCatalogDao.save(sysRsRcCatalog);		
 	}
 
 	@Override
@@ -34,5 +35,20 @@ public class SysResourceTypeServiceImpl implements SysResourceTypeService{
 		sysResourceDao.deleteByProperty("rsrcOrgId", sysRsRcCatalog.getId());
 		sysRsRcAttribCatalogDao.deleteByProperty("catalogId", sysRsRcCatalog.getId());
 		sysRsRcAttribDao.deleteByProperty("catalogId",sysRsRcCatalog.getId());
+	}
+
+	@Override
+	public List<SysRsRcCatalog> findRsRcCatalogByParentId(Integer pId) {
+		return sysRsRcCatalogDao.findByParentId(pId);
+	}
+
+	@Override
+	public SysRsRcCatalog getRsRcCatalogInfo(Integer catalogId) {
+		return sysRsRcCatalogDao.get(SysRsRcCatalog.class,catalogId);
+	}
+
+	@Override
+	public Integer getMaxOrder(Integer parentId) {
+		return sysRsRcCatalogDao.findMaxSeqByPfield("orderNo","parentId",parentId);
 	}
 }

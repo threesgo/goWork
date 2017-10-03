@@ -6,7 +6,6 @@ import java.util.Map;
 import org.springframework.stereotype.Repository;
 
 import com.yunwang.dao.SysUserDaoI;
-import com.yunwang.model.pojo.SysRole;
 import com.yunwang.model.pojo.SysUser;
 
 @Repository

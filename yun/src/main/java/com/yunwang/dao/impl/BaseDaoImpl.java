@@ -30,6 +30,8 @@ import org.springframework.stereotype.Repository;
 
 import com.yunwang.dao.BaseDaoI;
 import com.yunwang.model.page.Pager;
+import com.yunwang.util.string.MyStringUtil;
+import com.yunwang.util.string.StringBufferByCollectionUtil;
 
 @Repository
 public class BaseDaoImpl<T> implements BaseDaoI<T> {
@@ -476,6 +478,7 @@ public class BaseDaoImpl<T> implements BaseDaoI<T> {
 	 * @param sqls
 	 * <p>批处理执行原生态sql</p>
 	 */
+	@Override
 	public void importSQL(String... sqls){
 		SessionImpl session=(SessionImpl)getSession();
 		Connection connection = session.connection();
@@ -492,6 +495,7 @@ public class BaseDaoImpl<T> implements BaseDaoI<T> {
 		}
 	}
 	
+	@Override
 	public void importSQL(Collection<String> sqls){
 		SessionImpl session=(SessionImpl)getSession();
 		Connection connection = session.connection();
@@ -506,5 +510,57 @@ public class BaseDaoImpl<T> implements BaseDaoI<T> {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
+	}
+	
+	@Override
+	public Integer findMaxSeq(String field,Object... values){
+    	String hql="SELECT MAX(model."+field+") FROM "+entityClass.getSimpleName()+" model ";
+		Integer maxOrder=getUniqueResult(hql);
+		return maxOrder==null?0:maxOrder;
+    }
+    
+	@Override
+    public Integer findMaxSeqByPfield(String seqField,String pField,Integer pValue) {
+		String hql="SELECT MAX(model."+seqField+") FROM "+entityClass.getSimpleName()+" model WHERE model."+pField+"=? ";
+		Integer maxOrder=getUniqueResult(hql,pValue);
+		return maxOrder==null?0:maxOrder;
+	}
+    
+	@SuppressWarnings("unchecked")
+	public <N> N getUniqueResult(String hql, Object... values) {
+		Query query =creatQuery(hql,values);
+        List<Object> list = query.setFirstResult(0).setMaxResults(1).list();
+        if(list.isEmpty()){
+        	return null;
+        }else{
+        	return (N) list.get(0);
+        }
+	}
+	
+	/**
+	 * @date 2017-9-22
+	 * @author YBF
+	 * @param ids 所有的id字符串，已逗号分割
+	 * @param sqlQuery
+	 * @return
+	 * <p>处理ids大于1000个个数</p>
+	 */
+	@Override
+	public <N>List<N> findByIdsToPaging(String ids,OriginalQuerior<N> sqlQuery) {
+		List<N> result = new ArrayList<N>();
+		if(MyStringUtil.isNotBlank(ids)){
+			List<String> idList = Arrays.asList(ids.split(","));
+			int lastSize=idList.size()%1000;
+			int maxLength=(idList.size()-lastSize)/1000;
+			for(int k=0;k<maxLength;k++){
+				result.addAll(sqlQuery.query(StringBufferByCollectionUtil.convertCollection(idList.subList(k*1000, (k+1)*1000))));
+			}
+			result.addAll(sqlQuery.query(StringBufferByCollectionUtil.convertCollection(idList.subList(maxLength*1000, maxLength*1000+lastSize))));
+		}
+		return result;
+	}
+	
+	public interface OriginalQuerior<N>{
+		List<N> query(String ids);
 	}
 }
