@@ -4,7 +4,6 @@
 <html>
 	<head>
 		<jsp:include page="/public/public.jsp" />
-		
 		<style type="text/css">					
 		</style>
 		
@@ -100,9 +99,9 @@
 		</script>
 	</head>
 	<body class="easyui-layout">
-		<div data-options="region:'west',split:true,tools:'#resource_type_bar'" title=" " style="width:200px;" border="false">
-			<ul id="resourceTypeTree"></ul>
-			<div  id="resource_type_bar">
+		<div data-options="region:'west',split:true,tools:'#resourceType_bar'" title=" " style="width:200px;" border="false">
+			<ul id="resourceType_tree"></ul>
+			<div  id="resourceType_bar">
 		       <a href="#" class="icon-reflesh" onclick="reload()">刷新</a>
 		     </div>
 		</div>

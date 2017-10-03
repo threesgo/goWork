@@ -25,14 +25,16 @@ import com.yunwang.util.exception.MineException;
 
 @Namespace("/")
 public abstract class BaseAction extends ActionSupport implements SessionAware{
+	
 	/*
 	 * @date 2016-9-22
 	 * @author YBF
 	 * TODO
 	 */
 	private static final long serialVersionUID = 1L;
-
+	
 	private final static Log LOG =LogFactory.getLog(BaseAction.class);
+	
 	
 	protected Map<String,Object> sessionMap=null;
 	
