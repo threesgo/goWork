@@ -42,11 +42,8 @@ $(function(){
 	});
 });
 </script>
-<div id="processBomResourceEdit" class="easyui-layout" data-options="fit:true">  
-	<div id="processBomResource_tool_bar">
-		<a href="#" class="cog_add" onclick="resourceTypeOperation.add()">新建</a>
-	</div>
-	<div data-options="region:'center',split:false,title:' ',tools:'#processBomResource_tool_bar'" border="false">
-		<table id="resourceTypeChildrenTable"></table>
-	</div>
+<table id="resourceTypeChildrenTable"></table>
+<div id="resource_type_tool_bar">
+	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add', plain:true" 
+		onclick="resourceTypeOperation.add()">新增</a>
 </div>

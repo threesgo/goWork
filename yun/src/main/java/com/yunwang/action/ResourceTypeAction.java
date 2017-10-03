@@ -113,6 +113,24 @@ public class ResourceTypeAction extends AbstractLoginAction{
 		return ajaxJSONArr(sysRcRsrcOrgList);
 	}
 	
+	
+	/**
+	 * @return 基本信息
+	 */
+	public String attrListPage(){
+		return "attrListPage";
+	}
+	
+	/**
+	 * @return 属性列表
+	 */
+	public String attrList(){
+		List<SysRsRcCatalog> sysRcRsrcOrgList = sysResourceTypeService.findRsRcCatalogByParentId(sysRsRcCatalog.getId());
+		return ajaxJSONArr(sysRcRsrcOrgList);
+	}
+	
+	
+	
 	public String addResourceType(){
 		return "add";
 	}

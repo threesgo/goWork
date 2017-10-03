@@ -5,15 +5,15 @@
     <div>   
         <label for="code">类型代号:</label>   
         <input class="easyui-validatebox" type="text" name="sysRsRcCatalog.catalogCode" 
-        data-options="required:true" />   
+        style="width:200px;" data-options="required:true" />   
     </div>   
     <div>   
         <label for="name">类型名称:</label>   
         <input class="easyui-validatebox" type="text" name="sysRsRcCatalog.catalogName" 
-        data-options="required:true" />   
+        style="width:200px;" data-options="required:true" />   
     </div>
      <div>   
-        <label for="email">产品类别:</label>   
+        <label for="type">产品类别:</label>   
         <select id="type" class="easyui-combobox" name="sysRsRcCatalog.catalogType" style="width:200px;">   
 		    <option value="1">产品</option>
 		    <option value="2">工人</option>   

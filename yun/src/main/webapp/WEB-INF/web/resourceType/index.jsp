@@ -12,7 +12,7 @@
  		var resourceTypeTab;
  		var resourceTypeOperation = {};
 		$(function(){
-		//添加树结构
+			//添加树结构
 	 		resourceTypeTree=$('#resourceTypeTree').tree(
  				{
  					url:"resourceTypeAction!findTree.act",
@@ -23,7 +23,11 @@
 	 						resourceTypeTab.tabs('add',{    
 						    	title:'基本信息', 
 						    	href:"resourceTypeAction!info.act?sysRsRcCatalog.id="+ node.attributes.id
-							}); 
+							});
+							resourceTypeTab.tabs('add',{
+	 							title:'属性列表', 
+							    href:"resourceTypeAction!attrList.act?sysRsRcCatalog.id="+ node.attributes.id
+							});
  						}
  						resourceTypeTab.tabs('add',{
  							title:'子集列表', 
@@ -57,8 +61,8 @@
 	 			var node = resourceTypeTree.tree("getSelected");
 	 			var dialog =$('<div id="addResourceType"></div>').dialog({    
 					href : "resourceTypeAction!addResourceType.act",
-					width:300,
-					height:200,
+					width:350,
+					height:250,
 					title:"新增类型",
 					method:'post',
 					queryParams:{"sysRsRcCatalog.id":node.attributes.id},
@@ -73,6 +77,7 @@
 							    success:function(data){ 
 							    	handlerResult(data,
 							    		function(rs){
+							    			dialog.dialog("destroy");
 						    				resourceTypeTree.tree("reload",node.target);
 											$show(rs.message);
 										},
@@ -99,9 +104,9 @@
 		</script>
 	</head>
 	<body class="easyui-layout">
-		<div data-options="region:'west',split:true,tools:'#resourceType_bar'" title=" " style="width:200px;" border="false">
-			<ul id="resourceType_tree"></ul>
-			<div  id="resourceType_bar">
+		<div data-options="region:'west',split:true,tools:'#resource_type_bar'" title=" " style="width:200px;" border="false">
+			<ul id="resourceTypeTree"></ul>
+			<div  id="resource_type_bar">
 		       <a href="#" class="icon-reflesh" onclick="reload()">刷新</a>
 		     </div>
 		</div>
