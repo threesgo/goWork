@@ -99,7 +99,14 @@
 						$(this).dialog("destroy");
 					}
 	 			});
-	 		}
+	 		},
+	 		save:function(){
+	 			$.messager.confirm('确认','您确认想要更新类型信息吗？',function(r){    
+				    if (r){
+				        
+				    }    
+				});
+	 		},
 	 	};
 		</script>
 	</head>

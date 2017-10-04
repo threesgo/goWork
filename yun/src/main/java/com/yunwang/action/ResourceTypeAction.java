@@ -86,14 +86,31 @@ public class ResourceTypeAction extends AbstractLoginAction{
 	 * @return 查看类型信息
 	 */
 	public String info(){
-		//基本信息
-		sysRsRcCatalog = sysResourceTypeService.getRsRcCatalogInfo(sysRsRcCatalog.getId());
-				
-		//继承属性
-				
-		//本身属性
-		
 		return "info";
+	}
+	
+	/**
+	 * @return  获取类别需要编辑的属性，打包成json数组  （转换model类的属性，排除不可编辑行，通过国际化显示名称）
+	 */
+	public String infoData(){
+		sysRsRcCatalog = sysResourceTypeService.getRsRcCatalogInfo(sysRsRcCatalog.getId());
+		JSONArray jsonArr=new JSONArray();
+		
+		JSONObject json_name=new JSONObject();
+		json_name.put("attrName", "类型名称");
+		json_name.put("value", sysRsRcCatalog.getCatalogName());
+		jsonArr.add(json_name);
+		
+		JSONObject json_code=new JSONObject();
+		json_code.put("attrName","类型代号");
+		json_code.put("value", sysRsRcCatalog.getCatalogCode());
+		jsonArr.add(json_code);
+		
+		JSONObject json_type=new JSONObject();
+		json_type.put("attrName","类型类别");
+		json_type.put("value", sysRsRcCatalog.getCatalogType());
+		jsonArr.add(json_type);
+		return ajaxText(jsonArr);
 	}
 	
 	
