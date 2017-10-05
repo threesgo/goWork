@@ -17,10 +17,11 @@ import com.yunwang.util.action.AbstractLoginAction;
 	value = "resourceTypeAction", 
 	results = {
 		@Result(name = "index",location="/WEB-INF/web/resourceType/index.jsp"),
-		@Result(name = "add",location="/WEB-INF/web/resourceType/add.jsp"),
-		@Result(name = "edit",location="/WEB-INF/web/resourceType/edit.jsp"),
+		@Result(name = "saveOrUpdatePage",location="/WEB-INF/web/resourceType/saveOrUpdatePage.jsp"),
 		@Result(name = "info",location="/WEB-INF/web/resourceType/info.jsp"),
-		@Result(name = "childrenPage",location="/WEB-INF/web/resourceType/childrenPage.jsp")
+		@Result(name = "childrenPage",location="/WEB-INF/web/resourceType/childrenPage.jsp"),
+		@Result(name = "attrsPage",location="/WEB-INF/web/resourceType/attrsPage.jsp"),
+		@Result(name = "addTypeAttr",location="/WEB-INF/web/resourceType/addTypeAttr.jsp")
 	}
 )
 public class ResourceTypeAction extends AbstractLoginAction{
@@ -76,7 +77,7 @@ public class ResourceTypeAction extends AbstractLoginAction{
 	private JSONObject getJson(SysRsRcCatalog sysRcRsrcOrg){
 		JSONObject json=new JSONObject();
 		json.put("id","org"+sysRcRsrcOrg.getId());
-		json.put("text",sysRcRsrcOrg.getCatalogName());
+		json.put("text",sysRcRsrcOrg.getCatalogCode()+","+sysRcRsrcOrg.getCatalogName());
 		json.put("attributes", JSONObject.fromObject(sysRcRsrcOrg));
 		json.put("state", "closed");
 		return json;
@@ -88,6 +89,27 @@ public class ResourceTypeAction extends AbstractLoginAction{
 	public String info(){
 		return "info";
 	}
+	
+	/**
+	 * @return 查找继承属性
+	 */
+	public String findExtendsAttr(){
+		return ajaxJSONArr(sysResourceTypeService.findExtendsAttr(sysRsRcCatalog));
+	}
+	
+	/**
+	 * @return 查找本身属性
+	 */
+	public String findAttr(){
+		return ajaxJSONArr(sysResourceTypeService.findAttr(sysRsRcCatalog));
+	}
+	
+	/**
+	 * @return 新增类型属性
+	 */
+	public String addTypeAttr(){
+		return "addTypeAttr";
+	} 
 	
 	/**
 	 * @return  获取类别需要编辑的属性，打包成json数组  （转换model类的属性，排除不可编辑行，通过国际化显示名称）
@@ -108,7 +130,7 @@ public class ResourceTypeAction extends AbstractLoginAction{
 		
 		JSONObject json_type=new JSONObject();
 		json_type.put("attrName","类型类别");
-		json_type.put("value", sysRsRcCatalog.getCatalogType());
+		json_type.put("value", sysRsRcCatalog.getCatalogType()==1?"产品":"工人");
 		jsonArr.add(json_type);
 		return ajaxText(jsonArr);
 	}
@@ -134,8 +156,8 @@ public class ResourceTypeAction extends AbstractLoginAction{
 	/**
 	 * @return 基本信息
 	 */
-	public String attrListPage(){
-		return "attrListPage";
+	public String attrsPage(){
+		return "attrsPage";
 	}
 	
 	/**
@@ -146,37 +168,44 @@ public class ResourceTypeAction extends AbstractLoginAction{
 		return ajaxJSONArr(sysRcRsrcOrgList);
 	}
 	
-	
-	
-	public String addResourceType(){
-		return "add";
+	/**
+	 * @return 新增资源属性
+	 */
+	public String saveOrUpdateType(){
+		if(null != sysRsRcCatalog.getId()){
+			sysRsRcCatalog = sysResourceTypeService.getRsRcCatalogInfo(sysRsRcCatalog.getId());
+		}
+		return "saveOrUpdatePage";
 	}
 	
 	/**
 	 * @return  保存类型
 	 */
-	public String save(){
+	public String saveOrUpdate(){
 		try{
-			sysRsRcCatalog.setCatalogStatus(1);
-			sysRsRcCatalog.setOrderNo(sysResourceTypeService.getMaxOrder(sysRsRcCatalog.getParentId()));			
-			sysResourceTypeService.saveRsRcCatalog(sysRsRcCatalog);
-			return success("操作成功!");
+			if(null!=sysRsRcCatalog.getId()){
+				SysRsRcCatalog updateSysRsRcCatalog = sysResourceTypeService.getRsRcCatalogInfo(sysRsRcCatalog.getId());
+				updateSysRsRcCatalog.setCatalogCode(sysRsRcCatalog.getCatalogCode());
+				updateSysRsRcCatalog.setCatalogName(sysRsRcCatalog.getCatalogName());
+				updateSysRsRcCatalog.setCatalogType(sysRsRcCatalog.getCatalogType());
+				sysResourceTypeService.saveOrUpdateRsRcCatalog(updateSysRsRcCatalog);
+			}else{
+				sysRsRcCatalog.setCatalogStatus(1);
+				sysRsRcCatalog.setOrderNo(sysResourceTypeService.getMaxOrder(sysRsRcCatalog.getParentId()));			
+				sysResourceTypeService.saveOrUpdateRsRcCatalog(sysRsRcCatalog);
+			}
+			return success("操作成功!",JSONObject.fromObject(sysRsRcCatalog));
 		}catch(Exception e){
 			return error("操作失败!");
 		}
 	}
 	
+	/**
+	 * @return 删除资源属性
+	 */
 	public String delete(){
 		try{
 			sysResourceTypeService.deleteRsRcCatalog(sysRsRcCatalog);
-			return success("操作成功!");
-		}catch(Exception e){
-			return error("操作失败!");
-		}
-	}
-	
-	public String update(){
-		try{
 			return success("操作成功!");
 		}catch(Exception e){
 			return error("操作失败!");
@@ -198,5 +227,4 @@ public class ResourceTypeAction extends AbstractLoginAction{
 	public void setSysRsRcCatalog(SysRsRcCatalog sysRsRcCatalog) {
 		this.sysRsRcCatalog = sysRsRcCatalog;
 	}
-	
 }

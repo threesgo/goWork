@@ -32,7 +32,6 @@
 </div>
  -->
 <script type="text/javascript">
-var $resourceTypeInfoTable;
 $(function(){
 	$resourceTypeInfoTable=$("#resourceTypeInfoTable").datagrid({
         fitColumns:true,
@@ -75,6 +74,6 @@ $(function(){
 </script>
 <table id="resourceTypeInfoTable"></table>
 <div id="resource_type_info_bar">
-	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-save', plain:true" 
-		onclick="resourceTypeOperation.save()">保存</a>
+	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit', plain:true" 
+		onclick="resourceTypeOperation.edit()">编辑</a>
 </div>

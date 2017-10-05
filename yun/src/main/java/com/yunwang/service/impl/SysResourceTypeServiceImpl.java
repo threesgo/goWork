@@ -1,5 +1,6 @@
 package com.yunwang.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +10,10 @@ import com.yunwang.dao.SysResourceDaoI;
 import com.yunwang.dao.SysRsRcAttribCatalogDaoI;
 import com.yunwang.dao.SysRsRcAttribDaoI;
 import com.yunwang.dao.SysRsRcCatalogDaoI;
+import com.yunwang.model.pojo.SysRsRcAttribCatalog;
 import com.yunwang.model.pojo.SysRsRcCatalog;
 import com.yunwang.service.SysResourceTypeService;
+import com.yunwang.util.string.StringBufferByCollectionUtil;
 
 @Service
 public class SysResourceTypeServiceImpl implements SysResourceTypeService{
@@ -25,8 +28,8 @@ public class SysResourceTypeServiceImpl implements SysResourceTypeService{
 	private SysRsRcAttribDaoI sysRsRcAttribDao;
 	
 	@Override
-	public void saveRsRcCatalog(SysRsRcCatalog sysRsRcCatalog) {
-		sysRsRcCatalogDao.save(sysRsRcCatalog);		
+	public void saveOrUpdateRsRcCatalog(SysRsRcCatalog sysRsRcCatalog) {
+		sysRsRcCatalogDao.saveOrUpdate(sysRsRcCatalog);		
 	}
 
 	@Override
@@ -50,5 +53,26 @@ public class SysResourceTypeServiceImpl implements SysResourceTypeService{
 	@Override
 	public Integer getMaxOrder(Integer parentId) {
 		return sysRsRcCatalogDao.findMaxSeqByPfield("orderNo","parentId",parentId);
+	}
+
+	@Override
+	public List<SysRsRcAttribCatalog> findExtendsAttr(
+			SysRsRcCatalog sysRsRcCatalog) {
+		SysRsRcCatalog dbSysRsRcCatalog = sysRsRcCatalogDao.get(SysRsRcCatalog.class,sysRsRcCatalog.getId());
+		List<Integer> parentIds = new ArrayList<Integer>();
+		getParents(parentIds,dbSysRsRcCatalog);
+		return sysRsRcAttribCatalogDao.findByCatalogIds(
+				StringBufferByCollectionUtil.convertCollection(parentIds));
+	}
+	
+	private void getParents(List<Integer> parentIds,SysRsRcCatalog dbSysRsRcCatalog){
+		SysRsRcCatalog parentSysRsRcCatalog = sysRsRcCatalogDao.get(SysRsRcCatalog.class,dbSysRsRcCatalog.getParentId());
+		parentIds.add(0, parentSysRsRcCatalog.getParentId());
+		getParents(parentIds,parentSysRsRcCatalog);
+	}
+
+	@Override
+	public List<SysRsRcAttribCatalog> findAttr(SysRsRcCatalog sysRsRcCatalog) {
+		return sysRsRcAttribCatalogDao.findByCatalogIds(sysRsRcCatalog.getId().toString());
 	}
 }

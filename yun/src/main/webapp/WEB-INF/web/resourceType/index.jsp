@@ -10,6 +10,7 @@
 		<script type="text/javascript">
 		var resourceTypeTree;
  		var resourceTypeTab;
+ 		var $resourceTypeInfoTable;
  		var resourceTypeOperation = {};
 		$(function(){
 			//添加树结构
@@ -26,7 +27,7 @@
 							});
 							resourceTypeTab.tabs('add',{
 	 							title:'属性列表', 
-							    href:"resourceTypeAction!attrList.act?sysRsRcCatalog.id="+ node.attributes.id
+							    href:"resourceTypeAction!attrsPage.act?sysRsRcCatalog.id="+ node.attributes.id
 							});
  						}
  						resourceTypeTab.tabs('add',{
@@ -60,12 +61,12 @@
 	 		add:function(){
 	 			var node = resourceTypeTree.tree("getSelected");
 	 			var dialog =$('<div id="addResourceType"></div>').dialog({    
-					href : "resourceTypeAction!addResourceType.act",
+					href : "resourceTypeAction!saveOrUpdateType.act",
 					width:350,
 					height:250,
 					title:"新增类型",
 					method:'post',
-					queryParams:{"sysRsRcCatalog.id":node.attributes.id},
+					queryParams:{"sysRsRcCatalog.parentId":node.attributes.id},
 					modal:true,
 					buttons:[{
 						text:"确定",
@@ -100,12 +101,52 @@
 					}
 	 			});
 	 		},
-	 		save:function(){
-	 			$.messager.confirm('确认','您确认想要更新类型信息吗？',function(r){    
-				    if (r){
-				        
-				    }    
-				});
+	 		edit:function(){
+	 			var node = resourceTypeTree.tree("getSelected");
+	 			var dialog =$('<div id="updateResourceType"></div>').dialog({    
+					href : "resourceTypeAction!saveOrUpdateType.act",
+					width:350,
+					height:250,
+					title:"编辑类型",
+					method:'post',
+					queryParams:{"sysRsRcCatalog.id":node.attributes.id},
+					modal:true,
+					buttons:[{
+						text:"确定",
+						iconCls:'icon-ok',
+						handler:function(){
+							$('#add_resource_type').form({    
+							    onSubmit: function(){  
+							    },    
+							    success:function(data){ 
+							    	handlerResult(data,
+							    		function(rs){
+							    			dialog.dialog("destroy");
+											$show(rs.message);
+											$resourceTypeInfoTable.datagrid("reload");
+											resourceTypeTree.tree('update', {
+												target: node.target,
+												text:rs.data.catalogCode+","+rs.data.catalogName
+											});
+										},
+										function(rs){
+											$alert(rs.message);
+										}
+									);  
+							    }    
+							}).submit();    
+						}
+					},{
+						text:"取消",
+						iconCls:'icon-cancel',
+						handler:function(){
+							dialog.dialog("destroy");
+						}
+					}],
+					onClose:function(){
+						$(this).dialog("destroy");
+					}
+	 			});
 	 		},
 	 	};
 		</script>

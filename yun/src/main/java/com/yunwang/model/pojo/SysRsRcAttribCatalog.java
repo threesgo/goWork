@@ -49,23 +49,17 @@ public class SysRsRcAttribCatalog extends AbstractRowVersionModel{
 	@Column(name="ORDER_NO", nullable = false)
 	private Integer orderNo;//顺序号	
 	
-	@Column(name="SHOW_IN_LISTVIEW", precision=1,nullable = false,columnDefinition = "number default 1")
-	private BigDecimal showInListView;//是否在列表中显示  SHOW_IN_LISTVIEW	列表显示	number(1)	1	X
+	@Column(name="SHOW_IN_LISTVIEW", nullable = false,columnDefinition = "number default 1")
+	private Integer showInListView;//是否在列表中显示  SHOW_IN_LISTVIEW	列表显示	number(1)	1	X
 	
-	@Column(name="SHOW_IN_FINDER", precision=1,nullable = false,columnDefinition = "number default 1")
-	private BigDecimal showInFinder;//是否在查找中出现  SHOW_IN_FINDER	在查找条件中出现	number(1)	1	X
+	@Column(name="SHOW_IN_FINDER", nullable = false,columnDefinition = "number default 1")
+	private Integer showInFinder;//是否在查找中出现  SHOW_IN_FINDER	在查找条件中出现	number(1)	1	X
 	
-	@Column(name="DATA_PRECISION", precision=5)
-	private BigDecimal dataPrecision;//小数点位数  PRECISION	小数点位数	number(5)
+	@Column(name="DATA_PRECISION")
+	private Integer dataPrecision;//小数点位数  PRECISION	小数点位数	number(5)
 	
 	@Column(name="DEFAULT_VALUE", length = 1024)
 	private String defaultValue;//默认值   DEFAULT_VALUE	默认值	varchar2(1024)	
-	
-	@Column(name="CTRL_WIDTH", precision=5)
-	private BigDecimal controlHeight;// CTRL_WIDTH	控件高度	number(5)
-	
-	@Column(name="CTRL_HEIGHT", precision=5)
-	private BigDecimal controlWidth;//CTRL_HEIGHT	控件宽度	number(5)
 	
 	@Transient
 	private String unitGroupName;
@@ -127,27 +121,27 @@ public class SysRsRcAttribCatalog extends AbstractRowVersionModel{
 		this.unitId = unitId;
 	}
 
-	public BigDecimal getShowInListView() {
+	public Integer getShowInListView() {
 		return showInListView;
 	}
 
-	public void setShowInListView(BigDecimal showInListView) {
+	public void setShowInListView(Integer showInListView) {
 		this.showInListView = showInListView;
 	}
 
-	public BigDecimal getShowInFinder() {
+	public Integer getShowInFinder() {
 		return showInFinder;
 	}
 
-	public void setShowInFinder(BigDecimal showInFinder) {
+	public void setShowInFinder(Integer showInFinder) {
 		this.showInFinder = showInFinder;
 	}
 
-	public BigDecimal getDataPrecision() {
+	public Integer getDataPrecision() {
 		return dataPrecision;
 	}
 
-	public void setDataPrecision(BigDecimal dataPrecision) {
+	public void setDataPrecision(Integer dataPrecision) {
 		this.dataPrecision = dataPrecision;
 	}
 
@@ -157,22 +151,6 @@ public class SysRsRcAttribCatalog extends AbstractRowVersionModel{
 
 	public void setDefaultValue(String defaultValue) {
 		this.defaultValue = defaultValue;
-	}
-
-	public BigDecimal getControlHeight() {
-		return controlHeight;
-	}
-
-	public void setControlHeight(BigDecimal controlHeight) {
-		this.controlHeight = controlHeight;
-	}
-
-	public BigDecimal getControlWidth() {
-		return controlWidth;
-	}
-
-	public void setControlWidth(BigDecimal controlWidth) {
-		this.controlWidth = controlWidth;
 	}
 
 	public String getUnitGroupName() {
