@@ -269,8 +269,8 @@
 	<div id="index_layout">
 		<div data-options="region:'north',href:''"  class="logo">
 			<div class="cs-north-bg">
-				<div style="float: left; margin-left: 20px;margin-top: 2px">
-					<img src="${pageContext.request.contextPath}/style/images/logo.png"  style="height: 60px"></img>
+				<div style="float: left; margin-left: 20px;margin-top: 10px">
+					<img src="${pageContext.request.contextPath}/style/images/logo.png"  style="height: 50px"></img>
 				</div>
 				<!--  
 				<div class="cs-north-logo" >

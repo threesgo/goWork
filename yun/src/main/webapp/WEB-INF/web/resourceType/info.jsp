@@ -75,5 +75,5 @@ $(function(){
 <table id="resourceTypeInfoTable"></table>
 <div id="resource_type_info_bar">
 	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit', plain:true" 
-		onclick="resourceTypeOperation.edit()">编辑</a>
+		onclick="resourceTypeOperation.editType()">编辑</a>
 </div>

@@ -22,6 +22,7 @@ public class SysDataDictionary  extends AbstractRowVersionModel{
     @SequenceGenerator(name="my_entity_seq_gen", sequenceName="SEQ_SYS_DATA_DICTIONARY")
 	private Integer id;
 	
+	@Column(name="TYPE")
 	private Integer type;//类型
 	
 	@Column(name="NAME",length=64)

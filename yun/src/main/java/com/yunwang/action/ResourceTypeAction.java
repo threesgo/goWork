@@ -17,7 +17,7 @@ import com.yunwang.util.action.AbstractLoginAction;
 	value = "resourceTypeAction", 
 	results = {
 		@Result(name = "index",location="/WEB-INF/web/resourceType/index.jsp"),
-		@Result(name = "saveOrUpdatePage",location="/WEB-INF/web/resourceType/saveOrUpdatePage.jsp"),
+		@Result(name = "saveOrUpdateTypePage",location="/WEB-INF/web/resourceType/saveOrUpdateTypePage.jsp"),
 		@Result(name = "info",location="/WEB-INF/web/resourceType/info.jsp"),
 		@Result(name = "childrenPage",location="/WEB-INF/web/resourceType/childrenPage.jsp"),
 		@Result(name = "attrsPage",location="/WEB-INF/web/resourceType/attrsPage.jsp"),
@@ -171,17 +171,17 @@ public class ResourceTypeAction extends AbstractLoginAction{
 	/**
 	 * @return 新增资源属性
 	 */
-	public String saveOrUpdateType(){
+	public String saveOrUpdateTypePage(){
 		if(null != sysRsRcCatalog.getId()){
 			sysRsRcCatalog = sysResourceTypeService.getRsRcCatalogInfo(sysRsRcCatalog.getId());
 		}
-		return "saveOrUpdatePage";
+		return "saveOrUpdateTypePage";
 	}
 	
 	/**
 	 * @return  保存类型
 	 */
-	public String saveOrUpdate(){
+	public String saveOrUpdateType(){
 		try{
 			if(null!=sysRsRcCatalog.getId()){
 				SysRsRcCatalog updateSysRsRcCatalog = sysResourceTypeService.getRsRcCatalogInfo(sysRsRcCatalog.getId());
@@ -198,6 +198,14 @@ public class ResourceTypeAction extends AbstractLoginAction{
 		}catch(Exception e){
 			return error("操作失败!");
 		}
+	}
+	
+	public String saveOrUpdateAttrPage(){
+		return "saveOrUpdateAttrPage";
+	}
+	
+	public String saveOrUpdateAttr(){
+		return null;
 	}
 	
 	/**

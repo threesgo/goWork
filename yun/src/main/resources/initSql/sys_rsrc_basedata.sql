@@ -5,7 +5,7 @@ values (1, 0, 1, '字符串', null, 'string');
 insert into SYS_RSRC_BASEDATA (id, row_version, data_type, display_name, data_group, real_name)
 values (2, 0, 1, '数值型', null, 'number');
 insert into SYS_RSRC_BASEDATA (id, row_version, data_type, display_name, data_group, real_name)
-values (3, 0, 1, '日期型', null, 'date');
+values (3, 0, 1, '时间型', null, 'date');
 insert into SYS_RSRC_BASEDATA (id, row_version, data_type, display_name, data_group, real_name)
 values (4, 0, 2, '度', '角度', 'DEGREE');
 insert into SYS_RSRC_BASEDATA (id, row_version, data_type, display_name, data_group, real_name)
@@ -209,9 +209,9 @@ values (103, 0, 2, '千兆字节', '数据存储', 'GB');
 insert into SYS_RSRC_BASEDATA (id, row_version, data_type, display_name, data_group, real_name)
 values (104, 0, 3, '文本框', null, 'text');
 insert into SYS_RSRC_BASEDATA (id, row_version, data_type, display_name, data_group, real_name)
-values (105, 0, 3, '复选框', null, 'checkbox');
+values (105, 0, 3, '单选列表', null, 'checkbox');
 insert into SYS_RSRC_BASEDATA (id, row_version, data_type, display_name, data_group, real_name)
-values (106, 0, 3, '下拉列表', null, 'select');
+values (106, 0, 3, '多选列表', null, 'select');
 insert into SYS_RSRC_BASEDATA (id, row_version, data_type, display_name, data_group, real_name)
-values (107, 0, 3, '日期选择框', null, 'datetimebox');
+values (107, 0, 3, '时间选择框', null, 'datetimebox');
 END;

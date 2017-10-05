@@ -12,6 +12,6 @@ public class SysRsRcAttribCatalogDaoImpl extends BaseDaoImpl<SysRsRcAttribCatalo
 	@Override
 	public List<SysRsRcAttribCatalog> findByCatalogIds(String catalogIds) {
 		return find("SELECT model FROM SysRsRcAttribCatalog model "+
-					" WHERE model.rsrcCatalogId in ("+catalogIds+")");
+					" WHERE model.rsrcCatalogId in ("+catalogIds+") ORDER BY model.orderNo ");
 	}
 }

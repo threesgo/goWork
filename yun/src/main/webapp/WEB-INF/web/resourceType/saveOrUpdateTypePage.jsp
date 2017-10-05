@@ -1,6 +1,6 @@
 <%@ page language="java" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags"%>
-<form id="add_resource_type" method="post" action="resourceTypeAction!saveOrUpdate.act">
+<form id="saveOrUpdate_resource_type" method="post" action="resourceTypeAction!saveOrUpdateType.act">
 	<input type="hidden" name="sysRsRcCatalog.parentId" value="${sysRsRcCatalog.parentId}"/>
 	<input type="hidden" name="sysRsRcCatalog.id" value="${sysRsRcCatalog.id}"/>  
     <div>   

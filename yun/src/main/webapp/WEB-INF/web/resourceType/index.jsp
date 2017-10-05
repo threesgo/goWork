@@ -58,10 +58,10 @@
 				});
 	 		},
 	 		
-	 		add:function(){
+	 		addType:function(){
 	 			var node = resourceTypeTree.tree("getSelected");
 	 			var dialog =$('<div id="addResourceType"></div>').dialog({    
-					href : "resourceTypeAction!saveOrUpdateType.act",
+					href : "resourceTypeAction!saveOrUpdateTypePage.act",
 					width:350,
 					height:250,
 					title:"新增类型",
@@ -72,7 +72,7 @@
 						text:"确定",
 						iconCls:'icon-ok',
 						handler:function(){
-							$('#add_resource_type').form({    
+							$('#saveOrUpdate_resource_type').form({    
 							    onSubmit: function(){  
 							    },    
 							    success:function(data){ 
@@ -101,10 +101,10 @@
 					}
 	 			});
 	 		},
-	 		edit:function(){
+	 		editType:function(){
 	 			var node = resourceTypeTree.tree("getSelected");
 	 			var dialog =$('<div id="updateResourceType"></div>').dialog({    
-					href : "resourceTypeAction!saveOrUpdateType.act",
+					href : "resourceTypeAction!saveOrUpdateTypePage.act",
 					width:350,
 					height:250,
 					title:"编辑类型",
@@ -115,7 +115,7 @@
 						text:"确定",
 						iconCls:'icon-ok',
 						handler:function(){
-							$('#add_resource_type').form({    
+							$('#saveOrUpdate_resource_type').form({    
 							    onSubmit: function(){  
 							    },    
 							    success:function(data){ 
