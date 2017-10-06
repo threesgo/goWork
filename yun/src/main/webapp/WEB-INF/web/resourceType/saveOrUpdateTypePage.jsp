@@ -14,10 +14,17 @@
         style="width:200px;" data-options="required:true,validType:['length[1,40]','illegal']" value="${sysRsRcCatalog.catalogName}"/>   
     </div>
      <div>   
-        <label for="type">产品类别:</label>   
+        <label for="type">产品类别:</label>
+        <!--    
         <select id="type" class="easyui-combobox" name="sysRsRcCatalog.catalogType" style="width:200px;">   
 		    <option value="1" <s:if test="sysRsRcCatalog.catalogType==1"> selected=‘selected’</s:if>>产品</option>
 			<option value="2" <s:if test="sysRsRcCatalog.catalogType==2"> selected=‘selected’</s:if>>工人</option>   
-		</select>   
+		</select>
+		 -->
+		<s:select id="type" 
+       		list="catalogTypeList" style="width:200px;"
+	       	listKey="value"   
+	       	listValue="name" 
+	       	name="sysRsRcCatalog.catalogType" />     
     </div>
 </form>

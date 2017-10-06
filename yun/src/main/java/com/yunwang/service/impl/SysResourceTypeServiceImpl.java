@@ -9,8 +9,10 @@ import org.springframework.stereotype.Service;
 import com.yunwang.dao.SysResourceDaoI;
 import com.yunwang.dao.SysRsRcAttribCatalogDaoI;
 import com.yunwang.dao.SysRsRcAttribDaoI;
+import com.yunwang.dao.SysRsRcBaseDataDaoI;
 import com.yunwang.dao.SysRsRcCatalogDaoI;
 import com.yunwang.model.pojo.SysRsRcAttribCatalog;
+import com.yunwang.model.pojo.SysRsRcBaseData;
 import com.yunwang.model.pojo.SysRsRcCatalog;
 import com.yunwang.service.SysResourceTypeService;
 import com.yunwang.util.string.StringBufferByCollectionUtil;
@@ -26,6 +28,8 @@ public class SysResourceTypeServiceImpl implements SysResourceTypeService{
 	private SysRsRcAttribCatalogDaoI sysRsRcAttribCatalogDao;
 	@Autowired
 	private SysRsRcAttribDaoI sysRsRcAttribDao;
+	@Autowired
+	private SysRsRcBaseDataDaoI sysRsRcBaseDataDao;
 	
 	@Override
 	public void saveOrUpdateRsRcCatalog(SysRsRcCatalog sysRsRcCatalog) {
@@ -66,13 +70,31 @@ public class SysResourceTypeServiceImpl implements SysResourceTypeService{
 	}
 	
 	private void getParents(List<Integer> parentIds,SysRsRcCatalog dbSysRsRcCatalog){
-		SysRsRcCatalog parentSysRsRcCatalog = sysRsRcCatalogDao.get(SysRsRcCatalog.class,dbSysRsRcCatalog.getParentId());
-		parentIds.add(0, parentSysRsRcCatalog.getParentId());
-		getParents(parentIds,parentSysRsRcCatalog);
+		if(dbSysRsRcCatalog.getParentId()!=0){
+			SysRsRcCatalog parentSysRsRcCatalog = sysRsRcCatalogDao.get(SysRsRcCatalog.class,dbSysRsRcCatalog.getParentId());
+			parentIds.add(0, parentSysRsRcCatalog.getId());
+			getParents(parentIds,parentSysRsRcCatalog);
+		}
 	}
 
 	@Override
 	public List<SysRsRcAttribCatalog> findAttr(SysRsRcCatalog sysRsRcCatalog) {
 		return sysRsRcAttribCatalogDao.findByCatalogIds(sysRsRcCatalog.getId().toString());
+	}
+
+	@Override
+	public List<SysRsRcBaseData> findSysRcBaseDataTypeByGroup(String groupStr) {
+		return sysRsRcBaseDataDao.findByGroup(groupStr);
+	}
+
+	@Override
+	public void saveOrUpdateSysRsRcAttribCatalog(
+			SysRsRcAttribCatalog sysRsRcAttribCatalog) {
+		sysRsRcAttribCatalogDao.saveOrUpdate(sysRsRcAttribCatalog);
+	}
+
+	@Override
+	public SysRsRcAttribCatalog getSysRsRcAttribCatalog(Integer attribCatalogId) {
+		return sysRsRcAttribCatalogDao.get(SysRsRcAttribCatalog.class,attribCatalogId);
 	}
 }

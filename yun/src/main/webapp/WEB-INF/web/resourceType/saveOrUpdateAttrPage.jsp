@@ -1,60 +1,106 @@
 <%@ page language="java" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags"%>
+<script type="text/javascript">
+$(function(){
+	$("#groupId").change(function(){
+		$("#unitId").find("option").remove();
+		$("#groupId").next(".loading").addClass("span-loading");
+		$.post("resourceTypeAction!findSysRcBaseDataTypeByGroup.act",{"id":$("#groupId").val()},function(data){
+			$("#groupId").next(".loading").removeClass("span-loading");
+			if(data && data.length){
+				$.each(data,function(index,item){
+					$("#unitId").append("<option class='option' value='"+item.id+"'>"+item.displayName+"</option>");											
+				});										
+			}
+		},"json");
+	});
+	
+	$("#dataLength").numberbox({
+		onChange:function(newValue,oldValue){
+			var dataPrecisionMax = parseInt(newValue)-1;
+			$('#dataPrecision').numberbox({    
+			    min:0,    
+			    precision:0,
+			    max:dataPrecisionMax    
+			}); 
+		}
+	});
+});
+</script>
+
 <form id="saveOrUpdate_resource_attr" method="post" action="resourceTypeAction!saveOrUpdateAttr.act">
-	<input type="hidden" name="sysRsRcCatalog.id" value="${sysRsRcCatalog.id}"/>  
+	<input type="hidden" name="sysRsRcAttribCatalog.rsrcCatalogId" value="${sysRsRcCatalog.id}"/>
+	<input type="hidden" name="sysRsRcAttribCatalog.id" value="${sysRsRcAttribCatalog.id}"/>
     <div>   
         <label for="code">属性代号:</label>   
-        <input class="easyui-validatebox" type="text" name="sysRsRcAttribCatalog.rsrcAttribCode" 
-        style="width:200px;" data-options="required:true,validType:['length[1,10]','illegal']" value="${sysRsRcCatalog.catalogCode}"/>   
-    </div>   
-    <div>   
+        <input id="code" class="easyui-validatebox" type="text" name="sysRsRcAttribCatalog.rsrcAttribCode" 
+        style="width:200px;" data-options="required:true,validType:['length[1,10]','illegal']" value="${sysRsRcAttribCatalog.rsrcAttribCode}"/>   
         <label for="name">属性名称:</label>   
-        <input class="easyui-validatebox" type="text" name="sysRsRcAttribCatalog.rsrcAttribName" 
-        style="width:200px;" data-options="required:true,validType:['length[1,40]','illegal']" value="${sysRsRcCatalog.catalogName}"/>   
+        <input id="name" class="easyui-validatebox" type="text" name="sysRsRcAttribCatalog.rsrcAttribName" 
+        style="width:200px;" data-options="required:true,validType:['length[1,40]','illegal']" value="${sysRsRcAttribCatalog.rsrcAttribName}"/>   
     </div>
-    
-    
     
     <div>   
-        <label for="type">产品类别:</label>   
-        <select id="type" class="easyui-combobox" name="sysRsRcCatalog.catalogType" style="width:200px;">   
-		    <option value="1" <s:if test="sysRsRcCatalog.catalogType==1"> selected=‘selected’</s:if>>产品</option>
-			<option value="2" <s:if test="sysRsRcCatalog.catalogType==2"> selected=‘selected’</s:if>>工人</option>   
-		</select>   
+        <label for="dataTypeId">数据类型:</label>   
+        <s:select id="dataTypeId" 
+        	list="dataTypeList" style="width:200px;"
+	       	listKey="id"   
+	       	listValue="displayName"
+	       	name="sysRsRcAttribCatalog.dataTypeId" />
+        <label for="controlTypeId">控件类型:</label>
+        <s:select id="controlTypeId" 
+        	list="controlTypeList" style="width:200px;"
+	       	listKey="id"   
+	       	listValue="displayName" 
+	       	name="sysRsRcAttribCatalog.controlTypeId" />   
     </div>
     
-   <!--
-    @Column(name="RSRC_ATTRIB_CODE", nullable = false,length=32)
-	private String rsrcAttribCode;//属性代号 RSRC_ATTRIB_CODE	属性代号	varchar2(32)		X
-	
-	@Column(name="RSRC_ATTRIB_NAME", nullable = false,length=128)
-	private String rsrcAttribName;//属性名称 RSRC_ATTRIB_NAME	属性名称	varchar2(128)		X
-	
-	@Column(name="DATA_TYPE_ID", nullable = false)
-	private Integer dataTypeId;//数据类型ID  DATA_TYPE_ID	数据类型ID	number(10)
-	
-	@Column(name="CTRL_TYPE_ID", nullable = false)
-	private Integer controlTypeId;//控件类型 CTRL_TYPE_ID	控件类型ID	number(10)
-	
-	@Column(name="DATA_LENGTH")
-	private BigDecimal dataLength;//数据长度 DATA_LENGTH	数据长度	number(10)
-	
-	@Column(name="DATA_PRECISION")
-	private Integer dataPrecision;//小数点位数  PRECISION	小数点位数	number(10)
-	
-	@Column(name="UNIT_ID")
-	private Integer unitId;//单位   UNIT_ID	单位ID	number(10)
-	
-	@Column(name="SHOW_IN_LISTVIEW", nullable = false,columnDefinition = "number default 1")
-	private Integer showInListView;//是否在列表中显示  SHOW_IN_LISTVIEW	列表显示	number(10)
-	
-	@Column(name="SHOW_IN_FINDER", nullable = false,columnDefinition = "number default 1")
-	private Integer showInFinder;//是否在查找中出现  SHOW_IN_FINDER	在查找条件中出现	number(10)
-	
-	@Column(name="ORDER_NO", nullable = false)
-	private Integer orderNo;//顺序号
-	
-	@Column(name="DEFAULT_VALUE", length = 1024)
-	private String defaultValue;//默认值   DEFAULT_VALUE	默认值	varchar2(1024)	“1|2|3” 选择框需要输入
-	 -->
+    <div>
+        <label for="dataLength">数据长度:</label>   
+        <input id="dataLength" class="easyui-numberbox" type="text" name="sysRsRcAttribCatalog.dataLength" 
+        style="width:200px;" data-options="required:true,min:1,precision:0,max:256" value="${sysRsRcAttribCatalog.dataLength}"/>   
+        <label for="dataPrecision">小数位数:</label>   
+        <input id="dataPrecision" class="easyui-numberbox" type="text" name="sysRsRcAttribCatalog.dataPrecision" 
+        style="width:200px;" value="${sysRsRcAttribCatalog.dataPrecision}"/>   
+    </div>
+    
+    <div>
+       	<label for="unitId">数据单位:</label>
+       	<s:select id="groupId" 
+       		list="unitGroupList" style="width:98px;"
+	       	listKey="group"   
+	       	listValue="group" 
+	       	headerKey="0"
+	       	headerValue="--请选择--"/>   
+       	<s:select id="unitId" 
+       		list="unitList" style="width:98px;"
+	       	listKey="id"   
+	       	listValue="displayName" 
+	       	name="sysRsRcAttribCatalog.unitId" />   
+    
+        <label for="showInListView">列表显示:</label>   
+	    <select id="showInListView" class="easyui-combobox" name="sysRsRcAttribCatalog.showInListView" style="width:200px;">   
+		    <option value="1" <s:if test="sysRsRcAttribCatalog.showInListView==1"> selected=‘selected’</s:if>>是</option>
+			<option value="0" <s:if test="sysRsRcAttribCatalog.showInListView==0"> selected=‘selected’</s:if>>否</option>   
+		</select>  
+    </div>
+    
+    <div>
+        <label for="showInFinder">查找显示:</label>   
+	    <select id="showInFinder" class="easyui-combobox" name="sysRsRcAttribCatalog.showInFinder" style="width:200px;">   
+		    <option value="1" <s:if test="sysRsRcAttribCatalog.showInFinder==1"> selected=‘selected’</s:if>>是</option>
+			<option value="0" <s:if test="sysRsRcAttribCatalog.showInFinder==0"> selected=‘selected’</s:if>>否</option>   
+		</select>  
+    
+        <label for="orderNo">属性顺序:</label>   
+        <input id="orderNo" class="easyui-numberbox" type="text" name="sysRsRcAttribCatalog.orderNo" 
+        style="width:200px;" data-options="required:true,min:1,precision:0" value="${sysRsRcAttribCatalog.orderNo}"/>   
+    </div>
+    
+    <!-- “1|2|3” 选择框需要输入 -->
+    <div>
+        <label for="defaultValue">默认选项:</label>   
+        <input id="defaultValue" class="easyui-validatebox" type="text" name="sysRsRcAttribCatalog.defaultValue" 
+        style="width:200px;" data-options="required:false,validType:['length[1,1024]','illegal']" value="${sysRsRcAttribCatalog.defaultValue}"/>   
+    </div>
 </form>

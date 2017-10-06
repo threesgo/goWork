@@ -68,6 +68,7 @@
 					method:'post',
 					queryParams:{"sysRsRcCatalog.parentId":node.attributes.id},
 					modal:true,
+					resizable:true,
 					buttons:[{
 						text:"确定",
 						iconCls:'icon-ok',
@@ -107,6 +108,7 @@
 					href : "resourceTypeAction!saveOrUpdateTypePage.act",
 					width:350,
 					height:250,
+					resizable:true,
 					title:"编辑类型",
 					method:'post',
 					queryParams:{"sysRsRcCatalog.id":node.attributes.id},

@@ -1,7 +1,5 @@
 package com.yunwang.model.pojo;
 
-import java.math.BigDecimal;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -41,7 +39,7 @@ public class SysRsRcAttribCatalog extends AbstractRowVersionModel{
 	private Integer controlTypeId;//控件类型 CTRL_TYPE_ID	控件类型ID	number(10)
 	
 	@Column(name="DATA_LENGTH")
-	private BigDecimal dataLength;//数据长度 DATA_LENGTH	数据长度	number(10)
+	private Integer dataLength;//数据长度 DATA_LENGTH	数据长度	number(10)
 	
 	@Column(name="DATA_PRECISION")
 	private Integer dataPrecision;//小数点位数  PRECISION	小数点位数	number(10)
@@ -105,11 +103,11 @@ public class SysRsRcAttribCatalog extends AbstractRowVersionModel{
 		this.dataTypeId = dataTypeId;
 	}
 
-	public BigDecimal getDataLength() {
+	public Integer getDataLength() {
 		return dataLength;
 	}
 
-	public void setDataLength(BigDecimal dataLength) {
+	public void setDataLength(Integer dataLength) {
 		this.dataLength = dataLength;
 	}
 

@@ -9,8 +9,13 @@ import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.yunwang.model.pojo.SysDataDictionary;
+import com.yunwang.model.pojo.SysRsRcAttribCatalog;
+import com.yunwang.model.pojo.SysRsRcBaseData;
 import com.yunwang.model.pojo.SysRsRcCatalog;
 import com.yunwang.service.SysResourceTypeService;
+import com.yunwang.util.BaseDataDictionaryUtil;
+import com.yunwang.util.SysRcBaseDataTypeUtil;
 import com.yunwang.util.action.AbstractLoginAction;
 
 @Action(
@@ -21,7 +26,7 @@ import com.yunwang.util.action.AbstractLoginAction;
 		@Result(name = "info",location="/WEB-INF/web/resourceType/info.jsp"),
 		@Result(name = "childrenPage",location="/WEB-INF/web/resourceType/childrenPage.jsp"),
 		@Result(name = "attrsPage",location="/WEB-INF/web/resourceType/attrsPage.jsp"),
-		@Result(name = "addTypeAttr",location="/WEB-INF/web/resourceType/addTypeAttr.jsp")
+		@Result(name = "saveOrUpdateAttrPage",location="/WEB-INF/web/resourceType/saveOrUpdateAttrPage.jsp")
 	}
 )
 public class ResourceTypeAction extends AbstractLoginAction{
@@ -37,7 +42,14 @@ public class ResourceTypeAction extends AbstractLoginAction{
 	private SysResourceTypeService sysResourceTypeService;
 	
 	private SysRsRcCatalog sysRsRcCatalog;
+	private SysRsRcAttribCatalog sysRsRcAttribCatalog;
 	private String id;
+	private List<SysRsRcBaseData> dataTypeList;
+	private List<SysRsRcBaseData> controlTypeList;
+	private List<SysRsRcBaseData> unitGroupList;
+	private List<SysRsRcBaseData> unitList;
+	private List<SysDataDictionary> catalogTypeList;
+	
 	
 	@Override
 	public String execute() throws Exception {
@@ -105,13 +117,6 @@ public class ResourceTypeAction extends AbstractLoginAction{
 	}
 	
 	/**
-	 * @return 新增类型属性
-	 */
-	public String addTypeAttr(){
-		return "addTypeAttr";
-	} 
-	
-	/**
 	 * @return  获取类别需要编辑的属性，打包成json数组  （转换model类的属性，排除不可编辑行，通过国际化显示名称）
 	 */
 	public String infoData(){
@@ -130,7 +135,7 @@ public class ResourceTypeAction extends AbstractLoginAction{
 		
 		JSONObject json_type=new JSONObject();
 		json_type.put("attrName","类型类别");
-		json_type.put("value", sysRsRcCatalog.getCatalogType()==1?"产品":"工人");
+		json_type.put("value",BaseDataDictionaryUtil.valueMap.get(1).get(sysRsRcCatalog.getCatalogType().toString()).getName());
 		jsonArr.add(json_type);
 		return ajaxText(jsonArr);
 	}
@@ -175,6 +180,7 @@ public class ResourceTypeAction extends AbstractLoginAction{
 		if(null != sysRsRcCatalog.getId()){
 			sysRsRcCatalog = sysResourceTypeService.getRsRcCatalogInfo(sysRsRcCatalog.getId());
 		}
+		catalogTypeList = BaseDataDictionaryUtil.baseDataMap.get(1);
 		return "saveOrUpdateTypePage";
 	}
 	
@@ -201,11 +207,46 @@ public class ResourceTypeAction extends AbstractLoginAction{
 	}
 	
 	public String saveOrUpdateAttrPage(){
+		dataTypeList = SysRcBaseDataTypeUtil.dataTypeList;
+		controlTypeList = SysRcBaseDataTypeUtil.controlTypelist;
+		unitList = SysRcBaseDataTypeUtil.unitTypelist;
+		unitGroupList = SysRcBaseDataTypeUtil.unitGroupList;
+		if(null!=sysRsRcAttribCatalog.getId()){
+			sysRsRcAttribCatalog = sysResourceTypeService.getSysRsRcAttribCatalog(sysRsRcAttribCatalog.getId());
+		}
 		return "saveOrUpdateAttrPage";
 	}
 	
+	public String findSysRcBaseDataTypeByGroup(){
+		List<SysRsRcBaseData> list = sysResourceTypeService.findSysRcBaseDataTypeByGroup(id);
+		return ajaxJSONArr(list);
+	}
+	
+	/**
+	 * @return 更新属性
+	 */
 	public String saveOrUpdateAttr(){
-		return null;
+		try{
+			if(null != sysRsRcAttribCatalog.getId()){
+				SysRsRcAttribCatalog dbSysRsRcAttribCatalog = sysResourceTypeService.getSysRsRcAttribCatalog(sysRsRcAttribCatalog.getId());
+				dbSysRsRcAttribCatalog.setRsrcAttribCode(sysRsRcAttribCatalog.getRsrcAttribCode());
+				dbSysRsRcAttribCatalog.setRsrcAttribName(sysRsRcAttribCatalog.getRsrcAttribName());
+				dbSysRsRcAttribCatalog.setControlTypeId(sysRsRcAttribCatalog.getControlTypeId());
+				dbSysRsRcAttribCatalog.setDataTypeId(sysRsRcAttribCatalog.getDataTypeId());
+				dbSysRsRcAttribCatalog.setDataLength(sysRsRcAttribCatalog.getDataLength());
+				dbSysRsRcAttribCatalog.setUnitId(sysRsRcAttribCatalog.getUnitId());
+				dbSysRsRcAttribCatalog.setShowInListView(sysRsRcAttribCatalog.getShowInListView());
+				dbSysRsRcAttribCatalog.setShowInFinder(sysRsRcAttribCatalog.getShowInFinder());
+				dbSysRsRcAttribCatalog.setDataPrecision(sysRsRcAttribCatalog.getDataPrecision());
+				dbSysRsRcAttribCatalog.setDefaultValue(sysRsRcAttribCatalog.getDefaultValue());
+				dbSysRsRcAttribCatalog.setOrderNo(sysRsRcAttribCatalog.getOrderNo());
+			}else{
+				sysResourceTypeService.saveOrUpdateSysRsRcAttribCatalog(sysRsRcAttribCatalog);
+			}
+			return success("操作成功!");
+		}catch(Exception e){
+			return error("操作失败!");
+		}
 	}
 	
 	/**
@@ -234,5 +275,53 @@ public class ResourceTypeAction extends AbstractLoginAction{
 
 	public void setSysRsRcCatalog(SysRsRcCatalog sysRsRcCatalog) {
 		this.sysRsRcCatalog = sysRsRcCatalog;
+	}
+
+	public List<SysRsRcBaseData> getDataTypeList() {
+		return dataTypeList;
+	}
+
+	public void setDataTypeList(List<SysRsRcBaseData> dataTypeList) {
+		this.dataTypeList = dataTypeList;
+	}
+
+	public List<SysRsRcBaseData> getControlTypeList() {
+		return controlTypeList;
+	}
+
+	public void setControlTypeList(List<SysRsRcBaseData> controlTypeList) {
+		this.controlTypeList = controlTypeList;
+	}
+
+	public List<SysRsRcBaseData> getUnitGroupList() {
+		return unitGroupList;
+	}
+
+	public void setUnitGroupList(List<SysRsRcBaseData> unitGroupList) {
+		this.unitGroupList = unitGroupList;
+	}
+
+	public List<SysRsRcBaseData> getUnitList() {
+		return unitList;
+	}
+
+	public void setUnitList(List<SysRsRcBaseData> unitList) {
+		this.unitList = unitList;
+	}
+
+	public List<SysDataDictionary> getCatalogTypeList() {
+		return catalogTypeList;
+	}
+
+	public void setCatalogTypeList(List<SysDataDictionary> catalogTypeList) {
+		this.catalogTypeList = catalogTypeList;
+	}
+
+	public SysRsRcAttribCatalog getSysRsRcAttribCatalog() {
+		return sysRsRcAttribCatalog;
+	}
+
+	public void setSysRsRcAttribCatalog(SysRsRcAttribCatalog sysRsRcAttribCatalog) {
+		this.sysRsRcAttribCatalog = sysRsRcAttribCatalog;
 	}
 }
