@@ -211,7 +211,7 @@ public class ResourceTypeAction extends AbstractLoginAction{
 		controlTypeList = SysRcBaseDataTypeUtil.controlTypelist;
 		unitList = SysRcBaseDataTypeUtil.unitTypelist;
 		unitGroupList = SysRcBaseDataTypeUtil.unitGroupList;
-		if(null!=sysRsRcAttribCatalog.getId()){
+		if(null!=sysRsRcAttribCatalog&&null!=sysRsRcAttribCatalog.getId()){
 			sysRsRcAttribCatalog = sysResourceTypeService.getSysRsRcAttribCatalog(sysRsRcAttribCatalog.getId());
 		}
 		return "saveOrUpdateAttrPage";
