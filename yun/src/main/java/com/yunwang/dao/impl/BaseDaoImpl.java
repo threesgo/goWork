@@ -311,13 +311,13 @@ public class BaseDaoImpl<T> implements BaseDaoI<T> {
 	}
 	
 	public void deleteByProperty(String property, Object value) {
-		String hql = "SELECT model  FROM " + entityClass.getSimpleName()
+		String hql = "DELETE FROM " + entityClass.getSimpleName()
 				+ " model WHERE model." + property + "=" + value;
 		executeHql(hql);
 	}
 	
 	public void deleteByPropertys(String property, String values) {
-		String hql = "SELECT model  FROM " + entityClass.getSimpleName()
+		String hql = "DELETE FROM " + entityClass.getSimpleName()
 				+ " model WHERE model." + property + " IN (" + values + ")";
 		executeHql(hql);
 	}

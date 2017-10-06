@@ -47,13 +47,33 @@
 	 		
 	 	resourceTypeOperation = {
 	 		reload:function(){
-	 		
+	 			resourceTypeTree.tree("reload");
 	 		},
 	 	
-	 		del:function(){
-	 			$.messager.confirm('确认','您确认想要删除记录吗？',function(r){    
+	 		deleteType:function(){
+	 			$.messager.confirm('确认','确认要删除选择类型吗？',function(r){    
 				    if (r){
-				        
+				        var node = resourceTypeTree.tree("getSelected");
+				        $.post("resourceTypeAction!deleteSysRsRcCatalog.act",
+				        	{"sysRsRcCatalog.id":node.attributes.id},
+				        	function(data){
+							handlerResult(data,
+					    		function(rs){
+				    				resourceTypeTree.tree("remove",node.target);
+									$show(rs.message);
+									/*
+									var rootNode = resourceTypeTree.tree("getRoot");
+									resourceTypeTree.tree('update', {
+										target: rootNode.target,
+										state:'closed'
+									});
+									*/
+								},
+								function(rs){
+									$alert(rs.message);
+								}
+							);  
+						},"json");
 				    }    
 				});
 	 		},
@@ -157,7 +177,7 @@
 		<div data-options="region:'west',split:true,tools:'#resource_type_bar'" title=" " style="width:200px;" border="false">
 			<ul id="resourceTypeTree"></ul>
 			<div  id="resource_type_bar">
-		       <a href="#" class="icon-reflesh" onclick="reload()">刷新</a>
+		       <a href="#" class="icon-reflesh" onclick="resourceTypeOperation.reload()">刷新</a>
 		     </div>
 		</div>
 		<div data-options="region:'center',split:true,title:''" border="false">

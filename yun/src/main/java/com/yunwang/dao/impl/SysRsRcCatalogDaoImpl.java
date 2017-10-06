@@ -16,6 +16,7 @@ public class SysRsRcCatalogDaoImpl extends BaseDaoImpl<SysRsRcCatalog> implement
 	public List<SysRsRcCatalog> findByParentId(Integer pId) {
 		Map<String, Object> map = new HashMap<String,Object>();
 		map.put("parentId",pId);
-		return find("SELECT model FROM SysRsRcCatalog model WHERE model.parentId=:parentId",map);
+		return find("SELECT model FROM SysRsRcCatalog model " +
+				"WHERE model.parentId=:parentId ORDER BY model.orderNo",map);
 	}
 }

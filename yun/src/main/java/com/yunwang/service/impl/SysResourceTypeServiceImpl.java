@@ -39,9 +39,9 @@ public class SysResourceTypeServiceImpl implements SysResourceTypeService{
 	@Override
 	public void deleteRsRcCatalog(SysRsRcCatalog sysRsRcCatalog) {
 		sysRsRcCatalogDao.deleteByProperty("id",sysRsRcCatalog.getId());
-		sysResourceDao.deleteByProperty("rsrcOrgId", sysRsRcCatalog.getId());
-		sysRsRcAttribCatalogDao.deleteByProperty("catalogId", sysRsRcCatalog.getId());
-		sysRsRcAttribDao.deleteByProperty("catalogId",sysRsRcCatalog.getId());
+		sysResourceDao.deleteByProperty("rsrcCatalogId", sysRsRcCatalog.getId());
+		sysRsRcAttribCatalogDao.deleteByProperty("rsrcCatalogId", sysRsRcCatalog.getId());
+		sysRsRcAttribDao.deleteByProperty("rsrcCatalogId",sysRsRcCatalog.getId());
 	}
 
 	@Override
