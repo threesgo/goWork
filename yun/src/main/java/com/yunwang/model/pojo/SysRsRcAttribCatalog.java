@@ -7,7 +7,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.Transient;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
+import com.yunwang.util.string.MyStringUtil;
 
 /**
  * @author YBF
@@ -59,10 +63,6 @@ public class SysRsRcAttribCatalog extends AbstractRowVersionModel{
 	@Column(name="DEFAULT_VALUE", length = 1024)
 	private String defaultValue;//默认值   DEFAULT_VALUE	默认值	varchar2(1024)	“1|2|3” 选择框需要输入
 	
-	@Transient
-	private String unitGroupName;
-	
-
 	public Integer getId() {
 		return id;
 	}
@@ -136,7 +136,10 @@ public class SysRsRcAttribCatalog extends AbstractRowVersionModel{
 	}
 
 	public Integer getDataPrecision() {
-		return dataPrecision;
+		if(null!=dataPrecision){
+			return dataPrecision;
+		}
+		return 0;
 	}
 
 	public void setDataPrecision(Integer dataPrecision) {
@@ -149,14 +152,6 @@ public class SysRsRcAttribCatalog extends AbstractRowVersionModel{
 
 	public void setDefaultValue(String defaultValue) {
 		this.defaultValue = defaultValue;
-	}
-
-	public String getUnitGroupName() {
-		return unitGroupName;
-	}
-
-	public void setUnitGroupName(String unitGroupName) {
-		this.unitGroupName = unitGroupName;
 	}
 
 	public Integer getRsrcCatalogId() {
@@ -173,5 +168,19 @@ public class SysRsRcAttribCatalog extends AbstractRowVersionModel{
 
 	public void setOrderNo(Integer orderNo) {
 		this.orderNo = orderNo;
+	}
+	
+	public String getArrDefaultValues(){
+		JSONArray arr = new JSONArray();
+		if(MyStringUtil.isNotBlank(defaultValue)){
+			String[] values = defaultValue.split("\\|");
+			for(String value:values){
+				JSONObject obj = new JSONObject();
+				obj.put("id", value);
+				obj.put("value", value);
+				arr.add(obj);
+			}
+		}
+		return arr.toString();
 	}
 }

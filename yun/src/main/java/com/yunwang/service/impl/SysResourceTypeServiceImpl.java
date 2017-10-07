@@ -64,9 +64,13 @@ public class SysResourceTypeServiceImpl implements SysResourceTypeService{
 			SysRsRcCatalog sysRsRcCatalog) {
 		SysRsRcCatalog dbSysRsRcCatalog = sysRsRcCatalogDao.get(SysRsRcCatalog.class,sysRsRcCatalog.getId());
 		List<Integer> parentIds = new ArrayList<Integer>();
-		getParents(parentIds,dbSysRsRcCatalog);
-		return sysRsRcAttribCatalogDao.findByCatalogIds(
-				StringBufferByCollectionUtil.convertCollection(parentIds));
+		if(null!=dbSysRsRcCatalog){
+			getParents(parentIds,dbSysRsRcCatalog);
+			return sysRsRcAttribCatalogDao.findByCatalogIds(
+					StringBufferByCollectionUtil.convertCollection(parentIds));
+		}else{
+			return new ArrayList<SysRsRcAttribCatalog>();
+		}
 	}
 	
 	private void getParents(List<Integer> parentIds,SysRsRcCatalog dbSysRsRcCatalog){

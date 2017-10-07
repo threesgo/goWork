@@ -75,7 +75,9 @@ $(function(){
        	<s:select id="unitId" 
        		list="unitList" style="width:98px;"
 	       	listKey="id"   
-	       	listValue="displayName" 
+	       	listValue="displayName"
+	       	headerKey="0"
+	       	headerValue="--请选择--"
 	       	name="sysRsRcAttribCatalog.unitId" />   
     
         <label for="showInListView">列表显示:</label>   

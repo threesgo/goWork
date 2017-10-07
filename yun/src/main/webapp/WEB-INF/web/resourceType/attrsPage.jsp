@@ -104,10 +104,6 @@
 			var buttonArr;
 			if(status==1){
 				selected = $('#attr').datagrid("getSelected");
-				if(null==selected){
-					$alert("请选择属性行进行编辑!");
-					return false;
-				}
 				buttonArr = [{
 					text:"确定",
 					iconCls:'icon-ok',
@@ -149,6 +145,10 @@
 					}
 				}];
 			}
+			if(null==selected){
+				$alert("请选择属性行进行编辑或者查看!");
+				return false;
+			}
  			var dialog =$('<div id="addResourceTypeAttr"></div>').dialog({    
 				href : "resourceTypeAction!saveOrUpdateAttrPage.act",
 				width:600,
@@ -178,14 +178,15 @@
     		$("#saveOrUpdate_resource_attr #name").focus();
     		return false;
     	}else
-    	if(!$("#saveOrUpdate_resource_attr #dataLength").validatebox("isValid")){
+    	if(!$("#saveOrUpdate_resource_attr #dataLength").numberbox("isValid")){
     		$("#saveOrUpdate_resource_attr #dataLength").focus();
     		return false;
     	}else
-    	if(!$("#saveOrUpdate_resource_attr #orderNo").validatebox("isValid")){
+    	if(!$("#saveOrUpdate_resource_attr #orderNo").numberbox("isValid")){
     		$("#saveOrUpdate_resource_attr #orderNo").focus();
     		return false;
     	}
+    	return true;
 	}
 </script>
 
