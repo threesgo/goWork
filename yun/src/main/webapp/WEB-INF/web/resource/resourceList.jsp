@@ -84,7 +84,7 @@ $(function(){
 	        {field:'ck',checkbox:true},
 	 		{field:'rsrcTypeName',title:"产品类别",width:80,sortable:true},
 	 		{field:'rsrcOrgName',title:"产品类型",width:80,sortable:true},
-	 		{field:'workType',title:"工种",width:80,sortable:true},
+	 		{field:'workType',title:"工程工种",width:80,sortable:true},
 	  		{field:'rsrcCode',title:"产品代号",width:80,sortable:true,
 				editor:{
 					type:"textbox",
