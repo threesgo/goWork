@@ -51,7 +51,7 @@
 	 		},
 	 	
 	 		deleteType:function(){
-	 			$.messager.confirm('确认','确认要删除选择类型吗？',function(r){    
+	 			$.messager.confirm('确认','确认要删除选择产品类型吗？',function(r){    
 				    if (r){
 				        var node = resourceTypeTree.tree("getSelected");
 				        $.post("resourceTypeAction!deleteSysRsRcCatalog.act",

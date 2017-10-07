@@ -38,10 +38,22 @@ public class SysResourceTypeServiceImpl implements SysResourceTypeService{
 
 	@Override
 	public void deleteRsRcCatalog(SysRsRcCatalog sysRsRcCatalog) {
-		sysRsRcCatalogDao.deleteByProperty("id",sysRsRcCatalog.getId());
-		sysResourceDao.deleteByProperty("rsrcCatalogId", sysRsRcCatalog.getId());
-		sysRsRcAttribCatalogDao.deleteByProperty("rsrcCatalogId", sysRsRcCatalog.getId());
-		sysRsRcAttribDao.deleteByProperty("rsrcCatalogId",sysRsRcCatalog.getId());
+		List<Integer> ids = new ArrayList<Integer>();
+		ids.add(sysRsRcCatalog.getId());
+		List<SysRsRcCatalog> children = sysRsRcCatalogDao.findByParentId(sysRsRcCatalog.getId());
+		getChildrens(ids,children);
+		sysRsRcCatalogDao.deleteByPropertys("id",StringBufferByCollectionUtil.convertCollection(ids));
+		sysResourceDao.deleteByPropertys("rsrcCatalogId", StringBufferByCollectionUtil.convertCollection(ids));
+		sysRsRcAttribCatalogDao.deleteByPropertys("rsrcCatalogId", StringBufferByCollectionUtil.convertCollection(ids));
+		sysRsRcAttribDao.deleteByPropertys("rsrcCatalogId",StringBufferByCollectionUtil.convertCollection(ids));
+	}
+	
+	private void getChildrens(List<Integer> childrenIds,List<SysRsRcCatalog> children){
+		for(SysRsRcCatalog child:children){
+			childrenIds.add(child.getId());
+			List<SysRsRcCatalog> deepChildren = sysRsRcCatalogDao.findByParentId(child.getId());
+			getChildrens(childrenIds,deepChildren);
+		}
 	}
 
 	@Override
@@ -100,5 +112,11 @@ public class SysResourceTypeServiceImpl implements SysResourceTypeService{
 	@Override
 	public SysRsRcAttribCatalog getSysRsRcAttribCatalog(Integer attribCatalogId) {
 		return sysRsRcAttribCatalogDao.get(SysRsRcAttribCatalog.class,attribCatalogId);
+	}
+
+	@Override
+	public void deleteSysRsRcAttribCatalogs(String ids) {
+		sysRsRcAttribDao.deleteByPropertys("rsraAttribCatalogId", ids);
+		sysRsRcAttribCatalogDao.deleteByPropertys("id", ids);
 	}
 }

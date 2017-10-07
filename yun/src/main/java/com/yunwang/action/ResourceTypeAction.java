@@ -250,6 +250,18 @@ public class ResourceTypeAction extends AbstractLoginAction{
 	}
 	
 	/**
+	 * @return 删除资源类别
+	 */
+	public String deleteSysRsRcAttribCatalogs(){
+		try{
+			sysResourceTypeService.deleteSysRsRcAttribCatalogs(id);
+			return success("操作成功!");
+		}catch(Exception e){
+			return error("操作失败!");
+		}
+	}
+	
+	/**
 	 * @return 删除资源属性
 	 */
 	public String deleteSysRsRcCatalog(){

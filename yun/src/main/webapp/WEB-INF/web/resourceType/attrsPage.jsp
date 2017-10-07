@@ -166,8 +166,32 @@
 		},
 		deleteAttr:function(){
 			//删除时需要验证该类型下是否创建了资源，这样删除的话会把资源关联的属性值表也给删除
+			var checkeds = $('#attr').datagrid("getChecked");
+		 	if(checkeds.length==0){
+		 		$alert("请选择勾选的产品属性!");
+		 		return false;
+		 	}
+			$.messager.confirm('确认','确认要删除勾选的产品属性吗(资源关联的属性值将一同丢失)？',function(r){
+				 if(r){
+				 	var idArr = [];
+				 	$.each(checkeds,function(i,n){
+				 		idArr.push(n.id);
+				 	});
+				 	$.post("resourceTypeAction!deleteSysRsRcAttribCatalogs.act",{"id":idArr.join(",")},function(data){
+						handlerResult(data,
+				    		function(rs){
+				    			$('#attr').datagrid("reload");
+								$show(rs.message);
+							},
+							function(rs){
+								$alert(rs.message);
+							}
+						);  
+					},"json");
+				 }
+			});
 		}
-	}
+	};
 	
 	function validateForm(){
 		if(!$("#saveOrUpdate_resource_attr #code").validatebox("isValid")){
