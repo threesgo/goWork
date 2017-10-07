@@ -28,6 +28,11 @@ public class SysRoleDaoImpl extends BaseDaoImpl<SysRole> implements SysRoleDaoI{
 		map.put("userId",userId);
 		return get(hql,map);
 	}
+
+	@Override
+	public List<SysRole> findAllRole() {
+		return findAll();
+	}
 	
 	
 }

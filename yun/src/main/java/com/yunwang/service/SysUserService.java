@@ -36,4 +36,8 @@ public interface SysUserService {
 	public SysRole getDefaultRoleByUserId(Integer userId);
 	
 	public Pager<SysUser> findBySysUserId(String filterJsons,int page,int rows);
+	
+	public List<SysRole> findByUserId(Integer userId);
+	
+	public List<SysRole> findAllRole();
 }

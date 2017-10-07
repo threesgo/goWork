@@ -15,10 +15,11 @@ import com.yunwang.util.action.AbstractLoginAction;
 
 @Action(value = "sysUserAction", results = {
 		@Result(name="index",location="/WEB-INF/web/sysUser/index.jsp")
+		,@Result(name="addUser",location="/WEB-INF/web/sysUser/addUser.jsp")
+		
 		,@Result(name="modifyAdminInfo",location="/WEB-INF/web/adminRightsManage/modifyAdminInfo.jsp")
 		,@Result(name="modifyPassWord",location="/WEB-INF/web/adminRightsManage/modifyPassWord.jsp")
 		,@Result(name="userInfo",location="/WEB-INF/web/ProjectAuthorityManage/userInfo.jsp")
-		,@Result(name="addAdmin",location="/WEB-INF/web/adminRightsManage/addAdmin.jsp")
 		,@Result(name="addRight",location="/WEB-INF/web/adminRightsManage/accreditAdmin.jsp")
 	}
 )
@@ -28,13 +29,14 @@ public class SysUserAction extends AbstractLoginAction{
 	/*
 	 * @date 2017-9-27
 	 * @author YBF
-	 * TODO  //系统用户管理
+	 * //系统用户管理
 	 */
 	private static final long serialVersionUID = 1L;
 	
 	@Autowired
 	private SysUserService sysUserService;
 	
+	private SysUser sysUser;
 	private Integer roleId;
 	private String filterJsons;
 	
@@ -50,7 +52,7 @@ public class SysUserAction extends AbstractLoginAction{
 	/*
 	 * @date 2017-9-29
 	 * @author KXL
-	 * 
+	 * 用户管理列表页面
 	 */
 	public String listUser()   {
 		Pager<SysUser> pager = sysUserService.findBySysUserId(filterJsons,page,rows);
@@ -65,6 +67,22 @@ public class SysUserAction extends AbstractLoginAction{
 		
 		return ajaxJSONObj(obj);
 	}
+	
+	/*
+	 * @date 2017-9-29
+	 * @author KXL
+	 * 用户管理列表页面
+	 */
+	public String preAdd() {
+		return "addUser";
+	}
+	
+	public String add(){
+		System.out.println(sysUser);
+		sysUserService.save(sysUser);
+		return success("添加成功");
+	}
+	
 	
 	/**
 	* @Title: updateUserRoleDefault
@@ -99,4 +117,13 @@ public class SysUserAction extends AbstractLoginAction{
 	public void setFilterJsons(String filterJsons) {
 		this.filterJsons = filterJsons;
 	}
+
+	public SysUser getSysUser() {
+		return sysUser;
+	}
+
+	public void setSysUser(SysUser sysUser) {
+		this.sysUser = sysUser;
+	}
+	
 }

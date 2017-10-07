@@ -23,4 +23,6 @@ public interface SysRoleDaoI extends BaseDaoI<SysRole>{
 	 * <p>查询用户关联的默认角色</p>
 	 */
 	SysRole getDefaultRoleByUserId(Integer userId);
+	
+	List<SysRole> findAllRole();
 }

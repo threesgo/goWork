@@ -6,6 +6,7 @@ import java.util.List;
 
 
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -127,5 +128,15 @@ public class SysUserServiceImpl implements SysUserService{
 	public Pager<SysUser> findBySysUserId(String filterJsons, int page, int rows) {
 		JSONObject json = JSONObject.parseObject(filterJsons);
 		return sysUserDao.findBySysUserId(json, page, rows);
+	}
+
+	@Override
+	public List<SysRole> findByUserId(Integer userId) {
+		return sysRoleDao.findByUserId(userId);
+	}
+
+	@Override
+	public List<SysRole> findAllRole() {
+		return sysRoleDao.findAllRole();
 	}
 }
