@@ -7,4 +7,6 @@ import com.yunwang.model.pojo.SysDataDictionary;
 public interface SysDataDictionaryDaoI extends BaseDaoI<SysDataDictionary>{
 	
 	List<SysDataDictionary> findAll();
+
+	List<SysDataDictionary> findAllOrderByValue();
 }

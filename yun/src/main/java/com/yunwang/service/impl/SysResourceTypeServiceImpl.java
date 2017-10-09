@@ -33,6 +33,7 @@ public class SysResourceTypeServiceImpl implements SysResourceTypeService{
 	
 	@Override
 	public void saveOrUpdateRsRcCatalog(SysRsRcCatalog sysRsRcCatalog) {
+		sysRsRcCatalog.setOrderNo(sysRsRcCatalogDao.findMaxSeqByPfield("orderNo","parentId",sysRsRcCatalog.getParentId())+1);			
 		sysRsRcCatalogDao.saveOrUpdate(sysRsRcCatalog);		
 	}
 
@@ -64,11 +65,6 @@ public class SysResourceTypeServiceImpl implements SysResourceTypeService{
 	@Override
 	public SysRsRcCatalog getRsRcCatalogInfo(Integer catalogId) {
 		return sysRsRcCatalogDao.get(SysRsRcCatalog.class,catalogId);
-	}
-
-	@Override
-	public Integer getMaxOrder(Integer parentId) {
-		return sysRsRcCatalogDao.findMaxSeqByPfield("orderNo","parentId",parentId);
 	}
 
 	@Override

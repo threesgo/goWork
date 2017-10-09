@@ -197,7 +197,6 @@ public class ResourceTypeAction extends AbstractLoginAction{
 				sysResourceTypeService.saveOrUpdateRsRcCatalog(updateSysRsRcCatalog);
 			}else{
 				sysRsRcCatalog.setCatalogStatus(1);
-				sysRsRcCatalog.setOrderNo(sysResourceTypeService.getMaxOrder(sysRsRcCatalog.getParentId())+1);			
 				sysResourceTypeService.saveOrUpdateRsRcCatalog(sysRsRcCatalog);
 			}
 			return success("操作成功!",JSONObject.fromObject(sysRsRcCatalog));

@@ -55,7 +55,7 @@ $(function(){
 							type:"datebox"
 						</s:if>
 				 	},
-					formatter:function(data,row,index){
+					formatter:function(value,row,index){
 						return value;
 					}
 				}
@@ -77,7 +77,7 @@ $(function(){
         pageSize:20,
         pageList:[20,50,100,150,200],
         pagination:true,
-        url:"resourceAction!resourceList.act",
+        url:"resourceAction!resourceListData.act",
         toolbar:"#resource_operation_bar",
         queryParams:{"sysRsRcCatalog.id":'${sysRsRcCatalog.id}'},
         onBeforeLoad:function(){
@@ -86,9 +86,9 @@ $(function(){
         },
         frozenColumns:[[
 	        {field:'ck',checkbox:true},
-	 		{field:'rsrcTypeName',title:"产品类别",width:80,sortable:true},
-	 		{field:'rsrcOrgName',title:"产品类型",width:80,sortable:true},
-	 		{field:'workType',title:"工程工种",width:80,sortable:true},
+	 		//{field:'rsrcTypeName',title:"产品类别",width:80,sortable:true},
+	 		//{field:'rsrcOrgName',title:"产品类型",width:80,sortable:true},
+	 		{field:'workTypeName',title:"工种",width:80,sortable:true},
 	  		{field:'rsrcCode',title:"产品代号",width:80,sortable:true,
 				editor:{
 					type:"textbox",
@@ -123,7 +123,7 @@ $(function(){
 		}
 	});
  	
- 	$("#selectDiv").keyEvent({
+ 	$("#searchForm").keyEvent({
 		keyCode:13,
 		handler:function(event){
 			resourceOperation.search();
@@ -134,10 +134,19 @@ $(function(){
 
 resourceOperation = {
 	deleteResource:function(){
-		$.messager.confirm('确认','确认要删除勾选的资源吗？',function(r){    
+		var checks = $resourceGrid.datagrid("getChecked");
+		if(checks.length == 0){
+			$alert("请勾选需要删除的产品!");
+			return false;
+		}
+		$.messager.confirm('确认','确认要删除勾选的产品吗？',function(r){    
 		    if (r){
+		    	var ids = [];
+		    	$.each(checks,function(i,n){
+		    		ids.push(n.id);
+		    	});
 		        $.post("resourceAction!deleteResource.act",
-		        	{"ids":},
+		        	{"ids":ids.join(",")},
 		        	function(data){
 					handlerResult(data,
 			    		function(rs){
@@ -154,6 +163,48 @@ resourceOperation = {
 	
 	addResource:function(){
 		//添加页面
+		var node = resourceTypeTree.tree("getSelected");
+		var dialog =$('<div id="addResource"></div>').dialog({    
+			href : "resourceAction!addPage.act",
+			width:600,
+			height:350,
+			title:"新增产品",
+			method:'post',
+			queryParams:{"sysRsRcCatalog.id":node.attributes.id},
+			modal:true,
+			resizable:true,
+			buttons:[{
+				text:"确定",
+				iconCls:'icon-ok',
+				handler:function(){
+					$('#saveOrUpdate_resource').form({    
+					    onSubmit: function(){  
+					    },    
+					    success:function(data){ 
+					    	handlerResult(data,
+					    		function(rs){
+					    			$resourceGrid.datagrid("reload");
+					    			dialog.dialog("destroy");
+									$show(rs.message);
+								},
+								function(rs){
+									$alert(rs.message);
+								}
+							);  
+					    }    
+					}).submit();    
+				}
+			},{
+				text:"取消",
+				iconCls:'icon-cancel',
+				handler:function(){
+					dialog.dialog("destroy");
+				}
+			}],
+			onClose:function(){
+				$(this).dialog("destroy");
+			}
+		});
 	},
 	
 	editResource:function(){
@@ -217,20 +268,18 @@ resourceOperation = {
 <div class="easyui-layout" data-options="fit:true,border : false">
 	<div data-options="region:'north',title:'查询条件',border:false,split:true" style="height: 130px; overflow: hidden;background-color: #F8F8F8" >
 		<div id="tools_div" class="resource variable">
-			<div id="selectDiv">
-				<form id="searchForm">
-					<div class="attrs">
-						<lable for="">产品代号：</lable><input  id="rsrcCode"  style="width:125px;"/>
-					</div>
-					<div class="attrs">
-						<lable for="">产品名称：</lable><input id="rescName"  style="width:125px;"/>
-					</div>
-					<div class="attrs">
-						<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search', plain:true" onclick="resourceOperation.search()">查询</a> 
-						<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-reload', plain:true" onclick="resourceOperation.reset()">重置</a>	
-					</div>
-				</form>
-			</div>
+			<form id="searchForm">
+				<div class="attrs">
+					<lable for="">产品代号：</lable><input  id="rsrcCode"  style="width:125px;"/>
+				</div>
+				<div class="attrs">
+					<lable for="">产品名称：</lable><input id="rescName"  style="width:125px;"/>
+				</div>
+				<div class="attrs">
+					<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search', plain:true" onclick="resourceOperation.search()">查询</a> 
+					<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-reload', plain:true" onclick="resourceOperation.reset()">重置</a>	
+				</div>
+			</form>
 		</div>
 	</div>
 	<div data-options="region:'center',border:false">

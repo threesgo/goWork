@@ -25,11 +25,11 @@ public class SysResource extends AbstractRowVersionModel{
     @SequenceGenerator(name="my_entity_seq_gen", sequenceName="SEQ_SYS_RESOURCE")
 	private Integer id;
 	
-	@Column(name="RSRC_NAME", length=128, nullable = false)
-	private String rsrcName;// 资源名称
-	
 	@Column(name="RSRC_CODE", length=32, nullable = false)
 	private String rsrcCode; //资源型号
+	
+	@Column(name="RSRC_NAME", length=128, nullable = false)
+	private String rsrcName;// 资源名称
 	
 	@Column(name="ORDER_NO", nullable = false)
 	private Integer orderNo;//顺序号

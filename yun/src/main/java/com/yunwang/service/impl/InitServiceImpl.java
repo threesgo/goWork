@@ -35,14 +35,13 @@ public class InitServiceImpl implements InitService{
 	
 	
 	public void initData() {
+		execuSysSql();
+		
 		//数据字典
 		loadDictionaryData();
 		
 		//基础单位数据
 		loadBaseDataCatalogData();
-		
-		//初始化系统默认数据（用户配置，工时卡类型、工时卡结构）
-		execuSysSql();
 	}
 	
 	
@@ -69,7 +68,7 @@ public class InitServiceImpl implements InitService{
 	
 	private void loadDictionaryData() {
 		// 获取有效的数据字典的值
-		List<SysDataDictionary> dictionaryAll = sysDataDictionaryDao.findAll();
+		List<SysDataDictionary> dictionaryAll = sysDataDictionaryDao.findAllOrderByValue();
 		for (SysDataDictionary dictionary : dictionaryAll) {
 			List<SysDataDictionary> list = BaseDataDictionaryUtil.baseDataMap.get(dictionary.getType());
 			if (null != list) {

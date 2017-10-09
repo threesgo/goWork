@@ -15,8 +15,6 @@ public interface SysResourceTypeService {
 
 	SysRsRcCatalog getRsRcCatalogInfo(Integer catalogId);
 
-	Integer getMaxOrder(Integer parentId);
-
 	List<SysRsRcAttribCatalog> findExtendsAttr(SysRsRcCatalog sysRsRcCatalog);
 
 	List<SysRsRcAttribCatalog> findAttr(SysRsRcCatalog sysRsRcCatalog);
