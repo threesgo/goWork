@@ -7,10 +7,17 @@ import java.util.List;
 
 
 
+
+
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import antlr.StringUtils;
+
 import com.alibaba.fastjson.JSONObject;
+import com.ctc.wstx.util.StringUtil;
 import com.yunwang.dao.SysMenuDaoI;
 import com.yunwang.dao.SysRoleDaoI;
 import com.yunwang.dao.SysUserDaoI;
@@ -138,5 +145,26 @@ public class SysUserServiceImpl implements SysUserService{
 	@Override
 	public List<SysRole> findAllRole() {
 		return sysRoleDao.findAllRole();
+	}
+
+	@Override
+	public List<SysUser> findBySysUserName(String userName) {
+		return sysUserDao.findBySysUserName(userName);
+	}
+
+	@Override
+	public void saveUserAndRole(SysUser user, String roleIds) {
+		user.setCreateDate(new Date());
+		sysUserDao.save(user);
+		SysUserRole userRole =null;
+		String[] roleId = roleIds.split(",");
+		for(String id:roleId){
+			userRole = new SysUserRole();
+			userRole.setUserId(user.getId());
+			userRole.setRoleId(Integer.parseInt(id.trim()));
+			userRole.setIsDefault(new BigDecimal(1));
+			sysUserRoleDao.save(userRole);
+		}
+		
 	}
 }

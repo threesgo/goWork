@@ -1,5 +1,7 @@
 package com.yunwang.dao;
 
+import java.util.List;
+
 import com.alibaba.fastjson.JSONObject;
 import com.yunwang.model.page.Pager;
 import com.yunwang.model.pojo.SysUser;
@@ -16,5 +18,7 @@ public interface SysUserDaoI extends BaseDaoI<SysUser>{
 	SysUser getByUserName(String userName);
 	
 	Pager<SysUser> findBySysUserId(JSONObject json, int page,int rows);
+	
+	List<SysUser> findBySysUserName(String userName);
 
 }

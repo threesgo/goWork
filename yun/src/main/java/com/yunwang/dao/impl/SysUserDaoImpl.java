@@ -1,6 +1,7 @@
 package com.yunwang.dao.impl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Repository;
@@ -32,10 +33,17 @@ public class SysUserDaoImpl extends BaseDaoImpl<SysUser> implements SysUserDaoI{
 	 */
 	public Pager<SysUser> findBySysUserId(JSONObject json, int page,int rows){
 		StringBuffer buf = new StringBuffer();
-		buf.append("SELECT model FROM SysUser model,SysRole sysRole,SysUserRole sysUserRole "
-				+ " WHERE model.id = sysUserRole.userId AND sysUserRole.roleId = sysRole.id ");
+		/*buf.append("SELECT model FROM SysUser model,SysRole sysRole,SysUserRole sysUserRole "
+				+ " WHERE model.id = sysUserRole.userId AND sysUserRole.roleId = sysRole.id ");*/
+		buf.append("SELECT model FROM SysUser model");
 		buf.append(" ORDER BY model.id ");
 		
 		return pagedQuery(buf.toString(), page, rows);
+	}
+
+	@Override
+	public List<SysUser> findBySysUserName(String userName) {
+		String hql ="SELECT model FROM SysUser model WHERE model.userName=? ";
+		return find(hql,userName);
 	}
 }

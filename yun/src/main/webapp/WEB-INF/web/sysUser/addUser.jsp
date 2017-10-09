@@ -3,12 +3,13 @@
 
 <script type="text/javascript">
 	$(function(){
+		//角色下拉框，可多选
 		$('#sysRole').combobox({
 			  valueField:'id',
 			  textField:'sysRole',
 		      multiple:true,
 		      editable:false,
-		      url:"sysRoleAction.findAll.act"
+		      url:"sysRoleAction!findAll.act"
 		}); 
 		
 		$('#addDept').combobox({ 
@@ -26,12 +27,13 @@
 			render:"#add_fm",
 			success:function(data){
 				handlerResult(data,function(rs){
-					$add_fm.close();
+					//$add_fm.close();
 					$show(rs.message);
-					adminVar.$adminList.datagrid("reload");
+					$userList.datagrid("reload");
 				},function(rs){
 					$alert(rs.message);
 				});
+				/*
 				document.getElementById("queryDept").options.length = 0;
 				$.post("systemAdmin!findAllDept.act",{"addAll":1},
 					function(data){
@@ -40,19 +42,10 @@
 							    $("#queryDept").append("<option value='"+data[i].id+"'>"+data[i].dept+"</option>");
 							}
 						}
-				},"json");
+				},"json");*/
 			},
 			onSubmit: function(param){
-				if($("#userType").val()==1){
-					if(!$('#password').validatebox("isValid")){
-						$('#password').focus();
-						return false;
-					}else if(!$('#cfmPassword').validatebox("isValid")){
-						$('#cfmPassword').focus();
-						return false;
-					}
-				}
-				param.text = $("#addDept").combobox('getText'); //额外传部门参数
+				
 		    }  
 		}).submit();
 	};
@@ -133,9 +126,6 @@
         	<span style="color: red;font-size:14;margin-right: 5px;">&nbsp;*</span>
             <label>角色：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>  
 			<select id="sysRole" class="easyui-combobox" name="roleIds" style="width:152px;" data-options="required:true">
-			    <s:iterator value="roleList" var="role">
-					<%-- <option value='${id}'>${majorName}-${name}</option> --%>
-				</s:iterator>
 			</select> 
 	   </div>
         

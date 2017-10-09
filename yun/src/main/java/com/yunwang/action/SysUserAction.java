@@ -1,5 +1,7 @@
 package com.yunwang.action;
 
+import java.util.List;
+
 import net.sf.json.JSONArray;
 
 import org.apache.log4j.Logger;
@@ -14,8 +16,9 @@ import com.yunwang.service.SysUserService;
 import com.yunwang.util.action.AbstractLoginAction;
 
 @Action(value = "sysUserAction", results = {
-		@Result(name="index",location="/WEB-INF/web/sysUser/index.jsp")
-		,@Result(name="addUser",location="/WEB-INF/web/sysUser/addUser.jsp")
+		@Result(name="index",location="/WEB-INF/web/sysUser/index.jsp")//用户管理主页面
+		,@Result(name="addUser",location="/WEB-INF/web/sysUser/addUser.jsp")//新建页面
+		,@Result(name="editUser",location="/WEB-INF/web/sysUser/editUser.jsp")//编辑页面
 		
 		,@Result(name="modifyAdminInfo",location="/WEB-INF/web/adminRightsManage/modifyAdminInfo.jsp")
 		,@Result(name="modifyPassWord",location="/WEB-INF/web/adminRightsManage/modifyPassWord.jsp")
@@ -39,6 +42,7 @@ public class SysUserAction extends AbstractLoginAction{
 	private SysUser sysUser;
 	private Integer roleId;
 	private String filterJsons;
+	private String roleIds;
 	
 	/*
 	 * @date 2017-9-29
@@ -64,7 +68,6 @@ public class SysUserAction extends AbstractLoginAction{
 			obj.put("total", 0);
 			obj.put("rows", "[]");
 		}
-		
 		return ajaxJSONObj(obj);
 	}
 	
@@ -78,12 +81,31 @@ public class SysUserAction extends AbstractLoginAction{
 	}
 	
 	public String add(){
-		System.out.println(sysUser);
-		sysUserService.save(sysUser);
-		return success("添加成功");
+		try{
+			System.out.println(roleIds);
+			List<SysUser> listUser = sysUserService.findBySysUserName(sysUser.getUserName());
+			if(listUser.size()>0){
+				return error("用户名已存在");
+			}
+			sysUserService.saveUserAndRole(sysUser,roleIds);
+			return success("添加成功");
+		}catch(Exception e){
+			e.printStackTrace();
+			return error("添加失败");
+		}
+		
 	}
 	
+	public String preEdit() {
+		return "editUser";
+	}
 	
+	public String edit(){
+		/*System.out.println(sysUser);
+		sysUserService.save(sysUser);
+		return success("添加成功");*/
+		return null;
+	}
 	/**
 	* @Title: updateUserRoleDefault
 	* @Description: TODO(这里用一句话描述这个方法的作用)
@@ -124,6 +146,14 @@ public class SysUserAction extends AbstractLoginAction{
 
 	public void setSysUser(SysUser sysUser) {
 		this.sysUser = sysUser;
+	}
+
+	public String getRoleIds() {
+		return roleIds;
+	}
+
+	public void setRoleIds(String roleIds) {
+		this.roleIds = roleIds;
 	}
 	
 }

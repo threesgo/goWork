@@ -26,6 +26,8 @@ public interface SysUserService {
 	public void deleteList(Integer[] userIds);
 
 	public void save(SysUser user);
+	
+	public void saveUserAndRole(SysUser user,String roleIds);
 
 	public void updateUserRoleDefault(Integer userId, Integer roleId);
 
@@ -40,4 +42,6 @@ public interface SysUserService {
 	public List<SysRole> findByUserId(Integer userId);
 	
 	public List<SysRole> findAllRole();
+	
+	public List<SysUser> findBySysUserName(String userName);
 }

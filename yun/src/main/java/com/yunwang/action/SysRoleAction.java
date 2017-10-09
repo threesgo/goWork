@@ -146,9 +146,19 @@ public class SysRoleAction extends AbstractLoginAction{
 	 * @return
 	 * <p>加载角色下拉框</p>
 	 */
-	/*public String findAll(){
-		sysUserService.findAllRole();
-	}*/
+	public String findAll(){
+		JSONObject obj = new JSONObject();
+		JSONArray arr = new JSONArray();
+		List<SysRole> listRole = sysUserService.findAllRole();
+		if(listRole.size()>0){
+			for(SysRole role:listRole){
+				obj.put("id", role.getId());
+				obj.put("sysRole", role.getName());
+				arr.add(obj);
+			}
+		}
+		return ajaxText(arr.toString());
+	}
 	/**
 	 * 
 	 * @date 2016-11-29

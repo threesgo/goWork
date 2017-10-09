@@ -118,6 +118,7 @@
 							$("#queryStatus").val(-1);
 							$userList.datagrid("reload",{});
 						},*/
+						//新建用户
 						addUser:function(){
 							new Some.dialog({
 								top:100,
@@ -125,8 +126,18 @@
 								width:450,
 								height:"auto",
 								href:"sysUserAction!preAdd.act",
+							});
+						},
+						//编辑用户
+						editUser:function(){
+							new Some.dialog({
+								top:100,
+								title:"编辑用户",
+								width:450,
+								height:"auto",
+								href:"sysUserAction!preEdit.act",
 								onSuccess:function(){
-									alert("a");
+									alert("b");
 								}
 							});
 						},
@@ -141,6 +152,7 @@
 								href:"systemAdmin!modify.act?usrSmUser.id="+id
 							});
 						},
+						
 						accreditAdmin:function(id,index){
 							new Some.dialog({
 								top:100,
@@ -150,6 +162,7 @@
 								href:"systemAdmin!preAccredit.act?usrSmUser.id="+id,
 							});
 						}
+						
 						,deleteAdmin:function(id,index){
 							$confirm("<s:text name='confirm_remove'/>",function(){
 								var loading=new Some.loading();
@@ -188,7 +201,12 @@
 		</script>
 	</head>
 	<body id="body" >
-		<div class="easyui-panel" title="用户管理" data-options="border:false,fit:true" style="background-color: #fcfdfe;" >
+		<div class="easyui-panel" title="" data-options="border:false,fit:true,tools:'#tool_bar'" style="background-color: #fcfdfe;" >
+			<div id="tool_bar">
+				<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-add', plain:true" onclick="user.addUser()">新增</a>
+				<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-edit', plain:true" onclick="user.editUser()">编辑</a>
+			</div>
+			
 			<table id="userList"></table>
 			<div id="selectDiv" style="height:auto !important;padding:10px;float:left !important;width: 100%;">
 				<div class="search-div">
@@ -217,7 +235,7 @@
 				<div class="search-div">
 					<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-search', plain:true" onclick="user.search()" >搜索</a> 
 					<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-reload', plain:true" onclick="user.reset()" >重置</a> 
-					<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-add', plain:true" onclick="user.addUser()">新增</a>
+					
 				</div>
 			</div>
 		</div>
