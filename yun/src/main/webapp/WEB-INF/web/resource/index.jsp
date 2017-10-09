@@ -10,7 +10,7 @@
 		<script type="text/javascript">
 		var resourceTypeTree;
  		var resourceTab;
- 		var resourceOperation = {};
+ 		var resourceIndexOperation = {};
 		$(function(){
 			//添加树结构
 	 		resourceTypeTree=$('#resourceTypeTree').tree(
@@ -34,36 +34,10 @@
 	 		}); 
 		});
 	 		
-	 	resourceOperation = {
+	 	resourceIndexOperation = {
 	 		reload:function(){
 	 			resourceTypeTree.tree("reload");
-	 		},
-	 	
-	 		deleteResource:function(){
-	 			$.messager.confirm('确认','确认要删除勾选的资源吗？',function(r){    
-				    if (r){
-				        $.post("resourceTypeAction!deleteSysRsRcCatalog.act",
-				        	{"sysRsRcCatalog.id":node.attributes.id},
-				        	function(data){
-							handlerResult(data,
-					    		function(rs){
-				    				resourceTypeTree.tree("remove",node.target);
-									$show(rs.message);
-								},
-								function(rs){
-									$alert(rs.message);
-								}
-							);  
-						},"json");
-				    }    
-				});
-	 		},
-	 		
-	 		addResource:function(){
-	 			
-	 		},
-	 		editResource:function(){
-	 		},
+	 		}
 	 	};
 		</script>
 	</head>
@@ -71,7 +45,7 @@
 		<div data-options="region:'west',split:true,tools:'#resource_bar'" title=" " style="width:200px;" border="false">
 			<ul id="resourceTypeTree"></ul>
 			<div  id="resource_bar">
-		       <a href="#" class="icon-reflesh" onclick="resourceOperation.reload()">刷新</a>
+		       <a href="#" class="icon-reflesh" onclick="resourceIndexOperation.reload()">刷新</a>
 		     </div>
 		</div>
 		<div data-options="region:'center',split:true,title:'',tools:''" border="false">

@@ -47,12 +47,12 @@ public class InitServiceImpl implements InitService{
 	
 	
 	private void execuSysSql(){
-//		try {
-//			Map<String,Object> context=new HashMap<String, Object>();
-//			handleBatchSqls("classpath*:initSql/sys_*.sql",context);
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
+		try {
+			Map<String,Object> context=new HashMap<String, Object>();
+			handleBatchSqls("classpath*:initSql/sys_*.sql",context);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private void handleBatchSqls(String locationPattern, Map<String, Object> context) throws IOException {
@@ -60,7 +60,8 @@ public class InitServiceImpl implements InitService{
 		for (Resource resource : resources) {
 			String sql = MyIOUtils.fileToString(resource.getInputStream());
 			if(MyStringUtil.isNotBlank(sql)){
-				sysUserDao.importSQL(MyStringUtil.clearNote(sql));
+				System.out.println(sql);
+				sysUserDao.importSQL(sql);
 			}
 		}
 	}

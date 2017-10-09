@@ -1,24 +1,20 @@
-﻿BEGIN
-delete sys_user t WHERE t.id = 1;
+BEGIN
+delete FROM sys_user t WHERE t.id = 1;
 insert into sys_user (id,row_version,user_name,password,create_date)
 values (1, 0,'admin','21232F297A57A5A743894A0E4A801FC3',sysdate);
-
-delete sys_role t WHERE t.ID = 1;
+delete FROM sys_role t WHERE t.ID = 1;
 insert into sys_role (id,row_version,name,iconcls)
 values (1, 0, '系统管理员', '');
-
-delete sys_user_role t WHERE t.id = 1;
+delete FROM sys_user_role t WHERE t.id = 1;
 insert into sys_user_role (id,row_version,is_default,user_id,role_id)
 values (1, 0, 1, 1 ,1);
-
-delete sys_menu;
+delete FROM sys_menu;
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
 values(1,'用户管理','','status_online',0,1,1,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
 values(2,'角色管理','sysRoleAction.act','status_online',1,1,1,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
 values(3,'用户管理','sysUserAction.act','status_online',1,2,1,1);
-
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
 values(4,'产品管理','','cog_edit',0,2,1,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
@@ -27,23 +23,19 @@ insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type)
 values(6,'产品管理','resourceAction.act','cog_edit',4,2,1,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
 values(7,'套餐管理','packageAction.act','cog_edit',4,3,1,1);
-
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
 values(8,'流程管理','','door_in',0,3,1,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
 values(9,'流程管理','processFlowAction.act','door_in',8,1,1,1);
-
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
 values(10,'订单管理','','book_edit',0,4,1,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
 values(11,'订单管理','orderAction.act','book_edit',10,1,1,1);
-
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
 values(12,'报表管理','','chart_bar',0,5,1,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
 values(13,'报表管理','orderAction.act','chart_bar',12,1,1,1);
-
-delete sys_role_menu t WHERE t.id in (1,2,3,4,5,6,7,8,9,10,11,12,13);
+delete FROM sys_role_menu t WHERE t.id in (1,2,3,4,5,6,7,8,9,10,11,12,13);
 insert into sys_role_menu (id,row_version,role_id,menu_id)
 values (1, 0, 1 ,1);
 insert into sys_role_menu (id,row_version,role_id,menu_id)
@@ -70,4 +62,4 @@ insert into sys_role_menu (id,row_version,role_id,menu_id)
 values (12, 0, 1 ,12);
 insert into sys_role_menu (id,row_version,role_id,menu_id)
 values (13, 0, 1 ,13);
-END
+END;

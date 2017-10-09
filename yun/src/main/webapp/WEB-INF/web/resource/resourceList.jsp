@@ -3,6 +3,10 @@
 <script type="text/javascript">
 var $resourceGrid;
 var attrJsons={};
+
+var resourceEdit = undefined;
+var resourceOperation = {};
+
 $(function(){
  	columns=[];
  	<s:iterator value="attribCatalogs" id="attribCatalog" status="list">
@@ -100,9 +104,86 @@ $(function(){
 	        {field:'purchasePrice',title:"采购价格",width:80,sortable:true},
 	        {field:'salePrice',title:"销售价格",width:80,sortable:true}
         ]],
-	    columns:[columns]
+	    columns:[columns],
+	    
+	    onDblClickRow: function(index,row){
+	    	resourceEdit=index;
+  			$(this).datagrid('beginEdit',index);
+	    },
+	    
+	});
+ 	
+ 	$("#resourceGrid").parent(".datagrid-view").keyEvent({
+		keyCode:13,
+		handler:function(event){
+			if(resourceEdit!=undefined){
+				$resourceGrid.datagrid("endEdit",resourceEdit);
+				resourceEdit=undefined;
+  	  		}
+		}
+	});
+ 	
+ 	$("#selectDiv").keyEvent({
+		keyCode:13,
+		handler:function(event){
+			resourceOperation.search();
+			event.preventDefault();
+		}
 	});
 });
+
+resourceOperation = {
+	deleteResource:function(){
+		$.messager.confirm('确认','确认要删除勾选的资源吗？',function(r){    
+		    if (r){
+		        $.post("resourceAction!deleteResource.act",
+		        	{"ids":},
+		        	function(data){
+					handlerResult(data,
+			    		function(rs){
+							$show(rs.message);
+						},
+						function(rs){
+							$alert(rs.message);
+						}
+					);  
+				},"json");
+		    }    
+		});
+	},
+	
+	addResource:function(){
+		//添加页面
+	},
+	
+	editResource:function(){
+		//不需要页面，直接表格编辑
+	},
+	
+	updateResource:function(){
+		
+	},
+	
+	cancelEdit:function(){
+		
+	},
+	
+	search:function(){
+		
+	},
+	
+	reset:function(){
+		
+	},
+	
+	importResource:function(){
+		
+	},
+	
+	exportResource:function(){
+		
+	}
+};
 </script>
 <style>
 	.resource{
@@ -136,18 +217,20 @@ $(function(){
 <div class="easyui-layout" data-options="fit:true,border : false">
 	<div data-options="region:'north',title:'查询条件',border:false,split:true" style="height: 130px; overflow: hidden;background-color: #F8F8F8" >
 		<div id="tools_div" class="resource variable">
-			<form id="searchForm">
-				<div class="attrs">
-					<lable for="">产品代号：</lable><input  id="rsrcCode"  style="width:125px;"/>
-				</div>
-				<div class="attrs">
-					<lable for="">产品名称：</lable><input id="rescName"  style="width:125px;"/>
-				</div>
-				<div class="attrs">
-					<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search', plain:true" onclick="resourceEvents.search()">查询</a> 
-					<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-reload', plain:true" onclick="resourceEvents.reset()">重置</a>	
-				</div>
-			</form>
+			<div id="selectDiv">
+				<form id="searchForm">
+					<div class="attrs">
+						<lable for="">产品代号：</lable><input  id="rsrcCode"  style="width:125px;"/>
+					</div>
+					<div class="attrs">
+						<lable for="">产品名称：</lable><input id="rescName"  style="width:125px;"/>
+					</div>
+					<div class="attrs">
+						<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search', plain:true" onclick="resourceOperation.search()">查询</a> 
+						<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-reload', plain:true" onclick="resourceOperation.reset()">重置</a>	
+					</div>
+				</form>
+			</div>
 		</div>
 	</div>
 	<div data-options="region:'center',border:false">
@@ -156,11 +239,11 @@ $(function(){
 </div>
 
 <div  id="resource_operation_bar">
-    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add', plain:true" onclick="resourceOperation.addNew()">新增</a>
-	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit', plain:true" onclick="resourceOperation.edit();">编辑</a>
-	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-quxiao', plain:true" onclick="resourceOperation.cancel()">取消</a>
-	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-save', plain:true" onclick="resourceOperation.save()">保存</a>
-	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove', plain:true" onclick="resourceOperation.deleteType()">删除</a>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add', plain:true" onclick="resourceOperation.addResource()">新增</a>
+	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit', plain:true" onclick="resourceOperation.editResource();">编辑</a>
+	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-quxiao', plain:true" onclick="resourceOperation.cancelEdit()">取消</a>
+	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-save', plain:true" onclick="resourceOperation.updateResource()">保存</a>
+	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove', plain:true" onclick="resourceOperation.deleteResource()">删除</a>
 	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-download', plain:true" onclick="resourceOperation.importResource()">导入</a>
 	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-upload', plain:true" onclick="resourceOperation.exportResource()">导出</a>
 </div> 

@@ -1,5 +1,5 @@
-﻿BEGIN
-DELETE SYS_RSRC_BASEDATA;
+BEGIN
+DELETE FROM SYS_RSRC_BASEDATA;
 insert into SYS_RSRC_BASEDATA (id, row_version, data_type, display_name, data_group, real_name)
 values (1, 0, 1, '字符串', null, 'string');
 insert into SYS_RSRC_BASEDATA (id, row_version, data_type, display_name, data_group, real_name)
