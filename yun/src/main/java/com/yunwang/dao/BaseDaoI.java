@@ -290,4 +290,7 @@ public interface BaseDaoI<T> {
 	public Integer findMaxSeqByPfield(String seqField, String pField, Integer pValue);
 
 	public Integer findMaxSeq(String field, Object[] values);
+	
+	public List<T> findAll();
+	
 }

@@ -1,23 +1,16 @@
 package com.yunwang.service.impl;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
-
-
-
-
-
-
-
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import antlr.StringUtils;
-
 import com.alibaba.fastjson.JSONObject;
-import com.ctc.wstx.util.StringUtil;
 import com.yunwang.dao.SysMenuDaoI;
 import com.yunwang.dao.SysRoleDaoI;
 import com.yunwang.dao.SysUserDaoI;
@@ -131,10 +124,35 @@ public class SysUserServiceImpl implements SysUserService{
 		return sysRoleDao.getDefaultRoleByUserId(userId);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Pager<SysUser> findBySysUserId(String filterJsons, int page, int rows) {
 		JSONObject json = JSONObject.parseObject(filterJsons);
-		return sysUserDao.findBySysUserId(json, page, rows);
+		Pager<SysUser> pager = sysUserDao.findBySysUserId(json, page, rows);
+		List<SysUser> list = (List<SysUser>) pager.getData();
+		
+		List<SysUserRole> listUserRole = sysUserRoleDao.findUserAndRole();
+		Map<Integer, List<SysUserRole>> mapList = new HashMap<Integer,List<SysUserRole>>();
+		List<SysUserRole> listUR = null;
+		for(SysUserRole userRole:listUserRole){
+			if(null == mapList.get(userRole.getUserId())){
+				listUR = new ArrayList<SysUserRole>();
+				listUR.add(userRole);
+				mapList.put(userRole.getUserId(), listUR);
+			}else{
+				mapList.get(userRole.getUserId()).add(userRole);
+			}
+		}
+		
+		for(SysUser user:list){
+			List<SysUserRole> userRoleList = mapList.get(user.getId());
+			if(userRoleList != null){
+				user.setRoles(StringBufferByCollectionUtil.convertCollection(userRoleList, "name", ","));
+			}
+			
+		}
+		
+		return pager;
 	}
 
 	@Override
