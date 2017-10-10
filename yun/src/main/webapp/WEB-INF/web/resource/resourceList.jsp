@@ -6,32 +6,32 @@ var attrJsons={};
 
 var resourceEdit = undefined;
 var resourceOperation = {};
+var addId = 0;
+var isCancelOrSave = 1;
 
 $(function(){
  	columns=[];
  	<s:iterator value="attribCatalogs" id="attribCatalog" status="list">
 		<s:if test="#attribCatalog.showInListView==1">
 			columns.push(
-				{field:"${attribCatalog.id}",title:"${attribCatalog.rsrcAttribName}",width:120,
+				{field:"${attribCatalog.id}",title:"${attribCatalog.rsrcAttribName}",width:150,
 					sortable:true,
 					editor:{
 						<s:if test="#attribCatalog.controlTypeId==104">
 							<s:if test="#attribCatalog.dataTypeId==2">
 								type:"numberbox",
 								options:{
-									precision:${attribCatalog.dataLength}
+									min:0,
+									max:${attribCatalog.max},
+									precision:${attribCatalog.dataPrecision}
 						 		}
 							</s:if>
 							
 							<s:else>
 								type:"textbox",
 								options:{
-									<s:if test="#attribCatalog.dataLength!=null">
-										required:{validType:['length[1,${attribCatalog.dataLength}]','illegal']}
-									</s:if>
-					 				<s:else>
-										required:{validType:['length[1,256]','illegal']}
-									</s:else>
+									required:false,
+									validType:['length[0,${attribCatalog.dataLength}]','illegal']
 						 		}
 							</s:else>
 						</s:if>
@@ -40,7 +40,7 @@ $(function(){
 							type:"combobox",
 							valueField:'id',
 							textField:'value',
-							data:'${attribCatalog.arrDefaultValues}'
+							data:${attribCatalog.arrDefaultValues}
 						</s:if>
 						
 						<s:if test="#attribCatalog.controlTypeId==106">
@@ -48,11 +48,11 @@ $(function(){
 							valueField:'id',
 							textField:'value',
 							multiple:true,
-							data:'${attribCatalog.arrDefaultValues}'
+							data:${attribCatalog.arrDefaultValues}
 						</s:if>
 						
 						<s:if test="#attribCatalog.controlTypeId==107">
-							type:"datebox"
+							type:"datetimebox"
 						</s:if>
 				 	},
 					formatter:function(value,row,index){
@@ -88,7 +88,26 @@ $(function(){
 	        {field:'ck',checkbox:true},
 	 		//{field:'rsrcTypeName',title:"产品类别",width:80,sortable:true},
 	 		//{field:'rsrcOrgName',title:"产品类型",width:80,sortable:true},
-	 		{field:'workTypeName',title:"工种",width:80,sortable:true},
+	 		{field:'workType',title:"工种",width:80,sortable:true,
+	 			editor:{
+                     type:'combobox',
+                     options:{
+                          	  valueField:'value', 
+                              textField:'name',
+                              editable:false,
+                              //url:"bopTmPbomInstanceAction!getBomInstanceByProcess.act?processId="+${hashMap.processId},
+                              data:${hashMap.flowListArr},
+                              panelHeight:'auto',
+                              onLoadSuccess: function () {
+                            	 
+                              }	
+                 	 	}
+					},
+				formatter : function(value, rowData) {
+					var flowListObj = new Function("return " + '${hashMap.flowListObj}')();
+					return flowListObj[value];
+				} 
+	 		},
 	  		{field:'rsrcCode',title:"产品代号",width:80,sortable:true,
 				editor:{
 					type:"textbox",
@@ -98,11 +117,31 @@ $(function(){
 	        {field:'rsrcName',title:"产品名称",width:80,sortable:true,
 	        	editor:{
 	        		type:"textbox",
-	        		options:{validType:['length[1,30]','illegal']}
+	        		options:{required:true,validType:['length[1,30]','illegal']}
 	        	}
 	        },
-	        {field:'purchasePrice',title:"采购价格",width:80,sortable:true},
-	        {field:'salePrice',title:"销售价格",width:80,sortable:true}
+	        {field:'purchasePrice',title:"采购价格",width:80,sortable:true,
+	        	editor:{
+	        		type:"numberbox",
+					options:{
+						required:true,
+						min:0,
+						max:9999999.99,
+						precision:2
+			 		}
+	        	}
+	        },
+	        {field:'salePrice',title:"销售价格",width:80,sortable:true,
+	        	editor:{
+	        		type:"numberbox",
+					options:{
+						required:true,
+						min:0,
+						max:9999999.99,
+						precision:2
+			 		}
+	        	}
+	       	}
         ]],
 	    columns:[columns],
 	    
@@ -110,7 +149,23 @@ $(function(){
 	    	resourceEdit=index;
   			$(this).datagrid('beginEdit',index);
 	    },
-	    
+	    onAfterEdit:function(rowIndex,rowData,changes){
+	    	//if(isCancelOrSave==1){
+		    	$.post("resourceAction!saveOrUpdateResourceGrid.act",
+		    			{"resourceJsonStr":Some.util.jsonToStr(rowData),"sysRsRcCatalog.id":${sysRsRcCatalog.id}},
+	       			 function(data){
+	      			 	handlerResult(data,
+	      			 		function(json){
+								$show(json.message);
+							},
+							function(json){
+								$show(json.message);
+							}
+						);
+	       			}
+		    	);
+	    	//}
+        }
 	});
  	
  	$("#resourceGrid").parent(".datagrid-view").keyEvent({
@@ -142,8 +197,10 @@ resourceOperation = {
 		$.messager.confirm('确认','确认要删除勾选的产品吗？',function(r){    
 		    if (r){
 		    	var ids = [];
+		    	var deletes = [];
 		    	$.each(checks,function(i,n){
 		    		ids.push(n.id);
+		    		deletes.push(n);
 		    	});
 		        $.post("resourceAction!deleteResource.act",
 		        	{"ids":ids.join(",")},
@@ -151,6 +208,10 @@ resourceOperation = {
 					handlerResult(data,
 			    		function(rs){
 							$show(rs.message);
+							$.each(deletes,function(i,n){
+								var deleteIndex = $resourceGrid.datagrid("getRowIndex",n);
+								$resourceGrid.datagrid("deleteRow",deleteIndex);
+					    	});
 						},
 						function(rs){
 							$alert(rs.message);
@@ -162,6 +223,26 @@ resourceOperation = {
 	},
 	
 	addResource:function(){
+		if(resourceEdit!=undefined){
+			$resourceGrid.datagrid("endEdit",resourceEdit);
+			resourceEdit = undefined;
+		}
+		$resourceGrid.datagrid('insertRow',{
+			index: 0,	// 索引从0开始
+			row: {
+				id:addId--,
+				workType:1,
+				rsrcCode:'',
+				rsrcName:'',
+				purchasePrice:0,
+				salePrice:0
+			}
+		});
+		$resourceGrid.datagrid("beginEdit",0);
+		resourceEdit = 0;
+
+		//$resourceGrid.datagrid("reload");
+		/*
 		//添加页面
 		var node = resourceTypeTree.tree("getSelected");
 		var dialog =$('<div id="addResource"></div>').dialog({    
@@ -205,18 +286,33 @@ resourceOperation = {
 				$(this).dialog("destroy");
 			}
 		});
+		*/
 	},
 	
 	editResource:function(){
 		//不需要页面，直接表格编辑
+		var selected = $resourceGrid.datagrid("getSelected");
+		if(null == selected){
+			$alert("请单选产品行，进行编辑!");
+			return false;
+		}
+		var index = $resourceGrid.datagrid("getRowIndex",selected);
+		$resourceGrid.datagrid("beginEdit",index);
+		resourceEdit = index;
 	},
 	
 	updateResource:function(){
-		
+		if(resourceEdit!=undefined){
+			$resourceGrid.datagrid("endEdit",resourceEdit);
+			resourceEdit = undefined;
+		}
 	},
 	
 	cancelEdit:function(){
-		
+		isCancelOrSave = 2;
+		$resourceGrid.datagrid("refreshRow",resourceEdit);
+		resourceEdit = undefined;
+		isCancelOrSave = 1;
 	},
 	
 	search:function(){
@@ -290,7 +386,9 @@ resourceOperation = {
 <div  id="resource_operation_bar">
     <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add', plain:true" onclick="resourceOperation.addResource()">新增</a>
 	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit', plain:true" onclick="resourceOperation.editResource();">编辑</a>
+	<!--
 	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-quxiao', plain:true" onclick="resourceOperation.cancelEdit()">取消</a>
+	-->
 	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-save', plain:true" onclick="resourceOperation.updateResource()">保存</a>
 	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove', plain:true" onclick="resourceOperation.deleteResource()">删除</a>
 	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-download', plain:true" onclick="resourceOperation.importResource()">导入</a>

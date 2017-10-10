@@ -33,16 +33,17 @@ $(function(){
 	       	listValue="name"
 	       	name="sysResource.workType" />
 	</div>
-    <!-- 
-    <s:iterator value="attribCatalogs" id="attribCatalog" status="list">
-    	<div>   
-	        <label for="code">产品代号:</label>   
-	        <input id="code" class="easyui-validatebox" type="text" name="sysResource.code" 
-	        style="width:200px;" data-options="required:true,validType:['length[1,10]','illegal']" value="${sysResource.code}"/>   
-	        <label for="name">产品名称:</label>   
-	        <input id="name" class="easyui-validatebox" type="text" name="sysResource.name" 
-	        style="width:200px;" data-options="required:true,validType:['length[1,40]','illegal']" value="${sysResource.name}"/>   
-	    </div>
+	<!-- 
+    <s:iterator value="attribCatalogs" id="attribCatalog" status="st">
+    	<s:if test=”#st.odd”>
+			<div>
+		</s:if>
+    		<label for="${attribCatalog.id}_attr">${attribCatalog.rsrcAttribName}:</label>   
+	        <input id="${attribCatalog.id}_attr" class="easyui-validatebox" type="text" name="sysResource.code" 
+	        style="width:200px;" data-options="required:true,validType:['length[1,10]','illegal']" value=""/>   
+    	<s:if test=”#st.even”>
+			</div>
+		</s:if>
     </s:iterator>
      -->
 </form>

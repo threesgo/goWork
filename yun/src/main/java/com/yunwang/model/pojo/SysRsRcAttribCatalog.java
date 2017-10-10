@@ -1,5 +1,7 @@
 package com.yunwang.model.pojo;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -104,7 +106,10 @@ public class SysRsRcAttribCatalog extends AbstractRowVersionModel{
 	}
 
 	public Integer getDataLength() {
-		return dataLength;
+		if(null!=dataLength){
+			return dataLength;
+		}
+		return 256;
 	}
 
 	public void setDataLength(Integer dataLength) {
@@ -182,5 +187,22 @@ public class SysRsRcAttribCatalog extends AbstractRowVersionModel{
 			}
 		}
 		return arr.toString();
+	}
+	
+	public BigDecimal getMax(){
+		if(dataTypeId == 2 && controlTypeId == 104 ){
+			Integer z = getDataLength() - getDataPrecision();
+			Integer x = getDataPrecision();
+			StringBuffer buf = new StringBuffer();
+			for(int i=0;i<z;i++){
+				buf.append(9);
+			}
+			buf.append(".");
+			for(int i=0;i<x;i++){
+				buf.append(9);
+			}
+			return new BigDecimal(buf.toString());
+		}
+		return null;
 	}
 }

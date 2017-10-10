@@ -1,6 +1,7 @@
 package com.yunwang.model.pojo;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -48,6 +49,12 @@ public class SysResource extends AbstractRowVersionModel{
 	
 	@Column(name="RSRC_STUTAS",nullable = false,columnDefinition = "number default 1")
 	private Integer rsrcStatus = 1;//状态
+	
+	@Column(name = "CREATE_DATE")
+	private Date createDate; // 创建时间
+
+	@Column(name = "UPDATE_DATE")
+	private Date updateDate; // 更新时间
 	
 	public SysResource(){
 		
@@ -123,5 +130,21 @@ public class SysResource extends AbstractRowVersionModel{
 
 	public void setRsrcStatus(Integer rsrcStatus) {
 		this.rsrcStatus = rsrcStatus;
+	}
+
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+
+	public Date getUpdateDate() {
+		return updateDate;
+	}
+
+	public void setUpdateDate(Date updateDate) {
+		this.updateDate = updateDate;
 	}
 }

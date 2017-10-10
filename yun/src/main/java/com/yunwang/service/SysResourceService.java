@@ -2,8 +2,12 @@ package com.yunwang.service;
 
 import java.util.List;
 
+import net.sf.json.JSONObject;
+
+import com.yunwang.model.page.Pager;
 import com.yunwang.model.pojo.SysResource;
 import com.yunwang.model.pojo.SysRsRcAttrib;
+import com.yunwang.model.pojo.SysRsRcCatalog;
 
 
 
@@ -19,5 +23,11 @@ public interface SysResourceService {
 	List<SysRsRcAttrib> findSysRsRcAttribByResourceIds(String resourceIds);
 
 	void save(SysResource sysResource);
+
+	void saveOrUpdateResourceGrid(JSONObject rowData,SysRsRcCatalog sysRsRcCatalog);
+
+	Pager<SysResource> findByRsRcCatalogId(Integer rsRcCatalogId, int page, int rows);
+
+	void deleteResource(String ids);
 
 }

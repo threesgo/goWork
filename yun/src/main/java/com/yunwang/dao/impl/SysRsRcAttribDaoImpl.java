@@ -21,4 +21,10 @@ public class SysRsRcAttribDaoImpl extends BaseDaoImpl<SysRsRcAttrib> implements 
 		};
 		return findByIdsToPaging(resourceIds,sqlQuery);
 	}
+
+	@Override
+	public SysRsRcAttrib getByResourceAndAttr(Integer resourceId, Integer attrId) {
+		return getUniqueResult("SELECT model FROM SysRsRcAttrib model "+
+				" WHERE model.rsrcId=? AND model.rsraAttribCatalogId = ?", resourceId,attrId);
+	}
 }

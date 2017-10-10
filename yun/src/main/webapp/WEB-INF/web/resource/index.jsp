@@ -23,6 +23,16 @@
  							title:'产品列表', 
 						    href:"resourceAction!resourceList.act?sysRsRcCatalog.id="+ node.attributes.id
 						});
+ 						/*
+ 						if("root" != node.id){
+ 							
+ 						}else{
+ 							resourceTab.tabs('add',{
+ 	 							title:'子集列表', 
+ 							    href:"resourceTypeAction!childrenPage.act?sysRsRcCatalog.id="+ node.attributes.id
+ 							});
+ 						}
+ 						*/
  					}
  				}
 	 		);

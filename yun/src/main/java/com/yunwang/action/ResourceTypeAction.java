@@ -239,6 +239,7 @@ public class ResourceTypeAction extends AbstractLoginAction{
 				dbSysRsRcAttribCatalog.setDataPrecision(sysRsRcAttribCatalog.getDataPrecision());
 				dbSysRsRcAttribCatalog.setDefaultValue(sysRsRcAttribCatalog.getDefaultValue());
 				dbSysRsRcAttribCatalog.setOrderNo(sysRsRcAttribCatalog.getOrderNo());
+				sysResourceTypeService.saveOrUpdateSysRsRcAttribCatalog(dbSysRsRcAttribCatalog);
 			}else{
 				sysResourceTypeService.saveOrUpdateSysRsRcAttribCatalog(sysRsRcAttribCatalog);
 			}

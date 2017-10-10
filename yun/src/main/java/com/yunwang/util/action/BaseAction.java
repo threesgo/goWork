@@ -38,6 +38,17 @@ public abstract class BaseAction extends ActionSupport implements SessionAware{
 	
 	protected Map<String,Object> sessionMap=null;
 	
+	/**
+	 * 当前页数.
+	 */
+	protected int page;
+	
+	/**
+	 * 每页显示记录数.
+	 */
+	protected int rows;
+	
+	
 	public void setSession(Map<String, Object> sessionMap) {
 		this.sessionMap = sessionMap;
 	}
@@ -249,4 +260,20 @@ public abstract class BaseAction extends ActionSupport implements SessionAware{
     protected String ajaxJSONObj(JSONObject jsonObj) {
     	return ajax(jsonObj,"text/html");
     }
+
+	public int getPage() {
+		return page;
+	}
+
+	public void setPage(int page) {
+		this.page = page;
+	}
+
+	public int getRows() {
+		return rows;
+	}
+
+	public void setRows(int rows) {
+		this.rows = rows;
+	}
 }

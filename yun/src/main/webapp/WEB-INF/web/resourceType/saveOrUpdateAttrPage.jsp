@@ -58,7 +58,7 @@ $(function(){
     <div>
         <label for="dataLength">数据长度:</label>   
         <input id="dataLength" class="easyui-numberbox" type="text" name="sysRsRcAttribCatalog.dataLength" 
-        style="width:200px;" data-options="required:true,min:1,precision:0,max:256" value="${sysRsRcAttribCatalog.dataLength}"/>   
+        style="width:200px;" data-options="required:false,min:1,precision:0,max:256" value="${sysRsRcAttribCatalog.dataLength}"/>   
         <label for="dataPrecision">小数位数:</label>   
         <input id="dataPrecision" class="easyui-numberbox" type="text" name="sysRsRcAttribCatalog.dataPrecision" 
         style="width:200px;" value="${sysRsRcAttribCatalog.dataPrecision}"/>   
