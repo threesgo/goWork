@@ -146,8 +146,16 @@ $(function(){
 	    columns:[columns],
 	    
 	    onDblClickRow: function(index,row){
-	    	resourceEdit=index;
-  			$(this).datagrid('beginEdit',index);
+	    	if(resourceEdit!=undefined){
+	    		if($resourceGrid.datagrid("validateRow",resourceEdit)){
+	    			$resourceGrid.datagrid("endEdit",resourceEdit);
+	    		}else{
+					$show("请正确输入编辑行数据!");
+					return false;	    		
+	    		}
+			}
+			resourceEdit=index;
+ 			$(this).datagrid('beginEdit',index);
 	    },
 	    onAfterEdit:function(rowIndex,rowData,changes){
 	    	//if(isCancelOrSave==1){
@@ -224,8 +232,13 @@ resourceOperation = {
 	
 	addResource:function(){
 		if(resourceEdit!=undefined){
-			$resourceGrid.datagrid("endEdit",resourceEdit);
-			resourceEdit = undefined;
+			if($resourceGrid.datagrid("validateRow",resourceEdit)){
+				$resourceGrid.datagrid("endEdit",resourceEdit);
+				resourceEdit = undefined;
+			}else{
+				$show("请正确输入编辑行数据!");
+				return false;
+			}
 		}
 		$resourceGrid.datagrid('insertRow',{
 			index: 0,	// 索引从0开始
@@ -296,6 +309,14 @@ resourceOperation = {
 			$alert("请单选产品行，进行编辑!");
 			return false;
 		}
+		if(resourceEdit!=undefined){
+    		if($resourceGrid.datagrid("validateRow",resourceEdit)){
+    			$resourceGrid.datagrid("endEdit",resourceEdit);
+    		}else{
+				$show("请正确输入编辑行数据!");
+				return false;	    		
+    		}
+		}
 		var index = $resourceGrid.datagrid("getRowIndex",selected);
 		$resourceGrid.datagrid("beginEdit",index);
 		resourceEdit = index;
@@ -303,8 +324,13 @@ resourceOperation = {
 	
 	updateResource:function(){
 		if(resourceEdit!=undefined){
-			$resourceGrid.datagrid("endEdit",resourceEdit);
-			resourceEdit = undefined;
+			if($resourceGrid.datagrid("validateRow",resourceEdit)){
+				$resourceGrid.datagrid("endEdit",resourceEdit);
+				resourceEdit = undefined;
+			}else{
+				$show("请正确输入编辑行数据!");
+				return false;	    		
+    		}
 		}
 	},
 	

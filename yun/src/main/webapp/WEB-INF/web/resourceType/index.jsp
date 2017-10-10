@@ -34,6 +34,9 @@
  							title:'子集列表', 
 						    href:"resourceTypeAction!childrenPage.act?sysRsRcCatalog.id="+ node.attributes.id
 						});
+						if("root" != node.id){
+							resourceTypeTab.tabs("select",1);
+						}
  					}
  				}
 	 		);
