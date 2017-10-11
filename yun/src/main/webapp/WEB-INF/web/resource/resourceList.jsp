@@ -380,71 +380,89 @@ resourceOperation = {
 };
 </script>
 <style>
-	#searchForm{
+ 	#searchForm{
 		padding:3px;
 		float:left !important;
 		height: auto !important;
 		width: 100%;
 	}
-	#searchForm div{
-		margin-left: 20px;
+	.search-div{
+		margin-left: 30px;
 		height: 30px;
 		margin-top:3px;
 		float: left;
+		width: 220px;
 		*width: auto;
 		*float: left !important;
 		max-width: 300px;
 	}
-	#searchForm div.edit-item-resource{
-		width: 150px;
-		height: 20px;
-	}
+	
 	#searchForm div label{
 		float: left;
 	}
 	
-	#searchForm div>input,#searchForm div>select,#searchForm div>ul,#searchForm div>span {
+	#searchForm div>input,#searchForm div>select{
 		float: right;
+		width: 152px;
+	}
+	
+	#searchForm div.select{
+		float: right;
+		width: 152px;
+	}
+	
+	#searchForm div>select{
+		width: 152px;
 	}
 </style>
 
 <div class="easyui-layout" data-options="fit:true,border : false">
 	<div id="searchForm" data-options="region:'north',title:'查询条件',border:false,split:true" style="height: 130px; overflow: hidden;background-color: #F8F8F8" >
-		<div class="attrs">
-			<lable for="">产品代号：</lable><input  type="text"  id="rsrcCode"  style="width:125px;"/>
+		<div class="search-div">
+			<lable for="">产品代号：</lable>
+			<div class="select">
+				<input  type="text"  id="rsrcCode"/>
+			</div>
 		</div>
-		<div class="attrs">
-			<lable for="">产品名称：</lable><input  type="text"  id="rescName"  style="width:125px;"/>
+		<div class="search-div">
+			<lable for="">产品名称：</lable>
+			<div class="select">
+				<input  type="text"  id="rescName"/>
+			</div>
 		</div>
-		<div class="attrs">
-			<lable for="">产品简称：</lable><input  type="text"  id="abbreviaName"  style="width:125px;"/>
+		<div class="search-div">
+			<lable for="">产品简称：</lable>
+			<div class="select">
+				<input  type="text"  id="abbreviaName"/>
+			</div>
 		</div>
 		<s:iterator value="attribCatalogs" id="attribCatalog" status="list">
 			<s:if test="#attribCatalog.showInFinder==1">
-				<div class="attrs">
+				<div class="search-div">
 					<lable for="">${attribCatalog.rsrcAttribName}：</lable>
-					<input  id="attrib_${attribCatalog.id}"  
-					
-					<s:if test="#attribCatalog.controlTypeId==104">
-						type="text"
-					</s:if>
-					
-					<s:if test="#attribCatalog.controlTypeId==105">
-						type="text"
-					</s:if>
-					
-					<s:if test="#attribCatalog.controlTypeId==106">
-						type="text"
-					</s:if>
-					
-					<s:if test="#attribCatalog.controlTypeId==107">
-						class="easyui-datetimebox"
-					</s:if>
-					style="width:125px;"/>
+					<div class="select">
+						<input  id="attrib_${attribCatalog.id}"  
+						
+						<s:if test="#attribCatalog.controlTypeId==104">
+							type="text"
+						</s:if>
+						
+						<s:if test="#attribCatalog.controlTypeId==105">
+							type="text"
+						</s:if>
+						
+						<s:if test="#attribCatalog.controlTypeId==106">
+							type="text"
+						</s:if>
+						
+						<s:if test="#attribCatalog.controlTypeId==107">
+							class="easyui-datetimebox"
+						</s:if>/>
+					</div>
 				 </div>
 			</s:if>
 		</s:iterator>
-		<div class="attrs">
+		<div class="search-div">
 			<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search', plain:true" onclick="resourceOperation.search()">查询</a> 
 			<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-reload', plain:true" onclick="resourceOperation.reset()">重置</a>	
 		</div>
