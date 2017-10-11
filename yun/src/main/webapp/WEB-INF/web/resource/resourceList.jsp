@@ -391,7 +391,7 @@ resourceOperation = {
 		height: 30px;
 		margin-top:3px;
 		float: left;
-		width: 220px;
+		width: 240px;
 		*width: auto;
 		*float: left !important;
 		max-width: 300px;
