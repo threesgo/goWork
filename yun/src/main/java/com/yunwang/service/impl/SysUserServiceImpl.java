@@ -126,9 +126,9 @@ public class SysUserServiceImpl implements SysUserService{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Pager<SysUser> findBySysUserId(String filterJsons, int page, int rows) {
+	public Pager<SysUser> findAllUser(String filterJsons, int page, int rows) {
 		JSONObject json = JSONObject.parseObject(filterJsons);
-		Pager<SysUser> pager = sysUserDao.findBySysUserId(json, page, rows);
+		Pager<SysUser> pager = sysUserDao.findAllUser(json, page, rows);
 		List<SysUser> list = (List<SysUser>) pager.getData();
 		
 		List<SysUserRole> listUserRole = sysUserRoleDao.findUserAndRole();
@@ -148,6 +148,8 @@ public class SysUserServiceImpl implements SysUserService{
 			List<SysUserRole> userRoleList = mapList.get(user.getId());
 			if(userRoleList != null){
 				user.setRoles(StringBufferByCollectionUtil.convertCollection(userRoleList, "name", ","));
+				user.setRoleIds(StringBufferByCollectionUtil.convertCollection(userRoleList, "roleId", ","));
+				
 			}
 			
 		}
@@ -169,6 +171,11 @@ public class SysUserServiceImpl implements SysUserService{
 	public List<SysUser> findBySysUserName(String userName) {
 		return sysUserDao.findBySysUserName(userName);
 	}
+	
+	public List<SysUser> findBySysUserNameExceptUserId(String userName,Integer userId) {
+		return sysUserDao.findBySysUserNameExceptUserId(userName,userId);
+	}
+	
 
 	@Override
 	public void saveUserAndRole(SysUser user, String roleIds) {
@@ -183,6 +190,21 @@ public class SysUserServiceImpl implements SysUserService{
 			userRole.setIsDefault(new BigDecimal(1));
 			sysUserRoleDao.save(userRole);
 		}
+	}
+	
+	public void updateUserAndRole(SysUser user){
+		sysUserDao.update(user);
+		sysUserRoleDao.deleteByProperty("userId",user.getId());
+		SysUserRole userRole =null;
+		String[] roleId = user.getRoleIds().split(",");
+		for(String id:roleId){
+			userRole = new SysUserRole();
+			userRole.setUserId(user.getId());
+			userRole.setRoleId(Integer.parseInt(id.trim()));
+			userRole.setIsDefault(new BigDecimal(1));
+			sysUserRoleDao.save(userRole);
+		}
 		
 	}
+
 }

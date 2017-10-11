@@ -1,12 +1,7 @@
 package com.yunwang.action;
 
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -159,6 +154,7 @@ public class SysRoleAction extends AbstractLoginAction{
 		}
 		return ajaxText(arr.toString());
 	}
+	
 	/**
 	 * 
 	 * @date 2016-11-29

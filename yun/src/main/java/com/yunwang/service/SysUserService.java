@@ -28,6 +28,8 @@ public interface SysUserService {
 	public void save(SysUser user);
 	
 	public void saveUserAndRole(SysUser user,String roleIds);
+	
+	public void updateUserAndRole(SysUser user);
 
 	public void updateUserRoleDefault(Integer userId, Integer roleId);
 
@@ -37,11 +39,14 @@ public interface SysUserService {
 
 	public SysRole getDefaultRoleByUserId(Integer userId);
 	
-	public Pager<SysUser> findBySysUserId(String filterJsons,int page,int rows);
+	public Pager<SysUser> findAllUser(String filterJsons,int page,int rows);
 	
 	public List<SysRole> findByUserId(Integer userId);
 	
 	public List<SysRole> findAllRole();
 	
 	public List<SysUser> findBySysUserName(String userName);
+	
+	public List<SysUser> findBySysUserNameExceptUserId(String userName,Integer userId);
+	
 }

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.alibaba.fastjson.JSONObject;
 import com.yunwang.model.page.Pager;
+import com.yunwang.model.pojo.SysRole;
 import com.yunwang.model.pojo.SysUser;
 import com.yunwang.service.SysUserService;
 import com.yunwang.util.action.AbstractLoginAction;
@@ -43,6 +44,7 @@ public class SysUserAction extends AbstractLoginAction{
 	private Integer roleId;
 	private String filterJsons;
 	private String roleIds;
+	private String userId;
 	
 	/*
 	 * @date 2017-9-29
@@ -59,7 +61,7 @@ public class SysUserAction extends AbstractLoginAction{
 	 * 用户管理列表页面
 	 */
 	public String listUser()   {
-		Pager<SysUser> pager = sysUserService.findBySysUserId(filterJsons,page,rows);
+		Pager<SysUser> pager = sysUserService.findAllUser(filterJsons,page,rows);
 		JSONObject obj = new JSONObject();
 		if(null != pager){
 			obj.put("total", pager.getTotalRows());
@@ -80,9 +82,16 @@ public class SysUserAction extends AbstractLoginAction{
 		return "addUser";
 	}
 	
+	/**
+	 * 
+	* @Title: add
+	* @Description: 添加用户
+	* @param @return    设定文件
+	* @return String    返回类型
+	* @throws
+	 */
 	public String add(){
 		try{
-			System.out.println(roleIds);
 			List<SysUser> listUser = sysUserService.findBySysUserName(sysUser.getUserName());
 			if(listUser.size()>0){
 				return error("用户名已存在");
@@ -97,15 +106,25 @@ public class SysUserAction extends AbstractLoginAction{
 	}
 	
 	public String preEdit() {
+		sysUser = sysUserService.get(Integer.parseInt(userId));
 		return "editUser";
 	}
 	
 	public String edit(){
-		/*System.out.println(sysUser);
-		sysUserService.save(sysUser);
-		return success("添加成功");*/
-		return null;
+		try{
+			List<SysUser> listUser = sysUserService.findBySysUserNameExceptUserId(sysUser.getUserName(),sysUser.getId());
+			if(listUser.size()>0){
+				return error("用户名已存在");
+			}
+			System.out.println(roleIds);
+			sysUserService.updateUserAndRole(sysUser);
+			return success("添加成功");
+		}catch(Exception e){
+			e.printStackTrace();
+			return error("添加失败");
+		}
 	}
+	
 	/**
 	* @Title: updateUserRoleDefault
 	* @Description: TODO(这里用一句话描述这个方法的作用)
@@ -155,5 +174,12 @@ public class SysUserAction extends AbstractLoginAction{
 	public void setRoleIds(String roleIds) {
 		this.roleIds = roleIds;
 	}
-	
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
 }
