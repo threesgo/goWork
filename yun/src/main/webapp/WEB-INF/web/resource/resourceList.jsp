@@ -419,19 +419,19 @@ resourceOperation = {
 <div class="easyui-layout" data-options="fit:true,border : false">
 	<div id="searchForm" data-options="region:'north',title:'查询条件',border:false,split:true" style="height: 130px; overflow: hidden;background-color: #F8F8F8" >
 		<div class="search-div">
-			<lable for="">产品代号：</lable>
+			<lable for="">产品代号</lable>
 			<div class="select">
 				<input  type="text"  id="rsrcCode"/>
 			</div>
 		</div>
 		<div class="search-div">
-			<lable for="">产品名称：</lable>
+			<lable for="">产品名称</lable>
 			<div class="select">
 				<input  type="text"  id="rescName"/>
 			</div>
 		</div>
 		<div class="search-div">
-			<lable for="">产品简称：</lable>
+			<lable for="">产品简称</lable>
 			<div class="select">
 				<input  type="text"  id="abbreviaName"/>
 			</div>
@@ -439,7 +439,7 @@ resourceOperation = {
 		<s:iterator value="attribCatalogs" id="attribCatalog" status="list">
 			<s:if test="#attribCatalog.showInFinder==1">
 				<div class="search-div">
-					<lable for="">${attribCatalog.rsrcAttribName}：</lable>
+					<lable for="">${attribCatalog.rsrcAttribName}</lable>
 					<div class="select">
 						<input  id="attrib_${attribCatalog.id}"  
 						
