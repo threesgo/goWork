@@ -26,7 +26,7 @@ public interface SysResourceService {
 
 	void saveOrUpdateResourceGrid(JSONObject rowData,SysRsRcCatalog sysRsRcCatalog);
 
-	Pager<SysResource> findByRsRcCatalogId(Integer rsRcCatalogId, int page, int rows);
+	Pager<SysResource> findByRsRcCatalogId(Integer rsRcCatalogId, int page, int rows, JSONObject seachJson);
 
 	void deleteResource(String ids);
 

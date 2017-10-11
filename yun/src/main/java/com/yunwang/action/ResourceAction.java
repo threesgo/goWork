@@ -83,7 +83,8 @@ public class ResourceAction extends AbstractLoginAction{
 	@SuppressWarnings("unchecked")
 	public String resourceListData(){
 		JSONObject obj=new JSONObject();
-		Pager<SysResource> pager = sysResourceService.findByRsRcCatalogId(sysRsRcCatalog.getId(),page,rows);
+		Pager<SysResource> pager = sysResourceService.findByRsRcCatalogId(sysRsRcCatalog.getId(),page,rows,
+				JSONObject.fromObject(resourceJsonStr));
 		JSONArray arr = new JSONArray();
 		if(null!=pager && null!=pager.getData()){
 			List<SysResource> sysResources = (List<SysResource>) pager.getData();

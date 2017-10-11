@@ -47,7 +47,6 @@ public class SysResourceServiceImpl implements SysResourceService{
 	@SuppressWarnings("rawtypes")
 	@Override
 	public void saveOrUpdateResourceGrid(JSONObject rowData,SysRsRcCatalog sysRsRcCatalog) {
-         Iterator it = rowData.keys();  
          SysResource sysResource = null;
          Integer id = rowData.getInt("id");
          if(id > 0){
@@ -68,6 +67,8 @@ public class SysResourceServiceImpl implements SysResourceService{
          sysResource.setRsrcCode(rsrcCode);
          String rsrcName = rowData.getString("rsrcName");
          sysResource.setRsrcName(rsrcName);
+         String abbreviaName = rowData.getString("abbreviaName");
+         sysResource.setAbbreviaName(abbreviaName);
          String purchasePrice = rowData.getString("purchasePrice");
          sysResource.setPurchasePrice(new BigDecimal(purchasePrice));
          String salePrice = rowData.getString("salePrice");
@@ -75,6 +76,7 @@ public class SysResourceServiceImpl implements SysResourceService{
          Integer workType = rowData.getInt("workType");
          sysResource.setWorkType(workType);
          sysResourceDao.saveOrUpdate(sysResource);
+         Iterator it = rowData.keys();  
          while (it.hasNext()) {  
              String key = (String) it.next(); 
              String value = rowData.getString(key);
@@ -102,8 +104,8 @@ public class SysResourceServiceImpl implements SysResourceService{
 
 	@Override
 	public Pager<SysResource> findByRsRcCatalogId(Integer rsRcCatalogId,
-			int page, int rows) {
-		return sysResourceDao.findByRsRcCatalogId(rsRcCatalogId,page,rows);
+			int page, int rows,JSONObject seachJson) {
+		return sysResourceDao.findByRsRcCatalogId(rsRcCatalogId,page,rows,seachJson);
 	}
 
 	@Override

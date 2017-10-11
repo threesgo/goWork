@@ -120,6 +120,12 @@ $(function(){
 	        		options:{required:true,validType:['length[1,30]','illegal']}
 	        	}
 	        },
+	        {field:'abbreviaName',title:"产品简称",width:80,sortable:true,
+	        	editor:{
+	        		type:"textbox",
+	        		options:{validType:['length[1,30]','illegal']}
+	        	}
+	        },
 	        {field:'purchasePrice',title:"采购价格",width:80,sortable:true,
 	        	editor:{
 	        		type:"numberbox",
@@ -342,7 +348,22 @@ resourceOperation = {
 	},
 	
 	search:function(){
+		var searchData = {};
+		searchData["rsrcCode"] = $("#rsrcCode").val();
+		searchData["rescName"] = $("#rescName").val();
+		searchData["abbreviaName"] = $("#abbreviaName").val();
 		
+		var $attrs = $("input[id^='attrib_']");
+		$.each($attrs,function(i,n){
+			var id = $(n).attr("id").substring(7,$(n).attr("id").length);
+			searchData[id] = $(n).val();
+		})
+		$resourceGrid.datagrid("reload",
+			{
+				"resourceJsonStr":Some.util.jsonToStr(searchData),
+				"sysRsRcCatalog.id":'${sysRsRcCatalog.id}'
+			}
+		);
 	},
 	
 	reset:function(){
@@ -359,13 +380,13 @@ resourceOperation = {
 };
 </script>
 <style>
-	.resource{
+	#searchForm{
 		padding:3px;
 		float:left !important;
 		height: auto !important;
 		width: 100%;
 	}
-	.resource div{
+	#searchForm div{
 		margin-left: 20px;
 		height: 30px;
 		margin-top:3px;
@@ -374,34 +395,58 @@ resourceOperation = {
 		*float: left !important;
 		max-width: 300px;
 	}
-	.resource div.edit-item-resource{
+	#searchForm div.edit-item-resource{
 		width: 150px;
 		height: 20px;
 	}
-	.resource div label{
+	#searchForm div label{
 		float: left;
 	}
 	
-	.resource div>input,.resource div>select,.resource div>ul,.resource div>span {
+	#searchForm div>input,#searchForm div>select,#searchForm div>ul,#searchForm div>span {
 		float: right;
 	}
 </style>
 
 <div class="easyui-layout" data-options="fit:true,border : false">
-	<div data-options="region:'north',title:'查询条件',border:false,split:true" style="height: 130px; overflow: hidden;background-color: #F8F8F8" >
-		<div id="tools_div" class="resource variable">
-			<form id="searchForm">
+	<div id="searchForm" data-options="region:'north',title:'查询条件',border:false,split:true" style="height: 130px; overflow: hidden;background-color: #F8F8F8" >
+		<div class="attrs">
+			<lable for="">产品代号：</lable><input  type="text"  id="rsrcCode"  style="width:125px;"/>
+		</div>
+		<div class="attrs">
+			<lable for="">产品名称：</lable><input  type="text"  id="rescName"  style="width:125px;"/>
+		</div>
+		<div class="attrs">
+			<lable for="">产品简称：</lable><input  type="text"  id="abbreviaName"  style="width:125px;"/>
+		</div>
+		<s:iterator value="attribCatalogs" id="attribCatalog" status="list">
+			<s:if test="#attribCatalog.showInFinder==1">
 				<div class="attrs">
-					<lable for="">产品代号：</lable><input  id="rsrcCode"  style="width:125px;"/>
-				</div>
-				<div class="attrs">
-					<lable for="">产品名称：</lable><input id="rescName"  style="width:125px;"/>
-				</div>
-				<div class="attrs">
-					<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search', plain:true" onclick="resourceOperation.search()">查询</a> 
-					<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-reload', plain:true" onclick="resourceOperation.reset()">重置</a>	
-				</div>
-			</form>
+					<lable for="">${attribCatalog.rsrcAttribName}：</lable>
+					<input  id="attrib_${attribCatalog.id}"  
+					
+					<s:if test="#attribCatalog.controlTypeId==104">
+						type="text"
+					</s:if>
+					
+					<s:if test="#attribCatalog.controlTypeId==105">
+						type="text"
+					</s:if>
+					
+					<s:if test="#attribCatalog.controlTypeId==106">
+						type="text"
+					</s:if>
+					
+					<s:if test="#attribCatalog.controlTypeId==107">
+						class="easyui-datetimebox"
+					</s:if>
+					style="width:125px;"/>
+				 </div>
+			</s:if>
+		</s:iterator>
+		<div class="attrs">
+			<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search', plain:true" onclick="resourceOperation.search()">查询</a> 
+			<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-reload', plain:true" onclick="resourceOperation.reset()">重置</a>	
 		</div>
 	</div>
 	<div data-options="region:'center',border:false">

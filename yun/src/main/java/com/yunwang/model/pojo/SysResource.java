@@ -32,6 +32,9 @@ public class SysResource extends AbstractRowVersionModel{
 	@Column(name="RSRC_NAME", length=128, nullable = false)
 	private String rsrcName;// 资源名称
 	
+	@Column(name="ABBREVIA_NAME", length=128)
+	private String abbreviaName;
+	
 	@Column(name="ORDER_NO", nullable = false)
 	private Integer orderNo;//顺序号
 		
@@ -146,5 +149,13 @@ public class SysResource extends AbstractRowVersionModel{
 
 	public void setUpdateDate(Date updateDate) {
 		this.updateDate = updateDate;
+	}
+
+	public String getAbbreviaName() {
+		return abbreviaName;
+	}
+
+	public void setAbbreviaName(String abbreviaName) {
+		this.abbreviaName = abbreviaName;
 	}
 }
