@@ -31,9 +31,19 @@
 		<interceptors>
 			<!-- 登录验证 -->
 			<interceptor name="itcp_login" class="com.yunwang.interceptor.LoginInterceptor"/>
+			
+			<interceptor name="itcp_method" class="com.yunwang.interceptor.MethodInterceptor"/>
+			
+			
 			<interceptor-stack name="loginInterceptor">
 				<interceptor-ref name="defaultStack"/>
 				<interceptor-ref name="itcp_login"/>
+			</interceptor-stack>
+			
+			<interceptor-stack name="methodInterceptor">
+				<interceptor-ref name="defaultStack"/>
+				<interceptor-ref name="itcp_login"/>
+				<interceptor-ref name="itcp_method"/>
 			</interceptor-stack>
 		</interceptors>
 		
@@ -46,5 +56,9 @@
 	
 	<package name="LoginInterceptor" extends="base">
 		<default-interceptor-ref name="loginInterceptor"/>
+	</package>
+	
+	<package name="MethodInterceptor" extends="base">
+		<default-interceptor-ref name="methodInterceptor"/>
 	</package>
 </struts>    

@@ -367,7 +367,7 @@ resourceOperation = {
 	importResource:function(){
 		var node = resourceTypeTree.tree("getSelected");
 		var dialog =$('<div id="importResource"></div>').dialog({    
-			href : "resourceAction!importResourcePage.act",
+			href : "resourceUpDownAction!importResourcePage.act",
 			width:480,
 			top:160,
 			title:"导入产品",
@@ -380,7 +380,7 @@ resourceOperation = {
 				iconCls:'icon-ok',
 				handler:function(){
 					$('#upload_fm').form({    
-						url:"resourceAction!importResource.act?sysRsRcCatalog.id=${sysRsRcCatalog.id}",
+						url:"resourceUpDownAction!importResource.act?sysRsRcCatalog.id=${sysRsRcCatalog.id}",
 						onSubmit:function(param){
 							var fileName = $("#file").val();
 							var reg = new RegExp("^.*\.(?:xlsx?)$");
