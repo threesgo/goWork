@@ -120,6 +120,12 @@ $(function(){
 	        		options:{required:true,validType:['length[1,30]','illegal']}
 	        	}
 	        },
+	        {field:'abbreviaName',title:"产品简称",width:80,sortable:true,
+	        	editor:{
+	        		type:"textbox",
+	        		options:{validType:['length[1,30]','illegal']}
+	        	}
+	        },
 	        {field:'purchasePrice',title:"采购价格",width:80,sortable:true,
 	        	editor:{
 	        		type:"numberbox",
@@ -342,7 +348,22 @@ resourceOperation = {
 	},
 	
 	search:function(){
+		var searchData = {};
+		searchData["rsrcCode"] = $("#rsrcCode").val();
+		searchData["rescName"] = $("#rescName").val();
+		searchData["abbreviaName"] = $("#abbreviaName").val();
 		
+		var $attrs = $("input[id^='attrib_']");
+		$.each($attrs,function(i,n){
+			var id = $(n).attr("id").substring(7,$(n).attr("id").length);
+			searchData[id] = $(n).val();
+		})
+		$resourceGrid.datagrid("reload",
+			{
+				"resourceJsonStr":Some.util.jsonToStr(searchData),
+				"sysRsRcCatalog.id":'${sysRsRcCatalog.id}'
+			}
+		);
 	},
 	
 	reset:function(){
@@ -350,58 +371,155 @@ resourceOperation = {
 	},
 	
 	importResource:function(){
-		
+		var node = resourceTypeTree.tree("getSelected");
+		var dialog =$('<div id="importResource"></div>').dialog({    
+			href : "resourceAction!importResourcePage.act",
+			width:480,
+			top:160,
+			title:"导入产品",
+			method:'post',
+			queryParams:{"sysRsRcCatalog.id":node.attributes.id},
+			modal:true,
+			resizable:true,
+			buttons:[{
+				text:"确定",
+				iconCls:'icon-ok',
+				handler:function(){
+					$('#upload_fm').form({    
+						url:"resourceAction!importResource.act?sysRsRcCatalog.id=${sysRsRcCatalog.id}",
+						onSubmit:function(param){
+							var fileName = $("#file").val();
+							var reg = new RegExp("^.*\.(?:xlsx?)$");
+							if (fileName.length == 0) {
+								$alert("请选择EXCEL文件导入!");
+								return false;
+							}
+							if (!reg.test(fileName)) {
+								$alert("请选择EXCEL文件导入!");
+								return false;
+							}
+						},
+						success:function(data){
+							handlerResult(data,
+			   			 		function(json){
+									$upload_fm.close();
+									$show(json.message);
+								},
+								function(json){
+									$show(json.message);
+								}
+							);
+						}
+					}).submit();  
+				}
+			},{
+				text:"取消",
+				iconCls:'icon-cancel',
+				handler:function(){
+					dialog.dialog("destroy");
+				}
+			}],
+			onClose:function(){
+				$(this).dialog("destroy");
+			}
+		});
 	},
 	
 	exportResource:function(){
-		
+		Some.util.newDownLoad({
+			url:"resourceAction!exportResource.act",
+			handler:function(){
+			}
+		});
 	}
 };
 </script>
 <style>
-	.resource{
+ 	#searchForm{
 		padding:3px;
 		float:left !important;
 		height: auto !important;
 		width: 100%;
 	}
-	.resource div{
-		margin-left: 20px;
+	.search-div{
+		margin-left: 30px;
 		height: 30px;
 		margin-top:3px;
 		float: left;
+		width: 240px;
 		*width: auto;
 		*float: left !important;
 		max-width: 300px;
 	}
-	.resource div.edit-item-resource{
-		width: 150px;
-		height: 20px;
-	}
-	.resource div label{
+	
+	#searchForm div label{
 		float: left;
 	}
 	
-	.resource div>input,.resource div>select,.resource div>ul,.resource div>span {
+	#searchForm div>input,#searchForm div>select{
 		float: right;
+		width: 152px;
+	}
+	
+	#searchForm div.select{
+		float: right;
+		width: 152px;
+	}
+	
+	#searchForm div>select{
+		width: 152px;
 	}
 </style>
 
 <div class="easyui-layout" data-options="fit:true,border : false">
-	<div data-options="region:'north',title:'查询条件',border:false,split:true" style="height: 130px; overflow: hidden;background-color: #F8F8F8" >
-		<div id="tools_div" class="resource variable">
-			<form id="searchForm">
-				<div class="attrs">
-					<lable for="">产品代号：</lable><input  id="rsrcCode"  style="width:125px;"/>
-				</div>
-				<div class="attrs">
-					<lable for="">产品名称：</lable><input id="rescName"  style="width:125px;"/>
-				</div>
-				<div class="attrs">
-					<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search', plain:true" onclick="resourceOperation.search()">查询</a> 
-					<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-reload', plain:true" onclick="resourceOperation.reset()">重置</a>	
-				</div>
-			</form>
+	<div id="searchForm" data-options="region:'north',title:'查询条件',border:false,split:true" style="height: 130px; overflow: hidden;background-color: #F8F8F8" >
+		<div class="search-div">
+			<lable for="">产品代号</lable>
+			<div class="select">
+				<input  type="text"  id="rsrcCode"/>
+			</div>
+		</div>
+		<div class="search-div">
+			<lable for="">产品名称</lable>
+			<div class="select">
+				<input  type="text"  id="rescName"/>
+			</div>
+		</div>
+		<div class="search-div">
+			<lable for="">产品简称</lable>
+			<div class="select">
+				<input  type="text"  id="abbreviaName"/>
+			</div>
+		</div>
+		<s:iterator value="attribCatalogs" id="attribCatalog" status="list">
+			<s:if test="#attribCatalog.showInFinder==1">
+				<div class="search-div">
+					<lable for="">${attribCatalog.rsrcAttribName}</lable>
+					<div class="select">
+						<input  id="attrib_${attribCatalog.id}"  
+						
+						<s:if test="#attribCatalog.controlTypeId==104">
+							type="text"
+						</s:if>
+						
+						<s:if test="#attribCatalog.controlTypeId==105">
+							type="text"
+						</s:if>
+						
+						<s:if test="#attribCatalog.controlTypeId==106">
+							type="text"
+						</s:if>
+						
+						<s:if test="#attribCatalog.controlTypeId==107">
+							class="easyui-datetimebox"
+						</s:if>/>
+					</div>
+				 </div>
+			</s:if>
+		</s:iterator>
+		<div class="search-div">
+			<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search', plain:true" onclick="resourceOperation.search()">查询</a> 
+			<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-reload', plain:true" onclick="resourceOperation.reset()">重置</a>	
 		</div>
 	</div>
 	<div data-options="region:'center',border:false">
