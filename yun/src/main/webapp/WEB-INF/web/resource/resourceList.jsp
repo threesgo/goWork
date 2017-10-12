@@ -7,8 +7,6 @@ var attrJsons={};
 var resourceEdit = undefined;
 var resourceOperation = {};
 var addId = 0;
-var isCancelOrSave = 1;
-
 $(function(){
  	columns=[];
  	<s:iterator value="attribCatalogs" id="attribCatalog" status="list">
@@ -164,21 +162,19 @@ $(function(){
  			$(this).datagrid('beginEdit',index);
 	    },
 	    onAfterEdit:function(rowIndex,rowData,changes){
-	    	//if(isCancelOrSave==1){
-		    	$.post("resourceAction!saveOrUpdateResourceGrid.act",
-		    			{"resourceJsonStr":Some.util.jsonToStr(rowData),"sysRsRcCatalog.id":${sysRsRcCatalog.id}},
-	       			 function(data){
-	      			 	handlerResult(data,
-	      			 		function(json){
-								$show(json.message);
-							},
-							function(json){
-								$show(json.message);
-							}
-						);
-	       			}
-		    	);
-	    	//}
+	    	$.post("resourceAction!saveOrUpdateResourceGrid.act",
+	    			{"resourceJsonStr":Some.util.jsonToStr(rowData),"sysRsRcCatalog.id":${sysRsRcCatalog.id}},
+       			 function(data){
+      			 	handlerResult(data,
+      			 		function(json){
+							$show(json.message);
+						},
+						function(json){
+							$show(json.message);
+						}
+					);
+       			}
+	    	);
         }
 	});
  	
@@ -341,10 +337,8 @@ resourceOperation = {
 	},
 	
 	cancelEdit:function(){
-		isCancelOrSave = 2;
-		$resourceGrid.datagrid("refreshRow",resourceEdit);
+		$resourceGrid.datagrid("reload");
 		resourceEdit = undefined;
-		isCancelOrSave = 1;
 	},
 	
 	search:function(){
@@ -530,9 +524,7 @@ resourceOperation = {
 <div  id="resource_operation_bar">
     <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add', plain:true" onclick="resourceOperation.addResource()">新增</a>
 	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit', plain:true" onclick="resourceOperation.editResource();">编辑</a>
-	<!--
 	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-quxiao', plain:true" onclick="resourceOperation.cancelEdit()">取消</a>
-	-->
 	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-save', plain:true" onclick="resourceOperation.updateResource()">保存</a>
 	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove', plain:true" onclick="resourceOperation.deleteResource()">删除</a>
 	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-download', plain:true" onclick="resourceOperation.importResource()">导入</a>

@@ -100,7 +100,7 @@ public class ResourceAction extends AbstractLoginAction{
 	 * @return  //每个资源类型下面显示当前类型下的资源 
 	 */
 	@SuppressWarnings("unchecked")
-	public String resourceListData(){/*
+	public String resourceListData(){
 		JSONObject obj=new JSONObject();
 		Pager<SysResource> pager = sysResourceService.findByRsRcCatalogId(sysRsRcCatalog.getId(),page,rows,
 				JSONObject.fromObject(resourceJsonStr));
@@ -132,8 +132,6 @@ public class ResourceAction extends AbstractLoginAction{
   	    }
 		obj.put("rows", arr);
   		return ajaxText(JSONObject.fromObject(obj).toString());
-	*/
-		return null;
 	}
 	
 	private Map<Integer,Map<Integer,SysRsRcAttrib>> conToMap(List<SysRsRcAttrib> sysRsRcAttribs){
