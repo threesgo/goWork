@@ -371,11 +371,66 @@ resourceOperation = {
 	},
 	
 	importResource:function(){
-		
+		var node = resourceTypeTree.tree("getSelected");
+		var dialog =$('<div id="importResource"></div>').dialog({    
+			href : "resourceAction!importResourcePage.act",
+			width:480,
+			top:160,
+			title:"导入产品",
+			method:'post',
+			queryParams:{"sysRsRcCatalog.id":node.attributes.id},
+			modal:true,
+			resizable:true,
+			buttons:[{
+				text:"确定",
+				iconCls:'icon-ok',
+				handler:function(){
+					$('#upload_fm').form({    
+						url:"resourceAction!importResource.act?sysRsRcCatalog.id=${sysRsRcCatalog.id}",
+						onSubmit:function(param){
+							var fileName = $("#file").val();
+							var reg = new RegExp("^.*\.(?:xlsx?)$");
+							if (fileName.length == 0) {
+								$alert("请选择EXCEL文件导入!");
+								return false;
+							}
+							if (!reg.test(fileName)) {
+								$alert("请选择EXCEL文件导入!");
+								return false;
+							}
+						},
+						success:function(data){
+							handlerResult(data,
+			   			 		function(json){
+									$upload_fm.close();
+									$show(json.message);
+								},
+								function(json){
+									$show(json.message);
+								}
+							);
+						}
+					}).submit();  
+				}
+			},{
+				text:"取消",
+				iconCls:'icon-cancel',
+				handler:function(){
+					dialog.dialog("destroy");
+				}
+			}],
+			onClose:function(){
+				$(this).dialog("destroy");
+			}
+		});
 	},
 	
 	exportResource:function(){
-		
+		Some.util.newDownLoad({
+			url:"resourceAction!exportResource.act",
+			handler:function(){
+			}
+		});
 	}
 };
 </script>
