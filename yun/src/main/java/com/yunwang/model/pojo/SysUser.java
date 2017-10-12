@@ -61,6 +61,11 @@ public class SysUser extends AbstractRowVersionModel{
     private Date updateStartDate;
 	@Transient
 	private Date updateEndDate;
+	@Transient
+	private String roles;
+	@Transient
+	private String roleIds;
+	
 
 	public Date getCreateStartDate() {
 		return createStartDate;
@@ -188,4 +193,21 @@ public class SysUser extends AbstractRowVersionModel{
 	public void setDepartmentId(Integer departmentId) {
 		this.departmentId = departmentId;
 	}
+
+	public String getRoles() {
+		return roles;
+	}
+
+	public void setRoles(String roles) {
+		this.roles = roles;
+	}
+
+	public String getRoleIds() {
+		return roleIds;
+	}
+
+	public void setRoleIds(String roleIds) {
+		this.roleIds = roleIds;
+	}
+	
 }

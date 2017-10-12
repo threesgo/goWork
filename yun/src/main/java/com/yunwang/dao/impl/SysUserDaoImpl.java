@@ -31,7 +31,7 @@ public class SysUserDaoImpl extends BaseDaoImpl<SysUser> implements SysUserDaoI{
 	* @return Pager<SysUser>    
 	* @throws
 	 */
-	public Pager<SysUser> findBySysUserId(JSONObject json, int page,int rows){
+	public Pager<SysUser> findAllUser(JSONObject json, int page,int rows){
 		StringBuffer buf = new StringBuffer();
 		/*buf.append("SELECT model FROM SysUser model,SysRole sysRole,SysUserRole sysUserRole "
 				+ " WHERE model.id = sysUserRole.userId AND sysUserRole.roleId = sysRole.id ");*/
@@ -45,5 +45,11 @@ public class SysUserDaoImpl extends BaseDaoImpl<SysUser> implements SysUserDaoI{
 	public List<SysUser> findBySysUserName(String userName) {
 		String hql ="SELECT model FROM SysUser model WHERE model.userName=? ";
 		return find(hql,userName);
+	}
+
+	@Override
+	public List<SysUser> findBySysUserNameExceptUserId(String userName,Integer userId) {
+		String hql ="SELECT model FROM SysUser model WHERE model.userName=? AND model.id!=?";
+		return find(hql,userName,userId);
 	}
 }

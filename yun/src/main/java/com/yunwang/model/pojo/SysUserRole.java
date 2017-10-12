@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * @author YBF
@@ -37,11 +38,24 @@ public class SysUserRole extends AbstractRowVersionModel {
 	@Column(name = "IS_DEFAULT")
 	private BigDecimal isDefault;  //1 、选择
 	
+	@Transient
+	private String userName;//用户名称
+	
+	private String name;//角色名称
 	
 	public SysUserRole(){
 		super();
 	}
 
+	public SysUserRole(Integer id,Integer userId,Integer roleId,
+					String userName,String name){
+		this.id = id;
+		this.userId = userId;
+		this.roleId = roleId;
+		this.userName = userName;
+		this.name = name;
+	}
+	
 	public Integer getId() {
 		return id;
 	}
@@ -73,4 +87,21 @@ public class SysUserRole extends AbstractRowVersionModel {
 	public void setIsDefault(BigDecimal isDefault) {
 		this.isDefault = isDefault;
 	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 }

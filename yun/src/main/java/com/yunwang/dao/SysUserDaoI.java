@@ -17,8 +17,10 @@ public interface SysUserDaoI extends BaseDaoI<SysUser>{
 	 */
 	SysUser getByUserName(String userName);
 	
-	Pager<SysUser> findBySysUserId(JSONObject json, int page,int rows);
+	Pager<SysUser> findAllUser(JSONObject json, int page,int rows);
 	
 	List<SysUser> findBySysUserName(String userName);
+	
+	List<SysUser> findBySysUserNameExceptUserId(String userName,Integer userId);
 
 }
