@@ -480,7 +480,7 @@ resourceOperation = {
 		<div class="search-div">
 			<lable for="">产品名称</lable>
 			<div class="select">
-				<input  type="text"  id="rescName"/>
+				<input  type="text"  id="rsrcName"/>
 			</div>
 		</div>
 		<div class="search-div">
