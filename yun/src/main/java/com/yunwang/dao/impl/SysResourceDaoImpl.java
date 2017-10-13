@@ -61,7 +61,7 @@ public class SysResourceDaoImpl extends BaseDaoImpl<SysResource> implements SysR
 	             }
 			}
 		}
-		buf.append(" ORDER BY model.createDate DESC");
+		buf.append(" ORDER BY model.orderNo");
 		return pagedQuery(buf.toString(), page, rows, map);
 	}
 	

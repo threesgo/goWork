@@ -242,8 +242,11 @@ resourceOperation = {
 				return false;
 			}
 		}
+		
+		var rows = $resourceGrid.datagrid("getData").rows;
+		var addIndex = rows.length;
 		$resourceGrid.datagrid('insertRow',{
-			index: 0,	// 索引从0开始
+			index: addIndex,	// 索引从0开始
 			row: {
 				id:addId--,
 				workType:1,
@@ -253,8 +256,8 @@ resourceOperation = {
 				salePrice:0
 			}
 		});
-		$resourceGrid.datagrid("beginEdit",0);
-		resourceEdit = 0;
+		$resourceGrid.datagrid("beginEdit",addIndex);
+		resourceEdit = addIndex;
 
 		//$resourceGrid.datagrid("reload");
 		/*
