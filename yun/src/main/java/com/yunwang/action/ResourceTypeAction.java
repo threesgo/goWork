@@ -204,6 +204,7 @@ public class ResourceTypeAction extends AbstractLoginAction{
 			}
 			return success("操作成功!",JSONObject.fromObject(sysRsRcCatalog));
 		}catch(Exception e){
+			LOG.error(e.getMessage());
 			return error("操作失败!");
 		}
 	}
@@ -248,6 +249,7 @@ public class ResourceTypeAction extends AbstractLoginAction{
 			}
 			return success("操作成功!");
 		}catch(Exception e){
+			LOG.error(e.getMessage());
 			return error("操作失败!");
 		}
 	}
@@ -260,6 +262,7 @@ public class ResourceTypeAction extends AbstractLoginAction{
 			sysResourceTypeService.deleteSysRsRcAttribCatalogs(id);
 			return success("操作成功!");
 		}catch(Exception e){
+			LOG.error(e.getMessage());
 			return error("操作失败!");
 		}
 	}
@@ -272,6 +275,7 @@ public class ResourceTypeAction extends AbstractLoginAction{
 			sysResourceTypeService.deleteRsRcCatalog(sysRsRcCatalog);
 			return success("操作成功!");
 		}catch(Exception e){
+			LOG.error(e.getMessage());
 			return error("操作失败!");
 		}
 	}

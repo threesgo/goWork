@@ -26,4 +26,6 @@ public interface SysResourceTypeService {
 	SysRsRcAttribCatalog getSysRsRcAttribCatalog(Integer attribCatalogId);
 
 	void deleteSysRsRcAttribCatalogs(String ids);
+
+	List<SysRsRcAttribCatalog> findAllAttr(SysRsRcCatalog sysRsRcCatalog);
 }

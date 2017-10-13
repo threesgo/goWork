@@ -14,15 +14,14 @@ import com.yunwang.model.pojo.SysDataDictionary;
 import com.yunwang.model.pojo.SysRsRcAttribCatalog;
 import com.yunwang.model.pojo.SysRsRcBaseData;
 import com.yunwang.model.pojo.SysRsRcCatalog;
-import com.yunwang.service.SysResourceTypeService;
+import com.yunwang.service.SysResourceService;
 import com.yunwang.util.BaseDataDictionaryUtil;
-import com.yunwang.util.SysRcBaseDataTypeUtil;
 import com.yunwang.util.action.AbstractLoginAction;
 
 @Action(
-	value = "resourceTypeAction", 
+	value = "resourcePackageAction", 
 	results = {
-		@Result(name = "index",location="/WEB-INF/web/resourceType/index.jsp")
+		@Result(name = "index",location="/WEB-INF/web/resourcePackage/index.jsp")
 	}
 )
 public class ResourcePackageAction extends AbstractLoginAction{
@@ -37,16 +36,10 @@ public class ResourcePackageAction extends AbstractLoginAction{
 	private static final long serialVersionUID = 1L;
 	
 	@Autowired
-	private SysResourceTypeService sysResourceTypeService;
+	private SysResourceService sysResourceService;
 	
-	private SysRsRcCatalog sysRsRcCatalog;
-	private SysRsRcAttribCatalog sysRsRcAttribCatalog;
+	@Autowired
 	private String id;
-	private List<SysRsRcBaseData> dataTypeList;
-	private List<SysRsRcBaseData> controlTypeList;
-	private List<SysRsRcBaseData> unitGroupList;
-	private List<SysRsRcBaseData> unitList;
-	private List<SysDataDictionary> catalogTypeList;
 	
 	
 	@Override
@@ -63,23 +56,14 @@ public class ResourcePackageAction extends AbstractLoginAction{
 		if (id==null) {
 			JSONObject json=new JSONObject();
 			json.put("id", "root");
-			json.put("text", "产品类别");
+			json.put("text", "产品组合");
 			JSONObject obj=new JSONObject();
 			obj.put("id",0);
 			json.put("attributes",obj);
 			json.put("state", "closed");
 			jsonArr.add(json);
 		}else{
-			List<SysRsRcCatalog> sysRcRsrcOrgList;
-			if("root".equals(id)){
-				sysRcRsrcOrgList = sysResourceTypeService.findRsRcCatalogByParentId(0);
-			}else{
-				int _id=Integer.parseInt(id.substring(3,id.length()));
-				sysRcRsrcOrgList = sysResourceTypeService.findRsRcCatalogByParentId(_id);
-			}
-			for(SysRsRcCatalog s:sysRcRsrcOrgList){
-				jsonArr.add(getJson(s));
-			}
+		
 		}
 		return ajaxText(jsonArr);
 	}
@@ -94,244 +78,40 @@ public class ResourcePackageAction extends AbstractLoginAction{
 	}
 	
 	/**
-	 * @return 查看类型信息
+	 * @return 查看组合信息
 	 */
 	public String info(){
 		return "info";
 	}
 	
 	/**
-	 * @return 查找继承属性
-	 */
-	public String findExtendsAttr(){
-		return ajaxJSONArr(sysResourceTypeService.findExtendsAttr(sysRsRcCatalog));
-	}
-	
-	/**
-	 * @return 查找本身属性
-	 */
-	public String findAttr(){
-		return ajaxJSONArr(sysResourceTypeService.findAttr(sysRsRcCatalog));
-	}
-	
-	/**
 	 * @return  获取类别需要编辑的属性，打包成json数组  （转换model类的属性，排除不可编辑行，通过国际化显示名称）
 	 */
 	public String infoData(){
-		sysRsRcCatalog = sysResourceTypeService.getRsRcCatalogInfo(sysRsRcCatalog.getId());
 		JSONArray jsonArr=new JSONArray();
-		
-		JSONObject json_name=new JSONObject();
-		json_name.put("attrName", "类型名称");
-		json_name.put("value", sysRsRcCatalog.getCatalogName());
-		jsonArr.add(json_name);
-		
-		JSONObject json_code=new JSONObject();
-		json_code.put("attrName","类型代号");
-		json_code.put("value", sysRsRcCatalog.getCatalogCode());
-		jsonArr.add(json_code);
-		
-		JSONObject json_type=new JSONObject();
-		json_type.put("attrName","类型类别");
-		json_type.put("value",BaseDataDictionaryUtil.valueMap.get(1).get(sysRsRcCatalog.getCatalogType().toString()).getName());
-		jsonArr.add(json_type);
+//		sysRsRcCatalog = sysResourceTypeService.getRsRcCatalogInfo(sysRsRcCatalog.getId());
+//		JSONObject json_name=new JSONObject();
+//		json_name.put("attrName", "组合代号");
+//		json_name.put("value", sysRsRcCatalog.getCatalogName());
+//		jsonArr.add(json_name);
+//		
+//		JSONObject json_code=new JSONObject();
+//		json_code.put("attrName","组合名称");
+//		json_code.put("value", sysRsRcCatalog.getCatalogCode());
+//		jsonArr.add(json_code);
+//		
+//		JSONObject json_type=new JSONObject();
+//		json_type.put("attrName","组合描述");
+//		json_type.put("value",BaseDataDictionaryUtil.valueMap.get(1).get(sysRsRcCatalog.getCatalogType().toString()).getName());
+//		jsonArr.add(json_type);
 		return ajaxText(jsonArr);
 	}
 	
-	
-	/**
-	 * @return  查询子集列表
-	 */
-	public String childrenPage(){
-		return "childrenPage";
-	}
-	
-	
-	/**
-	 * @return  查询子集列表
-	 */
-	public String childrenList(){
-		List<SysRsRcCatalog> sysRcRsrcOrgList = sysResourceTypeService.findRsRcCatalogByParentId(sysRsRcCatalog.getId());
-		return ajaxJSONArr(sysRcRsrcOrgList);
-	}
-	
-	
-	/**
-	 * @return 基本信息
-	 */
-	public String attrsPage(){
-		return "attrsPage";
-	}
-	
-	/**
-	 * @return 属性列表
-	 */
-	public String attrList(){
-		List<SysRsRcCatalog> sysRcRsrcOrgList = sysResourceTypeService.findRsRcCatalogByParentId(sysRsRcCatalog.getId());
-		return ajaxJSONArr(sysRcRsrcOrgList);
-	}
-	
-	/**
-	 * @return 新增资源属性
-	 */
-	public String saveOrUpdateTypePage(){
-		if(null != sysRsRcCatalog.getId()){
-			sysRsRcCatalog = sysResourceTypeService.getRsRcCatalogInfo(sysRsRcCatalog.getId());
-		}
-		catalogTypeList = BaseDataDictionaryUtil.baseDataMap.get(1);
-		return "saveOrUpdateTypePage";
-	}
-	
-	/**
-	 * @return  保存类型
-	 */
-	public String saveOrUpdateType(){
-		try{
-			if(null!=sysRsRcCatalog.getId()){
-				SysRsRcCatalog updateSysRsRcCatalog = sysResourceTypeService.getRsRcCatalogInfo(sysRsRcCatalog.getId());
-				updateSysRsRcCatalog.setCatalogCode(sysRsRcCatalog.getCatalogCode());
-				updateSysRsRcCatalog.setCatalogName(sysRsRcCatalog.getCatalogName());
-				updateSysRsRcCatalog.setCatalogType(sysRsRcCatalog.getCatalogType());
-				sysResourceTypeService.saveOrUpdateRsRcCatalog(updateSysRsRcCatalog);
-			}else{
-				sysRsRcCatalog.setCatalogStatus(1);
-				sysResourceTypeService.saveOrUpdateRsRcCatalog(sysRsRcCatalog);
-			}
-			return success("操作成功!",JSONObject.fromObject(sysRsRcCatalog));
-		}catch(Exception e){
-			return error("操作失败!");
-		}
-	}
-	
-	public String saveOrUpdateAttrPage(){
-		dataTypeList = SysRcBaseDataTypeUtil.dataTypeList;
-		controlTypeList = SysRcBaseDataTypeUtil.controlTypelist;
-		unitList = SysRcBaseDataTypeUtil.unitTypelist;
-		unitGroupList = SysRcBaseDataTypeUtil.unitGroupList;
-		if(null!=sysRsRcAttribCatalog&&null!=sysRsRcAttribCatalog.getId()){
-			sysRsRcAttribCatalog = sysResourceTypeService.getSysRsRcAttribCatalog(sysRsRcAttribCatalog.getId());
-		}
-		return "saveOrUpdateAttrPage";
-	}
-	
-	public String findSysRcBaseDataTypeByGroup(){
-		List<SysRsRcBaseData> list = sysResourceTypeService.findSysRcBaseDataTypeByGroup(id);
-		return ajaxJSONArr(list);
-	}
-	
-	/**
-	 * @return 更新属性
-	 */
-	public String saveOrUpdateAttr(){
-		try{
-			if(null != sysRsRcAttribCatalog.getId()){
-				SysRsRcAttribCatalog dbSysRsRcAttribCatalog = sysResourceTypeService.getSysRsRcAttribCatalog(sysRsRcAttribCatalog.getId());
-				dbSysRsRcAttribCatalog.setRsrcAttribCode(sysRsRcAttribCatalog.getRsrcAttribCode());
-				dbSysRsRcAttribCatalog.setRsrcAttribName(sysRsRcAttribCatalog.getRsrcAttribName());
-				dbSysRsRcAttribCatalog.setControlTypeId(sysRsRcAttribCatalog.getControlTypeId());
-				dbSysRsRcAttribCatalog.setDataTypeId(sysRsRcAttribCatalog.getDataTypeId());
-				dbSysRsRcAttribCatalog.setDataLength(sysRsRcAttribCatalog.getDataLength());
-				dbSysRsRcAttribCatalog.setUnitId(sysRsRcAttribCatalog.getUnitId());
-				dbSysRsRcAttribCatalog.setShowInListView(sysRsRcAttribCatalog.getShowInListView());
-				dbSysRsRcAttribCatalog.setShowInFinder(sysRsRcAttribCatalog.getShowInFinder());
-				dbSysRsRcAttribCatalog.setDataPrecision(sysRsRcAttribCatalog.getDataPrecision());
-				dbSysRsRcAttribCatalog.setDefaultValue(sysRsRcAttribCatalog.getDefaultValue());
-				dbSysRsRcAttribCatalog.setOrderNo(sysRsRcAttribCatalog.getOrderNo());
-				sysResourceTypeService.saveOrUpdateSysRsRcAttribCatalog(dbSysRsRcAttribCatalog);
-			}else{
-				sysResourceTypeService.saveOrUpdateSysRsRcAttribCatalog(sysRsRcAttribCatalog);
-			}
-			return success("操作成功!");
-		}catch(Exception e){
-			return error("操作失败!");
-		}
-	}
-	
-	/**
-	 * @return 删除资源类别
-	 */
-	public String deleteSysRsRcAttribCatalogs(){
-		try{
-			sysResourceTypeService.deleteSysRsRcAttribCatalogs(id);
-			return success("操作成功!");
-		}catch(Exception e){
-			return error("操作失败!");
-		}
-	}
-	
-	/**
-	 * @return 删除资源属性
-	 */
-	public String deleteSysRsRcCatalog(){
-		try{
-			sysResourceTypeService.deleteRsRcCatalog(sysRsRcCatalog);
-			return success("操作成功!");
-		}catch(Exception e){
-			return error("操作失败!");
-		}
-	}
-
 	public String getId() {
 		return id;
 	}
 
 	public void setId(String id) {
 		this.id = id;
-	}
-
-	public SysRsRcCatalog getSysRsRcCatalog() {
-		return sysRsRcCatalog;
-	}
-
-	public void setSysRsRcCatalog(SysRsRcCatalog sysRsRcCatalog) {
-		this.sysRsRcCatalog = sysRsRcCatalog;
-	}
-
-	public List<SysRsRcBaseData> getDataTypeList() {
-		return dataTypeList;
-	}
-
-	public void setDataTypeList(List<SysRsRcBaseData> dataTypeList) {
-		this.dataTypeList = dataTypeList;
-	}
-
-	public List<SysRsRcBaseData> getControlTypeList() {
-		return controlTypeList;
-	}
-
-	public void setControlTypeList(List<SysRsRcBaseData> controlTypeList) {
-		this.controlTypeList = controlTypeList;
-	}
-
-	public List<SysRsRcBaseData> getUnitGroupList() {
-		return unitGroupList;
-	}
-
-	public void setUnitGroupList(List<SysRsRcBaseData> unitGroupList) {
-		this.unitGroupList = unitGroupList;
-	}
-
-	public List<SysRsRcBaseData> getUnitList() {
-		return unitList;
-	}
-
-	public void setUnitList(List<SysRsRcBaseData> unitList) {
-		this.unitList = unitList;
-	}
-
-	public List<SysDataDictionary> getCatalogTypeList() {
-		return catalogTypeList;
-	}
-
-	public void setCatalogTypeList(List<SysDataDictionary> catalogTypeList) {
-		this.catalogTypeList = catalogTypeList;
-	}
-
-	public SysRsRcAttribCatalog getSysRsRcAttribCatalog() {
-		return sysRsRcAttribCatalog;
-	}
-
-	public void setSysRsRcAttribCatalog(SysRsRcAttribCatalog sysRsRcAttribCatalog) {
-		this.sysRsRcAttribCatalog = sysRsRcAttribCatalog;
 	}
 }

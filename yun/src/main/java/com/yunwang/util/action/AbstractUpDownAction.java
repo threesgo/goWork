@@ -9,7 +9,7 @@ import org.apache.struts2.convention.annotation.ParentPackage;
 import com.yunwang.model.pojo.SysUser;
 import com.yunwang.util.Constant;
 
-@ParentPackage("methodInterceptor")
+@ParentPackage("MethodInterceptor")
 public abstract class AbstractUpDownAction extends BaseAction{
 	
 	/*

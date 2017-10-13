@@ -1,7 +1,9 @@
 package com.yunwang.model.pojo;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 
 /**
@@ -58,6 +61,10 @@ public class SysResource extends AbstractRowVersionModel{
 
 	@Column(name = "UPDATE_DATE")
 	private Date updateDate; // 更新时间
+	
+	@Transient
+	private List<SysRsRcAttrib> sysRcRsrcAttribList = new ArrayList<SysRsRcAttrib>();
+	
 	
 	public SysResource(){
 		
@@ -157,5 +164,13 @@ public class SysResource extends AbstractRowVersionModel{
 
 	public void setAbbreviaName(String abbreviaName) {
 		this.abbreviaName = abbreviaName;
+	}
+
+	public List<SysRsRcAttrib> getSysRcRsrcAttribList() {
+		return sysRcRsrcAttribList;
+	}
+
+	public void setSysRcRsrcAttribList(List<SysRsRcAttrib> sysRcRsrcAttribList) {
+		this.sysRcRsrcAttribList = sysRcRsrcAttribList;
 	}
 }

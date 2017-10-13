@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.alibaba.fastjson.JSONObject;
 import com.yunwang.model.page.Pager;
-import com.yunwang.model.pojo.SysRole;
 import com.yunwang.model.pojo.SysUser;
 import com.yunwang.service.SysUserService;
 import com.yunwang.util.action.AbstractLoginAction;
@@ -99,7 +98,7 @@ public class SysUserAction extends AbstractLoginAction{
 			sysUserService.saveUserAndRole(sysUser,roleIds);
 			return success("添加成功");
 		}catch(Exception e){
-			e.printStackTrace();
+			LOG.error(e);
 			return error("添加失败");
 		}
 		
@@ -120,7 +119,7 @@ public class SysUserAction extends AbstractLoginAction{
 			sysUserService.updateUserAndRole(sysUser);
 			return success("添加成功");
 		}catch(Exception e){
-			e.printStackTrace();
+			LOG.error(e.getMessage());
 			return error("添加失败");
 		}
 	}

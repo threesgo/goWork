@@ -2,19 +2,51 @@ package com.yunwang.action;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 import org.apache.log4j.Logger;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.yunwang.model.pojo.SysDataDictionary;
+import com.yunwang.model.pojo.SysResource;
+import com.yunwang.model.pojo.SysRsRcAttrib;
+import com.yunwang.model.pojo.SysRsRcAttribCatalog;
+import com.yunwang.model.pojo.SysRsRcBaseData;
 import com.yunwang.model.pojo.SysRsRcCatalog;
 import com.yunwang.service.SysResourceService;
 import com.yunwang.service.SysResourceTypeService;
+import com.yunwang.util.BaseDataDictionaryUtil;
+import com.yunwang.util.PoiUtil;
+import com.yunwang.util.SysRcBaseDataTypeUtil;
 import com.yunwang.util.action.AbstractUpDownAction;
+import com.yunwang.util.annotation.DownloadAnnotation;
+import com.yunwang.util.collection.CollectionUtil;
+import com.yunwang.util.date.MyDateUtils;
+import com.yunwang.util.exception.MineException;
+import com.yunwang.util.number.MyNumberUtil;
+import com.yunwang.util.string.MyStringUtil;
+import com.yunwang.util.string.StringBufferByCollectionUtil;
 
 @Action(
 	value = "resourceUpDownAction", 
@@ -55,22 +87,39 @@ public class ResourceUpDownAction extends AbstractUpDownAction{
 		return "importResourcePage";
 	}
 	
+	private Map<Integer,Map<Integer,SysRsRcAttrib>> conToMap(List<SysRsRcAttrib> sysRsRcAttribs){
+		Map<Integer,Map<Integer,SysRsRcAttrib>> map = new HashMap<Integer,Map<Integer,SysRsRcAttrib>>();
+		for(SysRsRcAttrib attrib:sysRsRcAttribs){
+			Map<Integer,SysRsRcAttrib> childMap = map.get(attrib.getRsrcId());
+			if(null!=childMap){
+				childMap.put(attrib.getRsraAttribCatalogId(), attrib);
+			}else{
+				childMap = new HashMap<Integer,SysRsRcAttrib>();
+				childMap.put(attrib.getRsraAttribCatalogId(), attrib);
+				map.put(attrib.getRsrcId(), childMap);
+			}
+		}
+		return map;
+	}
+	
 	/**
 	 * @return 导出产品
 	 */
+    @DownloadAnnotation("resourceUpDownAction_exportResource")
 	public String exportResource(){
 		sysRsRcCatalog = sysResourceTypeService.getRsRcCatalogInfo(sysRsRcCatalog.getId());
+		List<SysRsRcAttribCatalog> attrList =  sysResourceTypeService.findAllAttr(sysRsRcCatalog);
+		List<SysResource> sysResources = sysResourceService.findByRsRcCatalogId(sysRsRcCatalog.getId());
+		List<SysRsRcAttrib> sysRsRcAttribs = sysResourceService.findSysRsRcAttribByResourceIds(
+					StringBufferByCollectionUtil.convertCollection(sysResources,"id"));
+		
+		JSONArray arr = packageRsources(attrList, sysResources, sysRsRcAttribs);
 		Workbook workbook=null;
-//		StringBuffer buf=sysRcRsrcOrgService.getParentTypeId(sysRcRsrcOrg);
-//		buf.append(sysRcRsrcOrg.getId());
-//		List<BopTmRsRcAttribCatalog> attrList=sysRcRsrcOrgService.getParentAttribType(buf.toString());
-//		List<SysRcResourceVo> resourceVoList=sysRcRsrcOrgService.packExportResource(sysRcRsrcOrg.getId());
-//		Workbook workbook=null;
-//        try {
-//            workbook = exportExcel(resourceVoList,attrList);
-//        } catch (Exception e) {
-//            LOG.error(e.getMessage());
-//        }
+        try {
+            workbook = exportExcel(arr,attrList);
+        } catch (Exception e) {
+            LOG.error(e.getMessage());
+        }
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
 		try{
 		    workbook.write(output);
@@ -88,6 +137,24 @@ public class ResourceUpDownAction extends AbstractUpDownAction{
 		}
 		return "exportResource";
 	}
+
+	private JSONArray packageRsources(List<SysRsRcAttribCatalog> attrList,
+			List<SysResource> sysResources, List<SysRsRcAttrib> sysRsRcAttribs) {
+		JSONArray arr = new JSONArray();
+		Map<Integer,Map<Integer,SysRsRcAttrib>> map = conToMap(sysRsRcAttribs);
+		for(SysResource resource:sysResources){
+			JSONObject newObj = JSONObject.fromObject(resource);
+			Map<Integer,SysRsRcAttrib> resourceMap = map.get(resource.getId());
+			if(null != resourceMap){
+				for(SysRsRcAttribCatalog attrCatalog : attrList){
+					SysRsRcAttrib attrib = resourceMap.get(attrCatalog.getId());
+					newObj.put(attrCatalog.getId(),null != attrib ?attrib.getRsrcAttribValue():"");
+				}
+			}
+			arr.add(newObj);
+		}
+		return arr;
+	}
 	
 	/** 
 	  * exportExcel() method
@@ -99,108 +166,71 @@ public class ResourceUpDownAction extends AbstractUpDownAction{
 	  * @return 
 	  * @return Workbook  
 	*/ 
-//	public Workbook exportExcel(List<SysRcResourceVo> resourceList,List<BopTmRsRcAttribCatalog> attrList)  {
-//	    Workbook wb = new HSSFWorkbook();
-//		Sheet sheet = wb.createSheet("exportResource");
-//		int nCol = 0;  //列编号
-//		int nRow = 0;  //行编号
-//		sheet.setColumnWidth(nCol++, 3000);
-//		sheet.setColumnWidth(nCol++, 3000);
-//		List<String> results = new ArrayList<String>();
-//		results.add(getText("resource_type_"));
-//		results.add(getText("_resource_code"));
-//		results.add(getText("resource_name"));
-//		results.add(getText("type"));
-//		for(BopTmRsRcAttribCatalog attrType:attrList){
-//			sheet.setColumnWidth(nCol++, 3000);
-//			results.add(attrType.getRsrcAttribName());
-//		}
-//		// 创建单元格样式
-//		CellStyle style = wb.createCellStyle();
-//		style.setAlignment(HSSFCellStyle.ALIGN_LEFT);
-//		style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
-//		// 创建Excel的sheet的一行
-//		Row row = sheet.createRow(nRow++);
-//	    Cell cell =null;
-//		row.setHeightInPoints(15);// 设定行的高度
-//		nCol = 0;
-//		for (String s : results) {
-//			cell = row.createCell(nCol++);
-//			cell.setCellStyle(style);
-//			cell.setCellValue(s);
-//		}
-//		for(SysRcResourceVo resource:resourceList){
-//			//打包表格数据
-//			row = sheet.createRow(nRow++);
-//			nCol=0;
-//			cell = row.createCell(nCol++);
-//			cell.setCellStyle(style);
-//			cell.setCellValue(resource.getRsrcOrgName());
-//			
-//			cell = row.createCell(nCol++);
-//			cell.setCellStyle(style);
-//			cell.setCellValue(resource.getRsrcCode());
-//			
-//			cell = row.createCell(nCol++);
-//			cell.setCellStyle(style);
-//			cell.setCellValue(resource.getRescName());
-//			
-//			cell = row.createCell(nCol++);
-//			cell.setCellStyle(style);
-//			cell.setCellValue(BaseDataDictionaryUtil.valueMap.
-//					get(new BigDecimal(11)).get(resource.getRsrcType().toString()).getChName());
-//			//根据本身属性和继承属性的查询资源属性值
-//			for(BopTmRsRcAttribCatalog attr:attrList){
-//				SysRcRsrcAttribVo sysRcRsrcAttrib=null;
-//				if(null!=resource.getRsrcAttrs()){
-//					for(SysRcRsrcAttribVo attribVo:resource.getRsrcAttrs()){
-//						if(attr.getId()-attribVo.getRsraAttribTypeId()==0){
-//							sysRcRsrcAttrib=attribVo;
-//							break;
-//						}
-//					}
-//				}
-//				//如果属性值为空则添加空值
-//				if(null==sysRcRsrcAttrib){
-//					cell = row.createCell(nCol++);
-//					cell.setCellStyle(style);
-//					String nullValue=null;
-//					cell.setCellValue(nullValue);
-//				}else{
-//					BopTmBaseDataCatalog sysRcBaseDataType=SysRcBaseDataTypeVo.allBaseDataMap.get(attr.getDataTypeId());
-//					cell = row.createCell(nCol++);
-//					cell.setCellStyle(style);
-//					if(null!=sysRcBaseDataType){
-//						//如果类型名称为数值型，给表格设置数值类型
-//						if("number".equals(sysRcBaseDataType.getRealName())){
-//							cell.setCellType(Cell.CELL_TYPE_NUMERIC);
-//						}
-//					}
-//					//如果属性类型为2(范围值)，则要对范围值进行“|”分开
-//					if(attr.getRsrcAttribType().equals(new BigDecimal(2))){
-//						//范围的前后都不为空
-//						if(null!=sysRcRsrcAttrib.getRsrcAttribValue()&&null!=sysRcRsrcAttrib.getRangeValue()){
-//							cell.setCellValue(sysRcRsrcAttrib.getRsrcAttribValue()+"|"+
-//									sysRcRsrcAttrib.getRangeValue());
-//						}else{
-//							//范围值都为空
-//							if(null==sysRcRsrcAttrib.getRsrcAttribValue()&&null==sysRcRsrcAttrib.getRangeValue()){
-//								String nullValue=null;
-//								cell.setCellValue(nullValue);
-//							}else if(null!=sysRcRsrcAttrib.getRsrcAttribValue()){
-//								cell.setCellValue(sysRcRsrcAttrib.getRsrcAttribValue()+"|");
-//							}else{
-//								cell.setCellValue("|"+sysRcRsrcAttrib.getRangeValue());
-//							}
-//						}
-//					}else{
-//						cell.setCellValue(sysRcRsrcAttrib.getRsrcAttribValue());
-//					}
-//				}
-//			}
-//		}
-//	 return wb;
-//	}
+	public Workbook exportExcel(JSONArray resourceList,List<SysRsRcAttribCatalog> attrList)  {
+	    Workbook wb = new HSSFWorkbook();
+		Sheet sheet = wb.createSheet("exportResource");
+		int nCol = 0;  //列编号
+		int nRow = 0;  //行编号
+		sheet.setColumnWidth(nCol++, 3000);
+		sheet.setColumnWidth(nCol++, 3000);
+		List<String> results = new ArrayList<String>();
+		results.add(getText("工种"));
+		results.add(getText("产品代号"));
+		results.add(getText("产品名称"));
+		results.add(getText("产品简称"));
+		
+		results.add(getText("采购价格"));
+		results.add(getText("销售价格"));
+		for(SysRsRcAttribCatalog attrType:attrList){
+			sheet.setColumnWidth(nCol++, 3000);
+			results.add(attrType.getRsrcAttribName());
+		}
+		// 创建单元格样式
+		CellStyle style = wb.createCellStyle();
+		style.setAlignment(HSSFCellStyle.ALIGN_LEFT);
+		style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+		// 创建Excel的sheet的一行
+		Row row = sheet.createRow(nRow++);
+	    Cell cell =null;
+		row.setHeightInPoints(15);// 设定行的高度
+		nCol = 0;
+		for (String s : results) {
+			cell = row.createCell(nCol++);
+			cell.setCellStyle(style);
+			cell.setCellValue(s);
+		}
+		
+		for(int index=0;index<resourceList.size();index++){
+			JSONObject obj = resourceList.getJSONObject(index);
+			//打包表格数据
+			row = sheet.createRow(nRow++);
+			nCol=0;
+			
+			cell = row.createCell(nCol++);
+			cell.setCellStyle(style);
+			cell.setCellValue(BaseDataDictionaryUtil.valueMap.get(4).get(obj.getString("workType")).getName());
+			
+			cell = row.createCell(nCol++);
+			cell.setCellStyle(style);
+			cell.setCellValue(obj.getString("rsrcCode"));
+			
+			cell = row.createCell(nCol++);
+			cell.setCellStyle(style);
+			cell.setCellValue(obj.getString("rsrcName"));
+			
+			cell = row.createCell(nCol++);
+			cell.setCellStyle(style);
+			cell.setCellValue(obj.getString("abbreviaName"));
+			
+			//根据本身属性和继承属性的查询资源属性值
+			for(SysRsRcAttribCatalog attr:attrList){
+				cell = row.createCell(nCol++);
+				cell.setCellStyle(style);
+				cell.setCellValue(obj.getString(attr.getId().toString()));
+			}
+		}
+	 return wb;
+	}
 	
 	/** 
 	  * importResource() method
@@ -213,72 +243,70 @@ public class ResourceUpDownAction extends AbstractUpDownAction{
 	public String importResource(){
 		sysRsRcCatalog = sysResourceTypeService.getRsRcCatalogInfo(sysRsRcCatalog.getId());
 		
-//		StringBuffer buf=sysRcRsrcOrgService.getParentTypeId(sysRcRsrcOrg);
-//		buf.append(sysRcRsrcOrg.getId());
-//		List<BopTmRsRcAttribCatalog> attrList=sysRcRsrcOrgService.getParentAttribType(buf.toString());
-//		
-//		Map<String,BopTmRsRcAttribCatalog> attrMap=getCataLogMap(attrList);
-//		Map<Integer,BopTmRsRcAttribCatalog> importAttrMap=new HashMap<Integer,BopTmRsRcAttribCatalog>();
-//		List<BopTmResource> resourceList=new ArrayList<BopTmResource>();
-//		InputStream in=null;
-//		String valdateString;
-//	    try {
-//	        in = new FileInputStream(importResource);
-//			Workbook workBook=null;
-//			if(importResourceFileName.endsWith(".xls")){
-//				workBook=new HSSFWorkbook(in);
-//			}else{
-//				workBook=new XSSFWorkbook(in);
-//			}
-//			//遍历表格sheet
-//			for (int numSheet = 0; numSheet < workBook.getNumberOfSheets(); numSheet++) {
-//			    Sheet sheet = workBook.getSheetAt(numSheet);
-//			    if (sheet == null) {
-//			        continue;
-//   			}
-//			    //遍历每个sheet的每行row
-//				for (int rowNum =0; rowNum <= sheet.getLastRowNum(); rowNum++) {
-//					Row row = sheet.getRow(rowNum);
-//					if (row == null) {
-//						break;
-//					}
-//					Cell cell;
-//					if(rowNum-0==0){
-//						//遍历row的cell
-//						for (int cellNum = 0; cellNum < row.getLastCellNum(); cellNum++) {
-//							if(cellNum>3){
-//								cell=row.getCell(cellNum);
-//								String value=cutAfterPoint(getValue(cell,sheet,workBook));
-//								BopTmRsRcAttribCatalog attrCata=attrMap.get(value);
-//								if(null==attrCata){
-//									return ajaxText(String.format(getText("importandaxportresourceaction_importresourceexcel_exception"),
-//											rowNum+1,cellNum+1,value));
-//								}else{
-//									importAttrMap.put(cellNum,attrCata);
-//								}
-//							}
-//						}
-//					}else{
-//						//打包导入资源数据
-//						valdateString=packResourceList(row,sheet,workBook,importAttrMap,resourceList);
-//						if(null!=valdateString){
-//							return ajaxText(valdateString);
-//						}
-//					}
-//				}
-//   		 }
-//			sysRcResourceService.saveResources(resourceList,sysRcRsrcOrg);
-//			return ajaxText(Constant.STATUS_AVAILABLE);
-//	    }catch(Exception e){
-//		    return ajaxText(Constant.STATUS_BLOCKED);
-//		}finally{
-//		    try {
-//               in.close();
-//           } catch (IOException e) {
-//               LOG.error(e.getMessage());
-//           }
-//		}
-		return null;
+		List<SysRsRcAttribCatalog> attrList =  sysResourceTypeService.findAllAttr(sysRsRcCatalog);
+		
+		Map<String,SysRsRcAttribCatalog> attrMap = CollectionUtil.listToMap(attrList,"rsrcAttribName");
+		
+		Map<Integer,SysRsRcAttribCatalog> importAttrMap=new HashMap<Integer,SysRsRcAttribCatalog>();
+		List<SysResource> resourceList=new ArrayList<SysResource>();
+		InputStream in=null;
+		String valdateString;
+	    try {
+	        in = new FileInputStream(importResource);
+			Workbook workBook=null;
+			if(importResourceFileName.endsWith(".xls")){
+				workBook=new HSSFWorkbook(in);
+			}else{
+				workBook=new XSSFWorkbook(in);
+			}
+			//遍历表格sheet
+			for (int numSheet = 0; numSheet < workBook.getNumberOfSheets(); numSheet++) {
+			    Sheet sheet = workBook.getSheetAt(numSheet);
+			    if (sheet == null) {
+			        continue;
+			    }
+			    //遍历每个sheet的每行row
+			    for (int rowNum =0; rowNum <= sheet.getLastRowNum(); rowNum++) {
+					Row row = sheet.getRow(rowNum);
+					if (row == null) {
+						break;
+					}
+					Cell cell;
+					if(rowNum-0==0){
+						//遍历row的cell
+						for (int cellNum = 0; cellNum < row.getLastCellNum(); cellNum++) {
+							if(cellNum > 5){
+								cell=row.getCell(cellNum);
+								String value=cutAfterPoint(PoiUtil.getCellValue(cell,sheet,workBook));
+								SysRsRcAttribCatalog attrCata=attrMap.get(value);
+								if(null==attrCata){
+									throw new MineException(
+											String.format("第(%s)行第(%s)列的产品属性(%s)与产品类型定义属性不匹配",rowNum+1,cellNum+1,value));
+								}else{
+									importAttrMap.put(cellNum,attrCata);
+								}
+							}
+						}
+					}else{
+						//打包导入资源数据
+						valdateString = packResourceList(row,sheet,workBook,importAttrMap,resourceList);
+						if(null!=valdateString){
+							throw new MineException(valdateString);
+						}
+					}
+				}
+   		 	}
+			sysResourceService.saveImportResources(resourceList,sysRsRcCatalog);
+			return success("导入成功!");
+	    }catch(Exception e){
+		    return error("导入失败!",e);
+		}finally{
+		    try {
+               in.close();
+           } catch (IOException e) {
+               LOG.error(e.getMessage());
+           }
+		}
 	}
 	
 	/** 
@@ -295,202 +323,182 @@ public class ResourceUpDownAction extends AbstractUpDownAction{
 	  * @return 
 	  * @return String  
 	*/ 
-//	private String packResourceList(Row row,Sheet sheet,Workbook workBook,
-//			Map<Integer,BopTmRsRcAttribCatalog> importAttrMap,List<BopTmResource> resourceList){
-//		BopTmResource sysRcResource=new BopTmResource();
-//		sysRcResource.setRsrcCode(cutAfterPoint(getValue(row.getCell(1),sheet,workBook)));
-//		if(null==sysRcResource.getRsrcCode()){
-//			return String.format(getText("importandaxportresourceaction_packresourcelist_exception"),row.getRowNum()+1);
-//		}
-//		//后来添加（以前写在service层）主要判断导入数据的相同性
-//		boolean flag=true;
-//		
-//		for(BopTmResource addResource:resourceList){
-//			if(addResource.getRsrcCode().equals(sysRcResource.getRsrcCode())){
-//				//sysRcResource=addResource;
-//				flag=false;
-//			}
-//		}
-//		if(flag){
-//			sysRcResource.setRescName(cutAfterPoint(getValue(row.getCell(2),sheet,workBook)));
-//			List<BopTmRsRcAttrib> sysRcRsrcAttribList=new ArrayList<BopTmRsRcAttrib>();
-//			for (int cellNum = 4; cellNum < row.getLastCellNum(); cellNum++) {
-//				BopTmRsRcAttribCatalog sysRcRsrcAttribType=importAttrMap.get(cellNum);
-//				if(null!=sysRcRsrcAttribType){
-//					BopTmRsRcAttrib sysRcRsrcAttrib=new BopTmRsRcAttrib();
-//					String stringValue=getValue(row.getCell(cellNum),sheet,workBook);
-//					//当单元格数据不为空
-//					if(null!=stringValue){
-//						//验证导入资源数据长度
-//						if(null!=sysRcRsrcAttribType.getDataLength()){
-//							String validataLength=validateDataLength(sysRcResource, stringValue,
-//									sysRcRsrcAttribType);
-//							if(null!=validataLength){
-//								return validataLength;
-//							}
-//						}
-//						BopTmBaseDataCatalog dataType=SysRcBaseDataTypeVo.allBaseDataMap.get(sysRcRsrcAttribType.getDataTypeId());
-//						BopTmBaseDataCatalog controlType=SysRcBaseDataTypeVo.allBaseDataMap.get(sysRcRsrcAttribType.getControlTypeId());
-//						//验证控件类型与数据合法性
-//						if(null!=controlType){
-//							String validataControlList=validataControlList(sysRcResource, stringValue,
-//									sysRcRsrcAttribType, controlType);
-//							if(null!=validataControlList){
-//								return validataControlList;
-//							}
-//						}
-//						//验证数据类型合法性
-//						if(null!=dataType){
-//							String validateDataType=validateDataType(sysRcResource, stringValue,
-//									sysRcRsrcAttribType, dataType);
-//							if(null!=validateDataType){
-//								return validateDataType;
-//							}
-//						}
-//						//验证属性类型，当属性为范围值是，导入数据用“|”分隔
-//						if(sysRcRsrcAttribType.getRsrcAttribType().equals(new BigDecimal(2))){
-//							String[] values=stringValue.split("\\|");
-//							//当具有大小范围值时：
-//							if(values.length>1){
-//								sysRcRsrcAttrib.setRsrcAttribValue(values[0]);
-//								sysRcRsrcAttrib.setRangeValue(values[1]);
-//							}else{
-//								sysRcRsrcAttrib.setRsrcAttribValue(values[0]);
-//							}
-//						}else{
-//							sysRcRsrcAttrib.setRsrcAttribValue(stringValue);
-//						}
-//					   //}
-//					}else{
-//						sysRcRsrcAttrib.setRsrcAttribValue(null);
-//					}
-//					sysRcRsrcAttrib.setRsraAttribTypeId(sysRcRsrcAttribType.getId());
-//					sysRcRsrcAttribList.add(sysRcRsrcAttrib);
-//				}
-//			}
-//			sysRcResource.setSysRcRsrcAttribList(sysRcRsrcAttribList);
-//			resourceList.add(sysRcResource);
-//		}
-//		return null; //svn
-//	}
+	private String packResourceList(Row row,Sheet sheet,Workbook workBook,
+			Map<Integer,SysRsRcAttribCatalog> importAttrMap,List<SysResource> resourceList){
+		SysResource sysRcResource = new SysResource();
+		sysRcResource.setRsrcCode(cutAfterPoint(PoiUtil.getCellValue(row.getCell(1),sheet,workBook)));
+		if(null==sysRcResource.getRsrcCode()){
+			return String.format("第(%s)行的产品代号不能为空",row.getRowNum()+1);
+		}
+		//后来添加（以前写在service层）主要判断导入数据的相同性
+		boolean flag=true;
+		
+		for(SysResource addResource:resourceList){
+			if(addResource.getRsrcCode().equals(sysRcResource.getRsrcCode())){
+				flag=false;
+			}
+		}
+		if(flag){
+			String workType = PoiUtil.getCellValue(row.getCell(0),sheet,workBook);
+			if(MyStringUtil.isNotBlank(workType)){
+				return String.format("第(%s)行工种类型不能为空",row.getRowNum()+1);
+			}
+			SysDataDictionary dictionary = BaseDataDictionaryUtil.nameMap.get(4).get(workType);
+			if(null != dictionary){
+				sysRcResource.setWorkType(Integer.parseInt(dictionary.getValue()));
+			}else{
+				return String.format("第(%s)行工种类型未定义",row.getRowNum()+1);
+			}
+			
+			String rsrcCode = cutAfterPoint(PoiUtil.getCellValue(row.getCell(1),sheet,workBook));
+			if(MyStringUtil.isNotBlank(rsrcCode)){
+				return String.format("第(%s)行产品代号不能为空",row.getRowNum()+1);
+			}
+			sysRcResource.setRsrcCode(cutAfterPoint(PoiUtil.getCellValue(row.getCell(1),sheet,workBook)));
+			
+			sysRcResource.setRsrcName(cutAfterPoint(PoiUtil.getCellValue(row.getCell(2),sheet,workBook)));
+			sysRcResource.setAbbreviaName(cutAfterPoint(PoiUtil.getCellValue(row.getCell(3),sheet,workBook)));
+
+			String purchasePrice = PoiUtil.getCellValue(row.getCell(4),sheet,workBook);
+			if(MyStringUtil.isNotBlank(purchasePrice) && MyNumberUtil.isNumber(purchasePrice)){
+				sysRcResource.setPurchasePrice(new BigDecimal(PoiUtil.getCellValue(row.getCell(1),sheet,workBook)));
+			}else{
+				return String.format("第(%s)行的采购价格不能为空且必须为数值类型",row.getRowNum()+1);	
+			}
+			
+			List<SysRsRcAttrib> sysRcRsrcAttribList=new ArrayList<SysRsRcAttrib>();
+			for (int cellNum = 5; cellNum < row.getLastCellNum(); cellNum++) {
+				SysRsRcAttribCatalog sysRcRsrcAttribType=importAttrMap.get(cellNum);
+				if(null!=sysRcRsrcAttribType){
+					SysRsRcAttrib sysRcRsrcAttrib=new SysRsRcAttrib();
+					String stringValue=PoiUtil.getCellValue(row.getCell(cellNum),sheet,workBook);
+					//当单元格数据不为空
+					if(null!=stringValue){
+						//验证导入资源数据长度
+						if(null!=sysRcRsrcAttribType.getDataLength()){
+							String validataLength=validateDataLength(sysRcResource, stringValue,sysRcRsrcAttribType);
+							if(null!=validataLength){
+								return validataLength;
+							}
+						}
+						SysRsRcBaseData dataType = SysRcBaseDataTypeUtil.allBaseDataMap.get(sysRcRsrcAttribType.getDataTypeId());
+						SysRsRcBaseData controlType = SysRcBaseDataTypeUtil.allBaseDataMap.get(sysRcRsrcAttribType.getControlTypeId());
+						//验证控件类型与数据合法性
+						if(null!=controlType){
+							String validataControlList=validataControlList(sysRcResource, stringValue,
+									sysRcRsrcAttribType, controlType);
+							if(null!=validataControlList){
+								return validataControlList;
+							}
+						}
+						//验证数据类型合法性
+						if(null!=dataType){
+							String validateDataType=validateDataType(sysRcResource, stringValue,
+									sysRcRsrcAttribType, dataType);
+							if(null!=validateDataType){
+								return validateDataType;
+							}
+						}
+						sysRcRsrcAttrib.setRsrcAttribValue(stringValue);
+					}else{
+						sysRcRsrcAttrib.setRsrcAttribValue(null);
+					}
+					sysRcRsrcAttribList.add(sysRcRsrcAttrib);
+				}
+			}
+			sysRcResource.setSysRcRsrcAttribList(sysRcRsrcAttribList);
+			resourceList.add(sysRcResource);
+		}
+		return null;
+	}
 	
-//	/**
-//	 * @author 方宜斌
-//	 * <b>验证数据类型</b>
-//	 * 2014-11-21
-//	 * @param sysRcResource
-//	 * @param stringValue
-//	 * @param sysRcRsrcAttribType
-//	 * @param dataType
-//	 * @return
-//	 */
-//	private String validateDataType(BopTmResource sysRcResource,
-//			String stringValue, BopTmRsRcAttribCatalog sysRcRsrcAttribType,
-//			BopTmBaseDataCatalog dataType) {
-//		if("number".equals(dataType.getRealName())){
-//			boolean flag=false;
-//			if(sysRcRsrcAttribType.getRsrcAttribType().equals(new BigDecimal(2))){
-//				String[] values=stringValue.split("\\|");
-//				for(String value:values){
-//					if(MyStringUtil.isBlank(value)){
-//						continue;
-//					}
-//					if(!MyNumberUtil.isNumber(value)){
-//						flag=true;
-//						break;
-//					}
-//				}
-//			}else if(!MyNumberUtil.isNumber(stringValue)){
-//				flag=true;
-//			}
-//			if(flag){
-//				return String.format(getText("importandaxportresourceaction_validatedatatype_numtype_exception"),sysRcResource.getRsrcCode(),
-//						sysRcRsrcAttribType.getRsrcAttribName(),stringValue);
-//			}
-//		}
-//		if("date".equals(dataType.getRealName())){
-//			boolean flag=false;
-//			if(sysRcRsrcAttribType.getRsrcAttribType().equals(new BigDecimal(2))){
-//				String[] values=stringValue.split("\\|");
-//				for(String value:values){
-//					if(MyStringUtil.isBlank(value)){
-//						continue;
-//					}
-//					if(!MyDateUtils.validateDate(value)){
-//						flag=true;
-//						break;
-//					}
-//				}
-//			}else if(!MyDateUtils.validateDate(stringValue)){
-//				flag=true;
-//			}
-//			if(flag){
-//				return String.format(getText("importandaxportresourceaction_validatedatatype_date_exception"),sysRcResource.getRsrcCode(),
-//						sysRcRsrcAttribType.getRsrcAttribName(),stringValue);
-//			}
-//		}
-//		return null;
-//	}
-//
-//	/**
-//	 * @author 方宜斌
-//	 * <b>验证控件类型为列表时的导入数据合法性</b>
-//	 * 2014-11-21
-//	 * @param sysRcResource
-//	 * @param stringValue
-//	 * @param sysRcRsrcAttribType
-//	 * @param controlType
-//	 * @return
-//	 */
-//	private String validataControlList(BopTmResource sysRcResource,
-//			String stringValue, BopTmRsRcAttribCatalog sysRcRsrcAttribType,
-//			BopTmBaseDataCatalog controlType) {
-//		if("checkbox".equals(controlType.getRealName())||"select".equals(controlType.getRealName())){
-//			String[] defaultValues=sysRcRsrcAttribType.getDefaultValue().split("\\|");
-//			boolean flag=true;
-//			for(String value:defaultValues){
-//				if(value.equals(stringValue)){
-//					flag=false;
-//					break;
-//				}
-//			}
-//			if(flag){
-//				return String.format(getText("importandaxportresourceaction_validatacontrollist_exception"),sysRcResource.getRsrcCode(),
-//						sysRcRsrcAttribType.getRsrcAttribName(),stringValue);
-//			}
-//		}
-//		return null;
-//	}
-//
-//	/**
-//	 * @author 方宜斌
-//	 * <b>验证数据长度</b>
-//	 * 2014-11-21
-//	 * @param sysRcResource
-//	 * @param stringValue
-//	 * @param sysRcRsrcAttribType
-//	 * @return
-//	 */
-//	private String validateDataLength(BopTmResource sysRcResource,
-//			String stringValue, BopTmRsRcAttribCatalog sysRcRsrcAttribType) {
-//		boolean flag=false;
-//		if(sysRcRsrcAttribType.getRsrcAttribType().equals(new BigDecimal(2))){
-//			String[] values=stringValue.split("\\|");
-//			for(String value:values){
-//				if(value.length()>sysRcRsrcAttribType.getDataLength().intValue()){
-//					flag=true;
-//					break;
-//				}
-//			}
-//		}else if(stringValue.length()>sysRcRsrcAttribType.getDataLength().intValue()){
-//			flag=true;
-//		}
-//		if(flag){
-//			return String.format(getText("importandaxportresourceaction_validatedatalength_exception"),sysRcResource.getRsrcCode(),
-//					sysRcRsrcAttribType.getRsrcAttribName(),stringValue);
-//		}
-//		return null;
-//	}
+	/**
+	 * @author 方宜斌
+	 * <b>验证数据类型</b>
+	 * 2014-11-21
+	 * @param sysResource
+	 * @param stringValue
+	 * @param sysRcRsrcAttribType
+	 * @param dataType
+	 * @return
+	 */
+	private String validateDataType(SysResource sysResource,
+			String stringValue, SysRsRcAttribCatalog sysRcRsrcAttribType,
+			SysRsRcBaseData dataType) {
+		if("number".equals(dataType.getRealName())){
+			boolean flag=false;
+			if(!MyNumberUtil.isNumber(stringValue)){
+				flag=true;
+			}
+			if(flag){
+				return String.format(getText("产品代号(%s)的属性列(%s)的导入数据(%s)的类型错误,不为数值类型"),sysResource.getRsrcCode(),
+						sysRcRsrcAttribType.getRsrcAttribName(),stringValue);
+			}
+		}
+		if("date".equals(dataType.getRealName())){
+			boolean flag=false;
+			if(!MyDateUtils.validateDate(stringValue)){
+				flag=true;
+			}
+			if(flag){
+				return String.format(getText("产品代号(%s)的属性列(%s)的导入数据(%s)的类型错误，不为日期类型或者不合法"),sysResource.getRsrcCode(),
+						sysRcRsrcAttribType.getRsrcAttribName(),stringValue);
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * @author 方宜斌
+	 * <b>验证控件类型为列表时的导入数据合法性</b>
+	 * 2014-11-21
+	 * @param sysResource
+	 * @param stringValue
+	 * @param sysRcRsrcAttribType
+	 * @param controlType
+	 * @return
+	 */
+	private String validataControlList(SysResource sysResource,
+			String stringValue, SysRsRcAttribCatalog sysRcRsrcAttribType,
+			SysRsRcBaseData controlType) {
+		if("checkbox".equals(controlType.getRealName())||"select".equals(controlType.getRealName())){
+			String[] defaultValues=sysRcRsrcAttribType.getDefaultValue().split("\\|");
+			boolean flag=true;
+			for(String value:defaultValues){
+				if(value.equals(stringValue)){
+					flag=false;
+					break;
+				}
+			}
+			if(flag){
+				return String.format(getText("产品代号(%s)的属性列(%s)的导入数据(%s)的与设置列表的值不对应"),sysResource.getRsrcCode(),
+						sysRcRsrcAttribType.getRsrcAttribName(),stringValue);
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * @author 方宜斌
+	 * <b>验证数据长度</b>
+	 * 2014-11-21
+	 * @param sysRcResource
+	 * @param stringValue
+	 * @param sysRcRsrcAttribType
+	 * @return
+	 */
+	private String validateDataLength(SysResource sysRcResource,
+			String stringValue, SysRsRcAttribCatalog sysRcRsrcAttribType) {
+		boolean flag=false;
+		if(stringValue.length()>sysRcRsrcAttribType.getDataLength().intValue()){
+			flag=true;
+		}
+		if(flag){
+			return String.format(getText("产品代号(%s)的属性列(%s)的导入数据(%s)长度大于设置值！"),sysRcResource.getRsrcCode(),
+					sysRcRsrcAttribType.getRsrcAttribName(),stringValue);
+		}
+		return null;
+	}
 	
 	/**
 	  * @author 方宜斌

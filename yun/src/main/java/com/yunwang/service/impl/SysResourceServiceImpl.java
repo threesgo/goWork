@@ -113,4 +113,10 @@ public class SysResourceServiceImpl implements SysResourceService{
 		sysRsRcAttribDao.deleteByPropertys("rsrcId", ids);
 		sysResourceDao.deleteByPropertys("id",ids);
 	}
+
+	@Override
+	public void saveImportResources(List<SysResource> resourceList,
+			SysRsRcCatalog sysRsRcCatalog) {
+		
+	}
 }

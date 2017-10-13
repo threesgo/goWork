@@ -1,11 +1,5 @@
 package com.yunwang.action;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,7 +9,6 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.apache.log4j.Logger;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,12 +60,6 @@ public class ResourceAction extends AbstractLoginAction{
 	private List<SysDataDictionary> flowList;
 	private Map<String,Object> hashMap;
 	private String resourceJsonStr;
-	
-	private String importResourceFileName;
-	private String importResourceContentType;
-	private File importResource;
-	private InputStream exportResourceStream; // 输入流的名字
-	private String exportResourceFileName; // 输出文件的名字
 	
 	@Override
 	public String execute() throws Exception {
@@ -169,6 +156,7 @@ public class ResourceAction extends AbstractLoginAction{
 			sysResourceService.saveOrUpdateResourceGrid(obj,sysRsRcCatalog);
 			return success("行数据保存成功!");
 		}catch(Exception e){
+			LOG.error(e.getMessage());
 			return error("行数据保存失败!");
 		}
 	}
@@ -181,6 +169,7 @@ public class ResourceAction extends AbstractLoginAction{
 			sysResourceService.deleteResource(ids);
 			return success("操作成功!");
 		}catch(Exception e){
+			LOG.error(e.getMessage());
 			return error("操作失败!");
 		}
 	}
@@ -191,6 +180,7 @@ public class ResourceAction extends AbstractLoginAction{
 			sysResourceService.save(sysResource);
 			return success("操作成功!");
 		}catch(Exception e){
+			LOG.error(e.getMessage());
 			return error("操作失败!");
 		}
 	}

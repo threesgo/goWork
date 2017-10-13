@@ -22,7 +22,7 @@ values(5,'类别管理','resourceTypeAction.act','cog_edit',4,1,1,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
 values(6,'产品管理','resourceAction.act','cog_edit',4,2,1,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
-values(7,'套餐管理','packageAction.act','cog_edit',4,3,1,1);
+values(7,'套餐管理','resourcePackageAction.act','cog_edit',4,3,1,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
 values(8,'流程管理','','door_in',0,3,1,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
