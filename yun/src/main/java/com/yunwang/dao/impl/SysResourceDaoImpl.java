@@ -55,7 +55,7 @@ public class SysResourceDaoImpl extends BaseDaoImpl<SysResource> implements SysR
 	             if(MyNumberUtil.isNumber(key)&&MyStringUtil.isNotBlank(value)){
 	            	//属性值按照in值判断
 	     			buf.append(" AND model.id in (");
-	     			buf.append("SELECT attrib.rsrcId FROM SysRsRcAttrib attrib WHERE attrib.rsraAttribCatalogId ="+seachJson.getInt(key)
+	     			buf.append("SELECT attrib.rsrcId FROM SysRsRcAttrib attrib WHERE attrib.rsraAttribCatalogId ="+key
 	     					+" AND attrib.rsrcAttribValue like '%"+value+"%'");
 	     			buf.append(")");
 	             }

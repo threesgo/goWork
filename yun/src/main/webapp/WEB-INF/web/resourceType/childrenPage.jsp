@@ -23,7 +23,7 @@ $(function(){
 		{
 			field : 'catalogCode',
 			title : "类型代号",
-			width : '50%',
+			width : '49%',
 			sortable : true,
 			sorter : function(a, b) {
 				return a > b ? 1 : -1;
@@ -32,7 +32,7 @@ $(function(){
 		{
 			field : 'catalogName',
 			title : "类型名称",
-			width : '50%',
+			width : '49%',
 			sortable : true,
 			sorter : function(a, b) {
 				return a > b ? 1 : -1;

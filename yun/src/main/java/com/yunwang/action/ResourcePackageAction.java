@@ -1,7 +1,5 @@
 package com.yunwang.action;
 
-import java.util.List;
-
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -10,12 +8,8 @@ import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.yunwang.model.pojo.SysDataDictionary;
-import com.yunwang.model.pojo.SysRsRcAttribCatalog;
-import com.yunwang.model.pojo.SysRsRcBaseData;
 import com.yunwang.model.pojo.SysRsRcCatalog;
 import com.yunwang.service.SysResourceService;
-import com.yunwang.util.BaseDataDictionaryUtil;
 import com.yunwang.util.action.AbstractLoginAction;
 
 @Action(

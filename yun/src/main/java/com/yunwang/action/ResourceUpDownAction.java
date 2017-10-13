@@ -108,6 +108,7 @@ public class ResourceUpDownAction extends AbstractUpDownAction{
     @DownloadAnnotation("resourceUpDownAction_exportResource")
 	public String exportResource(){
 		sysRsRcCatalog = sysResourceTypeService.getRsRcCatalogInfo(sysRsRcCatalog.getId());
+		exportResourceFileName = sysRsRcCatalog.getCatalogCode()+"_"+sysRsRcCatalog.getCatalogName()+".xls";
 		List<SysRsRcAttribCatalog> attrList =  sysResourceTypeService.findAllAttr(sysRsRcCatalog);
 		List<SysResource> sysResources = sysResourceService.findByRsRcCatalogId(sysRsRcCatalog.getId());
 		List<SysRsRcAttrib> sysRsRcAttribs = sysResourceService.findSysRsRcAttribByResourceIds(
@@ -221,6 +222,15 @@ public class ResourceUpDownAction extends AbstractUpDownAction{
 			cell = row.createCell(nCol++);
 			cell.setCellStyle(style);
 			cell.setCellValue(obj.getString("abbreviaName"));
+			
+			cell = row.createCell(nCol++);
+			cell.setCellStyle(style);
+			cell.setCellValue(obj.getString("purchasePrice"));
+			
+			cell = row.createCell(nCol++);
+			cell.setCellStyle(style);
+			cell.setCellValue(obj.getString("salePrice"));
+			
 			
 			//根据本身属性和继承属性的查询资源属性值
 			for(SysRsRcAttribCatalog attr:attrList){
@@ -340,7 +350,7 @@ public class ResourceUpDownAction extends AbstractUpDownAction{
 		}
 		if(flag){
 			String workType = PoiUtil.getCellValue(row.getCell(0),sheet,workBook);
-			if(MyStringUtil.isNotBlank(workType)){
+			if(MyStringUtil.isBlank(workType)){
 				return String.format("第(%s)行工种类型不能为空",row.getRowNum()+1);
 			}
 			SysDataDictionary dictionary = BaseDataDictionaryUtil.nameMap.get(4).get(workType);
@@ -351,7 +361,7 @@ public class ResourceUpDownAction extends AbstractUpDownAction{
 			}
 			
 			String rsrcCode = cutAfterPoint(PoiUtil.getCellValue(row.getCell(1),sheet,workBook));
-			if(MyStringUtil.isNotBlank(rsrcCode)){
+			if(MyStringUtil.isBlank(rsrcCode)){
 				return String.format("第(%s)行产品代号不能为空",row.getRowNum()+1);
 			}
 			sysRcResource.setRsrcCode(cutAfterPoint(PoiUtil.getCellValue(row.getCell(1),sheet,workBook)));
@@ -361,16 +371,24 @@ public class ResourceUpDownAction extends AbstractUpDownAction{
 
 			String purchasePrice = PoiUtil.getCellValue(row.getCell(4),sheet,workBook);
 			if(MyStringUtil.isNotBlank(purchasePrice) && MyNumberUtil.isNumber(purchasePrice)){
-				sysRcResource.setPurchasePrice(new BigDecimal(PoiUtil.getCellValue(row.getCell(1),sheet,workBook)));
+				sysRcResource.setPurchasePrice(new BigDecimal(purchasePrice));
 			}else{
 				return String.format("第(%s)行的采购价格不能为空且必须为数值类型",row.getRowNum()+1);	
 			}
 			
+			String salePrice = PoiUtil.getCellValue(row.getCell(5),sheet,workBook);
+			if(MyStringUtil.isNotBlank(salePrice) && MyNumberUtil.isNumber(salePrice)){
+				sysRcResource.setSalePrice(new BigDecimal(salePrice));
+			}else{
+				return String.format("第(%s)行的销售价格不能为空且必须为数值类型",row.getRowNum()+1);	
+			}
+			
 			List<SysRsRcAttrib> sysRcRsrcAttribList=new ArrayList<SysRsRcAttrib>();
-			for (int cellNum = 5; cellNum < row.getLastCellNum(); cellNum++) {
-				SysRsRcAttribCatalog sysRcRsrcAttribType=importAttrMap.get(cellNum);
+			for (int cellNum = 6; cellNum < row.getLastCellNum(); cellNum++) {
+				SysRsRcAttribCatalog sysRcRsrcAttribType = importAttrMap.get(cellNum);
 				if(null!=sysRcRsrcAttribType){
-					SysRsRcAttrib sysRcRsrcAttrib=new SysRsRcAttrib();
+					SysRsRcAttrib sysRcRsrcAttrib = new SysRsRcAttrib();
+					sysRcRsrcAttrib.setRsraAttribCatalogId(sysRcRsrcAttribType.getId());
 					String stringValue=PoiUtil.getCellValue(row.getCell(cellNum),sheet,workBook);
 					//当单元格数据不为空
 					if(null!=stringValue){

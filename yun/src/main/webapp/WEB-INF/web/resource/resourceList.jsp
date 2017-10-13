@@ -368,7 +368,7 @@ resourceOperation = {
 		var node = resourceTypeTree.tree("getSelected");
 		var dialog =$('<div id="importResource"></div>').dialog({    
 			href : "resourceUpDownAction!importResourcePage.act",
-			width:480,
+			width:420,
 			top:160,
 			title:"导入产品",
 			method:'post',
@@ -396,11 +396,12 @@ resourceOperation = {
 						success:function(data){
 							handlerResult(data,
 			   			 		function(json){
-									$upload_fm.close();
+									dialog.close();
+									$resourceGrid.datagrid("reload");
 									$show(json.message);
 								},
 								function(json){
-									$show(json.message);
+									$alert(json.message);
 								}
 							);
 						}
@@ -421,7 +422,7 @@ resourceOperation = {
 	
 	exportResource:function(){
 		Some.util.newDownLoad({
-			url:"resourceAction!exportResource.act",
+			url:"resourceUpDownAction!exportResource.act?sysRsRcCatalog.id=${sysRsRcCatalog.id}",
 			handler:function(){
 			}
 		});

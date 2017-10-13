@@ -2,8 +2,10 @@ package com.yunwang.service.impl;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import net.sf.json.JSONObject;
 
@@ -17,8 +19,10 @@ import com.yunwang.model.pojo.SysResource;
 import com.yunwang.model.pojo.SysRsRcAttrib;
 import com.yunwang.model.pojo.SysRsRcCatalog;
 import com.yunwang.service.SysResourceService;
+import com.yunwang.util.collection.CollectionUtil;
 import com.yunwang.util.number.MyNumberUtil;
 import com.yunwang.util.string.MyStringUtil;
+import com.yunwang.util.string.StringBufferByCollectionUtil;
 
 @Service
 public class SysResourceServiceImpl implements SysResourceService{
@@ -114,9 +118,74 @@ public class SysResourceServiceImpl implements SysResourceService{
 		sysResourceDao.deleteByPropertys("id",ids);
 	}
 
+	private Map<Integer,Map<Integer,SysRsRcAttrib>> conAttribToMap(List<SysRsRcAttrib> sysRsRcAttribs){
+		Map<Integer,Map<Integer,SysRsRcAttrib>> map = new HashMap<Integer,Map<Integer,SysRsRcAttrib>>();
+		for(SysRsRcAttrib attrib:sysRsRcAttribs){
+			Map<Integer,SysRsRcAttrib> childMap = map.get(attrib.getRsrcId());
+			if(null!=childMap){
+				childMap.put(attrib.getRsraAttribCatalogId(), attrib);
+			}else{
+				childMap = new HashMap<Integer,SysRsRcAttrib>();
+				childMap.put(attrib.getRsraAttribCatalogId(), attrib);
+				map.put(attrib.getRsrcId(), childMap);
+			}
+		}
+		return map;
+	}
+	
 	@Override
 	public void saveImportResources(List<SysResource> resourceList,
 			SysRsRcCatalog sysRsRcCatalog) {
+		//数据库已有资源
+		List<SysResource> dbResources = sysResourceDao.findByRsRcCatalogId(sysRsRcCatalog.getId());
+		Map<String,SysResource> resourceMap = CollectionUtil.listToMap(dbResources, "rsrcCode");
 		
+		List<SysRsRcAttrib> sysRsRcAttribs = sysRsRcAttribDao.findByResourceIds(
+					StringBufferByCollectionUtil.convertCollection(dbResources,"id"));
+		Map<Integer,Map<Integer,SysRsRcAttrib>> attribMap = conAttribToMap(sysRsRcAttribs);
+		
+		int orderNo = sysResourceDao.findMaxSeqByPfield("orderNo", "rsrcCatalogId", sysRsRcCatalog.getId());
+		
+		for(SysResource resource:resourceList){
+			//遍历资源库资源
+			SysResource dbResource = resourceMap.get(resource.getRsrcCode());
+			if(null != dbResource){
+				//更新
+				dbResource.setRsrcName(resource.getRsrcName());
+				dbResource.setUpdateDate(new Date());
+				dbResource.setPurchasePrice(resource.getPurchasePrice());
+				dbResource.setSalePrice(resource.getSalePrice());
+				dbResource.setWorkType(resource.getWorkType());
+				dbResource.setAbbreviaName(resource.getAbbreviaName());
+				
+				Map<Integer,SysRsRcAttrib> attrMap = attribMap.get(dbResource.getId());
+				
+				for(SysRsRcAttrib attrib:resource.getSysRcRsrcAttribList()){
+					SysRsRcAttrib dbAttrib = attrMap.get(attrib.getRsraAttribCatalogId());
+					if(null != dbAttrib){
+						dbAttrib.setRsrcAttribValue(attrib.getRsrcAttribValue());
+						sysRsRcAttribDao.update(dbAttrib);
+					}else{
+						attrib.setRsrcCatalogId(sysRsRcCatalog.getId());
+						attrib.setRsrcId(resource.getId());
+						attrib.setRsrcAttribValue(attrib.getRsrcAttribValue());
+						sysRsRcAttribDao.save(attrib);
+					}
+				}
+			}else{
+				//新增
+				resource.setRsrcCatalogId(sysRsRcCatalog.getId());
+				resource.setRsrcStatus(1);
+				resource.setOrderNo(++orderNo);
+				resource.setCreateDate(new Date());
+				sysResourceDao.save(resource);
+				for(SysRsRcAttrib attrib:resource.getSysRcRsrcAttribList()){
+					attrib.setRsrcCatalogId(sysRsRcCatalog.getId());
+					attrib.setRsrcId(resource.getId());
+					attrib.setRsrcAttribValue(attrib.getRsrcAttribValue());
+					sysRsRcAttribDao.save(attrib);
+				}
+			}
+		}
 	}
 }
