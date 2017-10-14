@@ -7,8 +7,6 @@ var attrJsons={};
 var resourceEdit = undefined;
 var resourceOperation = {};
 var addId = 0;
-var isCancelOrSave = 1;
-
 $(function(){
  	columns=[];
  	<s:iterator value="attribCatalogs" id="attribCatalog" status="list">
@@ -164,21 +162,19 @@ $(function(){
  			$(this).datagrid('beginEdit',index);
 	    },
 	    onAfterEdit:function(rowIndex,rowData,changes){
-	    	//if(isCancelOrSave==1){
-		    	$.post("resourceAction!saveOrUpdateResourceGrid.act",
-		    			{"resourceJsonStr":Some.util.jsonToStr(rowData),"sysRsRcCatalog.id":${sysRsRcCatalog.id}},
-	       			 function(data){
-	      			 	handlerResult(data,
-	      			 		function(json){
-								$show(json.message);
-							},
-							function(json){
-								$show(json.message);
-							}
-						);
-	       			}
-		    	);
-	    	//}
+	    	$.post("resourceAction!saveOrUpdateResourceGrid.act",
+	    			{"resourceJsonStr":Some.util.jsonToStr(rowData),"sysRsRcCatalog.id":${sysRsRcCatalog.id}},
+       			 function(data){
+      			 	handlerResult(data,
+      			 		function(json){
+							$show(json.message);
+						},
+						function(json){
+							$show(json.message);
+						}
+					);
+       			}
+	    	);
         }
 	});
  	
@@ -246,8 +242,11 @@ resourceOperation = {
 				return false;
 			}
 		}
+		
+		var rows = $resourceGrid.datagrid("getData").rows;
+		var addIndex = rows.length;
 		$resourceGrid.datagrid('insertRow',{
-			index: 0,	// 索引从0开始
+			index: addIndex,	// 索引从0开始
 			row: {
 				id:addId--,
 				workType:1,
@@ -257,8 +256,8 @@ resourceOperation = {
 				salePrice:0
 			}
 		});
-		$resourceGrid.datagrid("beginEdit",0);
-		resourceEdit = 0;
+		$resourceGrid.datagrid("beginEdit",addIndex);
+		resourceEdit = addIndex;
 
 		//$resourceGrid.datagrid("reload");
 		/*
@@ -341,10 +340,8 @@ resourceOperation = {
 	},
 	
 	cancelEdit:function(){
-		isCancelOrSave = 2;
-		$resourceGrid.datagrid("refreshRow",resourceEdit);
+		$resourceGrid.datagrid("reload");
 		resourceEdit = undefined;
-		isCancelOrSave = 1;
 	},
 	
 	search:function(){
@@ -371,11 +368,67 @@ resourceOperation = {
 	},
 	
 	importResource:function(){
-		
+		var node = resourceTypeTree.tree("getSelected");
+		var dialog =$('<div id="importResource"></div>').dialog({    
+			href : "resourceUpDownAction!importResourcePage.act",
+			width:420,
+			top:160,
+			title:"导入产品",
+			method:'post',
+			queryParams:{"sysRsRcCatalog.id":node.attributes.id},
+			modal:true,
+			resizable:true,
+			buttons:[{
+				text:"确定",
+				iconCls:'icon-ok',
+				handler:function(){
+					$('#upload_fm').form({    
+						url:"resourceUpDownAction!importResource.act?sysRsRcCatalog.id=${sysRsRcCatalog.id}",
+						onSubmit:function(param){
+							var fileName = $("#file").val();
+							var reg = new RegExp("^.*\.(?:xlsx?)$");
+							if (fileName.length == 0) {
+								$alert("请选择EXCEL文件导入!");
+								return false;
+							}
+							if (!reg.test(fileName)) {
+								$alert("请选择EXCEL文件导入!");
+								return false;
+							}
+						},
+						success:function(data){
+							handlerResult(data,
+			   			 		function(json){
+									dialog.close();
+									$resourceGrid.datagrid("reload");
+									$show(json.message);
+								},
+								function(json){
+									$alert(json.message);
+								}
+							);
+						}
+					}).submit();  
+				}
+			},{
+				text:"取消",
+				iconCls:'icon-cancel',
+				handler:function(){
+					dialog.dialog("destroy");
+				}
+			}],
+			onClose:function(){
+				$(this).dialog("destroy");
+			}
+		});
 	},
 	
 	exportResource:function(){
-		
+		Some.util.newDownLoad({
+			url:"resourceUpDownAction!exportResource.act?sysRsRcCatalog.id=${sysRsRcCatalog.id}",
+			handler:function(){
+			}
+		});
 	}
 };
 </script>
@@ -427,7 +480,7 @@ resourceOperation = {
 		<div class="search-div">
 			<lable for="">产品名称</lable>
 			<div class="select">
-				<input  type="text"  id="rescName"/>
+				<input  type="text"  id="rsrcName"/>
 			</div>
 		</div>
 		<div class="search-div">
@@ -475,9 +528,7 @@ resourceOperation = {
 <div  id="resource_operation_bar">
     <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add', plain:true" onclick="resourceOperation.addResource()">新增</a>
 	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit', plain:true" onclick="resourceOperation.editResource();">编辑</a>
-	<!--
 	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-quxiao', plain:true" onclick="resourceOperation.cancelEdit()">取消</a>
-	-->
 	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-save', plain:true" onclick="resourceOperation.updateResource()">保存</a>
 	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove', plain:true" onclick="resourceOperation.deleteResource()">删除</a>
 	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-download', plain:true" onclick="resourceOperation.importResource()">导入</a>

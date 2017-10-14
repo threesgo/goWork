@@ -5,6 +5,7 @@ import java.util.List;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,8 @@ import com.yunwang.util.action.AbstractLoginAction;
 	}
 )
 public class ResourceTypeAction extends AbstractLoginAction{
+	
+	private final static Logger LOG =Logger.getLogger(ResourceTypeAction.class);
 
 	/*
 	 * @date 2017-9-27
@@ -201,6 +204,7 @@ public class ResourceTypeAction extends AbstractLoginAction{
 			}
 			return success("操作成功!",JSONObject.fromObject(sysRsRcCatalog));
 		}catch(Exception e){
+			LOG.error(e.getMessage());
 			return error("操作失败!");
 		}
 	}
@@ -245,6 +249,7 @@ public class ResourceTypeAction extends AbstractLoginAction{
 			}
 			return success("操作成功!");
 		}catch(Exception e){
+			LOG.error(e.getMessage());
 			return error("操作失败!");
 		}
 	}
@@ -257,6 +262,7 @@ public class ResourceTypeAction extends AbstractLoginAction{
 			sysResourceTypeService.deleteSysRsRcAttribCatalogs(id);
 			return success("操作成功!");
 		}catch(Exception e){
+			LOG.error(e.getMessage());
 			return error("操作失败!");
 		}
 	}
@@ -269,6 +275,7 @@ public class ResourceTypeAction extends AbstractLoginAction{
 			sysResourceTypeService.deleteRsRcCatalog(sysRsRcCatalog);
 			return success("操作成功!");
 		}catch(Exception e){
+			LOG.error(e.getMessage());
 			return error("操作失败!");
 		}
 	}

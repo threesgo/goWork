@@ -3,6 +3,30 @@
  */
 
 (function(window,$){
+	
+	
+	$.extend($.fn.tree.methods, {
+		changeFolder:function(target){
+			var _01=$(target);
+			var _02=_01.find("span.tree-icon");
+			if(_02.hasClass("tree-folder"))
+				return ;
+			_02.attr("class","tree-icon tree-folder");
+			_02.prev("span").attr("class"," tree-hit tree-collapsed");
+		},
+		changeOpenFolder:function(target){
+			var _01=$(target);
+			var _02=_01.find("span.tree-icon");
+			if(_02.hasClass("tree-folder"))
+				return ;
+			_02.attr("class","tree-icon tree-folder tree-folder-open");
+			_02.prev("span").attr("class","tree-hit tree-expanded");
+		}
+		
+	});
+	
+	
+	
 	/*********easyui treegrid扩展************/
 	var methods=$.fn.treegrid.methods;
 	

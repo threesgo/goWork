@@ -30,4 +30,6 @@ public interface SysResourceService {
 
 	void deleteResource(String ids);
 
+	void saveImportResources(List<SysResource> resourceList,SysRsRcCatalog sysRsRcCatalog);
+
 }

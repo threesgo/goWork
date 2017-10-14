@@ -8,6 +8,7 @@ import java.util.Map;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +30,16 @@ import com.yunwang.util.string.StringBufferByCollectionUtil;
 	results = {
 		@Result(name = "index",location="/WEB-INF/web/resource/index.jsp"),
 		@Result(name = "resourceList",location="/WEB-INF/web/resource/resourceList.jsp"),
-		@Result(name = "addPage",location="/WEB-INF/web/resource/add.jsp")
+		@Result(name = "addPage",location="/WEB-INF/web/resource/add.jsp"),
+		@Result(name="exportResource",type="stream",
+				params={"encode","true","contentType","application/vnd.ms-excel;charset=UTF-8",
+				  "inputName","exportResourceStream","contentDisposition","attachment;filename=${exportResourceFileName}"}),
+		@Result(name="importResourcePage",location="/WEB-INF/web/resource/importResourcePage.jsp")
 	}
 )
 public class ResourceAction extends AbstractLoginAction{
 
+	private final static Logger LOG =Logger.getLogger(ResourceAction.class);
 	/*
 	 * @date 2017-9-27
 	 * @author YBF
@@ -150,16 +156,20 @@ public class ResourceAction extends AbstractLoginAction{
 			sysResourceService.saveOrUpdateResourceGrid(obj,sysRsRcCatalog);
 			return success("行数据保存成功!");
 		}catch(Exception e){
+			LOG.error(e.getMessage());
 			return error("行数据保存失败!");
 		}
 	}
 	
-	
+	/**
+	 * @return 删除资源
+	 */
 	public String deleteResource(){
 		try{
 			sysResourceService.deleteResource(ids);
 			return success("操作成功!");
 		}catch(Exception e){
+			LOG.error(e.getMessage());
 			return error("操作失败!");
 		}
 	}
@@ -170,10 +180,11 @@ public class ResourceAction extends AbstractLoginAction{
 			sysResourceService.save(sysResource);
 			return success("操作成功!");
 		}catch(Exception e){
+			LOG.error(e.getMessage());
 			return error("操作失败!");
 		}
 	}
-
+	
 	public SysResource getSysResource() {
 		return sysResource;
 	}

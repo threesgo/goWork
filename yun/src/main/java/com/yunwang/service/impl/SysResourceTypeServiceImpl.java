@@ -115,4 +115,12 @@ public class SysResourceTypeServiceImpl implements SysResourceTypeService{
 		sysRsRcAttribDao.deleteByPropertys("rsraAttribCatalogId", ids);
 		sysRsRcAttribCatalogDao.deleteByPropertys("id", ids);
 	}
+
+	@Override
+	public List<SysRsRcAttribCatalog> findAllAttr(SysRsRcCatalog sysRsRcCatalog) {
+		List<SysRsRcAttribCatalog> attrs = new ArrayList<SysRsRcAttribCatalog>();
+		attrs.addAll(findExtendsAttr(sysRsRcCatalog));
+		attrs.addAll(findAttr(sysRsRcCatalog));
+		return attrs;
+	}
 }

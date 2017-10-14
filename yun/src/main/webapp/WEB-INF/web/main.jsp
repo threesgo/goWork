@@ -221,11 +221,9 @@
 	/**
 	 *页面定时刷新
 	 */
-	/*
  	setInterval(function(){
-    	$.post("heartBeatAction.act","json");
+    	$.post("heartBeatAction.act");
    	}, 300000); 
-	*/
 </script>
 
 <style>
