@@ -9,7 +9,7 @@
 			  textField:'sysRole',
 		      multiple:true,
 		      editable:false,
-		      url:"sysRoleAction!findAll.act"
+		      url:"sysRoleAction!findAll.act",
 		}); 
 		
 		$('#addDept').combobox({ 
@@ -21,36 +21,6 @@
 		}); 
 	});
 
-	function addUser(){
-		var $add_fm = $("#add_fm");
-		new Some.form({
-			render:"#add_fm",
-			success:function(data){
-				handlerResult(data,function(rs){
-					$add_fm.close();
-					$show(rs.message);
-					$userList.datagrid("reload");
-					
-				},function(rs){
-					$alert(rs.message);
-				});
-				/*
-				document.getElementById("queryDept").options.length = 0;
-				$.post("systemAdmin!findAllDept.act",{"addAll":1},
-					function(data){
-						if(data != null && data.length > 0){
-							for(var i=0; i<data.length; i++){
-							    $("#queryDept").append("<option value='"+data[i].id+"'>"+data[i].dept+"</option>");
-							}
-						}
-				},"json");*/
-			},
-			onSubmit: function(param){
-				
-		    }  
-		}).submit();
-	};
-	
 </script>
 
 <form id="add_fm" method="post" class="fm" action="sysUserAction!add.act">  
@@ -115,9 +85,6 @@
 			</select> 
 	   </div>
         
-	   <div class="dlg-buttons" style="text-align: center;">  
-	      <a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true" iconCls="icon-ok" onclick="addUser()">保存</a>  
-	   </div>
 </form>  
 
 

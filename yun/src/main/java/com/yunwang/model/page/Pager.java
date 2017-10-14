@@ -29,7 +29,7 @@ public class Pager<T> {
 		this.pageCount=pageCount;
 		this.pageSize=pageSize;
 	}
-
+	
 
 	public int getCurrentPage () {
 		return currentPage ;

@@ -4,7 +4,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+import org.hibernate.type.DateType;
+import org.hibernate.type.IntegerType;
+import org.hibernate.type.StringType;
+import org.hibernate.type.Type;
 import org.springframework.stereotype.Repository;
+
+
+
+
+
 
 import com.alibaba.fastjson.JSONObject;
 import com.yunwang.dao.SysUserDaoI;
@@ -35,10 +45,67 @@ public class SysUserDaoImpl extends BaseDaoImpl<SysUser> implements SysUserDaoI{
 		StringBuffer buf = new StringBuffer();
 		/*buf.append("SELECT model FROM SysUser model,SysRole sysRole,SysUserRole sysUserRole "
 				+ " WHERE model.id = sysUserRole.userId AND sysUserRole.roleId = sysRole.id ");*/
-		buf.append("SELECT model FROM SysUser model");
+		buf.append("SELECT distinct model.ID id,"
+				 + "model.USER_NAME userName,"
+				 + "model.REAL_NAME realName,"
+				 + "model.PHONE_NUM phoneNum,"
+				 + "model.REL_EMAIL relMail,"
+				 + "model.CREATE_DATE createDate,"
+				 + "model.UPDATE_DATE updateDate,"
+				 + "model.DEPARTMENT_ID departmentId "
+				 + "FROM SYS_USER model "
+				 + "LEFT JOIN SYS_USER_ROLE sysUserRole ON model.ID=sysUserRole.USER_ID ");
+		
+		if(null != json){
+			//用户名
+			String userName = json.getString("userName");
+			if(StringUtils.isNotBlank(userName)){
+				if(buf.indexOf("WHERE")!=-1){
+					buf.append(" AND ");
+				}else{
+					buf.append(" WHERE ");
+				}
+				buf.append("model.USER_NAME LIKE '%"+userName+"%'");
+			}
+			//真实名称
+			String realName = json.getString("realName");
+			if(StringUtils.isNotBlank(realName)){
+				if(buf.indexOf("WHERE")!=-1){
+					buf.append(" AND ");
+				}else{
+					buf.append(" WHERE ");
+				}
+				buf.append("model.REAL_NAME LIKE '%"+realName+"%'");
+			}
+			
+			//真实名称
+			String roleIds = json.getString("roleIds");
+			if(StringUtils.isNotBlank(roleIds)){
+				if(buf.indexOf("WHERE")!=-1){
+					buf.append(" AND ");
+				}else{
+					buf.append(" WHERE ");
+				}
+				buf.append("sysUserRole.ROLE_ID IN ("+roleIds+") ");
+			}
+		}
+		
 		buf.append(" ORDER BY model.id ");
 		
-		return pagedQuery(buf.toString(), page, rows);
+		Map<String, Object> parmeMap = new HashMap<String, Object>();
+		Map<String, Type> scalarMap = new HashMap<String, Type>();
+		scalarMap.put("id", new IntegerType());
+		scalarMap.put("userName", new StringType());
+		scalarMap.put("realName", new StringType());
+		scalarMap.put("phoneNum", new StringType());
+		scalarMap.put("relMail", new StringType());
+		scalarMap.put("createDate", new DateType());
+		scalarMap.put("updateDate", new DateType());
+		scalarMap.put("departmentId", new IntegerType());
+		
+		return null;
+		
+		//return pagedSqlQuery(buf.toString(), page, rows, parmeMap, scalarMap, SysUser.class);
 	}
 
 	@Override

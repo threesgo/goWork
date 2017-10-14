@@ -35,7 +35,7 @@ public class SysRoleAction extends AbstractLoginAction{
 	private SysRole sysRole;
 	
 	private String id;
-	
+	private String needAll;
 	/*private String jsonInfo;
 	
 	private String moduleIds;
@@ -142,11 +142,18 @@ public class SysRoleAction extends AbstractLoginAction{
 	 * <p>加载角色下拉框</p>
 	 */
 	public String findAll(){
-		JSONObject obj = new JSONObject();
+		JSONObject obj = null;
 		JSONArray arr = new JSONArray();
+		if("true".equals(needAll)){
+			obj = new JSONObject();
+			obj.put("id", "");
+			obj.put("sysRole", "全部");
+			arr.add(obj);
+		}
 		List<SysRole> listRole = sysUserService.findAllRole();
 		if(listRole.size()>0){
 			for(SysRole role:listRole){
+				obj = new JSONObject();
 				obj.put("id", role.getId());
 				obj.put("sysRole", role.getName());
 				arr.add(obj);
@@ -309,44 +316,11 @@ public class SysRoleAction extends AbstractLoginAction{
 		this.id = id;
 	}
 	
-	/*public String getJsonInfo() {
-		return jsonInfo;
+	public String getNeedAll() {
+		return needAll;
 	}
 
-	public void setJsonInfo(String jsonInfo) {
-		this.jsonInfo = jsonInfo;
+	public void setNeedAll(String needAll) {
+		this.needAll = needAll;
 	}
-	
-	public String getModuleIds() {
-		return moduleIds;
-	}
-	
-	public void setModuleIds(String moduleIds) {
-		this.moduleIds = moduleIds;
-	}
-	
-	public String getModules() {
-		return modules;
-	}
-	
-	public void setModules(String modules) {
-		this.modules = modules;
-	}
-	
-	public String getRoles() {
-		return roles;
-	}
-	
-	public void setRoles(String roles) {
-		this.roles = roles;
-	}
-
-	public Integer getMajorId() {
-		return majorId;
-	}
-
-	public void setMajorId(Integer majorId) {
-		this.majorId = majorId;
-	}*/
-	
 }

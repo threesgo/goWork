@@ -193,7 +193,13 @@ public class SysUserServiceImpl implements SysUserService{
 	}
 	
 	public void updateUserAndRole(SysUser user){
-		sysUserDao.update(user);
+		SysUser updateUser = sysUserDao.get(SysUser.class, user.getId());
+		updateUser.setUserName(user.getUserName());
+		updateUser.setRealName(user.getRealName());
+		updateUser.setPassWord(user.getPassWord());
+		updateUser.setPhoneNum(user.getPhoneNum());
+		updateUser.setRelMail(user.getRelMail());
+		sysUserDao.update(updateUser);
 		sysUserRoleDao.deleteByProperty("userId",user.getId());
 		SysUserRole userRole =null;
 		String[] roleId = user.getRoleIds().split(",");
@@ -205,6 +211,12 @@ public class SysUserServiceImpl implements SysUserService{
 			sysUserRoleDao.save(userRole);
 		}
 		
+	}
+
+	@Override
+	public void delete(Integer userId) {
+		sysUserDao.deleteByProperty("id", userId);
+		sysUserRoleDao.deleteByProperty("userId", userId);
 	}
 
 }

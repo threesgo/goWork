@@ -49,4 +49,6 @@ public interface SysUserService {
 	
 	public List<SysUser> findBySysUserNameExceptUserId(String userName,Integer userId);
 	
+	public void delete(Integer userId);
+	
 }

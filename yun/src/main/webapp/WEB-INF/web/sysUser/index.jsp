@@ -71,133 +71,188 @@
 					{field:'roles',title:"角色",width:180,align:"center",sortable:true,sorter:function(a,b){ return a>b? 1:-1 ; }}
 				]]
 		  	});
-				
-			window.user={
-					/*
-					$userList:$userList,
-					changeRole:function(obj){
-						document.getElementById("queryRole").options.length = 0;
-						$.post("sysRoleAction!roleList.act",{"majorId":obj.value},
-							function(data){
-								if(data != null && data.length > 0){
-							       	for(var i=0; i<data.length; i++){
-							    		$("#queryRole").append("<option value='"+data[i].id+"'>"+data[i].text+"</option>");
-							    	}
-							    }
-						},"json");
-					},*/
-					/*
-					search:function(){
-						var input=$("#tools").find("input");
-						var flag=false;
-						$.each(input, function(i, n){//遍历数组或对象，i是数组或对象索引值，n是对应的数组值或对象
-							if($(n).hasClass("validatebox-invalid")){  //hasClass("")检查是否还有指定的类
-								flag=true;
-							};
-						});
-						if(flag){
-							return false;
-						}
-						var searchJSON={};
-	 					searchJSON["userName"] = $("#queryUsreName").val();
-	 					searchJSON["realName"] = $("#queryRealName").val();
-	 					searchJSON["major"] = $("#queryMajor").val();
-	 					searchJSON["role"] = $("#queryRole").val();
-	 					searchJSON["dept"] = $("#queryDept").val();
-	 					searchJSON["queryStatus"] = $("#queryStatus").val();
-	 					searchJSON["queryType"] = $("#queryType").val();
-	 					$userList.datagrid("reload",{"filterJsons":Some.util.toJson(searchJSON)});
-					},
-					reset:function(){
-						$("#queryUsreName,#queryRealName").val("");
-						$("#queryMajor").val("");
-						$("#queryRole").val("");
-						$("#queryDept").val("全部");
-						$("#queryStatus").val(-1);
-						$userList.datagrid("reload",{});
-					},*/
-					//新建用户
-					addUser:function(){
-						new Some.dialog({
-							top:100,
-							title:"添加用户",
-							width:450,
-							height:"auto",
-							href:"sysUserAction!preAdd.act",
-						});
-					},
-					//编辑用户
-					editUser:function(){
-						var select = $userList.datagrid("getSelected");
-						if(!select){
-							$alert("请选择用户进行编辑");
-							return false;
-						}
-						new Some.dialog({
-							top:100,
-							title:"编辑用户",
-							width:450,
-							height:"auto",
-							href:"sysUserAction!preEdit.act?userId="+select.id+"&roleIds="+select.roleIds,
-						});
-					},
-					
-					updateAdmin:function(id,index){
-						this.index=index;
-						new Some.dialog({
-							top:100,
-							title:"<s:text name='modify_administrator'/>",
-							width:450,
-							height:"auto",
-							href:"systemAdmin!modify.act?usrSmUser.id="+id
-						});
-					},
-					
-					accreditAdmin:function(id,index){
-						new Some.dialog({
-							top:100,
-							title:"<s:text name='administrator_authorization'/>",
-							width:450,
-							height:"auto",
-							href:"systemAdmin!preAccredit.act?usrSmUser.id="+id,
-						});
-					}
-					
-					,deleteAdmin:function(id,index){
-						$confirm("<s:text name='confirm_remove'/>",function(){
-							var loading=new Some.loading();
-							loading.show();
-							$.post("systemAdmin!delete.act",{"usrSmUser.id":id},function(text){
-								loading.close();
-								handlerResult(text,function(data){
-									//var deleteRow=$adminList.datagrid("getSelected");
-									//var deleteIndex=$adminList.datagrid("getRowIndex", deleteRow);
-									//$adminList.datagrid("deleteRow",deleteIndex);
-									adminVar.$userList.datagrid("reload");
-									$show(data.message);
-			 					},function(data){
-			 						$show(data.message);
-			 					});
-								/* switch (""+data) {
-									case "1":
-										$show("删除成功");
-										var deleteRow=$adminList.datagrid("getSelected");
-										var deleteIndex=$adminList.datagrid("getRowIndex", deleteRow);
-										$adminList.datagrid("deleteRow",deleteIndex);
-										break;
-									case "0":
-										$alert("删除失败！");
-										break;
-									default:
-										$alert(data);
-										break;
-								} */
-							});
-						});
-					}
-			};
+			
+			//角色
+			$("#sysRoles").combobox({
+				 valueField:'id',
+				 textField:'sysRole',
+			     multiple:true,
+			     editable:false,
+			     url:"sysRoleAction!findAll.act",
+			     queryParams:{"needAll":true}
+			     
+			});
+			//部门
+			$("#sysRoles").combobox({
 				
 			});
+			
+		});
+		
+		window.user={
+				search:function(){
+					var input=$("#tools").find("input");
+					var flag=false;
+					$.each(input, function(i, n){//遍历数组或对象，i是数组或对象索引值，n是对应的数组值或对象
+						if($(n).hasClass("validatebox-invalid")){  //hasClass("")检查是否还有指定的类
+							flag=true;
+						};
+					});
+					if(flag){
+						return false;
+					}
+					var searchJSON={};
+ 					searchJSON["userName"] = $("#sysUsreName").val();
+ 					searchJSON["realName"] = $("#sysRealName").val();
+ 					searchJSON["roleIds"] = $("#sysRoles").combobox("getValues").join(",");
+ 					//searchJSON["deptIds"] = $("#queryDepts").combobox("getValues").join(",");
+ 					$userList.datagrid("reload",{"filterJsons":Some.util.jsonToStr(searchJSON)});
+				},
+				reset:function(){
+					$("#sysUsreName,#sysUsreName").val("");
+					$("#queryMajor").val("");
+					$("#sysRoles,#queryDepts").combobox("setValue","");
+					$userList.datagrid("reload");
+				},
+				//新建用户
+				/* addUser:function(){
+					new Some.dialog({
+						top:100,
+						title:"添加用户",
+						width:450,
+						height:"auto",
+						href:"sysUserAction!preAdd.act",
+					});
+				}, */
+				//新建用户
+				  addUser:function(){
+		 			var addDialog =$('<div id="addSysUser"></div>').dialog({    
+		 				href:"sysUserAction!preAdd.act",
+						width:350,
+						height:450,
+						title:"添加用户",
+						method:'post',
+						modal:true,
+						resizable:true,
+						buttons:[{
+							text:"确定",
+							iconCls:'icon-ok',
+							handler:function(){
+								new Some.form({
+									render:"#add_fm",
+									success:function(data){
+										handlerResult(data,function(rs){
+											addDialog.dialog("destroy");
+											$show(rs.message);
+											$userList.datagrid("reload");
+										},function(rs){
+											$alert(rs.message);
+										});
+									},
+									onSubmit: function(param){
+										
+								    }  
+								}).submit();   
+							}
+						},{
+							text:"取消",
+							iconCls:'icon-cancel',
+							handler:function(){
+								addDialog.dialog("destroy");
+							}
+						}],
+						onClose:function(){
+							$(this).dialog("destroy");
+						}
+		 			});
+		 		},
+				
+		 		
+		 		//编辑用户
+			   editUser:function(){
+				  var select = $userList.datagrid("getSelected");
+				  if(!select){
+					 $alert("请选择用户进行编辑");
+					 return false;
+				  }
+	 			var editDialog =$('<div id="editSysUser"></div>').dialog({    
+	 				href:"sysUserAction!preEdit.act?userId="+select.id+"&roleIds="+select.roleIds,
+					width:350,
+					height:450,
+					title:"编辑用户",
+					method:'post',
+					modal:true,
+					resizable:true,
+					buttons:[{
+						text:"确定",
+						iconCls:'icon-ok',
+						handler:function(){
+							new Some.form({
+								render:"#edit_fm",
+								success:function(data){
+									handlerResult(data,function(rs){
+										editDialog.dialog("destroy");
+										$show(rs.message);
+										$userList.datagrid("reload");
+									},function(rs){
+										$alert(rs.message);
+									});
+								},
+								onSubmit: function(param){
+									
+							    }  
+							}).submit();   
+						}
+					},{
+						text:"取消",
+						iconCls:'icon-cancel',
+						handler:function(){
+							editDialog.dialog("destroy");
+						}
+					}],
+					onClose:function(){
+						$(this).dialog("destroy");
+					}
+	 			});
+	 		},
+		 	/*	
+			accreditAdmin:function(id,index){
+				new Some.dialog({
+					top:100,
+					title:"<s:text name='administrator_authorization'/>",
+					width:450,
+					height:"auto",
+					href:"systemAdmin!preAccredit.act?usrSmUser.id="+id,
+				});
+			},*/
+				
+			deleteUser:function(id,index){
+				var select = $userList.datagrid("getSelected");
+				if(!select){
+					$alert("请选择用户进行删除");
+					return false;
+				}
+				if(select.id == '${_ADM.id}'){
+					$alert("无法删除自身登陆用户");
+					return false;
+				}
+				$confirm("确定删除所选用户吗?",function(){
+					var loading=new Some.loading();
+					loading.show();
+					$.post("sysUserAction!delete.act",{"sysUser.id":select.id},function(text){
+						loading.close();
+						handlerResult(text,function(data){
+							$userList.datagrid("reload");
+							$show(data.message);
+	 					},function(data){
+	 						$show(data.message);
+	 					});
+					});
+				});
+			}
+		};
+				
+		
 		</script>
 	</head>
 	<body id="body" >
@@ -205,6 +260,7 @@
 			<div id="tool_bar">
 				<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-add', plain:true" onclick="user.addUser()">新增</a>
 				<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-edit', plain:true" onclick="user.editUser()">编辑</a>
+				<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-remove', plain:true" onclick="user.deleteUser()">删除</a>
 			</div>
 			
 			<table id="userList"></table>
@@ -220,16 +276,13 @@
 				<div class="search-div">
 					<label>角色：</label>
 					<div class="select">
-						<select id="queryRole">
-							<option value="" selected="selected">全部</option>
-						</select>
+						<select id="sysRoles"></select>
 					</div>
 				</div>
 				<div class="search-div">
 					<label>部门：</label>
 					<div class="select">
-						<select id="queryDept" data-options="validType:['illegal']" >
-						</select>
+						<select id="queryDepts"></select>
 					</div>
 				</div>
 				<div class="search-div">

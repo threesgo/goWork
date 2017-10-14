@@ -12,8 +12,6 @@
 		      editable:false,
 		      url:"sysRoleAction!findAll.act",
 		      onLoadSuccess:function(){
-		    	  //var roleIds = ${roleIds};
-		    	 // alert(role_id);
 		    	   if(role_id){
 		    		  var ids = role_id.split(",");
 			    	  $.each(ids,function(index,n){
@@ -25,24 +23,6 @@
 		
 	});
 
-	function editUser(){
-		var $edit_fm = $("#edit_fm");
-		new Some.form({
-			render:"#edit_fm",
-			success:function(data){
-				handlerResult(data,function(rs){
-					$edit_fm.close();
-					$show(rs.message);
-					$userList.datagrid("reload");
-				},function(rs){
-					$alert(rs.message);
-				});
-			},
-			onSubmit: function(param){
-				
-		    }  
-		}).submit();
-	};
 </script>
 
 <form id="edit_fm" method="post" class="fm" action="sysUserAction!edit.act"> 
@@ -108,9 +88,6 @@
 			</select> 
 	   </div>
         
-	   <div class="dlg-buttons" style="text-align: center;">  
-	      <a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true" iconCls="icon-ok" onclick="editUser()">保存</a>  
-	   </div>
 </form>  
 
 
