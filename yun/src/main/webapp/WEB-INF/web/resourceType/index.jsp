@@ -67,6 +67,7 @@
 							handlerResult(data,
 					    		function(rs){
 				    				resourceTypeTree.tree("remove",node.target);
+									$("#resourceTypeChildrenTable").datagrid("reload");
 									$show(rs.message);
 									/*
 									var rootNode = resourceTypeTree.tree("getRoot");
@@ -112,10 +113,12 @@
 												parent: node.target,
 												data: [{
 													id: rs.data.id,
-													text: rs.data.catalogCode+","+rs.data.catalogName,
+													//rs.data.catalogCode+","+
+													text: rs.data.catalogName,
 													attributes:rs.data
 												}]
 											});
+											$("#resourceTypeChildrenTable").datagrid("reload");
 											$show(rs.message);
 										},
 										function(rs){

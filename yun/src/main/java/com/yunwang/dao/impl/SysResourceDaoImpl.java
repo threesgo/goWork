@@ -91,12 +91,23 @@ public class SysResourceDaoImpl extends BaseDaoImpl<SysResource> implements SysR
 			while (it.hasNext()) {  
 	             String key = (String) it.next(); 
 	             String value = seachJson.getString(key);
-	             if(MyNumberUtil.isNumber(key)&&MyStringUtil.isNotBlank(value)){
+	             if((MyNumberUtil.isNumber(key)||key.endsWith("start"))&&MyStringUtil.isNotBlank(value)){
 	            	//属性值按照in值判断
-	     			buf.append(" AND model.id in (");
-	     			buf.append("SELECT attrib.rsrcId FROM SysRsRcAttrib attrib WHERE attrib.rsraAttribCatalogId ="+key
-	     					+" AND attrib.rsrcAttribValue like '%"+value+"%'");
-	     			buf.append(")");
+	            	if(MyNumberUtil.isNumber(key)){
+	            		buf.append(" AND model.id in (");
+		     			buf.append("SELECT attrib.rsrcId FROM SysRsRcAttrib attrib WHERE attrib.rsraAttribCatalogId ="+key
+		     					+" AND attrib.rsrcAttribValue like '%"+value+"%'");
+		     			buf.append(")");
+	            	}else{
+	            		buf.append(" AND model.id in (");
+		     			buf.append("SELECT attrib.rsrcId FROM SysRsRcAttrib attrib WHERE attrib.rsraAttribCatalogId ="+key.substring(0,key.length()-6)
+		     					+" AND to_date(attrib.rsrcAttribValue,'yyyy-mm-dd') >= to_date('"+value+"','yyyy-mm-dd')");
+		     			String endKey = key.substring(0,key.length()-6)+"_end";
+		     			if(seachJson.containsKey(endKey)&&MyStringUtil.isNotBlank(seachJson.getString(endKey))){
+		     				buf.append(" AND to_date(attrib.rsrcAttribValue,'yyyy-mm-dd') <= to_date('"+seachJson.getString(endKey)+"','yyyy-mm-dd')");
+		     			}
+		     			buf.append(")");
+	            	}
 	             }
 			}
 		}

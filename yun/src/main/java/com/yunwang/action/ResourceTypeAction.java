@@ -115,7 +115,7 @@ public class ResourceTypeAction extends AbstractLoginAction{
 	private JSONObject getJson(SysRsRcCatalog sysRcRsrcOrg){
 		JSONObject json=new JSONObject();
 		json.put("id","org"+sysRcRsrcOrg.getId());
-		json.put("text",sysRcRsrcOrg.getCatalogCode()+","+sysRcRsrcOrg.getCatalogName());
+		json.put("text",sysRcRsrcOrg.getCatalogName());//sysRcRsrcOrg.getCatalogCode()+","+sysRcRsrcOrg.getCatalogName());
 		json.put("attributes", JSONObject.fromObject(sysRcRsrcOrg));
 		JSONArray arr = getChildren(sysRcRsrcOrg.getId());
 		json.put("children", arr);

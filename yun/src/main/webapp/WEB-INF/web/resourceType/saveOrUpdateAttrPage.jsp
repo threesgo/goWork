@@ -103,6 +103,6 @@ $(function(){
     <div>
         <label for="defaultValue">默认选项:</label>   
         <input id="defaultValue" class="easyui-validatebox" type="text" name="sysRsRcAttribCatalog.defaultValue" 
-        style="width:200px;" data-options="required:false,validType:['length[1,1024]','illegal']" value="${sysRsRcAttribCatalog.defaultValue}"/>   
+        style="width:459px;" data-options="required:false,validType:['length[1,1024]','illegal']" value="${sysRsRcAttribCatalog.defaultValue}"/>   
     </div>
 </form>

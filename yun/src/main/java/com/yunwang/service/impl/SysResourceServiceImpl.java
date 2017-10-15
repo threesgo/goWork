@@ -72,11 +72,9 @@ public class SysResourceServiceImpl implements SysResourceService{
     		 sysResource.setRsrcStatus(1);
     		 sysResource.setRsrcCatalogId(sysRsRcCatalog.getId());
     		 sysResource.setOrderNo(sysResourceDao.findMaxSeqByPfield("orderNo","rsrcCatalogId",sysRsRcCatalog.getId())+1);			
-    		 
+             sysResource.setRsrcCode(MyStringUtil.getCombineSeqStr(sysResource.getOrderNo(),sysRsRcCatalog.getCatalogCode()));
     	 }
          //String rsrcCode = rowData.getString("rsrcCode");
-         sysResource.setRsrcCode(MyStringUtil.getCombineSeqStr(sysResource.getOrderNo(),sysRsRcCatalog.getCatalogCode()));
-         rowData.put("rsrcCode", sysResource.getRsrcCode());
          
          String rsrcName = rowData.getString("rsrcName");
          sysResource.setRsrcName(rsrcName);
@@ -99,6 +97,10 @@ public class SysResourceServiceImpl implements SysResourceService{
          sysResource.setSupplierPhone(supplierPhone);
          
          sysResourceDao.saveOrUpdate(sysResource);
+         
+         rowData.put("rsrcCode", sysResource.getRsrcCode());
+         rowData.put("id", sysResource.getId());
+         
          Iterator it = rowData.keys();  
          while (it.hasNext()) {  
              String key = (String) it.next(); 

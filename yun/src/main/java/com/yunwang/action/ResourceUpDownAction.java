@@ -393,14 +393,16 @@ public class ResourceUpDownAction extends AbstractUpDownAction{
 			if(MyStringUtil.isNotBlank(purchasePrice) && MyNumberUtil.isNumber(purchasePrice)){
 				sysRcResource.setPurchasePrice(new BigDecimal(purchasePrice));
 			}else{
-				return String.format("第(%s)行的采购价格不能为空且必须为数值类型",row.getRowNum()+1);	
+				sysRcResource.setPurchasePrice(BigDecimal.ZERO);
+				//return String.format("第(%s)行的采购价格不能为空且必须为数值类型",row.getRowNum()+1);	
 			}
 			
 			String salePrice = PoiUtil.getCellValue(row.getCell(4),sheet,workBook);
 			if(MyStringUtil.isNotBlank(salePrice) && MyNumberUtil.isNumber(salePrice)){
 				sysRcResource.setSalePrice(new BigDecimal(salePrice));
 			}else{
-				return String.format("第(%s)行的销售价格不能为空且必须为数值类型",row.getRowNum()+1);	
+				sysRcResource.setPurchasePrice(BigDecimal.ZERO);
+				//return String.format("第(%s)行的销售价格不能为空且必须为数值类型",row.getRowNum()+1);	
 			}
 			
 			sysRcResource.setBrand(cutAfterPoint(PoiUtil.getCellValue(row.getCell(5),sheet,workBook)));
@@ -568,11 +570,11 @@ public class ResourceUpDownAction extends AbstractUpDownAction{
 	  * <p>截取数值，主要针对传过来的字符串带有小数点</p>
 	*/
 	private String cutAfterPoint(String cellValue){
-		if(null!=cellValue){
-			return cellValue.split("\\.")[0];
-		}else{
+		//if(null!=cellValue){
+		//	return cellValue.split("\\.")[0];
+		//}else{
 			return cellValue;
-		}
+		//}
 	}
 
 	public SysRsRcCatalog getSysRsRcCatalog() {

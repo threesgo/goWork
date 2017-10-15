@@ -29,7 +29,7 @@ public class SysRsRcCatalog extends AbstractRowVersionModel{
 	@Column(name="PARENT_ID", nullable = false)
 	private Integer parentId;//父级Id
 	
-	@Column(name="CATALOG_CODE", nullable = false,length=32)
+	@Column(name="CATALOG_CODE", nullable = false,length=128)
 	private String catalogCode;//代号  //组合值
 	
 	@Column(name="CATALOG_NAME", nullable = false,length=128)

@@ -36,25 +36,33 @@ $(function(){
 						
 						<s:if test="#attribCatalog.controlTypeId==105">
 							type:"combobox",
-							valueField:'id',
-							textField:'value',
-							data:${attribCatalog.arrDefaultValues}
+							options:{
+								valueField:'id',
+								textField:'value',
+								data:${attribCatalog.arrDefaultValues}
+							}
 						</s:if>
 						
 						<s:if test="#attribCatalog.controlTypeId==106">
 							type:"combobox",
-							valueField:'id',
-							textField:'value',
-							multiple:true,
-							data:${attribCatalog.arrDefaultValues}
+							options:{
+								valueField:'id',
+								textField:'value',
+								multiple:true,
+								data:${attribCatalog.arrDefaultValues}
+							}
 						</s:if>
 						
 						<s:if test="#attribCatalog.controlTypeId==107">
-							type:"datetimebox"
+							type:"datebox"
 						</s:if>
 				 	},
 					formatter:function(value,row,index){
-						return value;
+						if(isNaN(value)){
+							return parseFloat(value);
+						}else{
+							return value;
+						}
 					}
 				}
 			);
@@ -130,12 +138,12 @@ $(function(){
 				} 
 	 		},
 	 		*/
-	  		{field:'rsrcCode',title:"产品编号",width:80,sortable:true,
+	  		//{field:'rsrcCode',title:"产品编号",width:80,sortable:true,
 				//editor:{
 				//	type:"textbox",
 				//	options:{required:false,validType:['length[1,10]','illegal']}
 				//}
-			},
+			//},
 	        {field:'rsrcName',title:"产品名称",width:80,sortable:true,
 	        	editor:{
 	        		type:"textbox",
@@ -179,16 +187,18 @@ $(function(){
         ]],
 	    columns:[columns],
 	    onDblClickCell:function onDblClickCell(index, field, value) {
-	    	if(resourceEdit!=undefined){
-	    		if($resourceGrid.datagrid("validateRow",resourceEdit)){
-	    			$resourceGrid.datagrid("endEdit",resourceEdit);
-	    		}else{
-					$show("请正确输入编辑行数据!");
-					return false;	    		
-	    		}
+	    	if("rsrcCode" != field){
+		    	if(resourceEdit!=undefined){
+		    		if($resourceGrid.datagrid("validateRow",resourceEdit)){
+		    			$resourceGrid.datagrid("endEdit",resourceEdit);
+		    		}else{
+						$show("请正确输入编辑行数据!");
+						return false;	    		
+		    		}
+		    	}
+		    	$resourceGrid.datagrid('editCell',{index:index,field:field});
+	            resourceEdit = index;
 	    	}
-	    	$resourceGrid.datagrid('editCell',{index:index,field:field});
-            resourceEdit = index;
         },
         /*
 	    onDblClickRow: function(index,row){
@@ -214,6 +224,7 @@ $(function(){
 							$resourceGrid.datagrid('updateRow',{
 								index: rowIndex,
 								row: {
+									id:json.data.id,
 									rsrcCode:json.data.rsrcCode
 								}
 							});
@@ -396,13 +407,16 @@ resourceOperation = {
 	search:function(){
 		var searchData = {};
 		searchData["rsrcCode"] = $("#rsrcCode").val();
-		searchData["rescName"] = $("#rescName").val();
+		searchData["rsrcName"] = $("#rsrcName").val();
 		searchData["abbreviaName"] = $("#abbreviaName").val();
 		
 		var $attrs = $("input[id^='attrib_']");
 		$.each($attrs,function(i,n){
 			var id = $(n).attr("id").substring(7,$(n).attr("id").length);
 			searchData[id] = $(n).val();
+			if(isNaN(id)){
+				searchData[id] = $(n).datetimebox("getValue");
+			}
 		})
 		$resourceGrid.datagrid("reload",
 			{
@@ -519,7 +533,7 @@ resourceOperation = {
 </style>
 
 <div class="easyui-layout" data-options="fit:true,border : false">
-	<div id="searchForm" data-options="region:'north',title:'查询条件',border:false,split:true" style="height: 130px; overflow: hidden;background-color: #F8F8F8" >
+	<div id="searchForm" data-options="region:'north',title:'查询条件',border:false,split:false" style="height: 130px; overflow: hidden;background-color: #F8F8F8" >
 		<div class="search-div">
 			<lable for="">产品编号</lable>
 			<div class="select">
@@ -540,9 +554,27 @@ resourceOperation = {
 		</div>
 		<s:iterator value="attribCatalogs" id="attribCatalog" status="list">
 			<s:if test="#attribCatalog.showInFinder==1">
-				<div class="search-div">
-					<lable for="">${attribCatalog.rsrcAttribName}</lable>
-					<div class="select">
+				<s:if test="#attribCatalog.controlTypeId==104||
+							#attribCatalog.controlTypeId==105||
+							#attribCatalog.controlTypeId==106">
+					<div class="search-div">
+						<lable for="">${attribCatalog.rsrcAttribName}</lable>
+						<div class="select">
+							<input  id="attrib_${attribCatalog.id}" type="text"/>
+						</div>
+					</div>
+				</s:if>	
+				<s:if test="#attribCatalog.controlTypeId==107">
+					<div class="search-div" style = "width:488px;max-width: 488px;">
+						<lable for="">${attribCatalog.rsrcAttribName}</lable>
+						<div class="select" style="width: 400px;">
+							<input  id="attrib_${attribCatalog.id}_start" class="easyui-datebox" />
+							-
+							<input  id="attrib_${attribCatalog.id}_end" class="easyui-datebox" />
+						</div>
+					 </div>
+				</s:if>
+						<!-- 
 						<input  id="attrib_${attribCatalog.id}"  
 						
 						<s:if test="#attribCatalog.controlTypeId==104">
@@ -560,8 +592,7 @@ resourceOperation = {
 						<s:if test="#attribCatalog.controlTypeId==107">
 							class="easyui-datetimebox"
 						</s:if>/>
-					</div>
-				 </div>
+						 -->
 			</s:if>
 		</s:iterator>
 		<div class="search-div">
