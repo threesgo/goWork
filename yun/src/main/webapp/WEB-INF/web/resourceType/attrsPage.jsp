@@ -19,7 +19,7 @@
 			idField:'id',
 			columns:[[
 				{field:'_checkbox',checkbox:true},
-				{field:'rsrcAttribCode',title:"属性代号",width:100},
+				{field:'rsrcAttribCode',title:"属性编号",width:100},
 				{field:'rsrcAttribName',title:"属性名称",width:100}
 			]],
 			onSelect:function(index, rowData){
@@ -43,7 +43,7 @@
 			idField:'id',
 			columns:[[
 				{field:'_checkbox',checkbox:true},
-				{field:'rsrcAttribCode',title:"属性代号",width:100},
+				{field:'rsrcAttribCode',title:"属性编号",width:100},
 				{field:'rsrcAttribName',title:"属性名称",width:100},
 			]],
 			onSelect:function(index, rowData){
@@ -54,6 +54,10 @@
   	attrOperation = {
 		addAttr:function(){
 			var node = resourceTypeTree.tree("getSelected");
+			if(null == node){
+				$alert("请选择产品类型!");
+				return false;
+			}
  			var dialog =$('<div id="addResourceTypeAttr"></div>').dialog({    
 				href : "resourceTypeAction!saveOrUpdateAttrPage.act",
 				width:600,
@@ -102,6 +106,11 @@
 		updateAttr:function(status){
 			var selected;
 			var buttonArr;
+			var node = resourceTypeTree.tree("getSelected");
+			if(null == node){
+				$alert("请选择产品类型!");
+				return false;
+			}
 			if(status==1){
 				selected = $('#attr').datagrid("getSelected");
 				buttonArr = [{
@@ -154,9 +163,9 @@
 				width:600,
 				height:350,
 				resizable:true,
-				title:"新增属性",
+				title:"新增/更新属性",
 				method:'post',
-				queryParams:{"sysRsRcAttribCatalog.id":selected.id},
+				queryParams:{"sysRsRcCatalog.id":node.attributes.id,"sysRsRcAttribCatalog.id":selected.id},
 				modal:true,
 				buttons:buttonArr,
 				onClose:function(){

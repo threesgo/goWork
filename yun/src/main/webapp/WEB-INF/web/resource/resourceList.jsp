@@ -60,17 +60,39 @@ $(function(){
 			);
 		</s:if>
 	</s:iterator>
+	
+	columns.push(
+		{field:'supplierName',title:"供应商名称/联系人",width:100,sortable:true,
+        	editor:{
+        		type:"textbox",
+        		options:{required:false,validType:['length[1,300]','illegal']}
+        	}
+        },
+        {field:'supplierPhone',title:"供应商电话",width:80,sortable:true,
+        	editor:{
+        		type:"textbox",
+        		options:{required:false,validType:['length[1,80]','illegal']}
+        	}
+        },
+        {field:'supplierAddress',title:"供应商地址",width:150,sortable:true,
+        	editor:{
+        		type:"textbox",
+        		options:{required:false,validType:['length[1,300]','illegal']}
+        	}
+        }
+	);
+	
  	$resourceGrid=$("#resourceGrid").datagrid({
         fitColumns:false,
         striped:true,
-        singleSelect:false,
+        singleSelect:true,
         fit:true,
         nowrap:true,
         idField:"id",
         remoteSort:false,
         multiSort:true,
         rownumbers : true,
-        selectOnCheck:true,
+        selectOnCheck:false,
         checkOnSelect:false,
         pageSize:20,
         pageList:[20,50,100,150,200],
@@ -86,6 +108,7 @@ $(function(){
 	        {field:'ck',checkbox:true},
 	 		//{field:'rsrcTypeName',title:"产品类别",width:80,sortable:true},
 	 		//{field:'rsrcOrgName',title:"产品类型",width:80,sortable:true},
+	 		/*
 	 		{field:'workType',title:"工种",width:80,sortable:true,
 	 			editor:{
                      type:'combobox',
@@ -106,16 +129,17 @@ $(function(){
 					return flowListObj[value];
 				} 
 	 		},
-	  		{field:'rsrcCode',title:"产品代号",width:80,sortable:true,
-				editor:{
-					type:"textbox",
-					options:{required:true,validType:['length[1,10]','illegal']}
-				}
+	 		*/
+	  		{field:'rsrcCode',title:"产品编号",width:80,sortable:true,
+				//editor:{
+				//	type:"textbox",
+				//	options:{required:false,validType:['length[1,10]','illegal']}
+				//}
 			},
 	        {field:'rsrcName',title:"产品名称",width:80,sortable:true,
 	        	editor:{
 	        		type:"textbox",
-	        		options:{required:true,validType:['length[1,30]','illegal']}
+	        		options:{required:false,validType:['length[1,30]','illegal']}
 	        	}
 	        },
 	        {field:'abbreviaName',title:"产品简称",width:80,sortable:true,
@@ -145,10 +169,28 @@ $(function(){
 						precision:2
 			 		}
 	        	}
+	       	},
+	       	{field:'brand',title:"品牌",width:80,sortable:true,
+	        	editor:{
+	        		type:"textbox",
+	        		options:{validType:['length[1,30]','illegal']}
+	        	}
 	       	}
         ]],
 	    columns:[columns],
-	    
+	    onDblClickCell:function onDblClickCell(index, field, value) {
+	    	if(resourceEdit!=undefined){
+	    		if($resourceGrid.datagrid("validateRow",resourceEdit)){
+	    			$resourceGrid.datagrid("endEdit",resourceEdit);
+	    		}else{
+					$show("请正确输入编辑行数据!");
+					return false;	    		
+	    		}
+	    	}
+	    	$resourceGrid.datagrid('editCell',{index:index,field:field});
+            resourceEdit = index;
+        },
+        /*
 	    onDblClickRow: function(index,row){
 	    	if(resourceEdit!=undefined){
 	    		if($resourceGrid.datagrid("validateRow",resourceEdit)){
@@ -161,6 +203,7 @@ $(function(){
 			resourceEdit=index;
  			$(this).datagrid('beginEdit',index);
 	    },
+	    */
 	    onAfterEdit:function(rowIndex,rowData,changes){
 	    	$.post("resourceAction!saveOrUpdateResourceGrid.act",
 	    			{"resourceJsonStr":Some.util.jsonToStr(rowData),"sysRsRcCatalog.id":${sysRsRcCatalog.id}},
@@ -168,6 +211,12 @@ $(function(){
       			 	handlerResult(data,
       			 		function(json){
 							$show(json.message);
+							$resourceGrid.datagrid('updateRow',{
+								index: rowIndex,
+								row: {
+									rsrcCode:json.data.rsrcCode
+								}
+							});
 						},
 						function(json){
 							$show(json.message);
@@ -472,7 +521,7 @@ resourceOperation = {
 <div class="easyui-layout" data-options="fit:true,border : false">
 	<div id="searchForm" data-options="region:'north',title:'查询条件',border:false,split:true" style="height: 130px; overflow: hidden;background-color: #F8F8F8" >
 		<div class="search-div">
-			<lable for="">产品代号</lable>
+			<lable for="">产品编号</lable>
 			<div class="select">
 				<input  type="text"  id="rsrcCode"/>
 			</div>

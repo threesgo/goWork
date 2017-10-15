@@ -3,7 +3,7 @@
 <form id="add_resource_type" method="post" action="resourceTypeAction!save.act">
 	<input type="hidden" name="sysRsRcCatalog.parentId" value="${sysRsRcCatalog.id}"/>  
     <div>   
-        <label for="code">类型代号:</label>   
+        <label for="code">类型编号:</label>   
         <input class="easyui-validatebox" type="text" name="sysRsRcCatalog.catalogCode" 
         style="width:200px;" data-options="required:true" />   
     </div>   

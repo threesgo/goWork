@@ -47,6 +47,9 @@
 	 	resourceIndexOperation = {
 	 		reload:function(){
 	 			resourceTypeTree.tree("reload");
+	 		},
+	 		expand:function(){
+	 			resourceTypeTree.tree("expandAll");
 	 		}
 	 	};
 		</script>
@@ -55,8 +58,9 @@
 		<div data-options="region:'west',split:true,tools:'#resource_bar'" title=" " style="width:200px;" border="false">
 			<ul id="resourceTypeTree"></ul>
 			<div  id="resource_bar">
-		       <a href="#" class="icon-reflesh" onclick="resourceIndexOperation.reload()">刷新</a>
-		     </div>
+		       	<a href="#" class="bullet_arrow_down" onclick="resourceIndexOperation.expand()">展开全部</a>
+		    	<a href="#" class="icon-reflesh" onclick="resourceIndexOperation.reload()">刷新</a>
+		    </div>
 		</div>
 		<div data-options="region:'center',split:true,title:'',tools:''" border="false">
 			<div id="resourceTab" ></div>

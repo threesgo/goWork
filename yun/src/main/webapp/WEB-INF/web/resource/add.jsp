@@ -8,7 +8,7 @@ $(function(){
 <form id="saveOrUpdate_resource" method="post" action="resourceAction!save.act">
 	<input type="hidden" name="sysResource.rsrcCatalogId" value="${sysRsRcCatalog.id}"/>
     <div>   
-        <label for="code">产品代号:</label>   
+        <label for="code">产品编号:</label>   
         <input id="code" class="easyui-validatebox" type="text" name="sysResource.rsrcCode" 
         style="width:200px;" data-options="required:true,validType:['length[1,10]','illegal']" value=""/>   
         <label for="name">产品名称:</label>   

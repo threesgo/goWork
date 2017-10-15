@@ -7,4 +7,6 @@ import com.yunwang.model.pojo.SysRsRcAttribCatalog;
 public interface SysRsRcAttribCatalogDaoI extends BaseDaoI<SysRsRcAttribCatalog>{
 
 	List<SysRsRcAttribCatalog> findByCatalogIds(String catalogIds);
+
+	SysRsRcAttribCatalog getRsrcAttribName(SysRsRcAttribCatalog sysRsRcAttribCatalog);
 }

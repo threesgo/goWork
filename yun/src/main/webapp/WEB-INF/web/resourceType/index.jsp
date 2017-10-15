@@ -52,6 +52,10 @@
 	 		reload:function(){
 	 			resourceTypeTree.tree("reload");
 	 		},
+	 		
+	 		expand:function(){
+	 			resourceTypeTree.tree("expandAll");
+	 		},
 	 	
 	 		deleteType:function(){
 	 			$.messager.confirm('确认','确认要删除选择产品类型吗？',function(r){    
@@ -103,7 +107,15 @@
 							    	handlerResult(data,
 							    		function(rs){
 							    			dialog.dialog("destroy");
-						    				resourceTypeTree.tree("reload",node.target);
+						    				//resourceTypeTree.tree("reload",node.target);
+						    				resourceTypeTree.tree('append', {
+												parent: node.target,
+												data: [{
+													id: rs.data.id,
+													text: rs.data.catalogCode+","+rs.data.catalogName,
+													attributes:rs.data
+												}]
+											});
 											$show(rs.message);
 										},
 										function(rs){
@@ -180,7 +192,8 @@
 		<div data-options="region:'west',split:true,tools:'#resource_type_bar'" title=" " style="width:200px;" border="false">
 			<ul id="resourceTypeTree"></ul>
 			<div  id="resource_type_bar">
-		       <a href="#" class="icon-reflesh" onclick="resourceTypeOperation.reload()">刷新</a>
+				<a href="#" class="bullet_arrow_down" onclick="resourceTypeOperation.expand()">展开全部</a>
+		       	<a href="#" class="icon-reflesh" onclick="resourceTypeOperation.reload()">刷新</a>
 		     </div>
 		</div>
 		<div data-options="region:'center',split:true,title:''" border="false">

@@ -15,6 +15,7 @@ import com.yunwang.model.pojo.SysRsRcAttribCatalog;
 import com.yunwang.model.pojo.SysRsRcBaseData;
 import com.yunwang.model.pojo.SysRsRcCatalog;
 import com.yunwang.service.SysResourceTypeService;
+import com.yunwang.util.string.MyStringUtil;
 import com.yunwang.util.string.StringBufferByCollectionUtil;
 
 @Service
@@ -33,7 +34,9 @@ public class SysResourceTypeServiceImpl implements SysResourceTypeService{
 	
 	@Override
 	public void saveOrUpdateRsRcCatalog(SysRsRcCatalog sysRsRcCatalog) {
+		SysRsRcCatalog pSysRsRcCatalog = sysRsRcCatalogDao.get(SysRsRcCatalog.class,sysRsRcCatalog.getParentId());
 		sysRsRcCatalog.setOrderNo(sysRsRcCatalogDao.findMaxSeqByPfield("orderNo","parentId",sysRsRcCatalog.getParentId())+1);			
+		sysRsRcCatalog.setCatalogCode(MyStringUtil.getCombineSeqStr(sysRsRcCatalog.getOrderNo(),pSysRsRcCatalog.getCatalogCode()));
 		sysRsRcCatalogDao.saveOrUpdate(sysRsRcCatalog);		
 	}
 
@@ -122,5 +125,11 @@ public class SysResourceTypeServiceImpl implements SysResourceTypeService{
 		attrs.addAll(findExtendsAttr(sysRsRcCatalog));
 		attrs.addAll(findAttr(sysRsRcCatalog));
 		return attrs;
+	}
+
+	@Override
+	public SysRsRcAttribCatalog getRsrcAttribName(
+			SysRsRcAttribCatalog sysRsRcAttribCatalog) {
+		return sysRsRcAttribCatalogDao.getRsrcAttribName(sysRsRcAttribCatalog);
 	}
 }

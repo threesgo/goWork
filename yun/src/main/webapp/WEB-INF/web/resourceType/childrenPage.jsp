@@ -22,7 +22,7 @@ $(function(){
 		columns : [ [
 		{
 			field : 'catalogCode',
-			title : "类型代号",
+			title : "类型编号",
 			width : '49%',
 			sortable : true,
 			sorter : function(a, b) {

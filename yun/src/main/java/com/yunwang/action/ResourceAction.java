@@ -71,15 +71,16 @@ public class ResourceAction extends AbstractLoginAction{
 		attribCatalogs = new ArrayList<SysRsRcAttribCatalog>();
 		attribCatalogs.addAll(sysResourceTypeService.findExtendsAttr(sysRsRcCatalog));
 		attribCatalogs.addAll(sysResourceTypeService.findAttr(sysRsRcCatalog));
-		flowList = BaseDataDictionaryUtil.baseDataMap.get(4);
 		
-		hashMap = new HashMap<String,Object>();
-		hashMap.put("flowListArr", JSONArray.fromObject(flowList));
-		JSONObject obj = new JSONObject();
-		for(SysDataDictionary dictionary:flowList){
-			obj.put(dictionary.getValue(), dictionary.getName());
-		}
-		hashMap.put("flowListObj",obj);
+//		flowList = BaseDataDictionaryUtil.baseDataMap.get(4);
+//		hashMap = new HashMap<String,Object>();
+//		hashMap.put("flowListArr", JSONArray.fromObject(flowList));
+//		JSONObject obj = new JSONObject();
+//		for(SysDataDictionary dictionary:flowList){
+//			obj.put(dictionary.getValue(), dictionary.getName());
+//		}
+//		hashMap.put("flowListObj",obj);
+		
 		return "resourceList";
 	}
 	
@@ -154,7 +155,7 @@ public class ResourceAction extends AbstractLoginAction{
 		try{
 			JSONObject obj = JSONObject.fromObject(resourceJsonStr);
 			sysResourceService.saveOrUpdateResourceGrid(obj,sysRsRcCatalog);
-			return success("行数据保存成功!");
+			return success("行数据保存成功!",obj);
 		}catch(Exception e){
 			LOG.error(e.getMessage());
 			return error("行数据保存失败!");
