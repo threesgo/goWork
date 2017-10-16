@@ -117,7 +117,7 @@ public class SysRoleAction extends AbstractLoginAction{
 				jso.put("attributes", JSONObject.fromObject(role));
 				jsoArr.add(jso);
 			}
-		}else if(id.startsWith("role")){
+		}/*else if(id.startsWith("role")){
 			//菜单管理
 			Integer role = Integer.parseInt(id.substring(4,id.length()));
 			List<SysMenu> sysMenuList = sysUserService.findMenuByRoleId(role);
@@ -130,7 +130,7 @@ public class SysRoleAction extends AbstractLoginAction{
 				jso.put("attributes", JSONObject.fromObject(vo));
 				jsoArr.add(jso);
 			}
-		}
+		}*/
 		return ajaxText(jsoArr);
 		//return null;
 	}
@@ -241,11 +241,11 @@ public class SysRoleAction extends AbstractLoginAction{
 	}
 	
 	*//**
-	 * @date 2016-11-29
-	 * @author YBF
+	 * @date 2017.10.16
+	 * @author kx
 	 * @return
 	 * <p>角色列表</p>
-	 *//*
+	 */
 	public String list(){
 		//List<SysModule> moduleList = sysModuleService.findAll();
 		List<SysModule> moduleList = sysModuleService.findByMajorId(Integer.parseInt(id.substring(2,id.length())));
@@ -291,7 +291,7 @@ public class SysRoleAction extends AbstractLoginAction{
 		roles = JSONArray.fromObject(roleList).toString();
 		modules = JSONArray.fromObject(moduleMapList).toString();
 		return "list";
-	}*/
+	}
 
 	public SysRole getSysRole() {
 		return sysRole;
