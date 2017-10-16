@@ -31,12 +31,12 @@
 		<div data-options="region:'center',split:true,title:''" border="false">
 			<div  id="roleTab" ></div>
 		</div>
-		<div id="mm" class="easyui-menu" style="width:120px;">
+		<!-- <div id="mm" class="easyui-menu" style="width:120px;">
 			<div onclick="append()" data-options="iconCls:'icon-add'">添加</div>
 		</div>
 		<div id="dd" class="easyui-menu" style="width:120px;">
 			<div onclick="del(this)" data-options="iconCls:'icon-remove'">删除</div>
-		</div>
+		</div> -->
 		
 		<%-- href="sysRoleAction!delete.act?sysRole.id=${id}"
 		 --%>
@@ -65,31 +65,31 @@
  					url:"sysRoleAction!findTree.act?",
  					animate:true,
  					onSelect:function(node){//onSelect是选择节点时触发
- 						closeAllTab(layoutTab);//此函数在public中定义，关闭中间布局的选项卡
+ 						closeAllTab(roleTab);//此函数在public中定义，关闭中间布局的选项卡
  						if(roleTree.tree("isLeaf",node.target)){//判断是否为叶子节点
- 							layoutTab.tabs('add',
+ 							roleTab.tabs('add',
  								{
- 								title :"关联模块",
- 								href :"sysRoleAction!edit.act?sysRole.id="+node.attributes.id
+ 								 title :"关联模块",
+ 								 href :"sysRoleAction!edit.act?sysRole.id="+node.attributes.id
  								}
  							);   
  						}                           
  						else{
  							if(node.id=="root"){
- 								layoutTab.tabs('add',
+ 								roleTab.tabs('add',
 									{
- 										title :"角色列表 &nbsp;",
- 	 									href :"sysRoleAction!list.act?id="+node.id
- 	 									,tools:[{    
- 	 	 							        iconCls:'icon-add',    
- 	 	 							        handler:function(){ 
- 	 	 							        	append();
- 	 	 							        }    
- 	 	 							    }]
+										title :"角色列表 &nbsp;",
+	 									href :"sysRoleAction!list.act?id="+node.id
+	 									,tools:[{    
+	 	 							        iconCls:'icon-add',    
+	 	 							        handler:function(){ 
+	 	 							        	append();
+	 	 							        }    
+	 	 							    }]
  	 								}
  								);
  							}
- 						}*/
+ 						}
  					},
  					//右键菜单
  					onContextMenu:function(e,node){
@@ -115,13 +115,13 @@
 						}*/
  					}
  				});
-			/*
-	 		 layoutTab=$('#roleTab').tabs({//得到中间布局的tabs
+			
+	 		roleTab=$('#roleTab').tabs({//得到中间布局的tabs
 	 			fit:true,
 	 		    onSelect:function(title){  
 	 		    }    
 	 		}); 
-	 		*/
+	 		
 	 		/*
 			function closeAllTab(layoutTab){
 	 			var allTabs = layoutTab.tabs('tabs');

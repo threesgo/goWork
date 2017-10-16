@@ -247,20 +247,12 @@ public abstract class BaseAction extends ActionSupport implements SessionAware{
  	 * <p>对象转换为json返回</p>
  	 */
     protected String ajaxJSONObj(Object obj) {
+    	if(obj instanceof JSONObject){
+    		return ajax(obj,"text/html");
+    	}
     	return ajax(JSONObject.fromObject(obj),"text/html");
     }
   
-    /**
- 	 * Administrator
- 	 * 2015-4-15
- 	 * @param jsonObj
- 	 * @return
- 	 * <p>json对象直接返回</p>
-    */
-    protected String ajaxJSONObj(JSONObject jsonObj) {
-    	return ajax(jsonObj,"text/html");
-    }
-
 	public int getPage() {
 		return page;
 	}

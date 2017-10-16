@@ -143,18 +143,23 @@ public class SysUserServiceImpl implements SysUserService{
 				mapList.get(userRole.getUserId()).add(userRole);
 			}
 		}
-		
-		for(SysUser user:list){
-			List<SysUserRole> userRoleList = mapList.get(user.getId());
-			if(userRoleList != null){
-				user.setRoles(StringBufferByCollectionUtil.convertCollection(userRoleList, "name", ","));
-				user.setRoleIds(StringBufferByCollectionUtil.convertCollection(userRoleList, "roleId", ","));
+		if(null != list){
+			for(SysUser user:list){
+				List<SysUserRole> userRoleList = mapList.get(user.getId());
+				if(userRoleList != null){
+					user.setRoles(StringBufferByCollectionUtil.convertCollection(userRoleList, "name", ","));
+					user.setRoleIds(StringBufferByCollectionUtil.convertCollection(userRoleList, "roleId", ","));
+					
+				}
 				
 			}
-			
+			return pager;
+		}else{
+			return null;
 		}
 		
-		return pager;
+		
+		
 	}
 
 	@Override

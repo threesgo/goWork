@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.yunwang.model.pojo.SysMenu;
 import com.yunwang.model.pojo.SysRole;
 import com.yunwang.model.pojo.SysUser;
+import com.yunwang.service.SysMenuService;
 import com.yunwang.service.SysUserService;
 import com.yunwang.util.Constant;
 import com.yunwang.util.action.AbstractLoginAction;
@@ -20,10 +21,11 @@ import com.yunwang.util.action.AbstractLoginAction;
 
 @Action(value = "sysRoleAction", results = {
 		@Result(name="index",location="/WEB-INF/web/sysRole/index.jsp"),
+		@Result(name="edit",location="/WEB-INF/web/sysRole/edit.jsp"),
 		
 		@Result(name="preAdd",location="/WEB-INF/web/sysRole/preAdd.jsp"),
 		@Result(name="preEdit",location="/WEB-INF/web/sysRole/preEdit.jsp"),
-		@Result(name="edit",location="/WEB-INF/web/sysRole/edit.jsp"),
+		
 		@Result(name="list",location="/WEB-INF/web/sysRole/list.jsp")
 	}
 )
@@ -36,9 +38,9 @@ public class SysRoleAction extends AbstractLoginAction{
 	
 	private String id;
 	private String needAll;
-	/*private String jsonInfo;
+	private String jsonInfo;
 	
-	private String moduleIds;
+	/*private String moduleIds;
 	
 	private String modules;
 	
@@ -46,13 +48,13 @@ public class SysRoleAction extends AbstractLoginAction{
 	
 	private Integer majorId;*/
 	
-	/*@Autowired
-	private SysRoleService sysRoleService;
+//	@Autowired
+//	private SysRoleService sysRoleService;
 	@Autowired
-	private ISysModuleService sysModuleService;
-	@Autowired
-	private ISysRoleModuleService sysRoleModuleService;
-*/
+	private SysMenuService sysMenuService;
+//	@Autowired
+//	private ISysRoleModuleService sysRoleModuleService;
+
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -106,14 +108,15 @@ public class SysRoleAction extends AbstractLoginAction{
 			json.put("state", "closed");
 			jsoArr.add(json);
 		}else if(id.startsWith("root")){
-			SysUser user = (SysUser) sessionMap.get(Constant.SESSION_ADMIN);
-			List<SysRole> listSysRole = sysUserService.findByUserId(user.getId()); 
+			//SysUser user = (SysUser) sessionMap.get(Constant.SESSION_ADMIN);
+			//List<SysRole> listSysRole = sysUserService.findByUserId(user.getId()); 
+			List<SysRole> listSysRole = sysUserService.findAllRole();
 			JSONObject jso=null;
 			for(SysRole role:listSysRole){
 			    jso=new JSONObject();
 				jso.put("id","role"+role.getId());
 				jso.put("text","角色："+role.getName());
-				jso.put("state", "closed");
+				jso.put("state", "open");
 				jso.put("attributes", JSONObject.fromObject(role));
 				jsoArr.add(jso);
 			}
@@ -148,6 +151,7 @@ public class SysRoleAction extends AbstractLoginAction{
 			obj = new JSONObject();
 			obj.put("id", "");
 			obj.put("sysRole", "全部");
+			obj.put("selected", true);
 			arr.add(obj);
 		}
 		List<SysRole> listRole = sysUserService.findAllRole();
@@ -225,15 +229,15 @@ public class SysRoleAction extends AbstractLoginAction{
 	 * @author YBF
 	 * @return
 	 * <p>角色编辑</p>
-	 *//*
+	 */
 	public String edit(){
 		if(sysRole!=null){
-			List<Object> list = sysModuleService.findModulesByRole(sysRole.getId());
+			List<SysMenu> list = sysMenuService.findMenuByRole(sysRole.getId());
 			jsonInfo = JSONArray.fromObject(list).toString();
 		}
 		return "edit";
 	}
-	
+	/*
 	*//**
 	 * saveRoleRelModule method.
 	 * @author 冯英峰
@@ -323,4 +327,13 @@ public class SysRoleAction extends AbstractLoginAction{
 	public void setNeedAll(String needAll) {
 		this.needAll = needAll;
 	}
+
+	public String getJsonInfo() {
+		return jsonInfo;
+	}
+
+	public void setJsonInfo(String jsonInfo) {
+		this.jsonInfo = jsonInfo;
+	}
+	
 }

@@ -57,6 +57,8 @@
 	            toolbar:"#selectDiv",
 	            height: 'auto',
 	            url:"sysUserAction!listUser.act",
+	            onSelect:function(rowIndex, rowData){
+	            },
 				columns:[[
 					{field:'userName',title: "用户名",width:190,align:"center",sortable:true, //sortable是排序
 						sorter:function(a,b){ 
@@ -79,8 +81,19 @@
 			     multiple:true,
 			     editable:false,
 			     url:"sysRoleAction!findAll.act",
-			     queryParams:{"needAll":true}
-			     
+			     queryParams:{"needAll":true},
+			     onSelect:function(record){
+			    	 alert(record.id)
+			    	 if(!record.id){
+			    		 var selects = $("#sysRoles").combobox("getValues"); 
+			    		 $.each(selects,function(index,name){
+			    			 $("#sysRoles").combobox("unselect",id); 
+			    		 });
+			    		 $("#sysRoles").combobox("select",""); 
+			    	 }else{
+			    		 $("#sysRoles").combobox("unselect",""); 
+			    	 }
+			     }
 			});
 			//部门
 			$("#sysRoles").combobox({
@@ -91,16 +104,6 @@
 		
 		window.user={
 				search:function(){
-					var input=$("#tools").find("input");
-					var flag=false;
-					$.each(input, function(i, n){//遍历数组或对象，i是数组或对象索引值，n是对应的数组值或对象
-						if($(n).hasClass("validatebox-invalid")){  //hasClass("")检查是否还有指定的类
-							flag=true;
-						};
-					});
-					if(flag){
-						return false;
-					}
 					var searchJSON={};
  					searchJSON["userName"] = $("#sysUsreName").val();
  					searchJSON["realName"] = $("#sysRealName").val();
@@ -110,9 +113,8 @@
 				},
 				reset:function(){
 					$("#sysUsreName,#sysUsreName").val("");
-					$("#queryMajor").val("");
-					$("#sysRoles,#queryDepts").combobox("setValue","");
-					$userList.datagrid("reload");
+					$("#sysRoles").combobox("setValue","");
+					$userList.datagrid("reload",{});
 				},
 				//新建用户
 				/* addUser:function(){
@@ -279,12 +281,12 @@
 						<select id="sysRoles"></select>
 					</div>
 				</div>
-				<div class="search-div">
+				<%-- <div class="search-div">
 					<label>部门：</label>
 					<div class="select">
 						<select id="queryDepts"></select>
 					</div>
-				</div>
+				</div> --%>
 				<div class="search-div">
 					<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-search', plain:true" onclick="user.search()" >搜索</a> 
 					<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-reload', plain:true" onclick="user.reset()" >重置</a> 
