@@ -106,10 +106,14 @@ public class ResourceUpDownAction extends AbstractUpDownAction{
 	 */
     @DownloadAnnotation("resourceUpDownAction_exportResource")
 	public String exportResource(){
-		sysRsRcCatalog = sysResourceTypeService.getRsRcCatalogInfo(sysRsRcCatalog.getId());
-		exportResourceFileName = sysRsRcCatalog.getCatalogCode()+"_"+sysRsRcCatalog.getCatalogName()+".xls";
+    	if(0!=sysRsRcCatalog.getId()){
+    		sysRsRcCatalog = sysResourceTypeService.getRsRcCatalogInfo(sysRsRcCatalog.getId());	
+    		exportResourceFileName = sysRsRcCatalog.getCatalogCode()+"_"+sysRsRcCatalog.getCatalogName()+".xls";
+    	}else{
+    		exportResourceFileName = "ALL_PRODUCT.xls";
+    	}
 		List<SysRsRcAttribCatalog> attrList =  sysResourceTypeService.findAllAttr(sysRsRcCatalog);
-		List<SysResource> sysResources = sysResourceService.findByRsRcCatalogId(sysRsRcCatalog.getId());
+		List<SysResource> sysResources = sysResourceService.findParentByRsRcCatalogId(sysRsRcCatalog.getId());
 		List<SysRsRcAttrib> sysRsRcAttribs = sysResourceService.findSysRsRcAttribByResourceIds(
 					StringBufferByCollectionUtil.convertCollection(sysResources,"id"));
 		

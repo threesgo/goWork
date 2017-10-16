@@ -9,4 +9,6 @@ public interface SysRsRcAttribDaoI extends BaseDaoI<SysRsRcAttrib>{
 	List<SysRsRcAttrib> findByResourceIds(String resourceIds);
 
 	SysRsRcAttrib getByResourceAndAttr(Integer resourceId, Integer attrId);
+
+	void deleteByAttribCatalogAndRsRcCatalog(Integer attribCatalogId, Integer rsRcCatalogId);
 }

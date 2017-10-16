@@ -30,4 +30,6 @@ public interface SysResourceTypeService {
 	List<SysRsRcAttribCatalog> findAllAttr(SysRsRcCatalog sysRsRcCatalog);
 
 	SysRsRcAttribCatalog getRsrcAttribName(SysRsRcAttribCatalog sysRsRcAttribCatalog);
+
+	void dragResourceType(Integer point, Integer targetId, Integer sourceId);
 }

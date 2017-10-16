@@ -2,6 +2,7 @@ package com.yunwang.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,10 +12,12 @@ import com.yunwang.dao.SysRsRcAttribCatalogDaoI;
 import com.yunwang.dao.SysRsRcAttribDaoI;
 import com.yunwang.dao.SysRsRcBaseDataDaoI;
 import com.yunwang.dao.SysRsRcCatalogDaoI;
+import com.yunwang.model.pojo.SysResource;
 import com.yunwang.model.pojo.SysRsRcAttribCatalog;
 import com.yunwang.model.pojo.SysRsRcBaseData;
 import com.yunwang.model.pojo.SysRsRcCatalog;
 import com.yunwang.service.SysResourceTypeService;
+import com.yunwang.util.collection.CollectionUtil;
 import com.yunwang.util.string.MyStringUtil;
 import com.yunwang.util.string.StringBufferByCollectionUtil;
 
@@ -131,5 +134,36 @@ public class SysResourceTypeServiceImpl implements SysResourceTypeService{
 	public SysRsRcAttribCatalog getRsrcAttribName(
 			SysRsRcAttribCatalog sysRsRcAttribCatalog) {
 		return sysRsRcAttribCatalogDao.getRsrcAttribName(sysRsRcAttribCatalog);
+	}
+
+	@Override
+	public void dragResourceType(Integer point, Integer targetId,
+			Integer sourceId) {
+		SysRsRcCatalog sourceCatalog = sysRsRcCatalogDao.get(SysRsRcCatalog.class,sourceId);
+		SysRsRcCatalog targetCatalog = sysRsRcCatalogDao.get(SysRsRcCatalog.class,targetId);
+		if(point == 0){
+			List<SysRsRcAttribCatalog> sourceAttribCatalog = findExtendsAttr(sourceCatalog);
+			List<SysRsRcAttribCatalog> targetAttribCatalog = findExtendsAttr(targetCatalog);
+			Map<Integer,SysRsRcAttribCatalog> map = CollectionUtil.listToMap(targetAttribCatalog, "id");
+			
+			for(SysRsRcAttribCatalog catalog : sourceAttribCatalog){
+				SysRsRcAttribCatalog mapCatalog = map.get(catalog.getId());
+				if(null == mapCatalog){
+					sysRsRcAttribDao.deleteByAttribCatalogAndRsRcCatalog(catalog.getId(),sourceCatalog.getId());
+				}
+			}
+			
+			//更新
+			sourceCatalog.setParentId(targetCatalog.getId());
+			sourceCatalog.setOrderNo(sysRsRcCatalogDao.findMaxSeqByPfield("orderNo","parentId",sourceCatalog.getParentId())+1);			
+			sourceCatalog.setCatalogCode(MyStringUtil.getCombineSeqStr(sourceCatalog.getOrderNo(),targetCatalog.getCatalogCode()));
+			sysRsRcCatalogDao.update(sourceCatalog);
+			
+			List<SysResource> sysResources = sysResourceDao.findByRsRcCatalogId(sourceCatalog.getId());
+			for(SysResource syresource : sysResources){
+				syresource.setRsrcCode(MyStringUtil.getCombineSeqStr(syresource.getOrderNo(),sourceCatalog.getCatalogCode()));
+				sysResourceDao.update(syresource);
+			}
+		}
 	}
 }

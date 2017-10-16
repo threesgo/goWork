@@ -18,6 +18,58 @@
  				{
  					url:"resourceTypeAction!findTree.act",
  					animate:true,
+ 					dnd:true,
+					onBeforeDrag:function(node){
+						if(node.attributes.id==0||node.attributes.id==1||node.attributes.id==2||node.attributes.id==3
+								||node.attributes.id==4||node.attributes.id==5||node.attributes.id==6
+								||node.attributes.id==7||node.attributes.id==8){
+							return false;
+						}
+					},
+					onBeforeDrop:function(target,source,point){
+						var tarNode = resourceTypeTree.tree("getNode",target);
+						var sourNode=source;
+						var sourParNode = resourceTypeTree.tree("getParent",sourNode.target);
+						var data={};
+						switch (point) {
+							//不同工厂不能相互移动
+							case "append":
+								if(tarNode.attributes.id == 0 || sourParNode.attributes.id == tarNode.attributes.id){
+									return false;
+								}
+								data = {"point":0,"targetId":tarNode.attributes.id,"sourceId":source.attributes.id};
+								break;
+							case "bottom":
+								return false;
+								break;
+							case "top":
+								return false;
+								break;
+						}
+						var load=new Some.loading();
+						//相同的继承属性不删除，没有的删除
+						$confirm("确定移动产品类型吗,移动后继承属性值数据将会丢失?",function(){
+							load.show();
+							$.post("resourceTypeAction!dragResourceType.act",data,
+							function(json){
+								load.close();
+								handlerResult(json,
+						    		function(rs){
+										resourceTypeTree.tree('append', {
+											parent: tarNode.target,
+											data:sourNode
+										});
+										resourceTypeTree.tree("remove",sourNode.target);
+										$show(rs.message);
+									},
+									function(rs){
+										$alert(rs.message);
+									}
+								); 
+							},"json");
+						});
+						return false;
+					},
  					onSelect:function(node){//onSelect是选择节点时触发
  						closeAllTab(resourceTypeTab);
  						if("root" != node.id){
@@ -37,6 +89,10 @@
 						if("root" != node.id){
 							resourceTypeTab.tabs("select",1);
 						}
+ 					},
+ 					onLoadSuccess:function(node,data){
+ 						var root = resourceTypeTree.tree("getRoot");
+ 						resourceTypeTree.tree("select",root.target);
  					}
  				}
 	 		);
@@ -51,6 +107,8 @@
 	 	resourceTypeOperation = {
 	 		reload:function(){
 	 			resourceTypeTree.tree("reload");
+	 			$("#expandAll").show();
+	 			$("#collapseAll").hide();
 	 		},
 	 		
 	 		expand:function(){
@@ -197,7 +255,7 @@
 						$(this).dialog("destroy");
 					}
 	 			});
-	 		},
+	 		}
 	 	};
 		</script>
 	</head>

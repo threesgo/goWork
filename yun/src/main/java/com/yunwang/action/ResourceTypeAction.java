@@ -54,6 +54,10 @@ public class ResourceTypeAction extends AbstractLoginAction{
 	private List<SysRsRcBaseData> unitList;
 	private List<SysDataDictionary> catalogTypeList;
 	
+	private Integer point;
+	private Integer targetId;
+	private Integer sourceId;
+	
 	
 	@Override
 	public String execute() throws Exception {
@@ -314,6 +318,16 @@ public class ResourceTypeAction extends AbstractLoginAction{
 			return error("操作失败!");
 		}
 	}
+	
+	public String dragResourceType(){
+		try{
+			sysResourceTypeService.dragResourceType(point,targetId,sourceId);
+			return success("操作成功!");
+		}catch(Exception e){
+			LOG.error(e.getMessage());
+			return error("操作失败!");
+		}
+	}
 
 	public String getId() {
 		return id;
@@ -377,5 +391,29 @@ public class ResourceTypeAction extends AbstractLoginAction{
 
 	public void setSysRsRcAttribCatalog(SysRsRcAttribCatalog sysRsRcAttribCatalog) {
 		this.sysRsRcAttribCatalog = sysRsRcAttribCatalog;
+	}
+
+	public Integer getPoint() {
+		return point;
+	}
+
+	public void setPoint(Integer point) {
+		this.point = point;
+	}
+
+	public Integer getTargetId() {
+		return targetId;
+	}
+
+	public void setTargetId(Integer targetId) {
+		this.targetId = targetId;
+	}
+
+	public Integer getSourceId() {
+		return sourceId;
+	}
+
+	public void setSourceId(Integer sourceId) {
+		this.sourceId = sourceId;
 	}
 }

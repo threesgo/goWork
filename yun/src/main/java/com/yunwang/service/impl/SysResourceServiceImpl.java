@@ -232,4 +232,13 @@ public class SysResourceServiceImpl implements SysResourceService{
 			}
 		}
 	}
+
+	@Override
+	public List<SysResource> findParentByRsRcCatalogId(Integer parentId) {
+		List<Integer> ids = new ArrayList<Integer>();
+		ids.add(parentId);
+		List<SysRsRcCatalog> children = sysRsRcCatalogDao.findByParentId(parentId);
+		getChildrens(ids,children);
+		return sysResourceDao.findByRsRcCatalogIds(StringBufferByCollectionUtil.convertCollection(ids));
+	}
 }

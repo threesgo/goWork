@@ -16,4 +16,6 @@ public interface SysResourceDaoI extends BaseDaoI<SysResource>{
 
 	Pager<SysResource> findByRsRcCatalogIds(String rsRcCatalogIds, int page,
 			int rows, JSONObject seachJson);
+
+	List<SysResource> findByRsRcCatalogIds(String rsRcCatalogIds);
 }

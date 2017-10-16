@@ -123,5 +123,11 @@ public class SysResourceDaoImpl extends BaseDaoImpl<SysResource> implements SysR
 		buf.append(" ORDER BY model.rsrcCatalogId,model.orderNo");
 		return pagedQuery(buf.toString(), page, rows, map);
 	}
-	
+
+	@Override
+	public List<SysResource> findByRsRcCatalogIds(String rsRcCatalogIds) {
+		StringBuffer buf = new StringBuffer("SELECT model FROM SysResource model WHERE model.rsrcCatalogId in("+rsRcCatalogIds+") ");
+		buf.append(" ORDER BY model.rsrcCatalogId,model.orderNo");
+		return find(buf.toString());
+	}
 }

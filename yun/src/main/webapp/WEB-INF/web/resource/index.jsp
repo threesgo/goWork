@@ -33,6 +33,10 @@
  							});
  						}
  						*/
+ 					},
+ 					onLoadSuccess:function(node,data){
+ 						var root = resourceTypeTree.tree("getRoot");
+ 						resourceTypeTree.tree("select",root.target);
  					}
  				}
 	 		);
@@ -47,6 +51,8 @@
 	 	resourceIndexOperation = {
  			reload:function(){
 	 			resourceTypeTree.tree("reload");
+	 			$("#expandAll").show();
+	 			$("#collapseAll").hide();
 	 		},
 	 		
 	 		expand:function(){

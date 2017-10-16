@@ -1,6 +1,8 @@
 package com.yunwang.dao.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
@@ -26,5 +28,16 @@ public class SysRsRcAttribDaoImpl extends BaseDaoImpl<SysRsRcAttrib> implements 
 	public SysRsRcAttrib getByResourceAndAttr(Integer resourceId, Integer attrId) {
 		return getUniqueResult("SELECT model FROM SysRsRcAttrib model "+
 				" WHERE model.rsrcId=? AND model.rsraAttribCatalogId = ?", resourceId,attrId);
+	}
+
+	@Override
+	public void deleteByAttribCatalogAndRsRcCatalog(Integer attribCatalogId,
+			Integer rsRcCatalogId) {
+		String hql = "DELETE FROM SysRsRcAttrib model " +
+				"WHERE model.rsraAttribCatalogId=:attribCatalogId AND model.rsrcCatalogId=:rsRcCatalogId";
+		Map<String, Object> map = new HashMap<String,Object>();
+		map.put("attribCatalogId",attribCatalogId);
+		map.put("rsRcCatalogId",rsRcCatalogId);
+		executeHql(hql, map);
 	}
 }
