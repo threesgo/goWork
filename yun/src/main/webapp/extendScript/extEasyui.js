@@ -251,6 +251,7 @@
              for ( var i = 0; i < fields.length; i++) {
                  var col = $(this).datagrid('getColumnOption', fields[i]);
                  col.editor = col.editor1;
+                 col.editor.target.focus();
              }
          });
 	};
