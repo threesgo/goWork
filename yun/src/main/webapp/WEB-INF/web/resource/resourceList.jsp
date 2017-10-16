@@ -58,11 +58,7 @@ $(function(){
 						</s:if>
 				 	},
 					formatter:function(value,row,index){
-						if(value&&isNaN(value)){
-							return parseFloat(value);
-						}else{
-							return value;
-						}
+						return value;
 					}
 				}
 			);
@@ -162,7 +158,7 @@ $(function(){
 	        		options:{validType:['length[1,30]','illegal']}
 	        	}
 	        },
-	        {field:'purchasePrice',title:"采购价格",width:80,sortable:true,
+	        {field:'purchasePrice',title:"采购价格",width:80,sortable:true,align:'right',
 	        	editor:{
 	        		type:"numberbox",
 					options:{
@@ -173,7 +169,7 @@ $(function(){
 			 		}
 	        	}
 	        },
-	        {field:'salePrice',title:"销售价格",width:80,sortable:true,
+	        {field:'salePrice',title:"销售价格",width:80,sortable:true,align:'right',
 	        	editor:{
 	        		type:"numberbox",
 					options:{
@@ -192,7 +188,7 @@ $(function(){
 	       	}
         ]],
 	    columns:[columns],
-	    onDblClickCell:function onDblClickCell(index, field, value) {
+	    onClickCell:function(index, field, value) {
 	    	if("rsrcCode" != field){
 		    	if(resourceEdit!=undefined){
 		    		if($resourceGrid.datagrid("validateRow",resourceEdit)){
@@ -247,10 +243,8 @@ $(function(){
  	$("#resourceGrid").parent(".datagrid-view").keyEvent({
 		keyCode:13,
 		handler:function(event){
-			if(resourceEdit!=undefined){
-				$resourceGrid.datagrid("endEdit",resourceEdit);
-				resourceEdit=undefined;
-  	  		}
+			resourceOperation.updateResource();
+			event.preventDefault();
 		}
 	});
  	
@@ -435,7 +429,23 @@ resourceOperation = {
 	},
 	
 	reset:function(){
-		
+		$("#rsrcCode").val('');
+		$("#rsrcName").val('');
+		$("#abbreviaName").val('');
+		$("#brand").val('');
+		$("#supplierName").val('');
+		/*
+		var $attrs = $("input[id^='attrib_']");
+		$.each($attrs,function(i,n){
+			var id = $(n).attr("id").substring(7,$(n).attr("id").length);
+			if(isNaN(id)){
+				$(n).datetimebox("setValue",'');
+			}else{
+				$(n).val('');
+			}
+		})
+		*/
+		resourceOperation.search();
 	},
 	
 	importResource:function(){

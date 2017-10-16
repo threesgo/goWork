@@ -102,21 +102,21 @@ public class SysUserDaoImpl extends BaseDaoImpl<SysUser> implements SysUserDaoI{
 		
 		if(json != null){
 			//用户名,模糊查询
-			String sysUsreName = json.getString("userName");
+			String sysUsreName = json.getString("sysUsreName");
 			if(StringUtils.isNotBlank(sysUsreName)){
 				buf.append("AND model.userName LIKE '%"+sysUsreName+"%' ");
 			}
 			
 			//真实姓名,模糊查询
-			String sysRealName = json.getString("realName");
+			String sysRealName = json.getString("sysRealName");
 			if(StringUtils.isNotBlank(sysRealName)){
 				buf.append("AND model.realName LIKE '%"+sysRealName+"%' ");
 			}
 			
 			//角色,多选
-			String sysRoles = json.getString("roleIds");
-			if(StringUtils.isNotBlank(sysRoles)){
-				buf.append("AND sysUserRole.roleId IN ("+sysRoles+") ");
+			String sysRole = json.getString("sysRole");
+			if(StringUtils.isNotBlank(sysRealName)){
+				buf.append("AND sysUserRole.roleId IN ("+sysRole+") ");
 			}
 		}
 		

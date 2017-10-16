@@ -3,13 +3,13 @@ package com.yunwang.action;
 import java.util.List;
 
 import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.alibaba.fastjson.JSONObject;
 import com.yunwang.model.page.Pager;
 import com.yunwang.model.pojo.SysUser;
 import com.yunwang.service.SysUserService;
