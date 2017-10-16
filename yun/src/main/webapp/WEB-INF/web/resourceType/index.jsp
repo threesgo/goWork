@@ -54,7 +54,17 @@
 	 		},
 	 		
 	 		expand:function(){
+	 			//resourceTypeTree.tree("reload");
+	 			$("#expandAll").hide();
+	 			$("#collapseAll").show();
 	 			resourceTypeTree.tree("expandAll");
+	 		},
+	 		
+	 		collapse:function(){
+	 			//resourceTypeTree.tree("reload");
+	 			$("#expandAll").show();
+	 			$("#collapseAll").hide();
+	 			resourceTypeTree.tree("collapseAll");
 	 		},
 	 	
 	 		deleteType:function(){
@@ -195,7 +205,8 @@
 		<div data-options="region:'west',split:true,tools:'#resource_type_bar'" title=" " style="width:200px;" border="false">
 			<ul id="resourceTypeTree"></ul>
 			<div  id="resource_type_bar">
-				<a href="#" class="bullet_arrow_down" onclick="resourceTypeOperation.expand()">展开全部</a>
+				<a href="#" class="bullet_arrow_down" id="expandAll" onclick="resourceTypeOperation.expand()">展开子集分类</a>
+				<a href="#" class="bullet_arrow_up" id="collapseAll" style="display: none;" onclick="resourceTypeOperation.collapse()">折叠子集分类</a>
 		       	<a href="#" class="icon-reflesh" onclick="resourceTypeOperation.reload()">刷新</a>
 		     </div>
 		</div>

@@ -91,6 +91,8 @@ public class SysResourceServiceImpl implements SysResourceService{
          sysResource.setBrand(brand);
          String supplierName = rowData.getString("supplierName");
          sysResource.setSupplierName(supplierName);
+         String supplier = rowData.getString("supplier");
+         sysResource.setSupplier(supplier);
          String supplierAddress = rowData.getString("supplierAddress");
          sysResource.setSupplierAddress(supplierAddress);
          String supplierPhone = rowData.getString("supplierPhone");

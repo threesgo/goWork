@@ -58,7 +58,7 @@ $(function(){
 						</s:if>
 				 	},
 					formatter:function(value,row,index){
-						if(isNaN(value)){
+						if(value&&isNaN(value)){
 							return parseFloat(value);
 						}else{
 							return value;
@@ -70,7 +70,13 @@ $(function(){
 	</s:iterator>
 	
 	columns.push(
-		{field:'supplierName',title:"供应商名称/联系人",width:100,sortable:true,
+		{field:'supplierName',title:"供应商名称",width:100,sortable:true,
+        	editor:{
+        		type:"textbox",
+        		options:{required:false,validType:['length[1,300]','illegal']}
+        	}
+        },
+        {field:'supplier',title:"供应商联系人",width:100,sortable:true,
         	editor:{
         		type:"textbox",
         		options:{required:false,validType:['length[1,300]','illegal']}
@@ -409,6 +415,8 @@ resourceOperation = {
 		searchData["rsrcCode"] = $("#rsrcCode").val();
 		searchData["rsrcName"] = $("#rsrcName").val();
 		searchData["abbreviaName"] = $("#abbreviaName").val();
+		searchData["brand"] = $("#brand").val();
+		searchData["supplierName"] = $("#supplierName").val();
 		
 		var $attrs = $("input[id^='attrib_']");
 		$.each($attrs,function(i,n){
@@ -552,6 +560,20 @@ resourceOperation = {
 				<input  type="text"  id="abbreviaName"/>
 			</div>
 		</div>
+		<div class="search-div">
+			<lable for="">品牌</lable>
+			<div class="select">
+				<input  type="text"  id="brand"/>
+			</div>
+		</div>
+		
+		<div class="search-div">
+			<lable for="">供应商名称</lable>
+			<div class="select">
+				<input  type="text"  id="supplierName"/>
+			</div>
+		</div>
+		
 		<s:iterator value="attribCatalogs" id="attribCatalog" status="list">
 			<s:if test="#attribCatalog.showInFinder==1">
 				<s:if test="#attribCatalog.controlTypeId==104||

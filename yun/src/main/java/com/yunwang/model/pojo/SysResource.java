@@ -69,7 +69,10 @@ public class SysResource extends AbstractRowVersionModel{
 //	private String supplierId;  //供应商名称 //后期改成id
 	
 	@Column(name = "SUPPLIER_NAME",length=1024)
-	private String supplierName;  //供应商名称,联系人
+	private String supplierName;  //供应商名称
+	
+	@Column(name = "SUPPLIER",length=1024)
+	private String supplier;  //供应商联系人
 	
 	@Column(name = "SUPPLIER_ADDRESS",length=1024)
 	private String supplierAddress;  //供应商地址
@@ -211,5 +214,13 @@ public class SysResource extends AbstractRowVersionModel{
 
 	public void setSupplierPhone(String supplierPhone) {
 		this.supplierPhone = supplierPhone;
+	}
+
+	public String getSupplier() {
+		return supplier;
+	}
+
+	public void setSupplier(String supplier) {
+		this.supplier = supplier;
 	}
 }
