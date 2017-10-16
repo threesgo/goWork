@@ -246,7 +246,7 @@ public class SysRoleAction extends AbstractLoginAction{
 	 * @return
 	 * <p>角色列表</p>
 	 */
-	public String list(){
+	/*public String list(){
 		//List<SysModule> moduleList = sysModuleService.findAll();
 		List<SysModule> moduleList = sysModuleService.findByMajorId(Integer.parseInt(id.substring(2,id.length())));
 		
@@ -291,7 +291,7 @@ public class SysRoleAction extends AbstractLoginAction{
 		roles = JSONArray.fromObject(roleList).toString();
 		modules = JSONArray.fromObject(moduleMapList).toString();
 		return "list";
-	}
+	}*/
 
 	public SysRole getSysRole() {
 		return sysRole;
