@@ -1,6 +1,7 @@
 package com.yunwang.service.impl;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import com.yunwang.dao.SysResourceDaoI;
 import com.yunwang.dao.SysRsRcAttribDaoI;
+import com.yunwang.dao.SysRsRcCatalogDaoI;
 import com.yunwang.model.page.Pager;
 import com.yunwang.model.pojo.SysResource;
 import com.yunwang.model.pojo.SysRsRcAttrib;
@@ -31,6 +33,8 @@ public class SysResourceServiceImpl implements SysResourceService{
 	private SysResourceDaoI sysResourceDao;
 	@Autowired
 	private SysRsRcAttribDaoI sysRsRcAttribDao;
+	@Autowired
+	private SysRsRcCatalogDaoI sysRsRcCatalogDao;
 
 	@Override
 	public List<SysResource> findByRsRcCatalogId(Integer catalogId) {
@@ -51,6 +55,9 @@ public class SysResourceServiceImpl implements SysResourceService{
 	@SuppressWarnings("rawtypes")
 	@Override
 	public void saveOrUpdateResourceGrid(JSONObject rowData,SysRsRcCatalog sysRsRcCatalog) {
+		
+		sysRsRcCatalog = sysRsRcCatalogDao.get(SysRsRcCatalog.class,sysRsRcCatalog.getId());
+		
          SysResource sysResource = null;
          Integer id = rowData.getInt("id");
          if(id > 0){
@@ -65,10 +72,10 @@ public class SysResourceServiceImpl implements SysResourceService{
     		 sysResource.setRsrcStatus(1);
     		 sysResource.setRsrcCatalogId(sysRsRcCatalog.getId());
     		 sysResource.setOrderNo(sysResourceDao.findMaxSeqByPfield("orderNo","rsrcCatalogId",sysRsRcCatalog.getId())+1);			
-    		 
+             sysResource.setRsrcCode(MyStringUtil.getCombineSeqStr(sysResource.getOrderNo(),sysRsRcCatalog.getCatalogCode()));
     	 }
-         String rsrcCode = rowData.getString("rsrcCode");
-         sysResource.setRsrcCode(rsrcCode);
+         //String rsrcCode = rowData.getString("rsrcCode");
+         
          String rsrcName = rowData.getString("rsrcName");
          sysResource.setRsrcName(rsrcName);
          String abbreviaName = rowData.getString("abbreviaName");
@@ -77,9 +84,25 @@ public class SysResourceServiceImpl implements SysResourceService{
          sysResource.setPurchasePrice(new BigDecimal(purchasePrice));
          String salePrice = rowData.getString("salePrice");
          sysResource.setSalePrice(new BigDecimal(salePrice));
-         Integer workType = rowData.getInt("workType");
-         sysResource.setWorkType(workType);
+        //Integer workType = rowData.getInt("workType");
+        //sysResource.setWorkType(workType);
+         
+         String brand = rowData.getString("brand");
+         sysResource.setBrand(brand);
+         String supplierName = rowData.getString("supplierName");
+         sysResource.setSupplierName(supplierName);
+         String supplier = rowData.getString("supplier");
+         sysResource.setSupplier(supplier);
+         String supplierAddress = rowData.getString("supplierAddress");
+         sysResource.setSupplierAddress(supplierAddress);
+         String supplierPhone = rowData.getString("supplierPhone");
+         sysResource.setSupplierPhone(supplierPhone);
+         
          sysResourceDao.saveOrUpdate(sysResource);
+         
+         rowData.put("rsrcCode", sysResource.getRsrcCode());
+         rowData.put("id", sysResource.getId());
+         
          Iterator it = rowData.keys();  
          while (it.hasNext()) {  
              String key = (String) it.next(); 
@@ -109,7 +132,21 @@ public class SysResourceServiceImpl implements SysResourceService{
 	@Override
 	public Pager<SysResource> findByRsRcCatalogId(Integer rsRcCatalogId,
 			int page, int rows,JSONObject seachJson) {
-		return sysResourceDao.findByRsRcCatalogId(rsRcCatalogId,page,rows,seachJson);
+		List<Integer> ids = new ArrayList<Integer>();
+		ids.add(rsRcCatalogId);
+		List<SysRsRcCatalog> children = sysRsRcCatalogDao.findByParentId(rsRcCatalogId);
+		getChildrens(ids,children);
+		return sysResourceDao.findByRsRcCatalogIds(
+				StringBufferByCollectionUtil.convertCollection(ids),page,rows,seachJson);
+		//return sysResourceDao.findByRsRcCatalogId(rsRcCatalogId,page,rows,seachJson);
+	}
+	
+	private void getChildrens(List<Integer> childrenIds,List<SysRsRcCatalog> children){
+		for(SysRsRcCatalog child:children){
+			childrenIds.add(child.getId());
+			List<SysRsRcCatalog> deepChildren = sysRsRcCatalogDao.findByParentId(child.getId());
+			getChildrens(childrenIds,deepChildren);
+		}
 	}
 
 	@Override
@@ -136,6 +173,7 @@ public class SysResourceServiceImpl implements SysResourceService{
 	@Override
 	public void saveImportResources(List<SysResource> resourceList,
 			SysRsRcCatalog sysRsRcCatalog) {
+		sysRsRcCatalog = sysRsRcCatalogDao.get(SysRsRcCatalog.class,sysRsRcCatalog.getId());
 		//数据库已有资源
 		List<SysResource> dbResources = sysResourceDao.findByRsRcCatalogId(sysRsRcCatalog.getId());
 		Map<String,SysResource> resourceMap = CollectionUtil.listToMap(dbResources, "rsrcCode");
@@ -155,8 +193,13 @@ public class SysResourceServiceImpl implements SysResourceService{
 				dbResource.setUpdateDate(new Date());
 				dbResource.setPurchasePrice(resource.getPurchasePrice());
 				dbResource.setSalePrice(resource.getSalePrice());
-				dbResource.setWorkType(resource.getWorkType());
+				//dbResource.setWorkType(resource.getWorkType());
 				dbResource.setAbbreviaName(resource.getAbbreviaName());
+				
+				dbResource.setBrand(resource.getBrand());
+				dbResource.setSupplierName(resource.getSupplierName());
+				dbResource.setSupplierAddress(resource.getSupplierAddress());
+				dbResource.setSupplierPhone(resource.getSupplierPhone());
 				
 				Map<Integer,SysRsRcAttrib> attrMap = attribMap.get(dbResource.getId());
 				
@@ -178,6 +221,7 @@ public class SysResourceServiceImpl implements SysResourceService{
 				resource.setRsrcStatus(1);
 				resource.setOrderNo(++orderNo);
 				resource.setCreateDate(new Date());
+				resource.setRsrcCode(MyStringUtil.getCombineSeqStr(resource.getOrderNo(),sysRsRcCatalog.getCatalogCode()));
 				sysResourceDao.save(resource);
 				for(SysRsRcAttrib attrib:resource.getSysRcRsrcAttribList()){
 					attrib.setRsrcCatalogId(sysRsRcCatalog.getId());
@@ -187,5 +231,14 @@ public class SysResourceServiceImpl implements SysResourceService{
 				}
 			}
 		}
+	}
+
+	@Override
+	public List<SysResource> findParentByRsRcCatalogId(Integer parentId) {
+		List<Integer> ids = new ArrayList<Integer>();
+		ids.add(parentId);
+		List<SysRsRcCatalog> children = sysRsRcCatalogDao.findByParentId(parentId);
+		getChildrens(ids,children);
+		return sysResourceDao.findByRsRcCatalogIds(StringBufferByCollectionUtil.convertCollection(ids));
 	}
 }

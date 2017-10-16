@@ -18,6 +18,7 @@ import com.yunwang.service.SysResourceTypeService;
 import com.yunwang.util.BaseDataDictionaryUtil;
 import com.yunwang.util.SysRcBaseDataTypeUtil;
 import com.yunwang.util.action.AbstractLoginAction;
+import com.yunwang.util.exception.MineException;
 
 @Action(
 	value = "resourceTypeAction", 
@@ -53,6 +54,10 @@ public class ResourceTypeAction extends AbstractLoginAction{
 	private List<SysRsRcBaseData> unitList;
 	private List<SysDataDictionary> catalogTypeList;
 	
+	private Integer point;
+	private Integer targetId;
+	private Integer sourceId;
+	
 	
 	@Override
 	public String execute() throws Exception {
@@ -64,37 +69,66 @@ public class ResourceTypeAction extends AbstractLoginAction{
 	 * <p>查询树结构</p>
 	 */
 	public String findTree(){
+//		JSONArray jsonArr=new JSONArray();
+//		if (id==null) {
+//			JSONObject json=new JSONObject();
+//			json.put("id", "root");
+//			json.put("text", "产品类别");
+//			JSONObject obj=new JSONObject();
+//			obj.put("id",0);
+//			json.put("attributes",obj);
+//			json.put("state", "closed");
+//			jsonArr.add(json);
+//		}else{
+//			List<SysRsRcCatalog> sysRcRsrcOrgList;
+//			if("root".equals(id)){
+//				sysRcRsrcOrgList = sysResourceTypeService.findRsRcCatalogByParentId(0);
+//			}else{
+//				int _id=Integer.parseInt(id.substring(3,id.length()));
+//				sysRcRsrcOrgList = sysResourceTypeService.findRsRcCatalogByParentId(_id);
+//			}
+//			for(SysRsRcCatalog s:sysRcRsrcOrgList){
+//				jsonArr.add(getJson(s));
+//			}
+//		}
+//		return ajaxText(jsonArr);
+		
 		JSONArray jsonArr=new JSONArray();
-		if (id==null) {
-			JSONObject json=new JSONObject();
-			json.put("id", "root");
-			json.put("text", "产品类别");
-			JSONObject obj=new JSONObject();
-			obj.put("id",0);
-			json.put("attributes",obj);
-			json.put("state", "closed");
-			jsonArr.add(json);
-		}else{
-			List<SysRsRcCatalog> sysRcRsrcOrgList;
-			if("root".equals(id)){
-				sysRcRsrcOrgList = sysResourceTypeService.findRsRcCatalogByParentId(0);
-			}else{
-				int _id=Integer.parseInt(id.substring(3,id.length()));
-				sysRcRsrcOrgList = sysResourceTypeService.findRsRcCatalogByParentId(_id);
-			}
-			for(SysRsRcCatalog s:sysRcRsrcOrgList){
-				jsonArr.add(getJson(s));
-			}
-		}
+		
+		JSONObject json=new JSONObject();
+		json.put("id", "root");
+		json.put("text", "产品类别");
+		JSONObject obj=new JSONObject();
+		obj.put("id",0);
+		json.put("attributes",obj);
+		json.put("state", "closed");
+		json.put("children", getChildren(0));
+		jsonArr.add(json);
 		return ajaxText(jsonArr);
+	}
+	
+	private JSONArray getChildren(Integer id){
+		List<SysRsRcCatalog> sysRcRsrcOrgList = sysResourceTypeService.findRsRcCatalogByParentId(id);
+		JSONArray arr = new JSONArray();
+		for(SysRsRcCatalog child:sysRcRsrcOrgList){
+			arr.add(getJson(child));
+		}
+		return arr;
 	}
 	
 	private JSONObject getJson(SysRsRcCatalog sysRcRsrcOrg){
 		JSONObject json=new JSONObject();
 		json.put("id","org"+sysRcRsrcOrg.getId());
-		json.put("text",sysRcRsrcOrg.getCatalogCode()+","+sysRcRsrcOrg.getCatalogName());
+		json.put("text",sysRcRsrcOrg.getCatalogName());//sysRcRsrcOrg.getCatalogCode()+","+sysRcRsrcOrg.getCatalogName());
 		json.put("attributes", JSONObject.fromObject(sysRcRsrcOrg));
+		JSONArray arr = getChildren(sysRcRsrcOrg.getId());
+		json.put("children", arr);
 		json.put("state", "closed");
+		if(arr.size()>0){
+			json.put("state", "closed");
+		}else{
+			json.put("state", "open");
+		}
 		return json;
 	}
 	
@@ -132,7 +166,7 @@ public class ResourceTypeAction extends AbstractLoginAction{
 		jsonArr.add(json_name);
 		
 		JSONObject json_code=new JSONObject();
-		json_code.put("attrName","类型代号");
+		json_code.put("attrName","类型编号");
 		json_code.put("value", sysRsRcCatalog.getCatalogCode());
 		jsonArr.add(json_code);
 		
@@ -230,6 +264,11 @@ public class ResourceTypeAction extends AbstractLoginAction{
 	 */
 	public String saveOrUpdateAttr(){
 		try{
+			SysRsRcAttribCatalog db = sysResourceTypeService.getRsrcAttribName(sysRsRcAttribCatalog);
+			if(null != db){
+				throw new MineException("该属性已经创建，无需重复创建!");
+			}
+			//更新
 			if(null != sysRsRcAttribCatalog.getId()){
 				SysRsRcAttribCatalog dbSysRsRcAttribCatalog = sysResourceTypeService.getSysRsRcAttribCatalog(sysRsRcAttribCatalog.getId());
 				dbSysRsRcAttribCatalog.setRsrcAttribCode(sysRsRcAttribCatalog.getRsrcAttribCode());
@@ -250,7 +289,7 @@ public class ResourceTypeAction extends AbstractLoginAction{
 			return success("操作成功!");
 		}catch(Exception e){
 			LOG.error(e.getMessage());
-			return error("操作失败!");
+			return error("操作失败!",e);
 		}
 	}
 	
@@ -273,6 +312,16 @@ public class ResourceTypeAction extends AbstractLoginAction{
 	public String deleteSysRsRcCatalog(){
 		try{
 			sysResourceTypeService.deleteRsRcCatalog(sysRsRcCatalog);
+			return success("操作成功!");
+		}catch(Exception e){
+			LOG.error(e.getMessage());
+			return error("操作失败!");
+		}
+	}
+	
+	public String dragResourceType(){
+		try{
+			sysResourceTypeService.dragResourceType(point,targetId,sourceId);
 			return success("操作成功!");
 		}catch(Exception e){
 			LOG.error(e.getMessage());
@@ -342,5 +391,29 @@ public class ResourceTypeAction extends AbstractLoginAction{
 
 	public void setSysRsRcAttribCatalog(SysRsRcAttribCatalog sysRsRcAttribCatalog) {
 		this.sysRsRcAttribCatalog = sysRsRcAttribCatalog;
+	}
+
+	public Integer getPoint() {
+		return point;
+	}
+
+	public void setPoint(Integer point) {
+		this.point = point;
+	}
+
+	public Integer getTargetId() {
+		return targetId;
+	}
+
+	public void setTargetId(Integer targetId) {
+		this.targetId = targetId;
+	}
+
+	public Integer getSourceId() {
+		return sourceId;
+	}
+
+	public void setSourceId(Integer sourceId) {
+		this.sourceId = sourceId;
 	}
 }

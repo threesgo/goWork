@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +29,6 @@ import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.yunwang.model.pojo.SysDataDictionary;
 import com.yunwang.model.pojo.SysResource;
 import com.yunwang.model.pojo.SysRsRcAttrib;
 import com.yunwang.model.pojo.SysRsRcAttribCatalog;
@@ -36,7 +36,6 @@ import com.yunwang.model.pojo.SysRsRcBaseData;
 import com.yunwang.model.pojo.SysRsRcCatalog;
 import com.yunwang.service.SysResourceService;
 import com.yunwang.service.SysResourceTypeService;
-import com.yunwang.util.BaseDataDictionaryUtil;
 import com.yunwang.util.PoiUtil;
 import com.yunwang.util.SysRcBaseDataTypeUtil;
 import com.yunwang.util.action.AbstractUpDownAction;
@@ -107,10 +106,14 @@ public class ResourceUpDownAction extends AbstractUpDownAction{
 	 */
     @DownloadAnnotation("resourceUpDownAction_exportResource")
 	public String exportResource(){
-		sysRsRcCatalog = sysResourceTypeService.getRsRcCatalogInfo(sysRsRcCatalog.getId());
-		exportResourceFileName = sysRsRcCatalog.getCatalogCode()+"_"+sysRsRcCatalog.getCatalogName()+".xls";
+    	if(0!=sysRsRcCatalog.getId()){
+    		sysRsRcCatalog = sysResourceTypeService.getRsRcCatalogInfo(sysRsRcCatalog.getId());	
+    		exportResourceFileName = sysRsRcCatalog.getCatalogCode()+"_"+sysRsRcCatalog.getCatalogName()+".xls";
+    	}else{
+    		exportResourceFileName = "ALL_PRODUCT.xls";
+    	}
 		List<SysRsRcAttribCatalog> attrList =  sysResourceTypeService.findAllAttr(sysRsRcCatalog);
-		List<SysResource> sysResources = sysResourceService.findByRsRcCatalogId(sysRsRcCatalog.getId());
+		List<SysResource> sysResources = sysResourceService.findParentByRsRcCatalogId(sysRsRcCatalog.getId());
 		List<SysRsRcAttrib> sysRsRcAttribs = sysResourceService.findSysRsRcAttribByResourceIds(
 					StringBufferByCollectionUtil.convertCollection(sysResources,"id"));
 		
@@ -172,20 +175,24 @@ public class ResourceUpDownAction extends AbstractUpDownAction{
 		Sheet sheet = wb.createSheet("exportResource");
 		int nCol = 0;  //列编号
 		int nRow = 0;  //行编号
-		sheet.setColumnWidth(nCol++, 3000);
-		sheet.setColumnWidth(nCol++, 3000);
 		List<String> results = new ArrayList<String>();
-		results.add(getText("工种"));
-		results.add(getText("产品代号"));
+		//results.add(getText("工种"));
+		results.add(getText("产品编号"));
 		results.add(getText("产品名称"));
 		results.add(getText("产品简称"));
-		
 		results.add(getText("采购价格"));
 		results.add(getText("销售价格"));
+		results.add(getText("品牌"));
+		
 		for(SysRsRcAttribCatalog attrType:attrList){
-			sheet.setColumnWidth(nCol++, 3000);
 			results.add(attrType.getRsrcAttribName());
 		}
+		
+		results.add(getText("供应商名称"));
+		results.add(getText("供应商联系人"));
+		results.add(getText("供应商地址"));
+		results.add(getText("供应商电话"));
+		
 		// 创建单元格样式
 		CellStyle style = wb.createCellStyle();
 		style.setAlignment(HSSFCellStyle.ALIGN_LEFT);
@@ -196,6 +203,7 @@ public class ResourceUpDownAction extends AbstractUpDownAction{
 		row.setHeightInPoints(15);// 设定行的高度
 		nCol = 0;
 		for (String s : results) {
+			sheet.setColumnWidth(nCol, 4000);
 			cell = row.createCell(nCol++);
 			cell.setCellStyle(style);
 			cell.setCellValue(s);
@@ -207,9 +215,9 @@ public class ResourceUpDownAction extends AbstractUpDownAction{
 			row = sheet.createRow(nRow++);
 			nCol=0;
 			
-			cell = row.createCell(nCol++);
-			cell.setCellStyle(style);
-			cell.setCellValue(BaseDataDictionaryUtil.valueMap.get(4).get(obj.getString("workType")).getName());
+//			cell = row.createCell(nCol++);
+//			cell.setCellStyle(style);
+//			cell.setCellValue(BaseDataDictionaryUtil.valueMap.get(4).get(obj.getString("workType")).getName());
 			
 			cell = row.createCell(nCol++);
 			cell.setCellStyle(style);
@@ -231,13 +239,38 @@ public class ResourceUpDownAction extends AbstractUpDownAction{
 			cell.setCellStyle(style);
 			cell.setCellValue(obj.getString("salePrice"));
 			
+			cell = row.createCell(nCol++);
+			cell.setCellStyle(style);
+			cell.setCellValue(obj.getString("brand"));
 			
 			//根据本身属性和继承属性的查询资源属性值
 			for(SysRsRcAttribCatalog attr:attrList){
 				cell = row.createCell(nCol++);
 				cell.setCellStyle(style);
-				cell.setCellValue(obj.getString(attr.getId().toString()));
+				if(obj.containsKey(attr.getId().toString())){
+					String value = obj.getString(attr.getId().toString());
+					cell.setCellValue(value);
+				}else{
+					cell.setCellValue("");
+				}
 			}
+			
+			
+			cell = row.createCell(nCol++);
+			cell.setCellStyle(style);
+			cell.setCellValue(obj.getString("supplierName"));
+			
+			cell = row.createCell(nCol++);
+			cell.setCellStyle(style);
+			cell.setCellValue(obj.getString("supplier"));
+			
+			cell = row.createCell(nCol++);
+			cell.setCellStyle(style);
+			cell.setCellValue(obj.getString("supplierAddress"));
+			
+			cell = row.createCell(nCol++);
+			cell.setCellStyle(style);
+			cell.setCellValue(obj.getString("supplierPhone"));
 		}
 	 return wb;
 	}
@@ -257,7 +290,7 @@ public class ResourceUpDownAction extends AbstractUpDownAction{
 		
 		Map<String,SysRsRcAttribCatalog> attrMap = CollectionUtil.listToMap(attrList,"rsrcAttribName");
 		
-		Map<Integer,SysRsRcAttribCatalog> importAttrMap=new HashMap<Integer,SysRsRcAttribCatalog>();
+		Map<Integer,SysRsRcAttribCatalog> importAttrMap=new LinkedHashMap<Integer,SysRsRcAttribCatalog>();
 		List<SysResource> resourceList=new ArrayList<SysResource>();
 		InputStream in=null;
 		String valdateString;
@@ -288,12 +321,14 @@ public class ResourceUpDownAction extends AbstractUpDownAction{
 							if(cellNum > 5){
 								cell=row.getCell(cellNum);
 								String value=cutAfterPoint(PoiUtil.getCellValue(cell,sheet,workBook));
-								SysRsRcAttribCatalog attrCata=attrMap.get(value);
-								if(null==attrCata){
-									throw new MineException(
-											String.format("第(%s)行第(%s)列的产品属性(%s)与产品类型定义属性不匹配",rowNum+1,cellNum+1,value));
-								}else{
-									importAttrMap.put(cellNum,attrCata);
+								if(!value.equals("供应商名称")&&!value.equals("供应商联系人")&&!value.equals("供应商地址")&&!value.equals("供应商电话")){
+									SysRsRcAttribCatalog attrCata=attrMap.get(value);
+									if(null==attrCata){
+										throw new MineException(
+												String.format("第(%s)行第(%s)列的产品属性(%s)与产品类型定义属性不匹配",rowNum+1,cellNum+1,value));
+									}else{
+										importAttrMap.put(cellNum,attrCata);
+									}
 								}
 							}
 						}
@@ -349,47 +384,52 @@ public class ResourceUpDownAction extends AbstractUpDownAction{
 			}
 		}
 		if(flag){
-			String workType = PoiUtil.getCellValue(row.getCell(0),sheet,workBook);
-			if(MyStringUtil.isBlank(workType)){
-				return String.format("第(%s)行工种类型不能为空",row.getRowNum()+1);
-			}
-			SysDataDictionary dictionary = BaseDataDictionaryUtil.nameMap.get(4).get(workType);
-			if(null != dictionary){
-				sysRcResource.setWorkType(Integer.parseInt(dictionary.getValue()));
-			}else{
-				return String.format("第(%s)行工种类型未定义",row.getRowNum()+1);
-			}
+//			String workType = PoiUtil.getCellValue(row.getCell(0),sheet,workBook);
+//			if(MyStringUtil.isBlank(workType)){
+//				return String.format("第(%s)行工种类型不能为空",row.getRowNum()+1);
+//			}
+//			SysDataDictionary dictionary = BaseDataDictionaryUtil.nameMap.get(4).get(workType);
+//			if(null != dictionary){
+//				sysRcResource.setWorkType(Integer.parseInt(dictionary.getValue()));
+//			}else{
+//				return String.format("第(%s)行工种类型未定义",row.getRowNum()+1);
+//			}
 			
-			String rsrcCode = cutAfterPoint(PoiUtil.getCellValue(row.getCell(1),sheet,workBook));
-			if(MyStringUtil.isBlank(rsrcCode)){
-				return String.format("第(%s)行产品代号不能为空",row.getRowNum()+1);
-			}
-			sysRcResource.setRsrcCode(cutAfterPoint(PoiUtil.getCellValue(row.getCell(1),sheet,workBook)));
+//			String rsrcCode = cutAfterPoint(PoiUtil.getCellValue(row.getCell(1),sheet,workBook));
+//			if(MyStringUtil.isBlank(rsrcCode)){
+//				return String.format("第(%s)行产品代号不能为空",row.getRowNum()+1);
+//			}
+			sysRcResource.setRsrcCode(cutAfterPoint(PoiUtil.getCellValue(row.getCell(0),sheet,workBook)));
 			
-			sysRcResource.setRsrcName(cutAfterPoint(PoiUtil.getCellValue(row.getCell(2),sheet,workBook)));
-			sysRcResource.setAbbreviaName(cutAfterPoint(PoiUtil.getCellValue(row.getCell(3),sheet,workBook)));
+			sysRcResource.setRsrcName(cutAfterPoint(PoiUtil.getCellValue(row.getCell(1),sheet,workBook)));
+			sysRcResource.setAbbreviaName(cutAfterPoint(PoiUtil.getCellValue(row.getCell(2),sheet,workBook)));
 
-			String purchasePrice = PoiUtil.getCellValue(row.getCell(4),sheet,workBook);
+			String purchasePrice = PoiUtil.getCellValue(row.getCell(3),sheet,workBook);
 			if(MyStringUtil.isNotBlank(purchasePrice) && MyNumberUtil.isNumber(purchasePrice)){
 				sysRcResource.setPurchasePrice(new BigDecimal(purchasePrice));
 			}else{
-				return String.format("第(%s)行的采购价格不能为空且必须为数值类型",row.getRowNum()+1);	
+				sysRcResource.setPurchasePrice(BigDecimal.ZERO);
+				//return String.format("第(%s)行的采购价格不能为空且必须为数值类型",row.getRowNum()+1);	
 			}
 			
-			String salePrice = PoiUtil.getCellValue(row.getCell(5),sheet,workBook);
+			String salePrice = PoiUtil.getCellValue(row.getCell(4),sheet,workBook);
 			if(MyStringUtil.isNotBlank(salePrice) && MyNumberUtil.isNumber(salePrice)){
 				sysRcResource.setSalePrice(new BigDecimal(salePrice));
 			}else{
-				return String.format("第(%s)行的销售价格不能为空且必须为数值类型",row.getRowNum()+1);	
+				sysRcResource.setPurchasePrice(BigDecimal.ZERO);
+				//return String.format("第(%s)行的销售价格不能为空且必须为数值类型",row.getRowNum()+1);	
 			}
+			sysRcResource.setBrand(cutAfterPoint(PoiUtil.getCellValue(row.getCell(5),sheet,workBook)));
 			
+			int cellNumIndex = 6;
 			List<SysRsRcAttrib> sysRcRsrcAttribList=new ArrayList<SysRsRcAttrib>();
-			for (int cellNum = 6; cellNum < row.getLastCellNum(); cellNum++) {
-				SysRsRcAttribCatalog sysRcRsrcAttribType = importAttrMap.get(cellNum);
+			for(Integer key:importAttrMap.keySet()){
+				cellNumIndex++;
+				SysRsRcAttribCatalog sysRcRsrcAttribType = importAttrMap.get(key);
 				if(null!=sysRcRsrcAttribType){
 					SysRsRcAttrib sysRcRsrcAttrib = new SysRsRcAttrib();
 					sysRcRsrcAttrib.setRsraAttribCatalogId(sysRcRsrcAttribType.getId());
-					String stringValue=PoiUtil.getCellValue(row.getCell(cellNum),sheet,workBook);
+					String stringValue=PoiUtil.getCellValue(row.getCell(key),sheet,workBook);
 					//当单元格数据不为空
 					if(null!=stringValue){
 						//验证导入资源数据长度
@@ -424,6 +464,11 @@ public class ResourceUpDownAction extends AbstractUpDownAction{
 					sysRcRsrcAttribList.add(sysRcRsrcAttrib);
 				}
 			}
+			sysRcResource.setSupplierName(cutAfterPoint(PoiUtil.getCellValue(row.getCell(cellNumIndex++),sheet,workBook)));
+			sysRcResource.setSupplier(cutAfterPoint(PoiUtil.getCellValue(row.getCell(cellNumIndex++),sheet,workBook)));
+			sysRcResource.setSupplierAddress(cutAfterPoint(PoiUtil.getCellValue(row.getCell(cellNumIndex++),sheet,workBook)));
+			sysRcResource.setSupplierPhone(cutAfterPoint(PoiUtil.getCellValue(row.getCell(cellNumIndex++),sheet,workBook)));
+			
 			sysRcResource.setSysRcRsrcAttribList(sysRcRsrcAttribList);
 			resourceList.add(sysRcResource);
 		}
@@ -521,34 +566,42 @@ public class ResourceUpDownAction extends AbstractUpDownAction{
 	/**
 	  * @author 方宜斌
 	  * 2015-4-16
-	  * @param str
-	  * @return
-	  * <p>判断数值是否是时间</p>
-	*/
-	public boolean isDate(String str){
-		SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
-		try{
-			format.parse(str);
-		}catch(Exception e){
-			return false;
-		}
-		return true;
-	}
-	
-	/**
-	  * @author 方宜斌
-	  * 2015-4-16
 	  * @param cellValue
 	  * @return
 	  * <p>截取数值，主要针对传过来的字符串带有小数点</p>
 	*/
 	private String cutAfterPoint(String cellValue){
-		if(null!=cellValue){
-			return cellValue.split("\\.")[0];
-		}else{
-			return cellValue;
+		//判断是否是数值
+		if(MyNumberUtil.isNumber(cellValue)){
+			String[] values = cellValue.split("\\.");
+			if(values.length > 1){
+				char[] chars = values[1].toCharArray();
+				boolean flag = false;
+				for(char c:chars){
+					if(c != '0'){
+						flag = true;
+						break;
+					}
+				}
+				if(flag){
+					return cellValue;
+				}
+			}
+			return values[0];
 		}
+		return cellValue;
+		
+		//判断是否是正整数
+		//if(null!=cellValue){
+		//	return cellValue.split("\\.")[0];
+		//}else{
+		//	return cellValue;
+		//}
 	}
+	
+	
+	
+	
 
 	public SysRsRcCatalog getSysRsRcCatalog() {
 		return sysRsRcCatalog;

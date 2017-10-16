@@ -3,11 +3,13 @@
 <form id="saveOrUpdate_resource_type" method="post" action="resourceTypeAction!saveOrUpdateType.act">
 	<input type="hidden" name="sysRsRcCatalog.parentId" value="${sysRsRcCatalog.parentId}"/>
 	<input type="hidden" name="sysRsRcCatalog.id" value="${sysRsRcCatalog.id}"/>  
+    <!-- 
     <div>   
-        <label for="code">类型代号:</label>   
+        <label for="code">类型编号:</label>   
         <input class="easyui-validatebox" type="text" name="sysRsRcCatalog.catalogCode" 
-        style="width:200px;" data-options="required:true,validType:['length[1,10]','illegal']" value="${sysRsRcCatalog.catalogCode}"/>   
-    </div>   
+        style="width:200px;" data-options="required:false,validType:['length[1,10]','illegal']" value="${sysRsRcCatalog.catalogCode}"/>   
+    </div> 
+     -->  
     <div>   
         <label for="name">类型名称:</label>   
         <input class="easyui-validatebox" type="text" name="sysRsRcCatalog.catalogName" 

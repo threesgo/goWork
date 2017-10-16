@@ -1,0 +1,31 @@
+/*
+*用于loading加载插件的样式
+*/
+.some-loading-modal{
+	position:absolute;
+	left:0;
+	top:0;
+	width:100%;
+	height:100%;
+	filter:alpha(opacity=40);
+	opacity:0.40;
+	background:#ccc;
+	font-size:1px;
+	*zoom:1;
+	overflow:hidden ;
+	z-index: 1119003;
+}
+.some-loading{
+	 margin-top:-20px;
+	 position:absolute;
+	 margin-top:-20px;
+	 top:50%;
+	 left:50%;
+	 width:auto;
+	 height:16px;
+	 padding:7px 5px 10px 30px;
+	 border:2px solid #6593CF;
+	 color:#222;
+	 z-index: 1119004;
+	 font-size":12px;
+}

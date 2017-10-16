@@ -32,9 +32,9 @@ $(function(){
 	<input type="hidden" name="sysRsRcAttribCatalog.rsrcCatalogId" value="${sysRsRcCatalog.id}"/>
 	<input type="hidden" name="sysRsRcAttribCatalog.id" value="${sysRsRcAttribCatalog.id}"/>
     <div>   
-        <label for="code">属性代号:</label>   
+        <label for="code">属性编号:</label>   
         <input id="code" class="easyui-validatebox" type="text" name="sysRsRcAttribCatalog.rsrcAttribCode" 
-        style="width:200px;" data-options="required:true,validType:['length[1,10]','illegal']" value="${sysRsRcAttribCatalog.rsrcAttribCode}"/>   
+        style="width:200px;" data-options="required:false,validType:['length[1,10]','illegal']" value="${sysRsRcAttribCatalog.rsrcAttribCode}"/>   
         <label for="name">属性名称:</label>   
         <input id="name" class="easyui-validatebox" type="text" name="sysRsRcAttribCatalog.rsrcAttribName" 
         style="width:200px;" data-options="required:true,validType:['length[1,40]','illegal']" value="${sysRsRcAttribCatalog.rsrcAttribName}"/>   
@@ -103,6 +103,6 @@ $(function(){
     <div>
         <label for="defaultValue">默认选项:</label>   
         <input id="defaultValue" class="easyui-validatebox" type="text" name="sysRsRcAttribCatalog.defaultValue" 
-        style="width:200px;" data-options="required:false,validType:['length[1,1024]','illegal']" value="${sysRsRcAttribCatalog.defaultValue}"/>   
+        style="width:459px;" data-options="required:false,validType:['length[1,1024]','illegal']" value="${sysRsRcAttribCatalog.defaultValue}"/>   
     </div>
 </form>

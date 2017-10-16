@@ -65,7 +65,7 @@
  					url:"sysRoleAction!findTree.act?",
  					animate:true,
  					onSelect:function(node){//onSelect是选择节点时触发
- 						/*closeAllTab(layoutTab);//此函数在public中定义，关闭中间布局的选项卡
+ 						closeAllTab(layoutTab);//此函数在public中定义，关闭中间布局的选项卡
  						if(roleTree.tree("isLeaf",node.target)){//判断是否为叶子节点
  							layoutTab.tabs('add',
  								{
@@ -75,7 +75,7 @@
  							);   
  						}                           
  						else{
- 							if(node.id!="root"){
+ 							if(node.id=="root"){
  								layoutTab.tabs('add',
 									{
  										title :"角色列表 &nbsp;",

@@ -215,4 +215,21 @@ public class MyStringUtil extends StringUtils{
             }}
         return sb.toString();     
 	}
+	
+	/**
+	 * @date 2017-5-8
+	 * @author YBF
+	 * @param seq 节点顺序
+	 * @param pStrSeq  父级节点组合
+	 * @return
+	 * <p>获取组合值</p>
+	 */
+	public static String getCombineSeqStr(Integer seq,String pStrSeq){
+		String cSeq=10000+seq+"";
+		if(null!=pStrSeq){
+			return pStrSeq+cSeq.substring(1,cSeq.length());
+		}else{
+			return cSeq.substring(1,cSeq.length());
+		}
+	}
 }

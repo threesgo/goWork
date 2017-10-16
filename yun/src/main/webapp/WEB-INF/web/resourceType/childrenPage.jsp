@@ -13,7 +13,7 @@ $(function(){
         toolbar:"#resource_type_tool_bar",
         animate : true,
  		collapsible : true,
-  		pagination:true, 
+  		pagination:false, 
   		pageSize:20,  
         pageList:[10,20,50,100,150,200],
       	url:"resourceTypeAction!childrenList.act?sysRsRcCatalog.id=${sysRsRcCatalog.id}",
@@ -22,7 +22,7 @@ $(function(){
 		columns : [ [
 		{
 			field : 'catalogCode',
-			title : "类型代号",
+			title : "类型编号",
 			width : '49%',
 			sortable : true,
 			sorter : function(a, b) {

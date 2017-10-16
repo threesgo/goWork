@@ -29,10 +29,10 @@ public class SysResource extends AbstractRowVersionModel{
     @SequenceGenerator(name="my_entity_seq_gen", sequenceName="SEQ_SYS_RESOURCE")
 	private Integer id;
 	
-	@Column(name="RSRC_CODE", length=32, nullable = false)
+	@Column(name="RSRC_CODE", length=128, nullable = false)
 	private String rsrcCode; //资源型号
 	
-	@Column(name="RSRC_NAME", length=128, nullable = false)
+	@Column(name="RSRC_NAME", length=128)
 	private String rsrcName;// 资源名称
 	
 	@Column(name="ABBREVIA_NAME", length=128)
@@ -44,8 +44,8 @@ public class SysResource extends AbstractRowVersionModel{
 	@Column(name="RSRC_CATALOG_ID", nullable = false)
 	private Integer rsrcCatalogId;// 资源类型Id
 	
-	@Column(name="WORK_TYPE", nullable = false)
-	private Integer workType;  //工种
+//	@Column(name="WORK_TYPE", nullable = false)
+//	private Integer workType;  //工种
 	
 	@Column(name="PURCHASE_PRICE",precision=9, scale=2,nullable = false)
 	private BigDecimal purchasePrice; //采购价格、
@@ -61,6 +61,24 @@ public class SysResource extends AbstractRowVersionModel{
 
 	@Column(name = "UPDATE_DATE")
 	private Date updateDate; // 更新时间
+	
+	@Column(name = "BRAND",length=128)
+	private String brand;  //品牌
+	
+//	@Column(name = "SUPPLIER_ID")
+//	private String supplierId;  //供应商名称 //后期改成id
+	
+	@Column(name = "SUPPLIER_NAME",length=1024)
+	private String supplierName;  //供应商名称
+	
+	@Column(name = "SUPPLIER",length=1024)
+	private String supplier;  //供应商联系人
+	
+	@Column(name = "SUPPLIER_ADDRESS",length=1024)
+	private String supplierAddress;  //供应商地址
+	
+	@Column(name = "SUPPLIER_PHONE",length=256)
+	private String supplierPhone;  //供应商电话
 	
 	@Transient
 	private List<SysRsRcAttrib> sysRcRsrcAttribList = new ArrayList<SysRsRcAttrib>();
@@ -108,14 +126,6 @@ public class SysResource extends AbstractRowVersionModel{
 
 	public void setOrderNo(Integer orderNo) {
 		this.orderNo = orderNo;
-	}
-
-	public Integer getWorkType() {
-		return workType;
-	}
-
-	public void setWorkType(Integer workType) {
-		this.workType = workType;
 	}
 
 	public BigDecimal getPurchasePrice() {
@@ -172,5 +182,45 @@ public class SysResource extends AbstractRowVersionModel{
 
 	public void setSysRcRsrcAttribList(List<SysRsRcAttrib> sysRcRsrcAttribList) {
 		this.sysRcRsrcAttribList = sysRcRsrcAttribList;
+	}
+
+	public String getBrand() {
+		return brand;
+	}
+
+	public void setBrand(String brand) {
+		this.brand = brand;
+	}
+
+	public String getSupplierName() {
+		return supplierName;
+	}
+
+	public void setSupplierName(String supplierName) {
+		this.supplierName = supplierName;
+	}
+
+	public String getSupplierAddress() {
+		return supplierAddress;
+	}
+
+	public void setSupplierAddress(String supplierAddress) {
+		this.supplierAddress = supplierAddress;
+	}
+
+	public String getSupplierPhone() {
+		return supplierPhone;
+	}
+
+	public void setSupplierPhone(String supplierPhone) {
+		this.supplierPhone = supplierPhone;
+	}
+
+	public String getSupplier() {
+		return supplier;
+	}
+
+	public void setSupplier(String supplier) {
+		this.supplier = supplier;
 	}
 }

@@ -5,16 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
-import org.hibernate.type.DateType;
-import org.hibernate.type.IntegerType;
-import org.hibernate.type.StringType;
-import org.hibernate.type.Type;
 import org.springframework.stereotype.Repository;
-
-
-
-
-
 
 import com.alibaba.fastjson.JSONObject;
 import com.yunwang.dao.SysUserDaoI;
@@ -45,7 +36,7 @@ public class SysUserDaoImpl extends BaseDaoImpl<SysUser> implements SysUserDaoI{
 		StringBuffer buf = new StringBuffer();
 		/*buf.append("SELECT model FROM SysUser model,SysRole sysRole,SysUserRole sysUserRole "
 				+ " WHERE model.id = sysUserRole.userId AND sysUserRole.roleId = sysRole.id ");*/
-		buf.append("SELECT distinct model.ID id,"
+		/*buf.append("SELECT distinct model.ID id,"
 				 + "model.USER_NAME userName,"
 				 + "model.REAL_NAME realName,"
 				 + "model.PHONE_NUM phoneNum,"
@@ -90,9 +81,11 @@ public class SysUserDaoImpl extends BaseDaoImpl<SysUser> implements SysUserDaoI{
 			}
 		}
 		
-		buf.append(" ORDER BY model.id ");
-		
-		Map<String, Object> parmeMap = new HashMap<String, Object>();
+		buf.append(" ORDER BY model.id ");*/
+		buf.append("SELECT distinct model FROM SysUser model,SysRole sysRole,SysUserRole sysUserRole "
+				+ " WHERE model.id = sysUserRole.userId AND sysUserRole.roleId = sysRole.id ");
+//		buf.append("SELECT model FROM SysUser model");
+		/*Map<String, Object> parmeMap = new HashMap<String, Object>();
 		Map<String, Type> scalarMap = new HashMap<String, Type>();
 		scalarMap.put("id", new IntegerType());
 		scalarMap.put("userName", new StringType());
@@ -103,9 +96,32 @@ public class SysUserDaoImpl extends BaseDaoImpl<SysUser> implements SysUserDaoI{
 		scalarMap.put("updateDate", new DateType());
 		scalarMap.put("departmentId", new IntegerType());
 		
-		return null;
+		return null;*/
 		
 		//return pagedSqlQuery(buf.toString(), page, rows, parmeMap, scalarMap, SysUser.class);
+		
+		if(json != null){
+			//用户名,模糊查询
+			String sysUsreName = json.getString("sysUsreName");
+			if(StringUtils.isNotBlank(sysUsreName)){
+				buf.append("AND model.userName LIKE '%"+sysUsreName+"%' ");
+			}
+			
+			//真实姓名,模糊查询
+			String sysRealName = json.getString("sysRealName");
+			if(StringUtils.isNotBlank(sysRealName)){
+				buf.append("AND model.realName LIKE '%"+sysRealName+"%' ");
+			}
+			
+			//角色,多选
+			String sysRole = json.getString("sysRole");
+			if(StringUtils.isNotBlank(sysRealName)){
+				buf.append("AND sysUserRole.roleId IN ("+sysRole+") ");
+			}
+		}
+		
+		buf.append(" ORDER BY model.id ");
+		return pagedQuery(buf.toString(), page, rows);
 	}
 
 	@Override

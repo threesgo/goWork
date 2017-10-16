@@ -32,4 +32,5 @@ public interface SysResourceService {
 
 	void saveImportResources(List<SysResource> resourceList,SysRsRcCatalog sysRsRcCatalog);
 
+	List<SysResource> findParentByRsRcCatalogId(Integer parentId);
 }

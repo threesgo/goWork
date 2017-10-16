@@ -32,7 +32,7 @@ public class SysRsRcAttribCatalog extends AbstractRowVersionModel{
 	@Column(name="RSRC_CATALOG_ID", nullable = false)
 	private Integer rsrcCatalogId;//类型ID   RSRC_CATALOG_ID	资源类型ID	number(10)
 
-	@Column(name="RSRC_ATTRIB_CODE", nullable = false,length=32)
+	@Column(name="RSRC_ATTRIB_CODE",length=32)
 	private String rsrcAttribCode;//属性代号 RSRC_ATTRIB_CODE	属性代号	varchar2(32)		X
 	
 	@Column(name="RSRC_ATTRIB_NAME", nullable = false,length=128)

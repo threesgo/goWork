@@ -33,6 +33,10 @@
  							});
  						}
  						*/
+ 					},
+ 					onLoadSuccess:function(node,data){
+ 						var root = resourceTypeTree.tree("getRoot");
+ 						resourceTypeTree.tree("select",root.target);
  					}
  				}
 	 		);
@@ -45,8 +49,24 @@
 		});
 	 		
 	 	resourceIndexOperation = {
-	 		reload:function(){
+ 			reload:function(){
 	 			resourceTypeTree.tree("reload");
+	 			$("#expandAll").show();
+	 			$("#collapseAll").hide();
+	 		},
+	 		
+	 		expand:function(){
+	 			//resourceTypeTree.tree("reload");
+	 			$("#expandAll").hide();
+	 			$("#collapseAll").show();
+	 			resourceTypeTree.tree("expandAll");
+	 		},
+	 		
+	 		collapse:function(){
+	 			//resourceTypeTree.tree("reload");
+	 			$("#expandAll").show();
+	 			$("#collapseAll").hide();
+	 			resourceTypeTree.tree("collapseAll");
 	 		}
 	 	};
 		</script>
@@ -55,8 +75,10 @@
 		<div data-options="region:'west',split:true,tools:'#resource_bar'" title=" " style="width:200px;" border="false">
 			<ul id="resourceTypeTree"></ul>
 			<div  id="resource_bar">
-		       <a href="#" class="icon-reflesh" onclick="resourceIndexOperation.reload()">刷新</a>
-		     </div>
+		       	<a href="#" class="bullet_arrow_down" id="expandAll" onclick="resourceIndexOperation.expand()">展开子集分类</a>
+				<a href="#" class="bullet_arrow_up" id="collapseAll" style="display: none;" onclick="resourceIndexOperation.collapse()">折叠子集分类</a>
+				<a href="#" class="icon-reflesh" onclick="resourceIndexOperation.reload()">刷新</a>
+		    </div>
 		</div>
 		<div data-options="region:'center',split:true,title:'',tools:''" border="false">
 			<div id="resourceTab" ></div>

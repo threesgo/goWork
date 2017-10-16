@@ -59,6 +59,8 @@
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/style/images/icon/sysIcon.css" type="text/css"></link>
 
+<%-- 加载器样式 --%>
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/style/loading.css" /> 
 
 <%--封装的一些jquery easyui组件和自定义的一些编辑器--%>
 <script type="text/javascript" src="${pageContext.request.contextPath}/extendScript/tree.js"></script> 
