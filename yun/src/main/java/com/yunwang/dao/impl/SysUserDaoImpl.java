@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 
 import com.alibaba.fastjson.JSONObject;
@@ -33,11 +34,32 @@ public class SysUserDaoImpl extends BaseDaoImpl<SysUser> implements SysUserDaoI{
 	 */
 	public Pager<SysUser> findAllUser(JSONObject json, int page,int rows){
 		StringBuffer buf = new StringBuffer();
-		/*buf.append("SELECT model FROM SysUser model,SysRole sysRole,SysUserRole sysUserRole "
-				+ " WHERE model.id = sysUserRole.userId AND sysUserRole.roleId = sysRole.id ");*/
-		buf.append("SELECT model FROM SysUser model");
-		buf.append(" ORDER BY model.id ");
+		buf.append("SELECT distinct model FROM SysUser model,SysRole sysRole,SysUserRole sysUserRole "
+				+ " WHERE model.id = sysUserRole.userId AND sysUserRole.roleId = sysRole.id ");
+//		buf.append("SELECT model FROM SysUser model");
 		
+		
+		if(json != null){
+			//用户名,模糊查询
+			String sysUsreName = json.getString("sysUsreName");
+			if(StringUtils.isNotBlank(sysUsreName)){
+				buf.append("AND model.userName LIKE '%"+sysUsreName+"%' ");
+			}
+			
+			//真实姓名,模糊查询
+			String sysRealName = json.getString("sysRealName");
+			if(StringUtils.isNotBlank(sysRealName)){
+				buf.append("AND model.realName LIKE '%"+sysRealName+"%' ");
+			}
+			
+			//角色,多选
+			String sysRole = json.getString("sysRole");
+			if(StringUtils.isNotBlank(sysRealName)){
+				buf.append("AND sysUserRole.roleId IN ("+sysRole+") ");
+			}
+		}
+		
+		buf.append(" ORDER BY model.id ");
 		return pagedQuery(buf.toString(), page, rows);
 	}
 

@@ -86,36 +86,20 @@
 							    }
 						},"json");
 					},*/
-					/*
+					
 					search:function(){
-						var input=$("#tools").find("input");
-						var flag=false;
-						$.each(input, function(i, n){//遍历数组或对象，i是数组或对象索引值，n是对应的数组值或对象
-							if($(n).hasClass("validatebox-invalid")){  //hasClass("")检查是否还有指定的类
-								flag=true;
-							};
-						});
-						if(flag){
-							return false;
-						}
 						var searchJSON={};
-	 					searchJSON["userName"] = $("#queryUsreName").val();
-	 					searchJSON["realName"] = $("#queryRealName").val();
-	 					searchJSON["major"] = $("#queryMajor").val();
-	 					searchJSON["role"] = $("#queryRole").val();
-	 					searchJSON["dept"] = $("#queryDept").val();
-	 					searchJSON["queryStatus"] = $("#queryStatus").val();
-	 					searchJSON["queryType"] = $("#queryType").val();
+	 					searchJSON["sysUsreName"] = $("#sysUsreName").val();
+	 					searchJSON["sysRealName"] = $("#sysRealName").val();
+	 					searchJSON["sysRole"] = $("#sysRole").combobox(getValues).join(",");
+	 					//searchJSON["sysDept"] = $("#sysDept").combobox(getValues).join(",");
 	 					$userList.datagrid("reload",{"filterJsons":Some.util.toJson(searchJSON)});
 					},
 					reset:function(){
-						$("#queryUsreName,#queryRealName").val("");
-						$("#queryMajor").val("");
-						$("#queryRole").val("");
-						$("#queryDept").val("全部");
-						$("#queryStatus").val(-1);
-						$userList.datagrid("reload",{});
-					},*/
+						$("#sysUsreName,#sysUsreName").val("");
+						$("#sysRole,#sysDept").combobox("select","");
+						$userList.datagrid("reload");
+					},
 					//新建用户
 					addUser:function(){
 						new Some.dialog({
@@ -220,7 +204,7 @@
 				<div class="search-div">
 					<label>角色：</label>
 					<div class="select">
-						<select id="queryRole">
+						<select id="sysRole">
 							<option value="" selected="selected">全部</option>
 						</select>
 					</div>
@@ -228,7 +212,7 @@
 				<div class="search-div">
 					<label>部门：</label>
 					<div class="select">
-						<select id="queryDept" data-options="validType:['illegal']" >
+						<select id="sysDept" data-options="validType:['illegal']" >
 						</select>
 					</div>
 				</div>
