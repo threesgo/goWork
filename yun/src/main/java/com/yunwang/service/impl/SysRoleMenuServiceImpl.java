@@ -6,6 +6,7 @@ package com.yunwang.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.yunwang.dao.SysRoleMenuDaoI;
 import com.yunwang.model.pojo.SysRoleMenu;
@@ -18,7 +19,9 @@ import com.yunwang.service.SysRoleMenuService;
  * @param
  * @return
  */
-public class SysRoleMenuSwrviceImpl implements SysRoleMenuService{
+
+@Service
+public class SysRoleMenuServiceImpl implements SysRoleMenuService{
 
 	@Autowired
 	private SysRoleMenuDaoI sysRoleMenuDao;

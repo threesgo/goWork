@@ -68,6 +68,7 @@
 			pagination : false,
 			columns : [columns]
 		}).datagrid("loadData",data); 
+	
 })(jQuery);
 </script>
 <div id="roleTable"></div>

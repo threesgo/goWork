@@ -89,7 +89,7 @@
  	 								}
  								);
  							}
- 						}*/
+ 						}
  					},
  					//右键菜单
  					onContextMenu:function(e,node){
@@ -115,13 +115,13 @@
 						}*/
  					}
  				});
-			/*
+			
 	 		 layoutTab=$('#roleTab').tabs({//得到中间布局的tabs
 	 			fit:true,
 	 		    onSelect:function(title){  
 	 		    }    
 	 		}); 
-	 		*/
+	 		
 	 		/*
 			function closeAllTab(layoutTab){
 	 			var allTabs = layoutTab.tabs('tabs');
@@ -138,7 +138,6 @@
 	 		}
 	 		*/
 			window.events={
-				/*	
 				addNew:function(){
 					new Some.dialog({
 						href : "bopTrPlantAction!preAdd.act",
@@ -148,6 +147,7 @@
 						title:"<s:text name='new_base'/>"
 					});
 				},
+				/*
 				reload:function(){
 					tree.reload();
 					tabs.closeAll();
@@ -191,10 +191,8 @@
 				*/
 			};
 		})(jQuery);
-		/*
+		
 		function append(){
-			var node = roleTree.tree("getSelected");
-			majorId=node.attributes.value;
 			var addRoleDilog=$('<div id="addRole"></div>').dialog({
 				top:100,
 				title:"<s:text name='添加角色'/>",
@@ -203,13 +201,37 @@
 				resizable:true,
 				href:"sysRoleAction!preAdd.act",
 				method:"post", 
-				queryParams:{"sysRole.majorId":majorId},
+				queryParams:{},
+				buttons:[{
+					text:"确定",
+					iconCls:'icon-ok',
+					handler:function(){
+						$("#_fm").form({
+							success:function(data){
+								handlerResult(data,function(rs){
+									$this.close();
+									$show(rs.message);
+									var major = roleTree.tree("find","role"+rs.data.id);
+									roleTree.tree("reload",major.target);
+								},function(rs){
+									$alert(rs.message);
+								});
+							}
+						}).submit(); 
+					}
+				},{
+					text:"取消",
+					iconCls:'icon-cancel',
+					handler:function(){
+						addDialog.dialog("destroy");
+					}
+				}],
 				onClose:function(){
 					addRoleDilog.dialog("destroy");
 					return true;
 				}
 			});
-	 	};*/
+	 	};
 	 	/*
 	 	function del(node){
 	 		$.messager.confirm('确认','您确认想要删除记录吗？',function(r){    

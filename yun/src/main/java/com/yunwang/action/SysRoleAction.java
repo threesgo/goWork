@@ -42,10 +42,10 @@ public class SysRoleAction extends AbstractLoginAction{
 	private SysUserService sysUserService;
 	
 	@Autowired
-	SysMenuService sysMenuService;
+	private SysMenuService sysMenuService;
 	
 	@Autowired
-	SysRoleMenuService sysRoleMenuService;
+	private SysRoleMenuService sysRoleMenuService;
 	
 	private SysRole sysRole;
 	
@@ -129,24 +129,11 @@ public class SysRoleAction extends AbstractLoginAction{
 			    jso=new JSONObject();
 				jso.put("id","role"+role.getId());
 				jso.put("text","角色："+role.getName());
-				jso.put("state", "closed");
+				jso.put("state", "open");
 				jso.put("attributes", JSONObject.fromObject(role));
 				jsoArr.add(jso);
 			}
-		}/*else if(id.startsWith("role")){
-			//菜单管理
-			Integer role = Integer.parseInt(id.substring(4,id.length()));
-			List<SysMenu> sysMenuList = sysUserService.findMenuByRoleId(role);
-			JSONObject jso=null;
-			for(SysMenu vo:sysMenuList){
-			    jso=new JSONObject();
-				jso.put("id","Menu"+vo.getId());
-				jso.put("text","菜单："+vo.getName());
-				jso.put("state", "open");
-				jso.put("attributes", JSONObject.fromObject(vo));
-				jsoArr.add(jso);
-			}
-		}*/
+		}
 		return ajaxText(jsoArr);
 		//return null;
 	}
@@ -179,17 +166,13 @@ public class SysRoleAction extends AbstractLoginAction{
 	}
 	
 	/**
-	 * 
-	 * @date 2016-11-29
-	 * @author YBF
-	 * @return
-	 * <p>添加角色</p>
-	 *//*
+	 * <p>角色列表-跳转添加角色</p>
+	 */
 	public String preAdd(){
 		return "preAdd";
 	}
 	
-	*//**
+	/**
 	 * @date 2016-12-12
 	 * @author LKX
 	 * @return
@@ -215,17 +198,21 @@ public class SysRoleAction extends AbstractLoginAction{
 				return success(getText("update_success"),JSONObject.fromObject(sysRole));	
 			}
 			
-	}
+	}*/
+	
+	/**
+	 * <p>角色列表-保存角色信息</p>
+	 */
 	public String add(){
-		if(!sysRoleService.isExist(sysRole.getName())){
+		/*if(!sysRoleService.isExist(sysRole.getName())){
 			sysRoleService.saveSysRole(sysRole);
 			return success(getText("save_success"),JSONObject.fromObject(sysRole));
 		}else{
 			return error(getText("该用户已存在"));
-		}
-		
+		}*/
+		return null;
 	}
-	
+	/*
 	public String delete(){
 		try{
 			sysRole = sysRoleService.get(sysRole.getId());
@@ -267,18 +254,14 @@ public class SysRoleAction extends AbstractLoginAction{
 	 * @date 2017.10.16
 	 * @author kx
 	 * @return
-	 * <p>角色列表</p>
+	 * <p>角色管理-角色列表</p>
 	 */
 	public String list(){
 		List<SysMenu> menuList = sysMenuService.findAll();
-		//List<SysModule> moduleList = sysModuleService.findByMajorId(Integer.parseInt(id.substring(2,id.length())));
 		List<SysRole> roleList = sysUserService.findAllRole();
-		//List<SysRole> roleList = sysRoleService.findByMajorId(Integer.parseInt(id.substring(2,id.length())));
 		//查询所有角色对应权限关系
 		List<SysRoleMenu> relMenuList = sysRoleMenuService.findAll();
-		//List<SysRoleModule> relModuleList = sysRoleModuleService.findAll();
 		Map<Integer, Set<Integer>> roleRelMenuMap = null;
-		//Map<Integer, Set<Integer>> roleRelModuleMap = null;
 		if(relMenuList != null && !relMenuList.isEmpty()){
 			roleRelMenuMap = new HashMap<Integer, Set<Integer>>();
 			for(SysRoleMenu sysRoleMenu : relMenuList){

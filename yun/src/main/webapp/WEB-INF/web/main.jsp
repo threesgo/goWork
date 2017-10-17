@@ -268,13 +268,11 @@
 		<div data-options="region:'north',href:''"  class="logo">
 			<div class="cs-north-bg">
 				<div style="float: left; margin-left: 20px;margin-top: 10px">
-					<img src="${pageContext.request.contextPath}/style/images/logo.png"  style="height: 50px"></img>
+					<img src="${pageContext.request.contextPath}/style/images/logo1.png"  style="height: 50px"></img>
 				</div>
-				<!--  
 				<div class="cs-north-logo" >
 					<img src="${pageContext.request.contextPath}/style/images/name.png"  style="height: 60px;width:140px"></img>
 				</div>
-				-->
 				<div>
 					<ul id="top_menu">
 						<li class="sel_pro" id="info_menu"><button class="button_icon user-24 text">[${sessionScope._ADM.userName}]</button></li>
