@@ -88,6 +88,16 @@ public class SysSupplierAction extends AbstractLoginAction{
 			return error("行数据保存失败!");
 		}
 	}
+	
+	public String deleteSupplier(){
+		try{
+			sysSupplierService.deleteSupplier(ids);
+			return success("操作成功!");
+		}catch(Exception e){
+			LOG.error(e.getMessage());
+			return error("操作失败!");
+		}
+	}
 
 	public Map<String, Object> getHashMap() {
 		return hashMap;

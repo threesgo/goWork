@@ -18,7 +18,7 @@ public class SysSupplierDaoImpl extends BaseDaoImpl<SysSupplier> implements SysS
 	@Override
 	public Pager<SysSupplier> findAll(int page, int rows, JSONObject seachJson) {
 		StringBuffer buf = new StringBuffer(
-				"SELECT model FROM SysSupplier model WHERE 1=1 ");
+				"SELECT model FROM SysSupplier model WHERE model.status!=0 ");
 		
 		Map<String, Object> map = new HashMap<String,Object>();
 		
@@ -50,5 +50,11 @@ public class SysSupplierDaoImpl extends BaseDaoImpl<SysSupplier> implements SysS
 		}
 		buf.append(" ORDER BY model.id");
 		return pagedQuery(buf.toString(), page, rows, map);
+	}
+
+	@Override
+	public void deleteSupplier(String ids) {
+		String hql = "UPDATE SysSupplier model SET model.status = 0 WHERE model.id IN("+ids+")";
+		executeHql(hql);
 	}
 }

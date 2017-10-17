@@ -25,6 +25,7 @@ public class SysSupplierServiceImpl implements SysSupplierService {
 			// 更新
 		} else {
 			sysSupplier = new SysSupplier();
+			sysSupplier.setStatus(1);
 			// 正常
 		}
 		String name = rowData.getString("name");
@@ -48,4 +49,9 @@ public class SysSupplierServiceImpl implements SysSupplierService {
 		return sysSupplierDao.findAll(page, rows, fromObject);
 	}
 
+	@Override
+	public void deleteSupplier(String ids) {
+		// TODO Auto-generated method stub
+		sysSupplierDao.deleteSupplier(ids);
+	}
 }

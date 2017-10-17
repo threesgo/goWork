@@ -204,7 +204,7 @@
 			    		ids.push(n.id);
 			    		deletes.push(n);
 			    	});
-			        $.post("resourceAction!deleteResource.act",
+			        $.post("sysSupplierAction!deleteSupplier.act",
 			        	{"ids":ids.join(",")},
 			        	function(data){
 						handlerResult(data,

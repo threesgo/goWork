@@ -9,4 +9,6 @@ public interface SysSupplierDaoI extends BaseDaoI<SysSupplier>{
 
 	Pager<SysSupplier> findAll(int page, int rows, JSONObject fromObject);
 
+	void deleteSupplier(String ids);
+
 }

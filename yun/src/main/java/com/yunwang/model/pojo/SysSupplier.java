@@ -40,6 +40,9 @@ public class SysSupplier extends AbstractRowVersionModel{
 	@Column(name = "WORK_TYPE")
 	private Integer workType;  //工种
 	
+	@Column(name = "STATUS",columnDefinition = "number default 1")
+	private Integer status; 
+	
 	public SysSupplier(){
 		
 	}
@@ -98,5 +101,13 @@ public class SysSupplier extends AbstractRowVersionModel{
 
 	public void setWorkType(Integer workType) {
 		this.workType = workType;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
 }

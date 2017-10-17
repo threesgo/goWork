@@ -88,4 +88,44 @@ public class SysWorkerAction  extends AbstractLoginAction{
 			return error("行数据保存失败!");
 		}
 	}
+
+	public Map<String, Object> getHashMap() {
+		return hashMap;
+	}
+
+	public void setHashMap(Map<String, Object> hashMap) {
+		this.hashMap = hashMap;
+	}
+
+	public SysWorker getSysWorker() {
+		return sysWorker;
+	}
+
+	public void setSysWorker(SysWorker sysWorker) {
+		this.sysWorker = sysWorker;
+	}
+
+	public String getIds() {
+		return ids;
+	}
+
+	public void setIds(String ids) {
+		this.ids = ids;
+	}
+
+	public String getJsonStr() {
+		return jsonStr;
+	}
+
+	public void setJsonStr(String jsonStr) {
+		this.jsonStr = jsonStr;
+	}
+
+	public List<SysDataDictionary> getFlowList() {
+		return flowList;
+	}
+
+	public void setFlowList(List<SysDataDictionary> flowList) {
+		this.flowList = flowList;
+	}
 }
