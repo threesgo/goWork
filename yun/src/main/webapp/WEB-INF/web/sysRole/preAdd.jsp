@@ -4,8 +4,7 @@
 <form id="_fm" method="post" class="fm" action="sysRoleAction!add.act">  
 	<fieldset>
 		<legend>角色信息</legend>
-		<input type="hidden" name="sysRole.id" value='${sysRole.id}'/>
-		<input type="hidden" name="sysRole.sequence" value='${sysRole.sequence}'/>
+		<%-- <input type="hidden" name="sysRole.id" value='${sysRole.id}'/> --%>
 		<div class="fitem">  
 			<span style="color: red;font-size:14;margin-right: 5px;">*</span> 
 			<label>名称：</label>  

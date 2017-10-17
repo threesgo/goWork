@@ -4,7 +4,6 @@
 package com.yunwang.service;
 
 import java.util.List;
-
 import com.yunwang.model.pojo.SysMenu;
 
 /**
@@ -15,5 +14,9 @@ import com.yunwang.model.pojo.SysMenu;
  * @return
  */
 public interface SysMenuService {
+	
 	public List<SysMenu> findAll();
+	
+	public List<Object> findMenuByRoleId(Integer roleId);
+		
 }

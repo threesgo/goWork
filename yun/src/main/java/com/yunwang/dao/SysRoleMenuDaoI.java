@@ -3,6 +3,8 @@
  */
 package com.yunwang.dao;
 
+import java.util.List;
+
 import com.yunwang.model.pojo.SysRoleMenu;
 
 /**
@@ -14,4 +16,5 @@ import com.yunwang.model.pojo.SysRoleMenu;
  */
 public interface SysRoleMenuDaoI extends BaseDaoI<SysRoleMenu>{
 
+	List<SysRoleMenu> findByRoleId(Integer roleId);
 }

@@ -51,4 +51,8 @@ public interface SysUserService {
 	
 	public void delete(Integer userId);
 	
+	public boolean isExist(String name);
+	
+	public void saveSysRole(SysRole sysRole);
+	
 }

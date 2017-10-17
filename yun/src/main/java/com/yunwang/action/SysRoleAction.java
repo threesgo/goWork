@@ -18,11 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.yunwang.model.pojo.SysMenu;
 import com.yunwang.model.pojo.SysRole;
 import com.yunwang.model.pojo.SysRoleMenu;
-import com.yunwang.model.pojo.SysUser;
 import com.yunwang.service.SysMenuService;
 import com.yunwang.service.SysRoleMenuService;
 import com.yunwang.service.SysUserService;
-import com.yunwang.util.Constant;
 import com.yunwang.util.action.AbstractLoginAction;
 
 
@@ -54,9 +52,9 @@ public class SysRoleAction extends AbstractLoginAction{
 	
 	private String menus;
 	private String roles;
-	/*private String jsonInfo;
+	private String jsonInfo;
 	
-	private String moduleIds;
+	/*private String moduleIds;
 	
 	
 	
@@ -122,8 +120,9 @@ public class SysRoleAction extends AbstractLoginAction{
 			json.put("state", "closed");
 			jsoArr.add(json);
 		}else if(id.startsWith("root")){
-			SysUser user = (SysUser) sessionMap.get(Constant.SESSION_ADMIN);
-			List<SysRole> listSysRole = sysUserService.findByUserId(user.getId()); 
+			//SysUser user = (SysUser) sessionMap.get(Constant.SESSION_ADMIN);
+			//List<SysRole> listSysRole = sysUserService.findByUserId(user.getId()); 
+			List<SysRole> listSysRole = sysUserService.findAllRole();
 			JSONObject jso=null;
 			for(SysRole role:listSysRole){
 			    jso=new JSONObject();
@@ -151,6 +150,7 @@ public class SysRoleAction extends AbstractLoginAction{
 			obj = new JSONObject();
 			obj.put("id", "");
 			obj.put("sysRole", "全部");
+			obj.put("selected", true);
 			arr.add(obj);
 		}
 		List<SysRole> listRole = sysUserService.findAllRole();
@@ -204,13 +204,12 @@ public class SysRoleAction extends AbstractLoginAction{
 	 * <p>角色列表-保存角色信息</p>
 	 */
 	public String add(){
-		/*if(!sysRoleService.isExist(sysRole.getName())){
-			sysRoleService.saveSysRole(sysRole);
-			return success(getText("save_success"),JSONObject.fromObject(sysRole));
+		if(sysUserService.isExist(sysRole.getName())){
+			sysUserService.saveSysRole(sysRole);
+			return success(getText("添加成功"),JSONObject.fromObject(sysRole));
 		}else{
 			return error(getText("该用户已存在"));
-		}*/
-		return null;
+		}
 	}
 	/*
 	public String delete(){
@@ -228,16 +227,17 @@ public class SysRoleAction extends AbstractLoginAction{
 	 * @author YBF
 	 * @return
 	 * <p>角色编辑</p>
-	 *//*
+	 */
 	public String edit(){
 		if(sysRole!=null){
-			List<Object> list = sysModuleService.findModulesByRole(sysRole.getId());
+			List<Object> list = sysMenuService.findMenuByRoleId(sysRole.getId());
+			//List<Object> list = sysModuleService.findModulesByRole(sysRole.getId());
 			jsonInfo = JSONArray.fromObject(list).toString();
 		}
 		return "edit";
 	}
 	
-	*//**
+	/**
 	 * saveRoleRelModule method.
 	 * @author 冯英峰
 	 * @date 2016年12月1日 下午1:51:07
@@ -340,6 +340,14 @@ public class SysRoleAction extends AbstractLoginAction{
 
 	public void setRoles(String roles) {
 		this.roles = roles;
+	}
+
+	public String getJsonInfo() {
+		return jsonInfo;
+	}
+
+	public void setJsonInfo(String jsonInfo) {
+		this.jsonInfo = jsonInfo;
 	}
 	
 }

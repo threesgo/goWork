@@ -26,7 +26,7 @@
 		 -->
        	<s:if test="sysRsRcCatalog.parentId==0">
        	 	<s:select id="type" 
-       		list="catalogTypeList" style="width:200px;"
+       		list="catalogTypeList" style="width:200px;height:22px"
 	       	listKey="value"   
 	       	listValue="name" 
 	       	name="sysRsRcCatalog.catalogType"

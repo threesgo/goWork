@@ -6,18 +6,6 @@
 	
 	<style>
 	
-	span.tabs-p-tool{
-	 width: 16px;
-	 height: 18px;
-	 top:12px;
-	 right:0px;
-	}
-	
-	a.icon-add{
-	 width: 16px;
-	 height: 18px;
-	}
-	
 	</style>
 	
 	<body class="easyui-layout">
@@ -78,14 +66,14 @@
  							if(node.id=="root"){
  								layoutTab.tabs('add',
 									{
- 										title :"角色列表 &nbsp;",
- 	 									href :"sysRoleAction!list.act?id="+node.id
- 	 									,tools:[{    
- 	 	 							        iconCls:'icon-add',    
+ 										title :"角色列表 ",
+ 	 									href :"sysRoleAction!list.act?"
+ 	 									/* ,tools:[{    
+ 	 	 							        //iconCls:'icon-add',    
  	 	 							        handler:function(){ 
  	 	 							        	append();
  	 	 							        }    
- 	 	 							    }]
+ 	 	 							    }] */
  	 								}
  								);
  							}
@@ -93,8 +81,8 @@
  					},
  					//右键菜单
  					onContextMenu:function(e,node){
- 						/*id=node.id;
- 						if(node.id.substring(0,2)=="bd"){
+ 						id=node.id;
+ 						if(node.id.substring(0,4)=="role"){
 	 						e.preventDefault();
 							// 查找节点
 							$('#roleTree').tree('select', node.target);
@@ -103,7 +91,7 @@
 								left: e.pageX,
 								top: e.pageY,
 							});
-						}else if(node.id.substring(0,4)=="layo"){
+						}/*else if(node.id.substring(0,4)=="layo"){
 	 						e.preventDefault();
 							// 查找节点
 							$('#roleTree').tree('select', node.target);
@@ -209,10 +197,10 @@
 						$("#_fm").form({
 							success:function(data){
 								handlerResult(data,function(rs){
-									$this.close();
 									$show(rs.message);
-									var major = roleTree.tree("find","role"+rs.data.id);
-									roleTree.tree("reload",major.target);
+									var root = roleTree.tree("getRoot");
+									roleTree.tree("reload",root.target);
+									addRoleDilog.dialog("close");
 								},function(rs){
 									$alert(rs.message);
 								});
@@ -223,7 +211,7 @@
 					text:"取消",
 					iconCls:'icon-cancel',
 					handler:function(){
-						addDialog.dialog("destroy");
+						addRoleDilog.dialog("destroy");
 					}
 				}],
 				onClose:function(){

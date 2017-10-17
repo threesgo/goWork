@@ -144,17 +144,21 @@ public class SysUserServiceImpl implements SysUserService{
 			}
 		}
 		
-		for(SysUser user:list){
-			List<SysUserRole> userRoleList = mapList.get(user.getId());
-			if(userRoleList != null){
-				user.setRoles(StringBufferByCollectionUtil.convertCollection(userRoleList, "name", ","));
-				user.setRoleIds(StringBufferByCollectionUtil.convertCollection(userRoleList, "roleId", ","));
-				
+		if(null != list){
+			for(SysUser user:list){
+				List<SysUserRole> userRoleList = mapList.get(user.getId());
+				if(userRoleList != null){
+					user.setRoles(StringBufferByCollectionUtil.convertCollection(userRoleList, "name", ","));
+					user.setRoleIds(StringBufferByCollectionUtil.convertCollection(userRoleList, "roleId", ","));
+				}
 			}
-			
+			return pager;
+		}else{
+			return null;
 		}
 		
-		return pager;
+		
+		
 	}
 
 	@Override
@@ -217,6 +221,23 @@ public class SysUserServiceImpl implements SysUserService{
 	public void delete(Integer userId) {
 		sysUserDao.deleteByProperty("id", userId);
 		sysUserRoleDao.deleteByProperty("userId", userId);
+	}
+
+	@Override
+	public boolean isExist(String name) {
+		List<SysRole> list = sysRoleDao.findByName(name);
+		if(list.size()>0){
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public void saveSysRole(SysRole sysRole) {
+		SysRole role = new SysRole();
+		role.setName(sysRole.getName());
+		role.setIconCls(sysRole.getIconCls());
+		sysRoleDao.save(role);
 	}
 
 }

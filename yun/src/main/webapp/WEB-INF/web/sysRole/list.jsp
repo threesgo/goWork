@@ -64,6 +64,7 @@
 		    singleSelect : false,
 			selectOnCheck : true,
 			remoteSort : false,
+			toolbar:"#operation_bar",
 			striped : true,
 			pagination : false,
 			columns : [columns]
@@ -72,3 +73,7 @@
 })(jQuery);
 </script>
 <div id="roleTable"></div>
+
+<div  id="operation_bar">
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add', plain:true" onclick="resourceOperation.addResource()">新增</a>
+</div> 

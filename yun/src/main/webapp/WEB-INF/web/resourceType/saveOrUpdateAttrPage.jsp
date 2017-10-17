@@ -43,13 +43,13 @@ $(function(){
     <div>   
         <label for="dataTypeId">数据类型:</label>   
         <s:select id="dataTypeId" 
-        	list="dataTypeList" style="width:200px;"
+        	list="dataTypeList" style="width:200px;height:22px"
 	       	listKey="id"   
 	       	listValue="displayName"
 	       	name="sysRsRcAttribCatalog.dataTypeId" />
         <label for="controlTypeId">控件类型:</label>
         <s:select id="controlTypeId" 
-        	list="controlTypeList" style="width:200px;"
+        	list="controlTypeList" style="width:200px;height:22px"
 	       	listKey="id"   
 	       	listValue="displayName" 
 	       	name="sysRsRcAttribCatalog.controlTypeId" />   
@@ -67,13 +67,13 @@ $(function(){
     <div>
        	<label for="unitId">数据单位:</label>
        	<s:select id="groupId" 
-       		list="unitGroupList" style="width:98px;"
+       		list="unitGroupList" style="width:98px;height:22px"
 	       	listKey="group"   
 	       	listValue="group" 
 	       	headerKey="0"
 	       	headerValue="--请选择--"/>   
        	<s:select id="unitId" 
-       		list="unitList" style="width:98px;"
+       		list="unitList" style="width:98px;height:22px"
 	       	listKey="id"   
 	       	listValue="displayName"
 	       	headerKey="0"

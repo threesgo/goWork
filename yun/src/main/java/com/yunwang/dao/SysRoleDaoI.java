@@ -25,4 +25,6 @@ public interface SysRoleDaoI extends BaseDaoI<SysRole>{
 	SysRole getDefaultRoleByUserId(Integer userId);
 	
 	List<SysRole> findAllRole();
+	
+	List<SysRole> findByName(String name);
 }

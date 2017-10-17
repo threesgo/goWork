@@ -33,6 +33,12 @@ public class SysRoleDaoImpl extends BaseDaoImpl<SysRole> implements SysRoleDaoI{
 	public List<SysRole> findAllRole() {
 		return findAll();
 	}
+
+	@Override
+	public List<SysRole> findByName(String name) {
+		String hql = "SELECT model FROM SysRole model WHERE model.name =?";
+		return find(hql, name);
+	}
 	
 	
 }

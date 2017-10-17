@@ -79,13 +79,25 @@
 			     multiple:true,
 			     editable:false,
 			     url:"sysRoleAction!findAll.act",
-			     queryParams:{"needAll":true}
+			     queryParams:{"needAll":true},
+			     onSelect:function(record){
+			    	if(!record.id){
+			    		var selects = $("#sysRoles").combobox("getValues");
+			    		$.each(selects,function(index,name){
+			    			if(name){
+			    				$("#sysRoles").combobox("unselect",name);
+			    			}
+			    		});
+			    	}else{
+			    		$("#sysRoles").combobox("unselect","");	
+			    	} 
+			     }
 			     
 			});
 			//部门
-			$("#sysRoles").combobox({
+			/* $("#sysRoles").combobox({
 				
-			});
+			}); */
 			
 		});
 		
@@ -109,10 +121,9 @@
  					$userList.datagrid("reload",{"filterJsons":Some.util.jsonToStr(searchJSON)});
 				},
 				reset:function(){
-					$("#sysUsreName,#sysUsreName").val("");
-					$("#queryMajor").val("");
-					$("#sysRoles,#queryDepts").combobox("setValue","");
-					$userList.datagrid("reload");
+					$("#sysUsreName,#sysRealName").val("");
+					$("#sysRoles").combobox("setValue","");
+					$userList.datagrid("reload",{});
 				},
 				//新建用户
 				/* addUser:function(){
@@ -167,8 +178,7 @@
 		 			});
 		 		},
 				
-		 		
-		 		//编辑用户
+		 	   //编辑用户
 			   editUser:function(){
 				  var select = $userList.datagrid("getSelected");
 				  if(!select){
@@ -279,12 +289,12 @@
 						<select id="sysRoles"></select>
 					</div>
 				</div>
-				<div class="search-div">
+				<%-- <div class="search-div">
 					<label>部门：</label>
 					<div class="select">
 						<select id="queryDepts"></select>
 					</div>
-				</div>
+				</div> --%>
 				<div class="search-div">
 					<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-search', plain:true" onclick="user.search()" >搜索</a> 
 					<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-reload', plain:true" onclick="user.reset()" >重置</a> 
