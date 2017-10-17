@@ -188,7 +188,7 @@ $(function(){
 	       	}
         ]],
 	    columns:[columns],
-	    onClickCell:function(index, field, value) {
+	    onDblClickCell:function(index, field, value) {
 	    	if("rsrcCode" != field){
 		    	if(resourceEdit!=undefined){
 		    		if($resourceGrid.datagrid("validateRow",resourceEdit)){
@@ -417,7 +417,7 @@ resourceOperation = {
 			var id = $(n).attr("id").substring(7,$(n).attr("id").length);
 			searchData[id] = $(n).val();
 			if(isNaN(id)){
-				searchData[id] = $(n).datetimebox("getValue");
+				searchData[id] = $(n).datebox("getValue");
 			}
 		})
 		$resourceGrid.datagrid("reload",
@@ -434,17 +434,15 @@ resourceOperation = {
 		$("#abbreviaName").val('');
 		$("#brand").val('');
 		$("#supplierName").val('');
-		/*
 		var $attrs = $("input[id^='attrib_']");
 		$.each($attrs,function(i,n){
 			var id = $(n).attr("id").substring(7,$(n).attr("id").length);
 			if(isNaN(id)){
-				$(n).datetimebox("setValue",'');
+				$(n).datebox("setValue",'');
 			}else{
 				$(n).val('');
 			}
 		})
-		*/
 		resourceOperation.search();
 	},
 	
@@ -513,45 +511,8 @@ resourceOperation = {
 	}
 };
 </script>
-<style>
- 	#searchForm{
-		padding:3px;
-		float:left !important;
-		height: auto !important;
-		width: 100%;
-	}
-	.search-div{
-		margin-left: 30px;
-		height: 30px;
-		margin-top:3px;
-		float: left;
-		width: 240px;
-		*width: auto;
-		*float: left !important;
-		max-width: 300px;
-	}
-	
-	#searchForm div label{
-		float: left;
-	}
-	
-	#searchForm div>input,#searchForm div>select{
-		float: right;
-		width: 152px;
-	}
-	
-	#searchForm div.select{
-		float: right;
-		width: 152px;
-	}
-	
-	#searchForm div>select{
-		width: 152px;
-	}
-</style>
-
 <div class="easyui-layout" data-options="fit:true,border : false">
-	<div id="searchForm" data-options="region:'north',title:'查询条件',border:false,split:false" style="height: 130px; overflow: hidden;background-color: #F8F8F8" >
+	<div id="searchForm" class = "table_seach_div" data-options="region:'north',title:'查询条件',border:false,split:false" style="overflow: hidden;background-color: #F8F8F8" >
 		<div class="search-div">
 			<lable for="">产品编号</lable>
 			<div class="select">

@@ -22,20 +22,24 @@ values(5,'类别管理','resourceTypeAction.act','cog_edit',4,1,1,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
 values(6,'产品管理','resourceAction.act','cog_edit',4,2,1,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
-values(7,'套餐管理','resourcePackageAction.act','cog_edit',4,3,1,1);
+values(7,'供应商管理','sysSupplierAction.act','cog_edit',4,3,1,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
-values(8,'流程管理','','door_in',0,3,1,1);
+values(8,'工人管理','sysWorkerAction.act','cog_edit',4,4,1,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
-values(9,'流程管理','processFlowAction.act','door_in',8,1,1,1);
+values(9,'套餐管理','resourcePackageAction.act','cog_edit',4,5,1,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
-values(10,'订单管理','','book_edit',0,4,1,1);
+values(10,'流程管理','','door_in',0,3,1,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
-values(11,'订单管理','orderAction.act','book_edit',10,1,1,1);
+values(11,'流程管理','processFlowAction.act','door_in',8,1,1,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
-values(12,'报表管理','','chart_bar',0,5,1,1);
+values(12,'订单管理','','book_edit',0,4,1,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
-values(13,'报表管理','orderAction.act','chart_bar',12,1,1,1);
-delete FROM sys_role_menu t WHERE t.id in (1,2,3,4,5,6,7,8,9,10,11,12,13);
+values(13,'订单管理','orderAction.act','book_edit',10,1,1,1);
+insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
+values(14,'报表管理','','chart_bar',0,5,1,1);
+insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
+values(15,'报表管理','orderAction.act','chart_bar',12,1,1,1);
+delete FROM sys_role_menu t WHERE t.id in (1,2,3,4,5,6,7,8,9,10,11,12,13,14,15);
 insert into sys_role_menu (id,row_version,role_id,menu_id)
 values (1, 0, 1 ,1);
 insert into sys_role_menu (id,row_version,role_id,menu_id)
@@ -62,4 +66,8 @@ insert into sys_role_menu (id,row_version,role_id,menu_id)
 values (12, 0, 1 ,12);
 insert into sys_role_menu (id,row_version,role_id,menu_id)
 values (13, 0, 1 ,13);
+insert into sys_role_menu (id,row_version,role_id,menu_id)
+values (14, 0, 1 ,14);
+insert into sys_role_menu (id,row_version,role_id,menu_id)
+values (15, 0, 1 ,15);
 END;
