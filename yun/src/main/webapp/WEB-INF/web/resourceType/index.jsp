@@ -276,10 +276,10 @@
 			<div  id="resource_type_bar">
 				<a href="#" class="bullet_arrow_down" id="expandAll" onclick="resourceTypeOperation.expand()">展开子集分类</a>
 				<a href="#" class="bullet_arrow_up" id="collapseAll" style="display: none;" onclick="resourceTypeOperation.collapse()">折叠子集分类</a>
-		       	<!-- 
 		       	<a href="#" class="icon-reflesh" onclick="resourceTypeOperation.updateCode()">刷新</a>
-		       	 -->
+		       	<!-- 
 		       	<a href="#" class="icon-reflesh" onclick="resourceTypeOperation.updateCode()">更新编号</a>
+		       	-->
 		     </div>
 		</div>
 		<div data-options="region:'center',split:true,title:''" border="false">
