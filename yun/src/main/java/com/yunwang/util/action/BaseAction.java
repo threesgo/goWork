@@ -259,6 +259,7 @@ public abstract class BaseAction extends ActionSupport implements SessionAware{
     */
     protected String ajaxJSONObj(JSONObject jsonObj) {
     	return ajax(jsonObj,"text/html");
+    	
     }
 
 	public int getPage() {
