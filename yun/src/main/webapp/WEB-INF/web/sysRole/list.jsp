@@ -2,7 +2,7 @@
 <%@taglib prefix="s" uri="/struts-tags"%>
 <script type="text/javascript">
 (function($){
-	var columns = [{field:'name',title:'<s:property value="%{getText('name')}"/>',sortable:false,width:150,
+	var columns = [{field:'name',title:'角色列表',sortable:false,width:150,
 		formatter: function(value,row,index){
 			
 			return row.levelName;
@@ -53,7 +53,7 @@
 		
 		return data;
 	}
-	var data = loadData(${modules});
+	var data = loadData(${menus});
 	
 	$("#roleTable").datagrid({
 		 	fit : true,

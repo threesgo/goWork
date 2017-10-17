@@ -1,7 +1,12 @@
 package com.yunwang.action;
 
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -12,10 +17,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.yunwang.model.pojo.SysMenu;
 import com.yunwang.model.pojo.SysRole;
+import com.yunwang.model.pojo.SysRoleMenu;
 import com.yunwang.model.pojo.SysUser;
+import com.yunwang.service.SysMenuService;
+import com.yunwang.service.SysRoleMenuService;
 import com.yunwang.service.SysUserService;
 import com.yunwang.util.Constant;
 import com.yunwang.util.action.AbstractLoginAction;
+
 
 
 @Action(value = "sysRoleAction", results = {
@@ -32,17 +41,24 @@ public class SysRoleAction extends AbstractLoginAction{
 	@Autowired
 	private SysUserService sysUserService;
 	
+	@Autowired
+	SysMenuService sysMenuService;
+	
+	@Autowired
+	SysRoleMenuService sysRoleMenuService;
+	
 	private SysRole sysRole;
 	
 	private String id;
 	private String needAll;
+	
+	private String menus;
+	private String roles;
 	/*private String jsonInfo;
 	
 	private String moduleIds;
 	
-	private String modules;
 	
-	private String roles;
 	
 	private Integer majorId;*/
 	
@@ -253,52 +269,55 @@ public class SysRoleAction extends AbstractLoginAction{
 	 * @return
 	 * <p>角色列表</p>
 	 */
-	/*public String list(){
-		//List<SysModule> moduleList = sysModuleService.findAll();
-		List<SysModule> moduleList = sysModuleService.findByMajorId(Integer.parseInt(id.substring(2,id.length())));
-		
-		List<SysRole> roleList = sysRoleService.findByMajorId(Integer.parseInt(id.substring(2,id.length())));
+	public String list(){
+		List<SysMenu> menuList = sysMenuService.findAll();
+		//List<SysModule> moduleList = sysModuleService.findByMajorId(Integer.parseInt(id.substring(2,id.length())));
+		List<SysRole> roleList = sysUserService.findAllRole();
+		//List<SysRole> roleList = sysRoleService.findByMajorId(Integer.parseInt(id.substring(2,id.length())));
 		//查询所有角色对应权限关系
-		List<SysRoleModule> relModuleList = sysRoleModuleService.findAll();
-		Map<Integer, Set<Integer>> roleRelModuleMap = null;
-		if(relModuleList!=null && !relModuleList.isEmpty()){
-			roleRelModuleMap = new HashMap<Integer, Set<Integer>>();
-			for(SysRoleModule sysRoleModule : relModuleList){
-				Integer key = sysRoleModule.getModuleId();
-				Set<Integer> roleIds = roleRelModuleMap.get(key);
+		List<SysRoleMenu> relMenuList = sysRoleMenuService.findAll();
+		//List<SysRoleModule> relModuleList = sysRoleModuleService.findAll();
+		Map<Integer, Set<Integer>> roleRelMenuMap = null;
+		//Map<Integer, Set<Integer>> roleRelModuleMap = null;
+		if(relMenuList != null && !relMenuList.isEmpty()){
+			roleRelMenuMap = new HashMap<Integer, Set<Integer>>();
+			for(SysRoleMenu sysRoleMenu : relMenuList){
+				Integer key = sysRoleMenu.getMenuId();
+				Set<Integer> roleIds = roleRelMenuMap.get(key);
 				if(roleIds == null){
 					roleIds = new HashSet<Integer>();
 				}
-				roleIds.add(sysRoleModule.getRoleId());
-				roleRelModuleMap.put(key, roleIds);
+				roleIds.add(sysRoleMenu.getRoleId());
+				roleRelMenuMap.put(key, roleIds);
 			}
 		}
-		List<Map<String, Object>> moduleMapList = new ArrayList<Map<String,Object>>();
-		if(moduleList!=null && !moduleList.isEmpty()){
-			for(SysModule sysModule : moduleList){
-				Map<String, Object> moduleMap = new HashMap<String, Object>();
-				moduleMap.put("name", getText(sysModule.getName()));
-				moduleMap.put("id", sysModule.getId());
-				moduleMap.put("parentId", sysModule.getParentId());
-				if(roleList!=null && !roleList.isEmpty() && roleRelModuleMap!=null){
-					Integer key = sysModule.getId();
-					Set<Integer> roleIds = roleRelModuleMap.get(key);
+		
+		List<Map<String, Object>> menuMapList = new ArrayList<Map<String,Object>>();
+		if(menuList!=null && !menuList.isEmpty()){
+			for(SysMenu sysMenu : menuList){
+				Map<String, Object> menuMap = new HashMap<String, Object>();
+				menuMap.put("name", getText(sysMenu.getName()));
+				menuMap.put("id", sysMenu.getId());
+				menuMap.put("parentId", sysMenu.getParentId());
+				if(roleList!=null && !roleList.isEmpty() && roleRelMenuMap!=null){
+					Integer key = sysMenu.getId();
+					Set<Integer> roleIds = roleRelMenuMap.get(key);
 					for(SysRole sysRole : roleList){
 						String valueKey = "role_"+sysRole.getId();
 						if(roleIds!=null){
-							moduleMap.put(valueKey, roleIds.contains(sysRole.getId()));
+							menuMap.put(valueKey, roleIds.contains(sysRole.getId()));
 						}else{
-							moduleMap.put(valueKey,false);
+							menuMap.put(valueKey,false);
 						}
 					}
 				}
-				moduleMapList.add(moduleMap);
+				menuMapList.add(menuMap);
 			}
 		}
 		roles = JSONArray.fromObject(roleList).toString();
-		modules = JSONArray.fromObject(moduleMapList).toString();
+		menus = JSONArray.fromObject(menuMapList).toString();
 		return "list";
-	}*/
+	}
 
 	public SysRole getSysRole() {
 		return sysRole;
@@ -323,4 +342,21 @@ public class SysRoleAction extends AbstractLoginAction{
 	public void setNeedAll(String needAll) {
 		this.needAll = needAll;
 	}
+
+	public String getMenus() {
+		return menus;
+	}
+
+	public void setMenus(String menus) {
+		this.menus = menus;
+	}
+
+	public String getRoles() {
+		return roles;
+	}
+
+	public void setRoles(String roles) {
+		this.roles = roles;
+	}
+	
 }
