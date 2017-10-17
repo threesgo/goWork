@@ -309,7 +309,6 @@ resourceOperation = {
 			index: addIndex,	// 索引从0开始
 			row: {
 				id:addId--,
-				workType:1,
 				rsrcCode:'',
 				rsrcName:'',
 				purchasePrice:0,
