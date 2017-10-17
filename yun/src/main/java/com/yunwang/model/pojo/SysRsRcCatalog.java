@@ -44,6 +44,9 @@ public class SysRsRcCatalog extends AbstractRowVersionModel{
 	@Transient
 	private String state = "closed";
 	
+	@Transient
+	private String catalogTypeName;
+	
 	public SysRsRcCatalog(){
 		
 	}
@@ -110,5 +113,13 @@ public class SysRsRcCatalog extends AbstractRowVersionModel{
 
 	public void setState(String state) {
 		this.state = state;
+	}
+
+	public String getCatalogTypeName() {
+		return catalogTypeName;
+	}
+
+	public void setCatalogTypeName(String catalogTypeName) {
+		this.catalogTypeName = catalogTypeName;
 	}
 }

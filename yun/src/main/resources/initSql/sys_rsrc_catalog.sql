@@ -1,21 +1,21 @@
 BEGIN
 delete FROM SYS_RSRC_CATALOG t WHERE t.id in (1,2,3,4,5,6,7,8,9);
 insert into SYS_RSRC_CATALOG (id,row_version,ORDER_NO,PARENT_ID,CATALOG_CODE,CATALOG_NAME,CATALOG_STUTAS,CATALOG_TYPE)
-values(1,0,1,0,'SJ0001','设计类',1,1);
+values(1,0,1,0,'1001','设计类',1,1);
 insert into SYS_RSRC_CATALOG (id,row_version,ORDER_NO,PARENT_ID,CATALOG_CODE,CATALOG_NAME,CATALOG_STUTAS,CATALOG_TYPE)
-values(2,0,2,0,'CJ0001','拆建工程类',1,2);
+values(2,0,2,0,'2002','拆建工程类',1,2);
 insert into SYS_RSRC_CATALOG (id,row_version,ORDER_NO,PARENT_ID,CATALOG_CODE,CATALOG_NAME,CATALOG_STUTAS,CATALOG_TYPE)
-values(3,0,3,0,'SD0001','水电工程类',1,3);
+values(3,0,3,0,'3003','水电工程类',1,3);
 insert into SYS_RSRC_CATALOG (id,row_version,ORDER_NO,PARENT_ID,CATALOG_CODE,CATALOG_NAME,CATALOG_STUTAS,CATALOG_TYPE)
-values(4,0,4,0,'NW0001','泥瓦工程类',1,4);
+values(4,0,4,0,'4004','泥瓦工程类',1,4);
 insert into SYS_RSRC_CATALOG (id,row_version,ORDER_NO,PARENT_ID,CATALOG_CODE,CATALOG_NAME,CATALOG_STUTAS,CATALOG_TYPE)
-values(5,0,5,0,'MG0001','木工工程类',1,5);
+values(5,0,5,0,'5005','木工工程类',1,5);
 insert into SYS_RSRC_CATALOG (id,row_version,ORDER_NO,PARENT_ID,CATALOG_CODE,CATALOG_NAME,CATALOG_STUTAS,CATALOG_TYPE)
-values(6,0,6,0,'YQ0001','油漆工程类',1,6);
+values(6,0,6,0,'6006','油漆工程类',1,6);
 insert into SYS_RSRC_CATALOG (id,row_version,ORDER_NO,PARENT_ID,CATALOG_CODE,CATALOG_NAME,CATALOG_STUTAS,CATALOG_TYPE)
-values(7,0,7,0,'SW0001','收尾工程类',1,7);
+values(7,0,7,0,'7007','收尾工程类',1,7);
 insert into SYS_RSRC_CATALOG (id,row_version,ORDER_NO,PARENT_ID,CATALOG_CODE,CATALOG_NAME,CATALOG_STUTAS,CATALOG_TYPE)
-values(8,0,8,0,'ZQ0001','住前准备类',1,8);
+values(8,0,8,0,'8008','住前准备类',1,8);
 insert into SYS_RSRC_CATALOG (id,row_version,ORDER_NO,PARENT_ID,CATALOG_CODE,CATALOG_NAME,CATALOG_STUTAS,CATALOG_TYPE)
-values(9,0,9,0,'QT0001','其它类',1,9);
+values(9,0,9,0,'9009','其它类',1,9);
 END;

@@ -34,7 +34,7 @@
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/scriptPlugins/jquery-easyui-1.4.5/themes/extIcon.css" />
 <%-- EasyUI主文件 --%>
 <script type="text/javascript" 	src="${pageContext.request.contextPath}/scriptPlugins/jquery-easyui-1.4.5/jquery.easyui.min.js"></script>
-
+<%-- EasyUI编辑扩展 --%>
 <script type="text/javascript" 	src="${pageContext.request.contextPath}/scriptPlugins/jquery-easyui-1.4.5/datagrid-cellediting.js"></script>
 
 <%--引用中文语言包 --%>

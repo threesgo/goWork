@@ -15,11 +15,11 @@ insert into SYS_DATA_DICTIONARY (id,row_version,type,name,value)values(12,0,3,'�
 insert into SYS_DATA_DICTIONARY (id,row_version,type,name,value)values(13,0,3,'顶面',6);
 insert into SYS_DATA_DICTIONARY (id,row_version,type,name,value)values(14,0,4,'设计',1);
 insert into SYS_DATA_DICTIONARY (id,row_version,type,name,value)values(15,0,4,'拆建工程',2);
-insert into SYS_DATA_DICTIONARY (id,row_version,type,name,value)values(15,0,4,'水电工程',3);
-insert into SYS_DATA_DICTIONARY (id,row_version,type,name,value)values(16,0,4,'泥瓦工程',4);
-insert into SYS_DATA_DICTIONARY (id,row_version,type,name,value)values(17,0,4,'木工工程',5);
-insert into SYS_DATA_DICTIONARY (id,row_version,type,name,value)values(18,0,4,'油漆工程',6);
-insert into SYS_DATA_DICTIONARY (id,row_version,type,name,value)values(19,0,4,'收尾工程',7);
-insert into SYS_DATA_DICTIONARY (id,row_version,type,name,value)values(20,0,4,'住前准备',8);
-insert into SYS_DATA_DICTIONARY (id,row_version,type,name,value)values(21,0,4,'其它',9);
+insert into SYS_DATA_DICTIONARY (id,row_version,type,name,value)values(16,0,4,'水电工程',3);
+insert into SYS_DATA_DICTIONARY (id,row_version,type,name,value)values(17,0,4,'泥瓦工程',4);
+insert into SYS_DATA_DICTIONARY (id,row_version,type,name,value)values(18,0,4,'木工工程',5);
+insert into SYS_DATA_DICTIONARY (id,row_version,type,name,value)values(19,0,4,'油漆工程',6);
+insert into SYS_DATA_DICTIONARY (id,row_version,type,name,value)values(20,0,4,'收尾工程',7);
+insert into SYS_DATA_DICTIONARY (id,row_version,type,name,value)values(21,0,4,'住前准备',8);
+insert into SYS_DATA_DICTIONARY (id,row_version,type,name,value)values(22,0,4,'其它',9);
 END;

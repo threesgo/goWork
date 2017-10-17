@@ -20,9 +20,7 @@
  					animate:true,
  					dnd:true,
 					onBeforeDrag:function(node){
-						if(node.attributes.id==0||node.attributes.id==1||node.attributes.id==2||node.attributes.id==3
-								||node.attributes.id==4||node.attributes.id==5||node.attributes.id==6
-								||node.attributes.id==7||node.attributes.id==8){
+						if(node.attributes.id == 0||node.attributes.parentId == 0){
 							return false;
 						}
 					},
@@ -255,6 +253,19 @@
 						$(this).dialog("destroy");
 					}
 	 			});
+	 		},
+	 		updateCode:function(){
+	 			$.post("resourceTypeAction!updateResourceCode.act",
+		        	function(data){
+					handlerResult(data,
+			    		function(rs){
+							$show(rs.message);
+						},
+						function(rs){
+							$alert(rs.message);
+						}
+					);  
+				},"json");
 	 		}
 	 	};
 		</script>
@@ -265,7 +276,10 @@
 			<div  id="resource_type_bar">
 				<a href="#" class="bullet_arrow_down" id="expandAll" onclick="resourceTypeOperation.expand()">展开子集分类</a>
 				<a href="#" class="bullet_arrow_up" id="collapseAll" style="display: none;" onclick="resourceTypeOperation.collapse()">折叠子集分类</a>
-		       	<a href="#" class="icon-reflesh" onclick="resourceTypeOperation.reload()">刷新</a>
+		       	<!-- 
+		       	<a href="#" class="icon-reflesh" onclick="resourceTypeOperation.updateCode()">刷新</a>
+		       	 -->
+		       	<a href="#" class="icon-reflesh" onclick="resourceTypeOperation.updateCode()">更新编号</a>
 		     </div>
 		</div>
 		<div data-options="region:'center',split:true,title:''" border="false">

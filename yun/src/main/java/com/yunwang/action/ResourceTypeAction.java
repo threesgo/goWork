@@ -172,7 +172,7 @@ public class ResourceTypeAction extends AbstractLoginAction{
 		
 		JSONObject json_type=new JSONObject();
 		json_type.put("attrName","类型类别");
-		json_type.put("value",BaseDataDictionaryUtil.valueMap.get(1).get(sysRsRcCatalog.getCatalogType().toString()).getName());
+		json_type.put("value",BaseDataDictionaryUtil.valueMap.get(4).get(sysRsRcCatalog.getCatalogType().toString()).getName());
 		jsonArr.add(json_type);
 		return ajaxText(jsonArr);
 	}
@@ -217,7 +217,11 @@ public class ResourceTypeAction extends AbstractLoginAction{
 		if(null != sysRsRcCatalog.getId()){
 			sysRsRcCatalog = sysResourceTypeService.getRsRcCatalogInfo(sysRsRcCatalog.getId());
 		}
-		catalogTypeList = BaseDataDictionaryUtil.baseDataMap.get(1);
+		if(0 != sysRsRcCatalog.getParentId()){
+			SysRsRcCatalog pSysRsRcCatalog = sysResourceTypeService.getRsRcCatalogInfo(sysRsRcCatalog.getParentId());
+			sysRsRcCatalog.setCatalogTypeName(BaseDataDictionaryUtil.valueMap.get(4).get(pSysRsRcCatalog.getCatalogType().toString()).getName());
+		}
+		catalogTypeList = BaseDataDictionaryUtil.baseDataMap.get(4);
 		return "saveOrUpdateTypePage";
 	}
 	
@@ -322,6 +326,16 @@ public class ResourceTypeAction extends AbstractLoginAction{
 	public String dragResourceType(){
 		try{
 			sysResourceTypeService.dragResourceType(point,targetId,sourceId);
+			return success("操作成功!");
+		}catch(Exception e){
+			LOG.error(e.getMessage());
+			return error("操作失败!");
+		}
+	}
+	
+	public String updateResourceCode(){
+		try{
+			sysResourceTypeService.updateResourceCode();
 			return success("操作成功!");
 		}catch(Exception e){
 			LOG.error(e.getMessage());

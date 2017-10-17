@@ -37,9 +37,14 @@ public class SysResourceTypeServiceImpl implements SysResourceTypeService{
 	
 	@Override
 	public void saveOrUpdateRsRcCatalog(SysRsRcCatalog sysRsRcCatalog) {
-		SysRsRcCatalog pSysRsRcCatalog = sysRsRcCatalogDao.get(SysRsRcCatalog.class,sysRsRcCatalog.getParentId());
-		sysRsRcCatalog.setOrderNo(sysRsRcCatalogDao.findMaxSeqByPfield("orderNo","parentId",sysRsRcCatalog.getParentId())+1);			
-		sysRsRcCatalog.setCatalogCode(MyStringUtil.getCombineSeqStr(sysRsRcCatalog.getOrderNo(),pSysRsRcCatalog.getCatalogCode()));
+		sysRsRcCatalog.setOrderNo(sysRsRcCatalogDao.findMaxSeqByPfield("orderNo","parentId",sysRsRcCatalog.getParentId())+1);
+		if(sysRsRcCatalog.getParentId() != 0 ){
+			SysRsRcCatalog pSysRsRcCatalog = sysRsRcCatalogDao.get(SysRsRcCatalog.class,sysRsRcCatalog.getParentId());
+			sysRsRcCatalog.setCatalogCode(MyStringUtil.getCombineSeqStr(sysRsRcCatalog.getOrderNo(),pSysRsRcCatalog.getCatalogCode()));
+			sysRsRcCatalog.setCatalogType(pSysRsRcCatalog.getCatalogType());
+		}else{
+			sysRsRcCatalog.setCatalogCode(MyStringUtil.getCombineSeqStr(sysRsRcCatalog.getOrderNo(),sysRsRcCatalog.getCatalogType().toString()));
+		}
 		sysRsRcCatalogDao.saveOrUpdate(sysRsRcCatalog);		
 	}
 
@@ -163,6 +168,31 @@ public class SysResourceTypeServiceImpl implements SysResourceTypeService{
 			for(SysResource syresource : sysResources){
 				syresource.setRsrcCode(MyStringUtil.getCombineSeqStr(syresource.getOrderNo(),sourceCatalog.getCatalogCode()));
 				sysResourceDao.update(syresource);
+			}
+		}
+	}
+
+	//产品编号与类别编号相同，无所谓
+	@Override
+	public void updateResourceCode() {
+		List<SysRsRcCatalog> sysRsRcCatalogs = sysRsRcCatalogDao.findByParentId(0);
+		for(SysRsRcCatalog sysRsRcCatalog : sysRsRcCatalogs){
+			sysRsRcCatalog.setCatalogCode(MyStringUtil.getCombineSeqStr(sysRsRcCatalog.getOrderNo(),sysRsRcCatalog.getCatalogType().toString()));
+			List<SysResource> sysResources = sysResourceDao.findByRsRcCatalogId(sysRsRcCatalog.getId());
+			for(SysResource sysResource:sysResources){
+				sysResource.setRsrcCode(MyStringUtil.getCombineSeqStr(sysResource.getOrderNo(),sysRsRcCatalog.getCatalogCode()));
+			}
+			haddleChildren(sysRsRcCatalog);
+		}
+	}
+	
+	private void haddleChildren(SysRsRcCatalog pSysRsRcCatalog){
+		List<SysRsRcCatalog> sysRsRcCatalogs = sysRsRcCatalogDao.findByParentId(pSysRsRcCatalog.getId());
+		for(SysRsRcCatalog sysRsRcCatalog : sysRsRcCatalogs){
+			sysRsRcCatalog.setCatalogCode(MyStringUtil.getCombineSeqStr(sysRsRcCatalog.getOrderNo(),pSysRsRcCatalog.getCatalogCode()));
+			List<SysResource> sysResources = sysResourceDao.findByRsRcCatalogId(sysRsRcCatalog.getId());
+			for(SysResource sysResource:sysResources){
+				sysResource.setRsrcCode(MyStringUtil.getCombineSeqStr(sysResource.getOrderNo(),sysRsRcCatalog.getCatalogCode()));
 			}
 		}
 	}

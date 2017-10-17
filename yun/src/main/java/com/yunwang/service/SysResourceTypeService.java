@@ -32,4 +32,6 @@ public interface SysResourceTypeService {
 	SysRsRcAttribCatalog getRsrcAttribName(SysRsRcAttribCatalog sysRsRcAttribCatalog);
 
 	void dragResourceType(Integer point, Integer targetId, Integer sourceId);
+
+	void updateResourceCode();
 }

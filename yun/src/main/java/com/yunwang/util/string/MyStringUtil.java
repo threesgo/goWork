@@ -225,7 +225,7 @@ public class MyStringUtil extends StringUtils{
 	 * <p>获取组合值</p>
 	 */
 	public static String getCombineSeqStr(Integer seq,String pStrSeq){
-		String cSeq=10000+seq+"";
+		String cSeq=1000+seq+"";
 		if(null!=pStrSeq){
 			return pStrSeq+cSeq.substring(1,cSeq.length());
 		}else{
