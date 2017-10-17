@@ -29,14 +29,13 @@
             url:"sysSupplierAction!listData.act",
             frozenColumns:[[
        			{field:'ck',checkbox:true},
-       			{field:'workType',title: "供应商类型",width:100,sortable:true
+       			{field:'workType',title: "供应商工种",width:100,sortable:true
 					,editor:{
                     	type:'combobox',
                      	options:{
                           	  valueField:'value', 
                               textField:'name',
                               editable:false,
-                              //url:"bopTmPbomInstanceAction!getBomInstanceByProcess.act?processId="+${hashMap.processId},
                               data:${hashMap.flowListArr},
                               panelHeight:'auto',
                               onLoadSuccess: function () {
@@ -235,7 +234,7 @@
 			
 			$sysSupplierDatagrid.datagrid("reload",
 				{
-					"jsonStr":Some.util.jsonToStr(searchData),
+					"sonStr":Some.util.jsonToStr(searchData),
 				}
 			);
 		},
@@ -290,7 +289,7 @@
 <div id="syssupplier_tool_bar">
 	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-add', plain:true" onclick="sysSupplierOperation.addSysSupplier()">新增</a>
 	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-edit', plain:true" onclick="sysSupplierOperation.editSysSupplier()">编辑</a>
-	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-edit', plain:true" onclick="sysSupplierOperation.cancelEdit()">取消编辑</a>
+	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-quxiao', plain:true" onclick="sysSupplierOperation.cancelEdit()">取消编辑</a>
 	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-remove', plain:true" onclick="sysSupplierOperation.deleteSysSupplier()">删除</a>
 </div>
 
