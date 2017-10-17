@@ -1,10 +1,17 @@
 package com.yunwang.action;
 
+import org.apache.struts2.convention.annotation.Action;
+import org.apache.struts2.convention.annotation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.yunwang.service.SysWorkerService;
 import com.yunwang.util.action.AbstractLoginAction;
-
+@Action(
+	value = "sysWorkerAction", 
+	results = {
+		@Result(name = "index",location="/WEB-INF/web/sysWorker/index.jsp")
+	}
+)
 public class SysWorkerAction  extends AbstractLoginAction{
 
 	/*
@@ -20,5 +27,9 @@ public class SysWorkerAction  extends AbstractLoginAction{
 	@Override
 	public String execute() throws Exception {
 		return "index";
-	} 
+	}
+	
+	public String listData(){
+		return null;
+	}
 }

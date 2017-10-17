@@ -180,8 +180,45 @@ $(function(){
 });
 </script>
 <style>
-  form div{
-   	margin-top: 20px;
-   	margin-left: 20px;
-  }
+form div{
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+.table_seach_div{
+	float:left !important;
+	width: 100%;
+	padding-left: 30px;
+	height:auto !important;
+	padding:3px;
+}
+
+.table_seach_div .search-div{
+	margin-left: 30px;
+	height: 30px;
+	margin-top:3px;
+	float: left;
+	width: 240px;
+	*width: auto;
+	*float: left !important;
+	max-width: 300px;
+}
+
+.table_seach_div div label{
+	float: left;
+}
+
+.table_seach_div div>input,.table_seach_div div>select{
+	float: right;
+	width: 152px;
+}
+
+.table_seach_div div.select{
+	float: right;
+	width: 152px;
+}
+
+.table_seach_div div>select{
+	width: 152px;
+}
 </style>
