@@ -32,4 +32,7 @@ insert into SYS_DATA_DICTIONARY (id,row_version,type,name,value)values(29,0,5,'�
 insert into SYS_DATA_DICTIONARY (id,row_version,type,name,value)values(30,0,5,'博士后',8);
 insert into SYS_DATA_DICTIONARY (id,row_version,type,name,value)values(31,0,6,'男',1);
 insert into SYS_DATA_DICTIONARY (id,row_version,type,name,value)values(32,0,6,'女',2);
+insert into SYS_DATA_DICTIONARY (id,row_version,type,name,value)values(33,0,7,'简装',1);
+insert into SYS_DATA_DICTIONARY (id,row_version,type,name,value)values(34,0,7,'精装',2);
+insert into SYS_DATA_DICTIONARY (id,row_version,type,name,value)values(35,0,7,'中装',3);
 END;
