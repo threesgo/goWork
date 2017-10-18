@@ -513,7 +513,7 @@ public class BaseDaoImpl<T> implements BaseDaoI<T> {
 	}
 	
 	@Override
-	public Integer findMaxSeq(String field,Object... values){
+	public Integer findMaxSeq(String field){
     	String hql="SELECT MAX(model."+field+") FROM "+entityClass.getSimpleName()+" model ";
 		Integer maxOrder=getUniqueResult(hql);
 		return maxOrder==null?0:maxOrder;

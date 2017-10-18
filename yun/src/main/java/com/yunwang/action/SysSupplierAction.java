@@ -47,12 +47,12 @@ public class SysSupplierAction extends AbstractLoginAction{
 	public String execute(){
 		flowList = BaseDataDictionaryUtil.baseDataMap.get(4);
 		hashMap = new HashMap<String,Object>();
-		hashMap.put("flowListArr", JSONArray.fromObject(BaseDataDictionaryUtil.baseDataMap.get(4)));
+		hashMap.put("flowArr", JSONArray.fromObject(BaseDataDictionaryUtil.baseDataMap.get(4)));
 		JSONObject obj = new JSONObject();
 		for(SysDataDictionary dictionary:flowList){
 			obj.put(dictionary.getValue(), dictionary.getName());
 		}
-		hashMap.put("flowListObj",obj);
+		hashMap.put("flowObj",obj);
 		return "index";
 	} 
 	

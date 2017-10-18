@@ -43,23 +43,46 @@ public class SysWorkerAction  extends AbstractLoginAction{
 	private String ids;
 	private String jsonStr;
 	private List<SysDataDictionary> flowList;
+	private List<SysDataDictionary> educationList;
+	private List<SysDataDictionary> sexList;
 	
 	@Override
 	public String execute() throws Exception {
-		flowList = BaseDataDictionaryUtil.baseDataMap.get(4);
 		hashMap = new HashMap<String,Object>();
-		hashMap.put("flowListArr", JSONArray.fromObject(BaseDataDictionaryUtil.baseDataMap.get(4)));
-		JSONObject obj = new JSONObject();
+		
+		//流程数据
+		flowList = BaseDataDictionaryUtil.baseDataMap.get(4);
+		hashMap.put("flowArr", JSONArray.fromObject(BaseDataDictionaryUtil.baseDataMap.get(4)));
+		JSONObject flowObj = new JSONObject();
 		for(SysDataDictionary dictionary:flowList){
-			obj.put(dictionary.getValue(), dictionary.getName());
+			flowObj.put(dictionary.getValue(), dictionary.getName());
 		}
-		hashMap.put("flowListObj",obj);
+		hashMap.put("flowObj",flowObj);
+		
+		//学历数据
+		educationList = BaseDataDictionaryUtil.baseDataMap.get(5);
+		hashMap.put("educationArr", JSONArray.fromObject(BaseDataDictionaryUtil.baseDataMap.get(5)));
+		JSONObject educationObj = new JSONObject();
+		for(SysDataDictionary dictionary:educationList){
+			educationObj.put(dictionary.getValue(), dictionary.getName());
+		}
+		hashMap.put("educationObj",educationObj);
+		
+		//性别数据
+		sexList = BaseDataDictionaryUtil.baseDataMap.get(6);
+		hashMap.put("sexArr", JSONArray.fromObject(BaseDataDictionaryUtil.baseDataMap.get(6)));
+		JSONObject sexObj = new JSONObject();
+		for(SysDataDictionary dictionary:sexList){
+			sexObj.put(dictionary.getValue(), dictionary.getName());
+		}
+		hashMap.put("sexObj",sexObj);
+		
 		return "index";
 	}
 	
 	public String listData(){
 		JSONObject obj=new JSONObject();
-		Pager<SysSupplier> pager = sysWorkerService.findAll(page,rows,
+		Pager<SysWorker> pager = sysWorkerService.findAll(page,rows,
 				JSONObject.fromObject(jsonStr));
 		JSONArray arr = new JSONArray();
 		if(null!=pager && null!=pager.getData()){
@@ -86,6 +109,17 @@ public class SysWorkerAction  extends AbstractLoginAction{
 		}catch(Exception e){
 			LOG.error(e.getMessage());
 			return error("行数据保存失败!");
+		}
+	}
+	
+	
+	public String deleteWorker(){
+		try{
+			sysWorkerService.deleteWorker(ids);
+			return success("操作成功!");
+		}catch(Exception e){
+			LOG.error(e.getMessage());
+			return error("操作失败!");
 		}
 	}
 
@@ -127,5 +161,21 @@ public class SysWorkerAction  extends AbstractLoginAction{
 
 	public void setFlowList(List<SysDataDictionary> flowList) {
 		this.flowList = flowList;
+	}
+
+	public List<SysDataDictionary> getEducationList() {
+		return educationList;
+	}
+
+	public void setEducationList(List<SysDataDictionary> educationList) {
+		this.educationList = educationList;
+	}
+
+	public List<SysDataDictionary> getSexList() {
+		return sexList;
+	}
+
+	public void setSexList(List<SysDataDictionary> sexList) {
+		this.sexList = sexList;
 	}
 }

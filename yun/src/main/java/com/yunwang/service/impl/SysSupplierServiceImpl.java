@@ -25,6 +25,7 @@ public class SysSupplierServiceImpl implements SysSupplierService {
 			// 更新
 		} else {
 			sysSupplier = new SysSupplier();
+			sysSupplier.setCode((sysSupplierDao.findMaxSeq("code")+1)+"");			
 			sysSupplier.setStatus(1);
 			// 正常
 		}

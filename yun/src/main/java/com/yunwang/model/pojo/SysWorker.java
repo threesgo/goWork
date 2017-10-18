@@ -1,7 +1,6 @@
 package com.yunwang.model.pojo;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -26,8 +25,14 @@ public class SysWorker extends AbstractRowVersionModel{
 	@SequenceGenerator(name="my_entity_seq_gen", sequenceName="SEQ_SYS_WORKER")
 	private Integer id;
 	
+	@Column(name = "CODE",length = 64,nullable = false)
+	private String code;
+	
 	@Column(name = "NAME",length = 64,nullable = false)
 	private String name;
+	
+	@Column(name = "SEX")
+	private Integer sex;
 	
 	@Column(name = "PHONENUM",length = 24,nullable = false)
 	private String phoneNum;
@@ -42,7 +47,7 @@ public class SysWorker extends AbstractRowVersionModel{
 	private Integer age;
 	
 	@Column(name = "BIRTHDAY")
-	private Date birthday;
+	private String birthday;
 	
 	@Column(name = "WORK_TYPE")
 	private Integer workType;
@@ -54,12 +59,12 @@ public class SysWorker extends AbstractRowVersionModel{
 	private BigDecimal wages;
 	
 	@Column(name = "EDUCATION")
-	private String education;
+	private Integer education;
 	
 	@Column(name = "STATUS")
 	private Integer status;
 	
-	@Column(name = "COMPANY",length = 128)
+	@Column(name = "COMPANY",length = 256)
 	private String company;
 
 	public SysWorker(){
@@ -74,12 +79,28 @@ public class SysWorker extends AbstractRowVersionModel{
 		this.id = id;
 	}
 
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
 	public String getName() {
 		return name;
 	}
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public Integer getSex() {
+		return sex;
+	}
+
+	public void setSex(Integer sex) {
+		this.sex = sex;
 	}
 
 	public String getPhoneNum() {
@@ -114,11 +135,11 @@ public class SysWorker extends AbstractRowVersionModel{
 		this.age = age;
 	}
 
-	public Date getBirthday() {
+	public String getBirthday() {
 		return birthday;
 	}
 
-	public void setBirthday(Date birthday) {
+	public void setBirthday(String birthday) {
 		this.birthday = birthday;
 	}
 
@@ -146,11 +167,11 @@ public class SysWorker extends AbstractRowVersionModel{
 		this.wages = wages;
 	}
 
-	public String getEducation() {
+	public Integer getEducation() {
 		return education;
 	}
 
-	public void setEducation(String education) {
+	public void setEducation(Integer education) {
 		this.education = education;
 	}
 

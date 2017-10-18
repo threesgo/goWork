@@ -22,6 +22,9 @@ public class SysSupplier extends AbstractRowVersionModel{
 	@SequenceGenerator(name="my_entity_seq_gen", sequenceName="SEQ_SYS_WORKER")
 	private Integer id;
 	
+	@Column(name = "CODE",length = 64,nullable = false)
+	private String code;
+	
 	@Column(name = "NAME",length = 1024,nullable = false)
 	private String name;
 	
@@ -47,6 +50,14 @@ public class SysSupplier extends AbstractRowVersionModel{
 		
 	}
 	
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
 	public Integer getId() {
 		return id;
 	}

@@ -1,189 +1,189 @@
 ﻿@CHARSET "UTF-8";
 /* menu icon begin */
 .icon-user {
-	background: url('icon-user.png') no-repeat center center;
+	background: url('icon-user.png') no-repeat ;
 }
 
 .icon-user-department {
-	background: url('icon-department.png') no-repeat center center;
+	background: url('icon-department.png') no-repeat ;
 }
 
 .icon-user-search {
-	background: url('icon-search_user.png') no-repeat center center;
+	background: url('icon-search_user.png') no-repeat ;
 }
 
 .icon-client {
-	background: url('icon-client.png') no-repeat center center;
+	background: url('icon-client.png') no-repeat ;
 }
 
 .icon-user-project {
-	background: url('icon-project.png') no-repeat center center;
+	background: url('icon-project.png') no-repeat ;
 }
 
 .icon-user-log {
-	background: url('icon-log.png') no-repeat center center;
+	background: url('icon-log.png') no-repeat ;
 }
 
 .icon-software-license {
-	background: url('icon-license.png') no-repeat center center;
+	background: url('icon-license.png') no-repeat ;
 }
 
 .icon-software {
-	background: url('icon-software.png') no-repeat center center;
+	background: url('icon-software.png') no-repeat ;
 }
 
 .icon-setting {
-	background: url('icon-setting.png') no-repeat center center;
+	background: url('icon-setting.png') no-repeat ;
 }
 
 .icon-server {
-	background: url('icon-server.png') no-repeat center center;
+	background: url('icon-server.png') no-repeat ;
 }
 
 .icon-parameter {
-	background: url('icon-parameter.png') no-repeat center center;
+	background: url('icon-parameter.png') no-repeat ;
 }
 
 .icon-rights {
-	background: url('icon-data_right.png') no-repeat center center;
+	background: url('icon-data_right.png') no-repeat ;
 }
 
 .icon-report {
-	background: url('icon-report.png') no-repeat center center;
+	background: url('icon-report.png') no-repeat ;
 }
 
 .icon-notice {
-	background: url('icon-notice.png') no-repeat center center;
+	background: url('icon-notice.png') no-repeat ;
 }
 
 .icon-notice-mobile {
-	background: url('icon-SMS.png') no-repeat center center;
+	background: url('icon-SMS.png') no-repeat ;
 }
 
 .icon-notice-email {
-	background: url('icon-email.png') no-repeat center center;
+	background: url('icon-email.png') no-repeat ;
 }
 
 .icon-policy-record {
-	background: url('icon-manage_record.png') no-repeat center center;
+	background: url('icon-manage_record.png') no-repeat ;
 }
 
 .icon-client-upclient {
-	background: url('icon-upload.png') no-repeat center center;
+	background: url('icon-upload.png') no-repeat ;
 }
 
 .icon-client-cltlog {
-	background: url('icon-log.png') no-repeat center center;
+	background: url('icon-log.png') no-repeat ;
 }
 
 .icon-system-monitor {
-	background: url('icon-monitor.png') no-repeat center center;
+	background: url('icon-monitor.png') no-repeat ;
 }
 
 .icon-system-config {
-	background: url('icon-setting-2.png') no-repeat center center;
+	background: url('icon-setting-2.png') no-repeat ;
 }
 
 .icon-search {
-	background: url('icon-search.png') no-repeat center center;
+	background: url('icon-search.png') no-repeat ;
 }
 
 .icon-licconfig-config {
-	background: url('icon-config.png') no-repeat center center;
+	background: url('icon-config.png') no-repeat ;
 }
 
 .icon-config_edit {
-	background: url('icon-config_edit.png') no-repeat center center;
+	background: url('icon-config_edit.png') no-repeat ;
 }
 
 .icon-unreasonable {
-	background: url('icon-unreasonable.png') no-repeat center center;
+	background: url('icon-unreasonable.png') no-repeat ;
 }
 
 .icon-central {
-	background: url('icon-central.png') no-repeat center center;
+	background: url('icon-central.png') no-repeat ;
 }
 
 .icon-lock {
-	background: url('icon-lock.png') no-repeat center center;
+	background: url('icon-lock.png') no-repeat ;
 }
 
 .icon-launcher {
-	background: url('icon-launcher.png') no-repeat center center;
+	background: url('icon-launcher.png') no-repeat ;
 }
 
 /* 自定义图标覆盖系统图标 */
 .icon-add {
-	background: url('icon-add.png') no-repeat center center;
+	background: url('icon-add.png') no-repeat ;
 }
 
 .icon-edit {
-	background: url('icon-edit.png') no-repeat center center;
+	background: url('icon-edit.png') no-repeat ;
 }
 
 .icon-remove {
-	background: url('icon-delete.png') no-repeat center center;
+	background: url('icon-delete.png') no-repeat ;
 }
 
 .icon-ok {
-	background: url('icon-confirm.png') no-repeat center center;
+	background: url('icon-confirm.png') no-repeat ;
 }
 
 .icon-cancel {
-	background: url('icon-cancel.png') no-repeat center center;
+	background: url('icon-cancel.png') no-repeat ;
 }
 
 .icon-config {
-	background: url('icon-config.png') no-repeat center center;
+	background: url('icon-config.png') no-repeat ;
 }
 .icon-upload {
-	background: url('icon-upload.png') no-repeat center center;
+	background: url('icon-upload.png') no-repeat ;
 }
 .icon-save {
-	background: url('icon-save.png') no-repeat center center;
+	background: url('icon-save.png') no-repeat ;
 }
 
 .icon-time {
-	background: url('icon-time.png') no-repeat center center;
+	background: url('icon-time.png') no-repeat ;
 }
 
 .icon-idle-occupation {
-	background: url('icon-idle-occupation.png') no-repeat center center;
+	background: url('icon-idle-occupation.png') no-repeat ;
 }
 
 .icon-long-term {
-	background: url('icon-long-term.png') no-repeat center center;
+	background: url('icon-long-term.png') no-repeat ;
 }
 
 .icon-nodelock {
-	background: url('icon-nodelock.png') no-repeat center center;
+	background: url('icon-nodelock.png') no-repeat ;
 }
 
 .icon-repeated {
-	background: url('icon-repeated.png') no-repeat center center;
+	background: url('icon-repeated.png') no-repeat ;
 }
 
 .icon-request-failure {
-	background: url('icon-request-failure.png') no-repeat center center;
+	background: url('icon-request-failure.png') no-repeat ;
 }
 
 .icon-software-usage {
-	background: url('icon-software-usage.png') no-repeat center center;
+	background: url('icon-software-usage.png') no-repeat ;
 }
 
 .icon-timepoint {
-	background: url('icon-timepoint.png') no-repeat center center;
+	background: url('icon-timepoint.png') no-repeat ;
 }
 
 .icon-usagerate {
-	background: url('icon-usagerate.png') no-repeat center center;
+	background: url('icon-usagerate.png') no-repeat ;
 }
 
 .iocn-uk-catia {
-	background: url('iocn-uk-catia.png') no-repeat center center;
+	background: url('iocn-uk-catia.png') no-repeat ;
 }
 .icon-excel {
-	background: url('excel.png') no-repeat center center;
+	background: url('excel.png') no-repeat ;
 }
 .icon-help {
 	background: url('icon-help.png') no-repeat ;

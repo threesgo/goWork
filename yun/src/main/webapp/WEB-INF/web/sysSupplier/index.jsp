@@ -7,6 +7,8 @@
 	var $sysSupplierDatagrid;	
 	var sysSupplierOperation = {};
 	
+	var flowObj = new Function("return " + '${hashMap.flowObj}')();
+	
 	var sysSupplierEdit = undefined;
 	var addId = 0;
 	$(function(){
@@ -36,7 +38,7 @@
                           	  valueField:'value', 
                               textField:'name',
                               editable:false,
-                              data:${hashMap.flowListArr},
+                              data:${hashMap.flowArr},
                               panelHeight:'auto',
                               onLoadSuccess: function () {
                             	 
@@ -44,14 +46,13 @@
                  	 	}
 					},
 					formatter:function(value, rowData) {
-						var flowListObj = new Function("return " + '${hashMap.flowListObj}')();
-						return flowListObj[value];
+						return flowObj[value];
 					} 
 				},
        			{field:'name',title: "供应商名称",width:200,sortable:true
 					,editor:{
 		        		type:"textbox",
-		        		options:{required:false,validType:['length[1,300]','illegal']}
+		        		options:{required:true,validType:['length[1,300]','illegal']}
 		        	}
 				}
             ]],
@@ -59,19 +60,19 @@
 				{field:'contact',title: "供应商联系人",width:120,sortable:true
 					,editor:{
 		        		type:"textbox",
-		        		options:{required:false,validType:['length[1,40]','illegal']}
+		        		options:{required:true,validType:['length[1,40]','illegal']}
 		        	}
 				},
 				{field:'phoneNum',title: "联系人手机",width:120,sortable:true
 					,editor:{
 		        		type:"textbox",
-		        		options:{required:false,validType:['length[1,24]','illegal']}
+		        		options:{required:true,validType:['length[1,24]','mobile']}
 		        	}
 				},
 				{field:'telNum',title: "供应商电话",width:150,sortable:true
 					,editor:{
 		        		type:"textbox",
-		        		options:{required:false,validType:['length[1,24]','illegal']}
+		        		options:{required:false,validType:['length[1,24]','phone']}
 		        	}
 				},
 				{field:'address',title: "供应商地址",width:450,sortable:true
@@ -249,6 +250,16 @@
 <div class="easyui-layout" data-options="fit:true,border : false">
 	<div id="syssupplier_tabel_search" class = "table_seach_div" data-options="region:'north',title:'查询条件',border:false,split:false" style="overflow: hidden;background-color: #F8F8F8" >
 		<div class="search-div">
+			<label>供应商类型</label>
+	       	<s:select id="workType" style="height:22px"
+	       		list="flowList"
+		       	listKey="value"   
+		       	listValue="name" 
+		       	headerKey="0"
+		       	headerValue="--请选择--"/>
+		</div>
+		
+		<div class="search-div">
 			<label>供应商名称</label>
 			<input type="text" id="name"/>
 		</div>
@@ -268,15 +279,7 @@
 			<label>供应商地址</label>
 			<input type="text" id="address"/>
 		</div>
-		<div class="search-div">
-			<label>供应商类型</label>
-	       	<s:select id="workType" style="height:22px"
-	       		list="flowList"
-		       	listKey="value"   
-		       	listValue="name" 
-		       	headerKey="0"
-		       	headerValue="--请选择--"/>
-		</div>
+		
 		<div class="search-div">
 			<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-search', plain:true" onclick="sysSupplierOperation.search()">搜索</a> 
 			<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-reload', plain:true" onclick="sysSupplierOperation.reset()">重置</a> 

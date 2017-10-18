@@ -283,13 +283,13 @@ public interface BaseDaoI<T> {
 	
 	public void deleteByPropertys(String property,String values);
 
-	public <N> N getUniqueResult(String hql, Object[] values);
+	public <N> N getUniqueResult(String hql,Object... values);
 
 	public <N> List<N> findByIdsToPaging(String ids, OriginalQuerior<N> sqlQuery);
 
 	public Integer findMaxSeqByPfield(String seqField, String pField, Integer pValue);
 
-	public Integer findMaxSeq(String field, Object[] values);
+	public Integer findMaxSeq(String field);
 	
 	public List<T> findAll();
 	
