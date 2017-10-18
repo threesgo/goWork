@@ -63,12 +63,11 @@ public class SysRoleMenuServiceImpl implements SysRoleMenuService{
 					sysRoleMenu.setRoleId(roleId);
 					sysRoleMenu.setMenuId(Integer.parseInt(menuId));
 					roleMenuList.add(sysRoleMenu);
+					//sysRoleMenuDao.save(sysRoleMenu);
 				}
 				//保存角色对应模块信息
 				sysRoleMenuDao.saveOrUpdateAll(roleMenuList);
 			}
 		}
-		
 	}
-
 }

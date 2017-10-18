@@ -154,7 +154,7 @@
 	 		
 	 		addType:function(){
 	 			var node = resourceTypeTree.tree("getSelected");
-	 			var dialog =$('<div id="addResourceType"></div>').dialog({    
+	 			var dialog = $('<div id="addResourceType"></div>').dialog({    
 					href : "resourceTypeAction!saveOrUpdateTypePage.act",
 					width:350,
 					height:250,

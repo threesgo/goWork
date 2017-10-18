@@ -20,7 +20,7 @@ import javax.persistence.Table;
 public class SysOrderFlowTime  extends AbstractRowVersionModel{
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO, generator="my_entity_seq_gen")
-	@SequenceGenerator(name="my_entity_seq_gen", sequenceName="SEQ_SYS_ORDER_LAYOUT")
+	@SequenceGenerator(name="my_entity_seq_gen", sequenceName="SEQ_SYS_ORDER_FLOW_TIME")
 	private Integer id;
 	
 	@Column(name = "ORDER_FLOW_ID",nullable = false)

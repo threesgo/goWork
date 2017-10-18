@@ -157,9 +157,9 @@
 		//添加角色
 		function append(){
 			var addRoleDilog=$('<div id="addRole"></div>').dialog({
-				top:100,
 				title:"<s:text name='添加角色'/>",
-				width:450,
+				width:400,
+				top:160,
 				height:"auto",
 				resizable:true,
 				href:"sysRoleAction!preAdd.act",

@@ -4,7 +4,7 @@
 	
 </script>
 <form id="upload_fm" method="post" enctype="multipart/form-data">
-	<div>
+	<div style="height: 35px">
 		<label>文件选择:</label> <input type="file" name="importResource" id="file" />
 	</div>
 </form>

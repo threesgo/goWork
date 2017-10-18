@@ -19,7 +19,7 @@ public class SysSupplier extends AbstractRowVersionModel{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO, generator="my_entity_seq_gen")
-	@SequenceGenerator(name="my_entity_seq_gen", sequenceName="SEQ_SYS_WORKER")
+	@SequenceGenerator(name="my_entity_seq_gen", sequenceName="SEQ_SYS_SUPPLIER")
 	private Integer id;
 	
 	@Column(name = "CODE",length = 64,nullable = false)

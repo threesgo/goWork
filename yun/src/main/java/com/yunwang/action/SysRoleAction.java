@@ -127,7 +127,7 @@ public class SysRoleAction extends AbstractLoginAction{
 			for(SysRole role:listSysRole){
 			    jso=new JSONObject();
 				jso.put("id","role"+role.getId());
-				jso.put("text","角色："+role.getName());
+				jso.put("text",role.getName());
 				jso.put("state", "open");
 				jso.put("attributes", JSONObject.fromObject(role));
 				jsoArr.add(jso);

@@ -5,40 +5,15 @@
 	<jsp:include page="/public/public.jsp" />
 	<head>
 		<style type="text/css">
-			#selectDiv{
-				padding:3px;
-				float:left !important;
-				height: auto !important;
-				width: 100%;
-				padding-left: 30px;
-			}
-			.search-div{
+			.table_seach_div .search-div{
 				margin-left: 30px;
 				height: 30px;
 				margin-top:3px;
 				float: left;
-				width: 230px;
+				width: 220px;
 				*width: auto;
 				*float: left !important;
 				max-width: 300px;
-			}
-			
-			#selectDiv div label{
-				float: left;
-			}
-			
-			#selectDiv div>input,#selectDiv div>select{
-				float: right;
-				width: 152px;
-			}
-			
-			#selectDiv div.select{
-				float: right;
-				width: 152px;
-			}
-			
-			#selectDiv div>select{
-				width: 152px;
 			}
 		</style>
 		<script type="text/javascript">
@@ -268,7 +243,7 @@
 	<body id="body" >
 		<div class="easyui-layout" title="" data-options="border:false,fit:true" style="background-color: #fcfdfe;" >
 			
-			<div id="selectDiv" class = "table_seach_div" data-options="region:'north',title:'查询条件',border:false,split:false" style="overflow: hidden;background-color: #F8F8F8" >
+			<div class = "table_seach_div" data-options="region:'north',title:'查询条件',border:false,split:false" style="overflow: hidden;background-color: #F8F8F8" >
 				<%--<div id="selectDiv" style="height:auto !important;padding:10px;float:left !important;width: 100%;">
 					--%><div class="search-div">
 						<label>用户名：</label>

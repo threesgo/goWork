@@ -56,9 +56,9 @@
 		//编辑--修改角色姓名	
 		function editRole(){
 			var editRoleDilog=$('<div id="editRole"></div>').dialog({
-				top:100,
 				title:"<s:text name='编辑角色'/>",
-				width:450,
+				width:400,
+				top:160,
 				height:"auto",
 				method:"post",
 				resizable:true,
@@ -86,7 +86,6 @@
 								});
 							}
 						}).submit();
-						
 					}
 				},{
 					text:"取消",
