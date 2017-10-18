@@ -3,11 +3,8 @@
 <!DOCTYPE jsp:include PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<jsp:include page="/public/public.jsp" />
-	
 	<style>
-	
 	</style>
-	
 	<body class="easyui-layout">
 		<div data-options="region:'west',split:true,tools:'#left_bar'" title="角色列表"  style="width:200px;" border="false">
 			<ul id="roleTree" ></ul><!-- 存放树结构 -->
@@ -25,29 +22,12 @@
 		<div id="dd" class="easyui-menu" style="width:120px;">
 			<div onclick="del(this)" data-options="iconCls:'icon-remove'">删除</div>
 		</div>
-		
-		<%-- href="sysRoleAction!delete.act?sysRole.id=${id}"
-		 --%>
  		<script type="text/javascript" > 
  		var roleTree;
  		var layoutTab;
  		var majorId;
  		var id;
- 		
 	 	(function($){
-	 		
-	 		/*
-		 		var tool={id:"panel_bar",bars:[
-	                {name:"新增","className":icon-edit,href:"#",onclick:"edit()"},
-		 		   	{name:"编辑",className:"icon-edit",href:"#",onclick:"edit()"},    
-		 		 	{name:"保存",className:"icon-save",href:"#",onclick:"save()"}, 
-		 		 	{name:"删除",className:"icon-remove",href:"#",onclick:"remove()"}
-		 		]};
-		 		 	
-	 		 	$.each( tool.bars, function(i,n){
-	 				$("#panel_bar").appendTo("<a href='"+n.href+"' class='"+n.className+"' onclick='"+n.onclick+"'>"+n.name+"</a>")
-	 			});
-	 		*/
 	 		//添加树结构
 	 		roleTree=$('#roleTree').tree({
  					url:"sysRoleAction!findTree.act?",
@@ -57,8 +37,8 @@
  						if(roleTree.tree("isLeaf",node.target)){//判断是否为叶子节点
  							layoutTab.tabs('add',
  								{
- 								title :"关联模块",
- 								href :"sysRoleAction!edit.act?sysRole.id="+node.attributes.id
+ 									title :"关联模块",
+ 									href :"sysRoleAction!edit.act?sysRole.id="+node.attributes.id
  								}
  							);   
  						}                           
@@ -67,7 +47,7 @@
  								layoutTab.tabs('add',
 									{
  										title :"角色列表 ",
- 	 									href :"sysRoleAction!list.act?"
+ 	 									href :"sysRoleAction!list.act"
  	 								}
  								);
  							}
@@ -173,6 +153,7 @@
 				*/
 			};
 		})(jQuery);
+		
 		//添加角色
 		function append(){
 			var addRoleDilog=$('<div id="addRole"></div>').dialog({
@@ -183,7 +164,6 @@
 				resizable:true,
 				href:"sysRoleAction!preAdd.act",
 				method:"post", 
-				queryParams:{},
 				buttons:[{
 					text:"确定",
 					iconCls:'icon-ok',
@@ -194,8 +174,6 @@
 									$show(rs.message);
 									var root = roleTree.tree("getRoot");
 									roleTree.tree('reload',root.target);
-									roleTree.tree('select',root.target);
-									
 									addRoleDilog.dialog("close");
 								},function(rs){
 									$alert(rs.message);

@@ -4,10 +4,8 @@
 	var menuTree;
 	$(function(){
 		menuTree=$('#menuTree').tree({
-				//url:"sysRoleAction!findModelTree.act",
 				checkbox:true,
 				data:eval('${jsonInfo}')
-				
 			}
  		);
 	});
@@ -15,16 +13,14 @@
 	function saveMenuRel(){
 		var menus = menuTree.tree('getChecked','indeterminate'); //获取不确定的节点(不是勾选,其子集中有选中的)
 		var checkedmenus = menuTree.tree('getChecked');//获取勾选的节点
-		var menusStr = ""; 
-		var checkedsStr = ""; 
+		var menusStr = []; 
 		$.each(menus,function(index,item){
-			menusStr += item.id+",";
+			menusStr.push(item.id);
 		});
-		alert(menusStr)
 		$.each(checkedmenus,function(index,item){
-			menusStr += item.id+",";
+			menusStr.push(item.id);
 		});
-		$.post("sysRoleAction!saveRoleRelMenu.act",{"menus":menusStr,"sysRole.id":${sysRole.id}}
+		$.post("sysRoleAction!saveRoleRelMenu.act",{"menus":menusStr.join(","),"sysRole.id":${sysRole.id}}
 			,function(data){
 				handlerResult(data,function(rs){
 					$show(rs.message);
@@ -36,12 +32,12 @@
 		//删除--删除选中的角色
 		function delRole(){
 	 		var node=$('#roleTree').tree('getSelected');
-	 	$.messager.confirm('确认','您确认想要删除记录吗？',function(r){   
+	 		$.messager.confirm('确认','您确认想要删除记录吗？',function(r){   
 			    if (r){
 			        $.ajax({
 					   	type: "POST",
 					   	url: "sysRoleAction!delete.act",
-					   	data: "sysRole.id="+${sysRole.id},
+					   	data: {"sysRole.id":'${sysRole.id}'},
 					   	success: function(data){
 					   		handlerResult(data,function(rs){
 								$show(rs.message);
@@ -50,7 +46,6 @@
 								roleTree.tree('select',root.target);
 							},function(rs){
 								$alert(rs.message);
-								
 							});
 						}
 					});  
