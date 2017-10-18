@@ -31,6 +31,9 @@ public class SysOrderResource extends AbstractRowVersionModel{
 	@Column(name = "ORDER_ID",nullable = false)
 	private Integer orderId;
 	
+	@Column(name = "FLOW_TIME_ID")
+	private Integer flowTimeId;  //一期先不用，直接放到流程上面
+	
 	public SysOrderResource(){
 		
 	}
@@ -65,5 +68,13 @@ public class SysOrderResource extends AbstractRowVersionModel{
 
 	public void setOrderId(Integer orderId) {
 		this.orderId = orderId;
+	}
+
+	public Integer getFlowTimeId() {
+		return flowTimeId;
+	}
+
+	public void setFlowTimeId(Integer flowTimeId) {
+		this.flowTimeId = flowTimeId;
 	}
 }
