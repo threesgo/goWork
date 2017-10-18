@@ -54,7 +54,7 @@
 	            pagination:true, 
 	            pageSize:20,  
 	            pageList:[20,50,100,150,200],
-	            toolbar:"#selectDiv",
+	            toolbar:"#tool_bar",
 	            height: 'auto',
 	            url:"sysUserAction!listUser.act",
 				columns:[[
@@ -139,8 +139,8 @@
 				  addUser:function(){
 		 			var addDialog =$('<div id="addSysUser"></div>').dialog({    
 		 				href:"sysUserAction!preAdd.act",
-						width:350,
-						height:450,
+						width:630,
+						height:300,
 						title:"添加用户",
 						method:'post',
 						modal:true,
@@ -187,8 +187,8 @@
 				  }
 	 			var editDialog =$('<div id="editSysUser"></div>').dialog({    
 	 				href:"sysUserAction!preEdit.act?userId="+select.id+"&roleIds="+select.roleIds,
-					width:350,
-					height:450,
+					width:630,
+					height:300,
 					title:"编辑用户",
 					method:'post',
 					modal:true,
@@ -266,40 +266,45 @@
 		</script>
 	</head>
 	<body id="body" >
-		<div class="easyui-panel" title="" data-options="border:false,fit:true,tools:'#tool_bar'" style="background-color: #fcfdfe;" >
+		<div class="easyui-layout" title="" data-options="border:false,fit:true" style="background-color: #fcfdfe;" >
+			
+			<div id="selectDiv" class = "table_seach_div" data-options="region:'north',title:'查询条件',border:false,split:false" style="overflow: hidden;background-color: #F8F8F8" >
+				<%--<div id="selectDiv" style="height:auto !important;padding:10px;float:left !important;width: 100%;">
+					--%><div class="search-div">
+						<label>用户名：</label>
+						<input  id="sysUsreName" class="input easyui-validatebox" data-options="validType:['illegal']"/>
+					</div>
+					<div class="search-div">
+						<label>真实姓名：</label>
+						<input  id="sysRealName" class="input easyui-validatebox" data-options="validType:['illegal']"/>
+					</div>
+					<div class="search-div">
+						<label>角色：</label>
+						<div class="select">
+							<select id="sysRoles"></select>
+						</div>
+					</div>
+					<%-- <div class="search-div">
+						<label>部门：</label>
+						<div class="select">
+							<select id="queryDepts"></select>
+						</div>
+					</div> --%>
+					<div class="search-div">
+						<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-search', plain:true" onclick="user.search()" >搜索</a> 
+						<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-reload', plain:true" onclick="user.reset()" >重置</a> 
+					</div>
+				<%--</div>--%>
+			</div>
+			
+			<div data-options="region:'center',border:false">
+				<table id="userList"></table>
+			</div>
+			
 			<div id="tool_bar">
 				<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-add', plain:true" onclick="user.addUser()">新增</a>
 				<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-edit', plain:true" onclick="user.editUser()">编辑</a>
 				<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-remove', plain:true" onclick="user.deleteUser()">删除</a>
-			</div>
-			
-			<table id="userList"></table>
-			<div id="selectDiv" style="height:auto !important;padding:10px;float:left !important;width: 100%;">
-				<div class="search-div">
-					<label>用户名：</label>
-					<input  id="sysUsreName" class="input easyui-validatebox" data-options="validType:['illegal']"/>
-				</div>
-				<div class="search-div">
-					<label>真实姓名：</label>
-					<input  id="sysRealName" class="input easyui-validatebox" data-options="validType:['illegal']"/>
-				</div>
-				<div class="search-div">
-					<label>角色：</label>
-					<div class="select">
-						<select id="sysRoles"></select>
-					</div>
-				</div>
-				<%-- <div class="search-div">
-					<label>部门：</label>
-					<div class="select">
-						<select id="queryDepts"></select>
-					</div>
-				</div> --%>
-				<div class="search-div">
-					<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-search', plain:true" onclick="user.search()" >搜索</a> 
-					<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-reload', plain:true" onclick="user.reset()" >重置</a> 
-					
-				</div>
 			</div>
 		</div>
 	</body>
