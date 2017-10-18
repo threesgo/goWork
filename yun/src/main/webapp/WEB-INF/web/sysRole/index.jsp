@@ -68,12 +68,6 @@
 									{
  										title :"角色列表 ",
  	 									href :"sysRoleAction!list.act?"
- 	 									/* ,tools:[{    
- 	 	 							        //iconCls:'icon-add',    
- 	 	 							        handler:function(){ 
- 	 	 							        	append();
- 	 	 							        }    
- 	 	 							    }] */
  	 								}
  								);
  							}
@@ -179,7 +173,7 @@
 				*/
 			};
 		})(jQuery);
-		
+		//添加角色
 		function append(){
 			var addRoleDilog=$('<div id="addRole"></div>').dialog({
 				top:100,
@@ -199,7 +193,9 @@
 								handlerResult(data,function(rs){
 									$show(rs.message);
 									var root = roleTree.tree("getRoot");
-									roleTree.tree("reload",root.target);
+									roleTree.tree('reload',root.target);
+									roleTree.tree('select',root.target);
+									
 									addRoleDilog.dialog("close");
 								},function(rs){
 									$alert(rs.message);

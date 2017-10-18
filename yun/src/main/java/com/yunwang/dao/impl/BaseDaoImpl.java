@@ -564,4 +564,32 @@ public class BaseDaoImpl<T> implements BaseDaoI<T> {
 		List<N> query(String ids);
 	}
 
+	/** 
+	  * saveOrUpdateAll() method.
+	  * @author 刘迪 
+	  * @date 2014-2-12 下午1:22:07
+	  * <p>批量更新</p> 
+	  * @param lstEntity
+	 * @throws Exception 
+	*/
+	public void saveOrUpdateAll(List<T> lstEntity) {
+		if (null != lstEntity && lstEntity.size() > 0) {
+			Session session = getSession();
+			//	session.beginTransaction();
+			int i = 0;
+			for (i = 0; i < lstEntity.size(); i++) {
+				session.saveOrUpdate(lstEntity.get(i));
+				if (i % 20 == 0) {
+					session.flush();
+					session.clear();
+				}
+			}
+			if (i % 20 != 0) { //不够整除
+               session.flush();
+               session.clear();
+           }
+			//session.getTransaction().commit();
+			//session.close();
+		}
+	}
 }

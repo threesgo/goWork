@@ -176,29 +176,34 @@ public class SysRoleAction extends AbstractLoginAction{
 	 * @date 2016-12-12
 	 * @author LKX
 	 * @return
-	 * <p>修改角色名</p>
-	 *//*
+	 * <p>跳转修改角色名称页面</p>
+	 */
 	public String preEdit(){
-		sysRole=sysRoleService.get(sysRole.getId());
+		sysRole=sysUserService.findRoleByRoleId(sysRole.getId());
 		return "preEdit";
 	}
 	
-	//更新编辑姓名后的的系统角色数据
+	/**
+	 * @date 2016-12-12
+	 * @author LKX
+	 * @return
+	 * <p>更新修改后角色名称</p>
+	 */
 	public String update(){
-			String newName=sysRole.getName();
-			sysRole=sysRoleService.get(sysRole.getId());
+			String newName = sysRole.getName();
+			sysRole = sysUserService.findRoleByRoleId(sysRole.getId());
 			String oldName=sysRole.getName();
 			if(oldName.equals(newName)){
 				return success(getText("update_success"));
-			}else if(sysRoleService.isExist(newName)){
-				return error(getText("该用户已存在"));
+			}else if(!sysUserService.isExist(newName)){
+				return error("该用户已存在");
 			}else{
 				sysRole.setName(newName);
-				sysRoleService.update(sysRole);
-				return success(getText("update_success"),JSONObject.fromObject(sysRole));	
+				sysUserService.updateRole(sysRole);
+				return success("更新成功",JSONObject.fromObject(sysRole));	
 			}
 			
-	}*/
+	}
 	
 	/**
 	 * <p>角色列表-保存角色信息</p>
@@ -211,46 +216,48 @@ public class SysRoleAction extends AbstractLoginAction{
 			return error(getText("该用户已存在"));
 		}
 	}
-	/*
+	
+	/**
+	 * <p>关联模块-删除角色信息</p>
+	 */
 	public String delete(){
 		try{
-			sysRole = sysRoleService.get(sysRole.getId());
-			sysRoleService.deleteSysRole(sysRole);							
-			return success(getText("delete_success"),JSONObject.fromObject(sysRole));
+			sysRole = sysUserService.findRoleByRoleId(sysRole.getId());
+			sysUserService.deleteSysRole(sysRole);							
+			return success("删除成功",JSONObject.fromObject(sysRole));
 		}catch(Exception e){
-			return error(handlerException(e,getText("delete_failed")));
+			e.printStackTrace();
+			return error("删除失败");
 		}
 	}
 	
-	*//**
-	 * @date 2016-11-29
-	 * @author YBF
-	 * @return
+	/**
 	 * <p>角色编辑</p>
 	 */
 	public String edit(){
 		if(sysRole!=null){
 			List<Object> list = sysMenuService.findMenuByRoleId(sysRole.getId());
-			//List<Object> list = sysModuleService.findModulesByRole(sysRole.getId());
 			jsonInfo = JSONArray.fromObject(list).toString();
 		}
 		return "edit";
 	}
 	
 	/**
-	 * saveRoleRelModule method.
-	 * @author 冯英峰
-	 * @date 2016年12月1日 下午1:51:07
-	 * <p>保存角色对应模块关系信息</p>
-	 * @return
-	 * @return String
-	 *//*
-	public String saveRoleRelModule(){
-		sysRoleService.saveRoleRelModule(sysRole, moduleIds);
-		return success(getText("operation_successfully"));
+	
+	 * <p>保存--保存角色对应模块关系信息</p>
+	 */
+	public String saveRoleRelMenu(){
+		try{
+			sysRoleMenuService.saveRoleRelMenu(sysRole,menus);
+			return success("保存成功");
+		}catch (Exception e) {
+			e.printStackTrace();
+			return error("保存失败");
+		}
+		
 	}
 	
-	*//**
+	/**
 	 * @date 2017.10.16
 	 * @author kx
 	 * @return

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.alibaba.fastjson.JSONObject;
 import com.yunwang.dao.SysMenuDaoI;
 import com.yunwang.dao.SysRoleDaoI;
+import com.yunwang.dao.SysRoleMenuDaoI;
 import com.yunwang.dao.SysUserDaoI;
 import com.yunwang.dao.SysUserRoleDaoI;
 import com.yunwang.model.page.Pager;
@@ -40,6 +41,9 @@ public class SysUserServiceImpl implements SysUserService{
 	
 	@Autowired
 	private SysMenuDaoI sysMenuDao;
+	
+	@Autowired
+	SysRoleMenuDaoI sysRoleMenuDao;
 
 	@Override
 	public List<SysUser> findList() {
@@ -240,4 +244,22 @@ public class SysUserServiceImpl implements SysUserService{
 		sysRoleDao.save(role);
 	}
 
+	
+	@Override
+	public SysRole findRoleByRoleId(Integer sysRoleId) {
+		return sysRoleDao.get(SysRole.class, sysRoleId);
+	}
+
+	@Override
+	public void deleteSysRole(SysRole sysRole) {
+		sysRoleDao.deleteByProperty("id",sysRole.getId());
+		sysUserRoleDao.deleteByProperty("roleId", sysRole.getId());
+		sysRoleMenuDao.deleteByProperty("roleId", sysRole.getId());
+		
+	}
+
+	@Override
+	public void updateRole(SysRole sysRole) {
+		sysRoleDao.update(sysRole);
+	}
 }

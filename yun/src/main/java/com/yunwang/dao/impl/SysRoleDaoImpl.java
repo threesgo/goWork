@@ -31,7 +31,8 @@ public class SysRoleDaoImpl extends BaseDaoImpl<SysRole> implements SysRoleDaoI{
 
 	@Override
 	public List<SysRole> findAllRole() {
-		return findAll();
+		String hql = "SELECT model FROM SysRole model ORDER BY model.id";
+		return find(hql);
 	}
 
 	@Override

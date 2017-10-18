@@ -55,4 +55,9 @@ public interface SysUserService {
 	
 	public void saveSysRole(SysRole sysRole);
 	
+	public SysRole findRoleByRoleId(Integer sysRoleId);
+	
+	public void deleteSysRole(SysRole sysRole);
+	
+	public void updateRole(SysRole sysRole);
 }

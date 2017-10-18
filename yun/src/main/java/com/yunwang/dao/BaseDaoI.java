@@ -293,4 +293,5 @@ public interface BaseDaoI<T> {
 	
 	public List<T> findAll();
 	
+	public void saveOrUpdateAll(List<T> lstEntity);
 }
