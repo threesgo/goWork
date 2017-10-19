@@ -12,7 +12,7 @@
      -->  
     <div>   
         <label for="name">类型名称:</label>   
-        <input class="easyui-validatebox" type="text" name="sysRsRcCatalog.catalogName" 
+        <input class="easyui-validatebox" id="edit_catalogName" type="text" name="sysRsRcCatalog.catalogName" 
         style="width:200px;" data-options="required:true,validType:['length[1,40]','illegal']" value="${sysRsRcCatalog.catalogName}"/>   
     </div>
     

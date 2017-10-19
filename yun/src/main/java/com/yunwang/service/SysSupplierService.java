@@ -1,5 +1,7 @@
 package com.yunwang.service;
 
+import java.util.List;
+
 import net.sf.json.JSONObject;
 
 import com.yunwang.model.page.Pager;
@@ -12,5 +14,7 @@ public interface SysSupplierService {
 	Pager<SysSupplier> findAll(int page, int rows, JSONObject fromObject);
 
 	void deleteSupplier(String ids);
+
+	List<SysSupplier> findByWorkType(Integer catalogType);
 
 }

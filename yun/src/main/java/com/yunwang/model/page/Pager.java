@@ -1,5 +1,6 @@
 package com.yunwang.model.page ;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Pager<T> {
@@ -10,7 +11,7 @@ public class Pager<T> {
 	
 	private int pageSize = 10 ;
 
-	private List<T> data ;
+	private List<?> data ;
 
 	private List<Integer> pages ;
 
@@ -20,6 +21,34 @@ public class Pager<T> {
 
 	}
 
+	public Pager(int currentPage, int pageCount, List<?> data) {
+		super();
+		this.currentPage = currentPage;
+		this.pageCount = pageCount;
+		this.data = data;
+		
+		pages = new ArrayList<Integer>();
+		if(pageCount < 6){
+			for(int i=1;i<=pageCount;i++){
+			    pages.add(i);
+			}
+		}else if(currentPage + 2 >= pageCount){
+			for(int i=pageCount-4;i<=pageCount;i++){
+			    pages.add(i);
+			}
+		}else{
+			if(currentPage <= 2){
+				int size = pageCount > 5 ? 5 : pageCount;
+				for(int i=1;i<=size;i++){
+				    pages.add(i);
+				}
+			}else{
+				for(int i=currentPage-2;i<=currentPage+2;i++){
+				    pages.add(i);
+				}
+			}
+		}
+	}
 
 	public Pager ( int totalRows , int currentPage , int pageCount ,int pageSize, List<T> data ) {
 		super ( ) ;
@@ -28,6 +57,12 @@ public class Pager<T> {
 		this.totalRows = totalRows ;
 		this.pageCount=pageCount;
 		this.pageSize=pageSize;
+	}
+	
+	
+	public Pager(int totalRows, int currentPage, int pageCount, List<? extends Object> data) {
+		this(currentPage, pageCount, data);
+		this.totalRows = totalRows;
 	}
 	
 

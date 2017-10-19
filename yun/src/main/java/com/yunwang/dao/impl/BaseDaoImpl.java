@@ -3,6 +3,7 @@ package com.yunwang.dao.impl;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -12,6 +13,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -591,5 +593,80 @@ public class BaseDaoImpl<T> implements BaseDaoI<T> {
 			//session.getTransaction().commit();
 			//session.close();
 		}
+	}
+	
+	
+	/**
+	 * @date 2016-3-16
+	 * @author YBF
+	 * @param sql
+	 * @param page
+	 * @param pageSize
+	 * @param parmeMap 参数map
+	 * @param scalarMap 属性map
+	 * @return
+	 * <p>分页原生态sql查询，匹配对象属性</p>
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public Pager<T> pagedSqlQuery(String sql, int page, int pageSize,Map<String, Object> parmeMap, Map<String, org.hibernate.type.Type> scalarMap) {
+       	int temp=pageSize;
+        if(pageSize == 0){
+            temp = 10;
+        }
+        /*SQLQuery query = getSession().createSQLQuery(sql);
+        setParameter(query, parmeMap);
+        int totalRows = query.list().size();*/
+        int totalRows=getSqlTotalRows(sql,parmeMap);
+        int totalPages = 0;
+        if(totalRows % temp == 0){
+            totalPages = totalRows / temp;
+        }else{
+            totalPages = totalRows / temp + 1;
+        }
+        int start = (page - 1) * temp;
+        if (totalPages < 1){
+            return null;
+        }
+        SQLQuery query = getSession().createSQLQuery(sql);
+        setParameter(query, parmeMap);
+		if (null != scalarMap && !scalarMap.isEmpty()) {
+			for (String key : scalarMap.keySet()) {
+				query.addScalar(key, scalarMap.get(key));
+			}
+		}
+		query.setResultTransformer(Transformers.aliasToBean(getEntityClass()));
+		List<T> list = query.setFirstResult(start).setMaxResults(temp).list();
+        return new Pager<T>(totalRows, page, totalPages, list);
+   	}
+	
+	public int getSqlTotalRows(String sql,Map<String, Object> parmeMap){
+		String countQueryString = " select count(*) from ("+sql+")";
+        List<?> countlist = findBySQLQuery(countQueryString,parmeMap);
+        if(countlist == null || countlist.isEmpty()){
+            return 0;
+        }
+        return ((BigDecimal) countlist.get(0)).intValue();
+    }
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public <N> List<N> findBySQLQuery(String sql,  Map<String, Object> param) {
+		SQLQuery query = getSession().createSQLQuery(sql);
+		setParameter(query, param);
+		return  query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<T> findBySQLQuery(String sql, List<Entry<String, org.hibernate.type.Type>> lstScalar) {
+		SQLQuery query = getSession().createSQLQuery(sql);
+		if (null != lstScalar) {
+			for (Entry<String, org.hibernate.type.Type> entity : lstScalar) {
+				query.addScalar(entity.getKey(), entity.getValue());
+			}
+		}
+		query.setResultTransformer(Transformers.aliasToBean(getEntityClass()));
+		return query.list();
 	}
 }

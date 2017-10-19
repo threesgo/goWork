@@ -168,7 +168,10 @@
 						iconCls:'icon-ok',
 						handler:function(){
 							$('#saveOrUpdate_resource_type').form({    
-							    onSubmit: function(){  
+							    onSubmit: function(){ 
+							    	if(!$("#edit_catalogName").validatebox("isValid")){
+							    		return false;
+							    	}
 							    },    
 							    success:function(data){ 
 							    	handlerResult(data,
@@ -222,7 +225,10 @@
 						iconCls:'icon-ok',
 						handler:function(){
 							$('#saveOrUpdate_resource_type').form({    
-							    onSubmit: function(){  
+							    onSubmit: function(){
+							    	if(!$("#edit_catalogName").validatebox("isValid")){
+							    		return false;
+							    	}
 							    },    
 							    success:function(data){ 
 							    	handlerResult(data,

@@ -195,7 +195,7 @@
 	  	$("#sysWorkerTable").parent(".datagrid-view").keyEvent({
 			keyCode:13,
 			handler:function(event){
-				sysWorkerOperation.updatesysWorker();
+				sysWorkerOperation.updateSysWorker();
 				event.preventDefault();
 			}
 		});
@@ -210,7 +210,7 @@
 	});
 	
 	sysWorkerOperation={
-		updatesysWorker:function(){
+		updateSysWorker:function(){
 			if(sysWorkerEdit!=undefined){
 				if($sysWorkerDatagrid.datagrid("validateRow",sysWorkerEdit)){
 					$sysWorkerDatagrid.datagrid("endEdit",sysWorkerEdit);
@@ -221,7 +221,7 @@
 	    		}
 			}
 		},
-		addsysWorker:function(){
+		addSysWorker:function(){
 			if(sysWorkerEdit!=undefined){
 				if($sysWorkerDatagrid.datagrid("validateRow",sysWorkerEdit)){
 					$sysWorkerDatagrid.datagrid("endEdit",sysWorkerEdit);
@@ -245,7 +245,7 @@
 			$sysWorkerDatagrid.datagrid("beginEdit",addIndex);
 			sysWorkerEdit = addIndex;
 		},
-		editsysWorker:function(){
+		editSysWorker:function(){
 			//不需要页面，直接表格编辑
 			var selected = $sysWorkerDatagrid.datagrid("getSelected");
 			if(null == selected){
@@ -268,7 +268,7 @@
 			$sysWorkerDatagrid.datagrid("reload");
 			sysWorkerEdit = undefined;
 		},
-		deletesysWorker:function(){
+		deleteSysWorker:function(){
 			var checks = $sysWorkerDatagrid.datagrid("getChecked");
 			if(checks.length == 0){
 				$alert("请勾选需要删除的工人!");
@@ -313,7 +313,7 @@
 			
 			$sysWorkerDatagrid.datagrid("reload",
 				{
-					"jsonStr":Some.util.jsonToStr(searchData),
+					"jsonStr":Some.util.jsonToStr(searchData)
 				}
 			);
 		},
@@ -382,10 +382,11 @@
 	</div>
 </div>
 <div id="sysWorker_tool_bar">
-	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-add', plain:true" onclick="sysWorkerOperation.addsysWorker()">新增</a>
-	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-edit', plain:true" onclick="sysWorkerOperation.editsysWorker()">编辑</a>
+	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-add', plain:true" onclick="sysWorkerOperation.addSysWorker()">新增</a>
+	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-edit', plain:true" onclick="sysWorkerOperation.editSysWorker()">编辑</a>
+	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-edit', plain:true" onclick="sysWorkerOperation.updateSysWorker()">保存</a>
 	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-quxiao', plain:true" onclick="sysWorkerOperation.cancelEdit()">取消编辑</a>
-	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-remove', plain:true" onclick="sysWorkerOperation.deletesysWorker()">删除</a>
+	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-remove', plain:true" onclick="sysWorkerOperation.deleteSysWorker()">删除</a>
 </div>
 
 

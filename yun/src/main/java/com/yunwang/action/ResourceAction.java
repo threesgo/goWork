@@ -19,10 +19,13 @@ import com.yunwang.model.pojo.SysResource;
 import com.yunwang.model.pojo.SysRsRcAttrib;
 import com.yunwang.model.pojo.SysRsRcAttribCatalog;
 import com.yunwang.model.pojo.SysRsRcCatalog;
+import com.yunwang.model.pojo.SysSupplier;
 import com.yunwang.service.SysResourceService;
 import com.yunwang.service.SysResourceTypeService;
+import com.yunwang.service.SysSupplierService;
 import com.yunwang.util.BaseDataDictionaryUtil;
 import com.yunwang.util.action.AbstractLoginAction;
+import com.yunwang.util.collection.CollectionUtil;
 import com.yunwang.util.string.StringBufferByCollectionUtil;
 
 @Action(
@@ -53,6 +56,8 @@ public class ResourceAction extends AbstractLoginAction{
 	private SysResourceService sysResourceService;
 	@Autowired
 	private SysResourceTypeService sysResourceTypeService;
+	@Autowired
+	private SysSupplierService sysSupplierService;
 	
 	private List<SysRsRcAttribCatalog> attribCatalogs;
 	private String ids;
@@ -60,6 +65,7 @@ public class ResourceAction extends AbstractLoginAction{
 	private List<SysDataDictionary> flowList;
 	private Map<String,Object> hashMap;
 	private String resourceJsonStr;
+	private List<SysSupplier> sysSuppliers;
 	
 	@Override
 	public String execute() throws Exception {
@@ -72,14 +78,35 @@ public class ResourceAction extends AbstractLoginAction{
 		attribCatalogs.addAll(sysResourceTypeService.findExtendsAttr(sysRsRcCatalog));
 		attribCatalogs.addAll(sysResourceTypeService.findAttr(sysRsRcCatalog));
 		
+		hashMap = new HashMap<String,Object>();
+		
 //		flowList = BaseDataDictionaryUtil.baseDataMap.get(4);
 //		hashMap = new HashMap<String,Object>();
-//		hashMap.put("flowListArr", JSONArray.fromObject(flowList));
+//		hashMap.put("flowArr", JSONArray.fromObject(flowList));
 //		JSONObject obj = new JSONObject();
 //		for(SysDataDictionary dictionary:flowList){
 //			obj.put(dictionary.getValue(), dictionary.getName());
 //		}
-//		hashMap.put("flowListObj",obj);
+//		hashMap.put("flowObj",obj);
+		
+		if(0 != sysRsRcCatalog.getId()){
+			sysRsRcCatalog = sysResourceTypeService.getRsRcCatalogInfo(sysRsRcCatalog.getId());
+			sysSuppliers = sysSupplierService.findByWorkType(sysRsRcCatalog.getCatalogType());
+		}else{
+			sysSuppliers =sysSupplierService.findByWorkType(null);
+		}
+		
+		JSONObject supplierObj = new JSONObject();
+		for(SysSupplier sysSupplier:sysSuppliers){
+			supplierObj.put(sysSupplier.getId(),sysSupplier.getName());
+		}
+		JSONArray arr = JSONArray.fromObject(sysSuppliers);
+		JSONObject firstSelect = new JSONObject();
+		firstSelect.put("id","0");
+		firstSelect.put("name","请选择");
+		arr.add(0,firstSelect);
+		hashMap.put("supplierObj",supplierObj);
+		hashMap.put("supplierArr",arr);
 		
 		return "resourceList";
 	}
@@ -102,8 +129,29 @@ public class ResourceAction extends AbstractLoginAction{
   			List<SysRsRcAttrib> sysRsRcAttribs = sysResourceService.findSysRsRcAttribByResourceIds(
   					StringBufferByCollectionUtil.convertCollection(sysResources,"id"));
   			Map<Integer,Map<Integer,SysRsRcAttrib>> map = conToMap(sysRsRcAttribs);
+  			
+  			
+  			List<SysSupplier> sysSuppliers;
+  			if(0 != sysRsRcCatalog.getId()){
+  				sysRsRcCatalog = sysResourceTypeService.getRsRcCatalogInfo(sysRsRcCatalog.getId());
+  				sysSuppliers = sysSupplierService.findByWorkType(sysRsRcCatalog.getCatalogType());
+  			}else{
+  				sysSuppliers =sysSupplierService.findByWorkType(null);
+  			}
+  			Map<Integer,SysSupplier> supplierMap = CollectionUtil.listToMap(sysSuppliers,"id");
   			 
   			for(SysResource resource:sysResources){
+  				if(null != resource.getSupplierId()&&0!=resource.getSupplierId()){
+  					SysSupplier supplier = supplierMap.get(resource.getSupplierId());
+  	  				if(null != supplier){
+  	  					resource.setSupplier(supplier.getContact());
+  	  					resource.setSupplierName(supplier.getName());
+  	  					resource.setSupplierPhone(supplier.getPhoneNum());
+  	  					resource.setSupplierTel(supplier.getTelNum());
+  	  					resource.setSupplierAddress(supplier.getAddress());
+  	  				}
+  				}
+  				
   				JSONObject newObj = JSONObject.fromObject(resource);
   				Map<Integer,SysRsRcAttrib> resourceMap = map.get(resource.getId());
   				if(null != resourceMap){
@@ -240,5 +288,13 @@ public class ResourceAction extends AbstractLoginAction{
 
 	public void setResourceJsonStr(String resourceJsonStr) {
 		this.resourceJsonStr = resourceJsonStr;
+	}
+
+	public List<SysSupplier> getSysSuppliers() {
+		return sysSuppliers;
+	}
+
+	public void setSysSuppliers(List<SysSupplier> sysSuppliers) {
+		this.sysSuppliers = sysSuppliers;
 	}
 }

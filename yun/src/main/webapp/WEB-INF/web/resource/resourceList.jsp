@@ -7,6 +7,8 @@ var attrJsons={};
 var resourceEdit = undefined;
 var resourceOperation = {};
 var addId = 0;
+var supplierObj = new Function("return " + '${hashMap.supplierObj}')();
+
 $(function(){
  	columns=[];
  	<s:iterator value="attribCatalogs" id="attribCatalog" status="list">
@@ -66,29 +68,83 @@ $(function(){
 	</s:iterator>
 	
 	columns.push(
-		{field:'supplierName',title:"供应商名称",width:100,sortable:true,
-        	editor:{
+		{field:'supplierId',title:"供应商名称",width:100,sortable:true
+			/*,editor:{
         		type:"textbox",
         		options:{required:false,validType:['length[1,300]','illegal']}
         	}
+			*/
+			,editor:{
+            	type:'combobox',
+             	options:{
+               	  	valueField:'id', 
+                   	textField:'name',
+                   	editable:false,
+                  	data:${hashMap.supplierArr},
+                	panelHeight:'auto',
+                   	onLoadSuccess:function(){
+                    	 
+                   	},
+               		onSelect:function(record){
+               			if(record.id != 0){
+               				var rows = $resourceGrid.datagrid("getRows");
+                   			rows[resourceEdit].supplier = record.contact;
+                   			rows[resourceEdit].supplierTel = record.telNum;
+                   			rows[resourceEdit].supplierPhone = record.phoneNum;
+                   			rows[resourceEdit].supplierAddress = record.address;
+               			}
+               			/*
+              	  		$resourceGrid.datagrid('updateRow',{
+							index: resourceEdit,
+							row: {
+								supplier:record.contact,
+								supplierTel:record.telNum,
+								supplierPhone:record.phoneNum,
+								supplierAddress:record.address
+							}
+					  	});
+               			*/
+                    }
+         	 	}
+			},
+			formatter:function(value, rowData) {
+				if(value == 0 ){
+					return "";
+				}
+				return supplierObj[value];
+			} 
         },
-        {field:'supplier',title:"供应商联系人",width:100,sortable:true,
-        	editor:{
+        {field:'supplier',title:"供应商联系人",width:100,sortable:true
+        	/*
+        	,editor:{
         		type:"textbox",
         		options:{required:false,validType:['length[1,300]','illegal']}
         	}
+        	*/
         },
-        {field:'supplierPhone',title:"供应商电话",width:80,sortable:true,
-        	editor:{
+        {field:'supplierTel',title:"联系人手机",width:100,sortable:true
+        	/*
+        	,editor:{
+        		type:"textbox",
+        		options:{required:false,validType:['length[1,300]','illegal']}
+        	}
+        	*/
+        },
+        {field:'supplierPhone',title:"供应商电话",width:100,sortable:true
+        	/*
+        	,editor:{
         		type:"textbox",
         		options:{required:false,validType:['length[1,80]','illegal']}
         	}
-        },
-        {field:'supplierAddress',title:"供应商地址",width:150,sortable:true,
-        	editor:{
+        	*/
+        }
+        ,{field:'supplierAddress',title:"供应商地址",width:450,sortable:true
+        	/*
+        	,editor:{
         		type:"textbox",
         		options:{required:false,validType:['length[1,300]','illegal']}
         	}
+        	*/
         }
 	);
 	
@@ -537,12 +593,26 @@ resourceOperation = {
 			</div>
 		</div>
 		
+		<!-- 
 		<div class="search-div">
 			<lable for="">供应商名称</lable>
 			<div class="select">
 				<input  type="text"  id="supplierName"/>
 			</div>
 		</div>
+		 -->
+		
+		<div class="search-div">
+			<label>供应商名称</label>
+	       	<s:select id="sysSupplierId" style="height:22px"
+	       		list="sysSuppliers"
+		       	listKey="id"   
+		       	listValue="name" 
+		       	headerKey="0"
+		       	headerValue="--请选择--"/>
+		</div>
+		
+		
 		
 		<s:iterator value="attribCatalogs" id="attribCatalog" status="list">
 			<s:if test="#attribCatalog.showInFinder==1">

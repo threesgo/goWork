@@ -1399,6 +1399,61 @@
 	*/
 	
 	
+	
+	
+	/**
+	 * @author 孙宇
+	 * 
+	 * @requires jQuery,EasyUI
+	 * 
+	 * panel关闭时回收内存，主要用于layout使用iframe嵌入网页时的内存泄漏问题
+	 */
+	$.fn.panel.defaults.onBeforeDestroy = function() {
+		var frame = $('iframe', this);
+		try {
+			if (frame.length > 0) {
+				for ( var i = 0; i < frame.length; i++) {
+					frame[i].contentWindow.document.write('');
+					frame[i].contentWindow.close();
+				}
+				frame.remove();
+				try {
+					CollectGarbage();
+				} catch (e) {
+				}
+			}
+		} catch (e) {
+		}
+	};
+	
+	
+	
+	/**
+	 * @author 孙宇
+	 * 
+	 * @requires jQuery,EasyUI
+	 * 
+	 * 创建一个模式化的dialog
+	 * 
+	 * @returns $.modalDialog.handler 这个handler代表弹出的dialog句柄
+	 * 
+	 * @returns $.modalDialog.xxx 这个xxx是可以自己定义名称，主要用在弹窗关闭时，刷新某些对象的操作，可以将xxx这个对象预定义好
+	 */
+	$.modalDialog = function(options) {
+		var opts = $.extend({
+			title : '',
+			width : 840,
+			height : 680,
+			modal : true,
+			onClose : function() {
+				$(this).dialog('destroy');
+			}
+		}, options);
+		opts.modal = true;// 强制此dialog为模式化，无视传递过来的modal参数
+		return $.modalDialog.handler = $('<div/>').dialog(opts);
+	};
+
+	
 	/**
 	 * @author 孙宇
 	 * 

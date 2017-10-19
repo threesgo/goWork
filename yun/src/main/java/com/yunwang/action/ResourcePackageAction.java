@@ -9,6 +9,7 @@ import org.apache.struts2.convention.annotation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.yunwang.model.pojo.SysRsRcCatalog;
+import com.yunwang.service.SysResourcePackageService;
 import com.yunwang.service.SysResourceService;
 import com.yunwang.util.action.AbstractLoginAction;
 
@@ -31,6 +32,9 @@ public class ResourcePackageAction extends AbstractLoginAction{
 	
 	@Autowired
 	private SysResourceService sysResourceService;
+	
+	@Autowired
+	private SysResourcePackageService sysResourcePackageService;
 	
 	@Autowired
 	private String id;
@@ -99,6 +103,16 @@ public class ResourcePackageAction extends AbstractLoginAction{
 //		json_type.put("value",BaseDataDictionaryUtil.valueMap.get(1).get(sysRsRcCatalog.getCatalogType().toString()).getName());
 //		jsonArr.add(json_type);
 		return ajaxText(jsonArr);
+	}
+	
+	public String updateReaourcePackage(){
+		try{
+			sysResourcePackageService.updateReaourcePackage();
+			return success("操作成功!");
+		}catch(Exception e){
+			LOG.error(e.getMessage());
+			return error("操作失败!");
+		}
 	}
 	
 	public String getId() {

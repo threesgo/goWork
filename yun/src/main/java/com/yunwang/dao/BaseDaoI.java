@@ -5,6 +5,9 @@ import java.math.BigInteger;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+
+import org.hibernate.type.Type;
 
 import com.yunwang.dao.impl.BaseDaoImpl.OriginalQuerior;
 import com.yunwang.model.page.Pager;
@@ -294,4 +297,10 @@ public interface BaseDaoI<T> {
 	public List<T> findAll();
 	
 	public void saveOrUpdateAll(List<T> lstEntity);
+
+	List<T> findBySQLQuery(String sql, List<Entry<String, Type>> lstScalar);
+
+	public <N> List<N> findBySQLQuery(String sql, Map<String, Object> param);
+
+	Pager<T> pagedSqlQuery(String sql, int page, int pageSize, Map<String, Object> parmeMap, Map<String, Type> scalarMap);
 }

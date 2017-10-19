@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.yunwang.model.page.Pager;
 import com.yunwang.model.pojo.SysDataDictionary;
-import com.yunwang.model.pojo.SysSupplier;
 import com.yunwang.model.pojo.SysWorker;
 import com.yunwang.service.SysWorkerService;
 import com.yunwang.util.BaseDataDictionaryUtil;

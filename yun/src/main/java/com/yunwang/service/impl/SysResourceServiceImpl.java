@@ -89,14 +89,19 @@ public class SysResourceServiceImpl implements SysResourceService{
          
          String brand = rowData.getString("brand");
          sysResource.setBrand(brand);
-         String supplierName = rowData.getString("supplierName");
-         sysResource.setSupplierName(supplierName);
-         String supplier = rowData.getString("supplier");
-         sysResource.setSupplier(supplier);
-         String supplierAddress = rowData.getString("supplierAddress");
-         sysResource.setSupplierAddress(supplierAddress);
-         String supplierPhone = rowData.getString("supplierPhone");
-         sysResource.setSupplierPhone(supplierPhone);
+        
+         
+         Integer supplierId = rowData.getInt("supplierId");
+         sysResource.setSupplierId(supplierId);
+         
+//         String supplierName = rowData.getString("supplierName");
+//         sysResource.setSupplierName(supplierName);
+//         String supplier = rowData.getString("supplier");
+//         sysResource.setSupplier(supplier);
+//         String supplierAddress = rowData.getString("supplierAddress");
+//         sysResource.setSupplierAddress(supplierAddress);
+//         String supplierPhone = rowData.getString("supplierPhone");
+//         sysResource.setSupplierPhone(supplierPhone);
          
          sysResourceDao.saveOrUpdate(sysResource);
          

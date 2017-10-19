@@ -1,5 +1,7 @@
 package com.yunwang.service.impl;
 
+import java.util.List;
+
 import net.sf.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,5 +56,10 @@ public class SysSupplierServiceImpl implements SysSupplierService {
 	public void deleteSupplier(String ids) {
 		// TODO Auto-generated method stub
 		sysSupplierDao.deleteSupplier(ids);
+	}
+
+	@Override
+	public List<SysSupplier> findByWorkType(Integer catalogType) {
+		return sysSupplierDao.findByWorkType(catalogType);
 	}
 }

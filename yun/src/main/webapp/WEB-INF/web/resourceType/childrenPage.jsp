@@ -46,6 +46,4 @@ $(function(){
 <div id="resource_type_tool_bar">
 	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add', plain:true" 
 		onclick="resourceTypeOperation.addType()">新增</a>
-	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove', plain:true" 
-		onclick="resourceTypeOperation.deleteType()">删除</a>
 </div>

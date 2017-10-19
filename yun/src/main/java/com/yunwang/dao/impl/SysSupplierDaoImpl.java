@@ -1,6 +1,7 @@
 package com.yunwang.dao.impl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import net.sf.json.JSONObject;
@@ -50,6 +51,17 @@ public class SysSupplierDaoImpl extends BaseDaoImpl<SysSupplier> implements SysS
 		}
 		buf.append(" ORDER BY model.id");
 		return pagedQuery(buf.toString(), page, rows, map);
+	}
+	
+	public List<SysSupplier> findByWorkType(Integer workType) {
+		StringBuffer buf = new StringBuffer(
+				"SELECT model FROM SysSupplier model WHERE model.status!=0 ");
+		Map<String, Object> map = new HashMap<String,Object>();
+		if(null != workType){
+			buf.append("AND model.workType=:workType");
+			map.put("workType",workType);
+		}
+		return find(buf.toString(),map);
 	}
 
 	@Override

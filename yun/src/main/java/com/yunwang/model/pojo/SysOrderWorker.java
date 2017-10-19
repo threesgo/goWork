@@ -1,5 +1,7 @@
 package com.yunwang.model.pojo;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -32,6 +34,10 @@ public class SysOrderWorker extends AbstractRowVersionModel{
 	
 	@Column(name = "FLOW_TIME_ID")
 	private Integer flowTimeId;  //一期先不用，直接放到流程上面
+	
+	@Column(name = "QUANTITY")
+	private BigDecimal quantity;
+	
 	
 	public SysOrderWorker(){
 		
@@ -75,5 +81,13 @@ public class SysOrderWorker extends AbstractRowVersionModel{
 
 	public void setFlowTimeId(Integer flowTimeId) {
 		this.flowTimeId = flowTimeId;
+	}
+
+	public BigDecimal getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(BigDecimal quantity) {
+		this.quantity = quantity;
 	}
 }

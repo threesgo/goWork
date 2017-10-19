@@ -21,12 +21,12 @@ import javax.persistence.Transient;
  * <p>资源（产品表）</p>
  */
 @Entity
-@Table(name = "SYS_RESOURCE")
-public class SysResource extends AbstractRowVersionModel{
+@Table(name = "SYS_RESOURCE_RELEASE")
+public class SysResourceRelease extends AbstractRowVersionModel{
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator="my_entity_seq_gen")
-    @SequenceGenerator(name="my_entity_seq_gen", sequenceName="SEQ_SYS_RESOURCE")
+    @SequenceGenerator(name="my_entity_seq_gen", sequenceName="SEQ_SYS_RESOURCE_RELEASE")
 	private Integer id;
 	
 	@Column(name="RSRC_CODE", length=128, nullable = false)
@@ -54,7 +54,7 @@ public class SysResource extends AbstractRowVersionModel{
 	private BigDecimal salePrice;  //销售价格
 	
 	@Column(name="RSRC_STUTAS",nullable = false,columnDefinition = "number default 1")
-	private Integer rsrcStatus = 1;//状态  0，删除 (发布后物理删除,发布区变为失效状态)   1、新增  2、编辑   3、发布      (第一次创建：新增 ;新增状态下编辑：新增 ;发布状态下编辑：编辑 )肥
+	private Integer rsrcStatus = 1;  //0   失效状态
 	
 	@Column(name = "CREATE_DATE")
 	private Date createDate; // 创建时间
@@ -66,29 +66,13 @@ public class SysResource extends AbstractRowVersionModel{
 	private String brand;  //品牌
 	
 	@Column(name = "SUPPLIER_ID")
-	private Integer supplierId;  //供应商名称 //后期改成id
-	
-	@Transient
-	private String supplierName;  //供应商名称
-	
-	@Transient
-	private String supplier;  //供应商联系人
-	
-	@Transient
-	private String supplierPhone;  //供应商联系人手机
-	
-	@Transient
-	private String supplierTel;  //供应商
-	
-	@Transient
-	private String supplierAddress;  //供应商地址
-	
+	private String supplierId;  //供应商名称 //后期改成id
 	
 	@Transient
 	private List<SysRsRcAttrib> sysRcRsrcAttribList = new ArrayList<SysRsRcAttrib>();
 	
 	
-	public SysResource(){
+	public SysResourceRelease(){
 		
 	}
 
@@ -196,51 +180,11 @@ public class SysResource extends AbstractRowVersionModel{
 		this.brand = brand;
 	}
 
-	public Integer getSupplierId() {
+	public String getSupplierId() {
 		return supplierId;
 	}
 
-	public void setSupplierId(Integer supplierId) {
+	public void setSupplierId(String supplierId) {
 		this.supplierId = supplierId;
-	}
-
-	public String getSupplierTel() {
-		return supplierTel;
-	}
-
-	public void setSupplierTel(String supplierTel) {
-		this.supplierTel = supplierTel;
-	}
-
-	public String getSupplierName() {
-		return supplierName;
-	}
-
-	public void setSupplierName(String supplierName) {
-		this.supplierName = supplierName;
-	}
-
-	public String getSupplierAddress() {
-		return supplierAddress;
-	}
-
-	public void setSupplierAddress(String supplierAddress) {
-		this.supplierAddress = supplierAddress;
-	}
-
-	public String getSupplierPhone() {
-		return supplierPhone;
-	}
-
-	public void setSupplierPhone(String supplierPhone) {
-		this.supplierPhone = supplierPhone;
-	}
-
-	public String getSupplier() {
-		return supplier;
-	}
-
-	public void setSupplier(String supplier) {
-		this.supplier = supplier;
 	}
 }
