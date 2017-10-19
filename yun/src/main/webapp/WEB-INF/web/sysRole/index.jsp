@@ -16,17 +16,17 @@
 		<div data-options="region:'center',split:true,title:''" border="false">
 			<div  id="roleTab" ></div>
 		</div>
-		<div id="mm" class="easyui-menu" style="width:120px;">
+		<div id="addRole" class="easyui-menu" style="width:120px;">
 			<div onclick="append()" data-options="iconCls:'icon-add'">添加</div>
 		</div>
-		<div id="dd" class="easyui-menu" style="width:120px;">
+		<div id="delRole" class="easyui-menu" style="width:120px;">
 			<div onclick="del(this)" data-options="iconCls:'icon-remove'">删除</div>
 		</div>
  		<script type="text/javascript" > 
  		var roleTree;
  		var layoutTab;
  		var majorId;
- 		var id;
+ 		var id;//所选角色id
 	 	(function($){
 	 		//添加树结构
 	 		roleTree=$('#roleTree').tree({
@@ -56,25 +56,25 @@
  					//右键菜单
  					onContextMenu:function(e,node){
  						id=node.id;
- 						if(node.id.substring(0,4)=="role"){
+ 						if(node.id.substring(0,4)=="root"){
 	 						e.preventDefault();
 							// 查找节点
 							$('#roleTree').tree('select', node.target);
 							// 显示快捷菜单
-							$('#mm').menu('show', {
+							$('#addRole').menu('show', {
 								left: e.pageX,
 								top: e.pageY,
 							});
-						}/*else if(node.id.substring(0,4)=="layo"){
+						}else if(node.id.substring(0,4)=="role"){
 	 						e.preventDefault();
 							// 查找节点
 							$('#roleTree').tree('select', node.target);
 							// 显示快捷菜单
-							$('#dd').menu('show', {
+							$('#delRole').menu('show', {
 								left: e.pageX,
 								top: e.pageY,
 							});
-						}*/
+						}
  					}
  				});
 			
@@ -84,21 +84,6 @@
 	 		    }    
 	 		}); 
 	 		
-	 		/*
-			function closeAllTab(layoutTab){
-	 			var allTabs = layoutTab.tabs('tabs');
-				var closeTabsTitle = [];
-
-				$.each(allTabs, function() {
-					var opt = $(this).panel('options');
-					closeTabsTitle.push(opt.title);
-				});
-
-				for ( var i = 0; i < closeTabsTitle.length; i++) {
-					layoutTab.tabs('close', closeTabsTitle[i]);
-				}
-	 		}
-	 		*/
 			window.events={
 				addNew:function(){
 					new Some.dialog({
@@ -194,30 +179,29 @@
 				}
 			});
 	 	};
-	 	/*
+	 	
 	 	function del(node){
-	 		$.messager.confirm('确认','您确认想要删除记录吗？',function(r){    
+	 		$.messager.confirm('确认','您确认想要删除所选角色吗？',function(r){    
 			    if (r){
-			        $.ajax({
-					   	type: "POST",
-					   	url: "sysRoleAction!delete.act",
-					   	data: "sysRole.id="+id.substring(4,id.length),//id是节点的id属性名
-					   	success: function(data){
-					   		handlerResult(data,function(rs){
-								$show(rs.message);
-								var node = roleTree.tree("find",id);
-								$('#roleTree').tree('remove',node.target);
-								var majorNode = $('#roleTree').tree('find',"bd"+rs.data.majorId);
-								$('#roleTree').tree('select',majorNode.target);
-							},function(rs){
-								$alert(rs.message);
-							});
-						}
-					});  
+			    	$.post("sysRoleAction!delete.act",
+			    		   {"sysRole.id":id.substring(4,id.length)},//id是节点的id属性名
+			    		   function(data){
+								handlerResult(data,function(rs){
+									$show(rs.message);
+									$('#roleTree').tree('remove',node.target);
+									var root = roleTree.tree("getRoot");
+									roleTree.tree('reload',root.target);
+									roleTree.tree('select',root.target);
+								},function(rs){
+									$alert(rs.message);
+								});
+			    		   }
+					);
+			        
 			    }    
 			}); 
 	 		
-	 	};*/
+	 	};
 	 	</script>
 	 </body>
 </html>
