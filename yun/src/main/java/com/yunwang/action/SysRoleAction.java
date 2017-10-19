@@ -28,8 +28,8 @@ import com.yunwang.util.action.AbstractLoginAction;
 @Action(value = "sysRoleAction", results = {
 		@Result(name="index",location="/WEB-INF/web/sysRole/index.jsp"),
 		
-		@Result(name="preAdd",location="/WEB-INF/web/sysRole/preAdd.jsp"),
-		@Result(name="preEdit",location="/WEB-INF/web/sysRole/preEdit.jsp"),
+		//@Result(name="preAdd",location="/WEB-INF/web/sysRole/preAdd.jsp"),
+		@Result(name="preAddOrEdit",location="/WEB-INF/web/sysRole/preAddOrEdit.jsp"),
 		@Result(name="edit",location="/WEB-INF/web/sysRole/edit.jsp"),
 		@Result(name="list",location="/WEB-INF/web/sysRole/list.jsp")
 	}
@@ -166,10 +166,16 @@ public class SysRoleAction extends AbstractLoginAction{
 	}
 	
 	/**
-	 * <p>角色列表-跳转添加角色</p>
+	 * <p>
+	 * 1.角色列表-跳转添加角色
+	 * 2.跳转修改角色名称页面
+	 * </p>
 	 */
-	public String preAdd(){
-		return "preAdd";
+	public String preAddOrEdit(){
+		if(sysRole != null){
+			sysRole=sysUserService.findRoleByRoleId(sysRole.getId());
+		}
+		return "preAddOrEdit";
 	}
 	
 	/**

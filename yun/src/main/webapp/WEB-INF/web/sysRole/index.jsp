@@ -84,59 +84,6 @@
 	 		    }    
 	 		}); 
 	 		
-			window.events={
-				addNew:function(){
-					new Some.dialog({
-						href : "bopTrPlantAction!preAdd.act",
-						top:100,
-						width:350,
-						height:"auto",
-						title:"<s:text name='new_base'/>"
-					});
-				},
-				/*
-				reload:function(){
-					tree.reload();
-					tabs.closeAll();
-				},
-				deleteType:function(){
-					var _01=tree.getSelected()||tree.getRoot();
-					if(tree.isRoot(_01.target)){
-						$alert("<s:text name='root_node_cannot_be_deleted'/>");
-					}
-					else{
-						$confirm("<s:text name='do_you_want_to_delete_the_node'/>",function(){
-							var loading=new Some.loading();
-							loading.show();
-							$.post("bopTrPlantAction!delete.act?bopTrPlant.id="+ _01.attributes.id, function(text) {
-								loading.close();
-								switch (""+text) {
-									case "1":
-										var _03=tree.getParent(_01.target);
-										tree.remove(_01.target);
-										tabs.closeAll();
-										tree.expandTo(_03.target);
-										if(tree.hasChildren(_03.target)){
-											tree.select(tree.getLastChild(_03.target).target);
-										}
-										else{
-											tree.changeFolder(_03.target);
-											tree.select(_03.target);
-										}
-										break;
-									case "0":
-										$alert("<s:text name='operation_failed'/>！");
-										break;
-									default:
-										$alert(text);
-										break;
-								}
-							}, "text");
-						});
-					}
-				}
-				*/
-			};
 		})(jQuery);
 		
 		//添加角色
@@ -147,7 +94,7 @@
 				top:160,
 				height:"auto",
 				resizable:true,
-				href:"sysRoleAction!preAdd.act",
+				href:"sysRoleAction!preAddOrEdit.act",
 				method:"post", 
 				buttons:[{
 					text:"确定",
