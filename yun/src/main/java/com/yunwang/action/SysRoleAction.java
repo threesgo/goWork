@@ -27,7 +27,6 @@ import com.yunwang.util.action.AbstractLoginAction;
 
 @Action(value = "sysRoleAction", results = {
 		@Result(name="index",location="/WEB-INF/web/sysRole/index.jsp"),
-		
 		//@Result(name="preAdd",location="/WEB-INF/web/sysRole/preAdd.jsp"),
 		@Result(name="preAddOrEdit",location="/WEB-INF/web/sysRole/preAddOrEdit.jsp"),
 		@Result(name="edit",location="/WEB-INF/web/sysRole/edit.jsp"),
