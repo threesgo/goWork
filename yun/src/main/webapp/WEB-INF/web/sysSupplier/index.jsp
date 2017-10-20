@@ -291,7 +291,7 @@
 <div id="syssupplier_tool_bar">
 	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-add', plain:true" onclick="sysSupplierOperation.addSysSupplier()">新增</a>
 	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-edit', plain:true" onclick="sysSupplierOperation.editSysSupplier()">编辑</a>
-	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-quxiao', plain:true" onclick="sysSupplierOperation.updateSysSupplier()">保存</a>
+	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-save', plain:true" onclick="sysSupplierOperation.updateSysSupplier()">保存</a>
 	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-quxiao', plain:true" onclick="sysSupplierOperation.cancelEdit()">取消编辑</a>
 	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-remove', plain:true" onclick="sysSupplierOperation.deleteSysSupplier()">删除</a>
 </div>
