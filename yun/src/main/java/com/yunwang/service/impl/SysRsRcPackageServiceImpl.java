@@ -28,4 +28,9 @@ public class SysRsRcPackageServiceImpl implements SysRsRcPackageService{
 		return sysRsRcPackageDao.get(SysRsRcPackage.class,id);
 	}
 
+	@Override
+	public List<SysRsRcPackage> findByPackageType(Integer typeId) {
+		return sysRsRcPackageDao.findByPackageType(typeId);
+	}
+
 }

@@ -35,7 +35,7 @@ public class SysOrder extends AbstractRowVersionModel{
 	@Column(name = "CODE",length = 64,nullable = false)
 	private String code;
 	
-	@Column(name = "CODE",length = 64,nullable = false)
+	@Column(name = "NAME",length = 128,nullable = false)
 	private String name;
 	
 	@Column(name = "INFO",length = 2048)

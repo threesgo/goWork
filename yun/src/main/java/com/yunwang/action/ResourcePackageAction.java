@@ -62,8 +62,21 @@ public class ResourcePackageAction extends AbstractLoginAction{
 			json.put("attributes",obj);
 			json.put("state", "closed");
 			jsonArr.add(json);
+		}else if("root".equals(id)){
+			packageTypeList = BaseDataDictionaryUtil.baseDataMap.get(8);
+			for(SysDataDictionary dic : packageTypeList){
+				JSONObject json=new JSONObject();
+				json.put("id", "dic"+dic.getValue());
+				json.put("text", dic.getName());
+				JSONObject obj=new JSONObject();
+				obj.put("id",0);
+				json.put("attributes",obj);
+				json.put("state", "closed");
+				jsonArr.add(json);
+			}
 		}else{
-			List<SysRsRcPackage> sysRsrcPackages = sysRsRcPackageService.findAll("orderNo");
+			//List<SysRsRcPackage> sysRsrcPackages = sysRsRcPackageService.findAll("orderNo");
+			List<SysRsRcPackage> sysRsrcPackages = sysRsRcPackageService.findByPackageType(Integer.parseInt(id));
 			for(SysRsRcPackage pack : sysRsrcPackages){
 				jsonArr.add(getJson(pack));
 			}
@@ -79,6 +92,18 @@ public class ResourcePackageAction extends AbstractLoginAction{
 		json.put("state", "open");
 		return json;
 	}
+	
+	/**
+	 * @date 2017-10-20
+	 * @author YBF
+	 * @return
+	 * <p>组合套餐列表/p>
+	 */
+	public String packageList(){
+		return ajaxText(JSONArray.fromObject(
+				sysRsRcPackageService.findByPackageType(sysRsrcPackage.getPackageType())));
+	}
+	
 	
 	/**
 	 * @return 查看组合信息
@@ -104,7 +129,7 @@ public class ResourcePackageAction extends AbstractLoginAction{
 		json_code.put("value", sysRsrcPackage.getCode());
 		jsonArr.add(json_code);
 		
-		if(sysRsrcPackage.getPackegeType() == 1){
+		if(sysRsrcPackage.getPackageType() == 1){
 			JSONObject minPrice=new JSONObject();
 			minPrice.put("attrName","价格最小值");
 			minPrice.put("value", sysRsrcPackage.getMinPrice());

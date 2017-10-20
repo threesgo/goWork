@@ -90,6 +90,7 @@ public class SysResourceDaoImpl extends BaseDaoImpl<SysResource> implements SysR
 				buf.append("AND upper(model.brand) like:brand");
 				map.put("brand","%"+ seachJson.getString("brand").toUpperCase()+ "%");
 			}
+			
 //			if(seachJson.containsKey("supplierName")&&MyStringUtil.isNotBlank(seachJson.getString("supplierName"))){
 //				buf.append("AND upper(model.supplierName) like:supplierName");
 //				map.put("supplierName","%"+ seachJson.getString("supplierName").toUpperCase()+ "%");

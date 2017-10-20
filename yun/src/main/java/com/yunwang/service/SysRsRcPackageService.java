@@ -10,4 +10,6 @@ public interface SysRsRcPackageService {
 
 	SysRsRcPackage get(Integer id);
 
+	List<SysRsRcPackage> findByPackageType(Integer typeId);
+
 }
