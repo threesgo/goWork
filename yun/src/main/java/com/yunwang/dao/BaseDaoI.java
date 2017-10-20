@@ -303,4 +303,6 @@ public interface BaseDaoI<T> {
 	public <N> List<N> findBySQLQuery(String sql, Map<String, Object> param);
 
 	Pager<T> pagedSqlQuery(String sql, int page, int pageSize, Map<String, Object> parmeMap, Map<String, Type> scalarMap);
+
+	List<T> findAll(String... orders);
 }

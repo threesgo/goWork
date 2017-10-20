@@ -23,11 +23,11 @@
  						if("root" != node.id){
 	 						resourcePackageTab.tabs('add',{    
 						    	title:'基本信息', 
-						    	href:"resourcePackageAction!info.act?sysRsRcCatalog.id="+ node.attributes.id
+						    	href:"resourcePackageAction!info.act?sysRsrcPackage.id="+ node.attributes.id
 							});
 							resourcePackageTab.tabs('add',{
 	 							title:'产品列表', 
-							    href:"resourcePackageAction!resourceList.act?sysRsRcCatalog.id="+ node.attributes.id
+							    href:"resourcePackageAction!resourceList.act?sysRsrcPackage.id="+ node.attributes.id
 							});
  						}else{
  							resourcePackageTab.tabs('add',{
@@ -55,8 +55,8 @@
 	 			$.messager.confirm('确认','确认要删除选择产品组合吗？',function(r){    
 				    if (r){
 				        var node = resourcePackageTree.tree("getSelected");
-				        $.post("resourceTypeAction!deleteSysRsRcCatalog.act",
-				        	{"sysRsRcCatalog.id":node.attributes.id},
+				        $.post("resourcePackageAction!deletesysRsrcPackage.act",
+				        	{"sysRsrcPackage.id":node.attributes.id},
 				        	function(data){
 							handlerResult(data,
 					    		function(rs){
@@ -116,16 +116,17 @@
 					}
 	 			});
 	 		},
+	 		
 	 		editPackage:function(){
 	 			var node = resourcePackageTree.tree("getSelected");
 	 			var dialog =$('<div id="updateResourceType"></div>').dialog({    
-					href : "resourceTypeAction!saveOrUpdatePackagePage.act",
+					href : "resourcePackageAction!saveOrUpdatePackagePage.act",
 					width:350,
 					height:250,
 					resizable:true,
 					title:"编辑类型",
 					method:'post',
-					queryParams:{"sysRsRcCatalog.id":node.attributes.id},
+					queryParams:{"sysRsrcPackage.id":node.attributes.id},
 					modal:true,
 					buttons:[{
 						text:"确定",

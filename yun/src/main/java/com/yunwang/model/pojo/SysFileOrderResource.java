@@ -8,6 +8,11 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+/**
+ * @author YBF
+ * @date 2017-10-20
+ * <p>材料归档列表</p>
+ */
 @Entity
 @Table(name = "SYS_FILE_ORDER_RESOURCE")
 public class SysFileOrderResource extends AbstractRowVersionModel{

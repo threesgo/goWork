@@ -10,6 +10,11 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+/**
+ * @author YBF
+ * @date 2017-10-20
+ * <p>工人归档列表</p>
+ */
 @Entity
 @Table(name = "SYS_FILE_ORDER_WORKER")
 public class SysFileOrderWorker extends AbstractRowVersionModel{
