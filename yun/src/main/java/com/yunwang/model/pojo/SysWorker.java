@@ -25,8 +25,8 @@ public class SysWorker extends AbstractRowVersionModel{
 	@SequenceGenerator(name="my_entity_seq_gen", sequenceName="SEQ_SYS_WORKER")
 	private Integer id;
 	
-	@Column(name = "CODE",length = 64,nullable = false)
-	private String code;
+	@Column(name = "CODE",nullable = false)
+	private Integer code;
 	
 	@Column(name = "NAME",length = 64,nullable = false)
 	private String name;
@@ -79,11 +79,11 @@ public class SysWorker extends AbstractRowVersionModel{
 		this.id = id;
 	}
 
-	public String getCode() {
+	public Integer getCode() {
 		return code;
 	}
 
-	public void setCode(String code) {
+	public void setCode(Integer code) {
 		this.code = code;
 	}
 

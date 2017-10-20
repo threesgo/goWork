@@ -68,7 +68,7 @@ $(function(){
 	</s:iterator>
 	
 	columns.push(
-		{field:'supplierId',title:"供应商名称",width:100,sortable:true
+		{field:'supplierId',title:"供应商名称",width:150,sortable:true
 			/*,editor:{
         		type:"textbox",
         		options:{required:false,validType:['length[1,300]','illegal']}
@@ -122,7 +122,7 @@ $(function(){
         	}
         	*/
         },
-        {field:'supplierTel',title:"联系人手机",width:100,sortable:true
+        {field:'supplierPhone',title:"联系人手机",width:100,sortable:true
         	/*
         	,editor:{
         		type:"textbox",
@@ -130,7 +130,7 @@ $(function(){
         	}
         	*/
         },
-        {field:'supplierPhone',title:"供应商电话",width:100,sortable:true
+        {field:'supplierTel',title:"供应商电话",width:100,sortable:true
         	/*
         	,editor:{
         		type:"textbox",
@@ -165,7 +165,7 @@ $(function(){
         pagination:true,
         url:"resourceAction!resourceListData.act",
         toolbar:"#resource_operation_bar",
-        queryParams:{"sysRsRcCatalog.id":'${sysRsRcCatalog.id}'},
+        queryParams:{"sysRsRcCatalog.id":'${sysRsRcCatalog.id}',"sysRsRcPackage.id":'${sysRsRcPackage.id}'},
         onBeforeLoad:function(){
         },
         onLoadSuccess:function(data){
@@ -611,8 +611,6 @@ resourceOperation = {
 		       	headerKey="0"
 		       	headerValue="--请选择--"/>
 		</div>
-		
-		
 		
 		<s:iterator value="attribCatalogs" id="attribCatalog" status="list">
 			<s:if test="#attribCatalog.showInFinder==1">

@@ -28,7 +28,7 @@ public class SysWorkerServiceImpl implements SysWorkerService{
 		} else {
 			sysWorker = new SysWorker();
 			sysWorker.setStatus(1);
-			sysWorker.setCode((sysWorkerDao.findMaxSeq("code")+1)+"");
+			sysWorker.setCode((sysWorkerDao.findMaxSeq("code")+1));
 			// 正常
 		}
 		String name = rowData.getString("name");

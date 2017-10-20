@@ -101,11 +101,11 @@ public class SysResourceDaoImpl extends BaseDaoImpl<SysResource> implements SysR
 				map.put("supplierId",seachJson.getInt("supplierId"));
 			}
 			
-//			if(seachJson.containsKey("packageId")&&0!=seachJson.getInt("packageId")){
-//				buf.append("AND model.id IN(SELECT pcResource.resourceId " +
-//						" FROM SysRsRcPcResource pcResource WHERE pcResource.packageId=:packageId ) ");
-//				map.put("packageId",seachJson.getInt("packageId"));
-//			}
+			if(seachJson.containsKey("packageId")&&0!=seachJson.getInt("packageId")){
+				buf.append("AND model.id IN(SELECT pcResource.resourceId " +
+						" FROM SysRsRcPcResource pcResource WHERE pcResource.packageId=:packageId ) ");
+				map.put("packageId",seachJson.getInt("packageId"));
+			}
 			
 			@SuppressWarnings("rawtypes")
 			Iterator it = seachJson.keys();

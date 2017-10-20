@@ -66,7 +66,7 @@
 				{field:'phoneNum',title: "联系人手机",width:120,sortable:true
 					,editor:{
 		        		type:"textbox",
-		        		options:{required:true,validType:['length[1,24]','mobile']}
+		        		options:{required:false,validType:['length[1,24]','mobile']}
 		        	}
 				},
 				{field:'telNum',title: "供应商电话",width:150,sortable:true
@@ -240,6 +240,12 @@
 		},
 		
 		reset:function(){
+			$("#workType").val(0);
+			$("#name").val('');
+			$("#contact").val('');
+			$("#phoneNum").val('');
+			$("#telNum").val('');
+			$("#address").val('');
 			sysSupplierOperation.search();
 		}
 	};

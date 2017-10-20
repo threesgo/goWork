@@ -22,10 +22,10 @@
 					
 				},
 				onSelect:function(node){//onSelect是选择节点时触发
-					closeAllTab(resourceTab);
-					resourceTab.tabs('add',{
+					closeAllTab(resourceSelectTab);
+					resourceSelectTab.tabs('add',{
 						title:'产品列表', 
-				    	href:"resourceAction!resourceList.act?sysRsRcCatalog.id="+ node.attributes.id
+				    	href:"resourceAction!resourceList.act?sysRsRcPackage.id=${sysRsRcPackage.id}&sysRsRcCatalog.id="+ node.attributes.id
 					});
 				},
 				onLoadSuccess:function(node,data){
@@ -63,12 +63,12 @@
 	};
 </script>
 </head>
-<div class="easyui-layout">
-	<div data-options="region:'west',split:true,tools:'#resource_select_bar'" title=" " style="width:200px;" border="false">
-	<ul id="resourceSelectTree"></ul>
-	<div  id="resource_select_bar">
-		<a href="#" class="bullet_arrow_down" id="expandAll" onclick="resourceSelectOperation.expand()">展开子集分类</a>
-		<a href="#" class="bullet_arrow_up" id="collapseAll" style="display: none;" onclick="resourceSelectOperation.collapse()">折叠子集分类</a>
+<div class="easyui-layout" data-options="fit:true">   
+	<div data-options="region:'west',split:true,tools:'#resource_select_bar'" title=" " style="width:150px;" border="false">
+		<ul id="resourceSelectTree"></ul>
+		<div  id="resource_select_bar">
+			<a href="#" class="bullet_arrow_down" id="expandAll" onclick="resourceSelectOperation.expand()">展开子集分类</a>
+			<a href="#" class="bullet_arrow_up" id="collapseAll" style="display: none;" onclick="resourceSelectOperation.collapse()">折叠子集分类</a>
 	     </div>
 	</div>
 	<div data-options="region:'center',split:true,title:''" border="false">

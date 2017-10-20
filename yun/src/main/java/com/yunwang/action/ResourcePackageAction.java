@@ -110,10 +110,16 @@ public class ResourcePackageAction extends AbstractLoginAction{
 				sysRsRcPackageService.findByPackageType(sysRsRcPackage.getPackageType())));
 	}
 	
+	/**
+	 * @return 组合关联的资源页面
+	 */
 	public String resourceList(){
 		return "resourceList";
 	}
 	
+	/**
+	 * @return 组合关联的资源数据
+	 */
 	public String packageResourceData(){
 		List<SysResource> sysResources = sysRsRcPackageService.findPackageResourceData(sysRsRcPackage.getId());
 		return ajaxJSONArr(sysResources);

@@ -92,7 +92,7 @@
 				{field:'phoneNum',title: "手机号码",width:100,sortable:true
 					,editor:{
 		        		type:"textbox",
-		        		options:{required:false,validType:['length[1,24]','mobile']}
+		        		options:{required:true,validType:['length[1,24]','mobile']}
 		        	}
 				},
 				{field:'telNum',title: "电话号码",width:100,sortable:true
@@ -109,7 +109,14 @@
 							max:150,
 							precision:0
 				 		}
-		        	}
+		        	},
+		        	formatter:function(value, rowData) {
+						if(value==0){
+							return '';
+						}else{
+							return value;
+						}
+					} 
 				},
 				{field:'address',title: "家庭住址",width:450,sortable:true
 					,editor:{
@@ -125,7 +132,14 @@
 							max:180,
 							precision:0
 				 		}
-		        	}
+		        	},
+		        	formatter:function(value, rowData) {
+						if(value==0){
+							return '';
+						}else{
+							return value;
+						}
+					} 
 				},
 				{field:'birthday',title: "生日",width:100,sortable:true
 					,editor:{
@@ -319,6 +333,13 @@
 		},
 		
 		reset:function(){
+			$("#workType").val(0);
+			$("#name").val('');
+			$("#sex").val(0);
+			$("#phoneNum").val('');
+			$("#telNum").val('');
+			$("#address").val('');
+			$("#company").val('');
 			sysWorkerOperation.search();
 		}
 	};

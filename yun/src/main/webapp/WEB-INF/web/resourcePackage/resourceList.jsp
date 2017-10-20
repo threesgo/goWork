@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@taglib prefix="s" uri="/struts-tags"%>
 <script type="text/javascript">
-var $resourceGrid;
+var $packageResourceGrid;
 var attrJsons={};
 var resourceOperation = {};
 $(function(){
@@ -24,7 +24,7 @@ $(function(){
         }
 	);
 	
- 	$resourceGrid=$("#resourceGrid").datagrid({
+ 	$packageResourceGrid=$("#packageResourceGrid").datagrid({
         fitColumns:false,
         striped:true,
         singleSelect:true,
@@ -128,8 +128,8 @@ resourceOperation = {
 			    		function(rs){
 							$show(rs.message);
 							$.each(deletes,function(i,n){
-								var deleteIndex = $resourceGrid.datagrid("getRowIndex",n);
-								$resourceGrid.datagrid("deleteRow",deleteIndex);
+								var deleteIndex = $packageResourceGrid.datagrid("getRowIndex",n);
+								$packageResourceGrid.datagrid("deleteRow",deleteIndex);
 					    	});
 						},
 						function(rs){
@@ -145,8 +145,8 @@ resourceOperation = {
 		//添加页面
 		var dialog =$('<div id="resourceSelect"></div>').dialog({    
 			href : "resourceAction!resourceSelect.act",
-			width:600,
-			height:350,
+			width:700,
+			height:400,
 			title:"新增产品",
 			method:'post',
 			queryParams:{"sysRsRcPackage.id":'${sysRsRcPackage.id}'},
@@ -178,7 +178,7 @@ resourceOperation = {
 		searchData["abbreviaName"] = $("#abbreviaName").val();
 		searchData["brand"] = $("#brand").val();
 		searchData["supplierId"] = $("#supplierId").val();
-		$resourceGrid.datagrid("reload",
+		$packageResourceGrid.datagrid("reload",
 			{
 				"resourceJsonStr":Some.util.jsonToStr(searchData)
 			}
@@ -222,7 +222,7 @@ resourceOperation = {
 			</div>
 		</div>
 		
-		<!-- 
+		<%--
 		<div class="search-div">
 			<label>供应商名称</label>
 	       	<s:select id="supplierId" style="height:22px"
@@ -232,7 +232,7 @@ resourceOperation = {
 		       	headerKey="0"
 		       	headerValue="--请选择--"/>
 		</div>
-		 -->
+		 --%>
 		
 		<div class="search-div">
 			<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search', plain:true" onclick="resourceOperation.search()">查询</a> 
@@ -240,7 +240,7 @@ resourceOperation = {
 		</div>
 	</div>
 	<div data-options="region:'center',border:false">
-		<table id="resourceGrid"></table>
+		<table id="packageResourceGrid"></table>
 	</div>
 </div>
 

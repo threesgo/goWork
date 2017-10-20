@@ -196,6 +196,7 @@ public class SysResourceTypeServiceImpl implements SysResourceTypeService{
 			for(SysResource sysResource:sysResources){
 				sysResource.setRsrcCode(MyStringUtil.getCombineSeqStr(sysResource.getOrderNo(),sysRsRcCatalog.getCatalogCode()));
 			}
+			haddleChildren(sysRsRcCatalog);
 		}
 	}
 }
