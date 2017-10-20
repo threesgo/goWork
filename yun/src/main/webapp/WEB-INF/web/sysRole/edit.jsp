@@ -62,7 +62,7 @@
 				height:"auto",
 				method:"post",
 				resizable:true,
-				href:"sysRoleAction!preEdit.act",
+				href:"sysRoleAction!preAddOrEdit.act",
 				method:"post",
 				queryParams:{"sysRole.id":'${sysRole.id}'},
 				

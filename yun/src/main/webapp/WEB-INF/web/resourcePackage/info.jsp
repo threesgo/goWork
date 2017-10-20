@@ -2,15 +2,15 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
 <script type="text/javascript">
 $(function(){
-	$resourceTypeInfoTable=$("#resourceTypeInfoTable").datagrid({
+	$resourcePackageInfoTable=$("#resourcePackageInfoTable").datagrid({
         fitColumns:true,
         remoteSort:false,
         striped:true,
         singleSelect:true,
         nowrap:false,
         fit:true,
-        toolbar:"#resource_type_info_bar",
-        url:"resourceTypeAction!infoData.act?sysRsRcCatalog.id=${sysRsRcCatalog.id}",
+        toolbar:"#resource_package_info_bar",
+        url:"resourcePackageAction!infoData.act?sysRsrcPackage.id=${sysRsrcPackage.id}",
         animate : true,
  		collapsible : true,
   		pagination:false, 
@@ -41,8 +41,8 @@ $(function(){
 	});
 });
 </script>
-<table id="resourceTypeInfoTable"></table>
-<div id="resource_type_info_bar">
+<table id="resourcePackageInfoTable"></table>
+<div id="resource_package_info_bar">
 	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit', plain:true" 
-		onclick="resourceTypeOperation.editType()">编辑</a>
+		onclick="resourcePackageOperation.editPackage()">编辑</a>
 </div>

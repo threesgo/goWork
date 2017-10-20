@@ -1,5 +1,7 @@
 package com.yunwang.action;
 
+import java.util.List;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -8,15 +10,17 @@ import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.yunwang.model.pojo.SysRsRcCatalog;
-import com.yunwang.service.SysResourcePackageService;
-import com.yunwang.service.SysResourceService;
+import com.yunwang.model.pojo.SysDataDictionary;
+import com.yunwang.model.pojo.SysRsRcPackage;
+import com.yunwang.service.SysRsRcPackageService;
+import com.yunwang.util.BaseDataDictionaryUtil;
 import com.yunwang.util.action.AbstractLoginAction;
 
 @Action(
 	value = "resourcePackageAction", 
 	results = {
-		@Result(name = "index",location="/WEB-INF/web/resourcePackage/index.jsp")
+		@Result(name = "index",location="/WEB-INF/web/resourcePackage/index.jsp"),
+		@Result(name = "info",location="/WEB-INF/web/resourcePackage/info.jsp")
 	}
 )
 public class ResourcePackageAction extends AbstractLoginAction{
@@ -31,13 +35,11 @@ public class ResourcePackageAction extends AbstractLoginAction{
 	private static final long serialVersionUID = 1L;
 	
 	@Autowired
-	private SysResourceService sysResourceService;
+	private SysRsRcPackageService sysRsRcPackageService;
 	
-	@Autowired
-	private SysResourcePackageService sysResourcePackageService;
-	
-	@Autowired
+	private SysRsRcPackage sysRsrcPackage;
 	private String id;
+	private List<SysDataDictionary> packageTypeList;
 	
 	
 	@Override
@@ -54,24 +56,27 @@ public class ResourcePackageAction extends AbstractLoginAction{
 		if (id==null) {
 			JSONObject json=new JSONObject();
 			json.put("id", "root");
-			json.put("text", "产品组合");
+			json.put("text", "组合套餐");
 			JSONObject obj=new JSONObject();
 			obj.put("id",0);
 			json.put("attributes",obj);
 			json.put("state", "closed");
 			jsonArr.add(json);
 		}else{
-		
+			List<SysRsRcPackage> sysRsrcPackages = sysRsRcPackageService.findAll("orderNo");
+			for(SysRsRcPackage pack : sysRsrcPackages){
+				jsonArr.add(getJson(pack));
+			}
 		}
 		return ajaxText(jsonArr);
 	}
 	
-	private JSONObject getJson(SysRsRcCatalog sysRcRsrcOrg){
+	private JSONObject getJson(SysRsRcPackage sysRsrcPackage){
 		JSONObject json=new JSONObject();
-		json.put("id","org"+sysRcRsrcOrg.getId());
-		json.put("text",sysRcRsrcOrg.getCatalogCode()+","+sysRcRsrcOrg.getCatalogName());
-		json.put("attributes", JSONObject.fromObject(sysRcRsrcOrg));
-		json.put("state", "closed");
+		json.put("id","pac"+sysRsrcPackage.getId());
+		json.put("text",sysRsrcPackage.getName());
+		json.put("attributes", JSONObject.fromObject(sysRsrcPackage));
+		json.put("state", "open");
 		return json;
 	}
 	
@@ -87,32 +92,45 @@ public class ResourcePackageAction extends AbstractLoginAction{
 	 */
 	public String infoData(){
 		JSONArray jsonArr=new JSONArray();
-//		sysRsRcCatalog = sysResourceTypeService.getRsRcCatalogInfo(sysRsRcCatalog.getId());
-//		JSONObject json_name=new JSONObject();
-//		json_name.put("attrName", "组合代号");
-//		json_name.put("value", sysRsRcCatalog.getCatalogName());
-//		jsonArr.add(json_name);
-//		
-//		JSONObject json_code=new JSONObject();
-//		json_code.put("attrName","组合名称");
-//		json_code.put("value", sysRsRcCatalog.getCatalogCode());
-//		jsonArr.add(json_code);
-//		
-//		JSONObject json_type=new JSONObject();
-//		json_type.put("attrName","组合描述");
-//		json_type.put("value",BaseDataDictionaryUtil.valueMap.get(1).get(sysRsRcCatalog.getCatalogType().toString()).getName());
-//		jsonArr.add(json_type);
+		
+		sysRsrcPackage = sysRsRcPackageService.get(sysRsrcPackage.getId());
+		JSONObject json_name=new JSONObject();
+		json_name.put("attrName", "组合名称");
+		json_name.put("value", sysRsrcPackage.getName());
+		jsonArr.add(json_name);
+		
+		JSONObject json_code=new JSONObject();
+		json_code.put("attrName","组合代号");
+		json_code.put("value", sysRsrcPackage.getCode());
+		jsonArr.add(json_code);
+		
+		if(sysRsrcPackage.getPackegeType() == 1){
+			JSONObject minPrice=new JSONObject();
+			minPrice.put("attrName","价格最小值");
+			minPrice.put("value", sysRsrcPackage.getMinPrice());
+			jsonArr.add(minPrice);
+			
+			JSONObject maxPrice=new JSONObject();
+			maxPrice.put("attrName","价格最大值");
+			maxPrice.put("value", sysRsrcPackage.getMaxPrice());
+			jsonArr.add(maxPrice);
+		}
 		return ajaxText(jsonArr);
 	}
 	
-	public String updateReaourcePackage(){
+	/**
+	 * @date 2017-10-20
+	 * @author YBF
+	 * @return
+	 * <p>更新产品组合</p>
+	 */
+	public String saveOrUpdatePackage(){
 		try{
-			sysResourcePackageService.updateReaourcePackage();
-			return success("操作成功!");
+			packageTypeList = BaseDataDictionaryUtil.baseDataMap.get(8);
 		}catch(Exception e){
 			LOG.error(e.getMessage());
-			return error("操作失败!");
 		}
+		return null;
 	}
 	
 	public String getId() {
@@ -121,5 +139,21 @@ public class ResourcePackageAction extends AbstractLoginAction{
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public SysRsRcPackage getSysRsrcPackage() {
+		return sysRsrcPackage;
+	}
+
+	public void setSysRsrcPackage(SysRsRcPackage sysRsrcPackage) {
+		this.sysRsrcPackage = sysRsrcPackage;
+	}
+
+	public List<SysDataDictionary> getPackageTypeList() {
+		return packageTypeList;
+	}
+
+	public void setPackageTypeList(List<SysDataDictionary> packageTypeList) {
+		this.packageTypeList = packageTypeList;
 	}
 }

@@ -4,18 +4,11 @@
 <jsp:include page="/public/public.jsp" />
 <head>
 <script type="text/javascript">
-	var $sysWorkerDatagrid;	
-	var sysWorkerOperation = {};
-	
-	var sysWorkerEdit = undefined;
-	var addId = 0;
-	
-	var flowObj = new Function("return " + '${hashMap.flowObj}')();
-	var sexObj = new Function("return " + '${hashMap.sexObj}')();
-	var educationObj = new Function("return " + '${hashMap.educationObj}')();
+	var $sysOrderDatagrid;	
+	var sysOrderOperation = {};
 	
 	$(function(){
-		$sysWorkerDatagrid=$('#sysWorkerTable').datagrid({
+		$sysOrderDatagrid=$('#sysOrderTable').datagrid({
 			fitColumns:false,
 	        striped:true,
 	        singleSelect:true,
@@ -30,8 +23,8 @@
 	        pageSize:20,
 	        pageList:[20,50,100,150,200],
 	        pagination:true,
-            toolbar:"#sysWorker_tool_bar",
-            url:"sysWorkerAction!listData.act",
+            toolbar:"#sysOrder_tool_bar",
+            url:"sysOrderAction!listData.act",
             frozenColumns:[[
        			{field:'ck',checkbox:true},
        			{field:'workType',title: "工种",width:100,sortable:true
@@ -158,148 +151,31 @@
 				}
 			]],
 			onDblClickCell:function(index, field, value) {
-		    	if(sysWorkerEdit!=undefined){
-		    		if($sysWorkerDatagrid.datagrid("validateRow",sysWorkerEdit)){
-		    			$sysWorkerDatagrid.datagrid("endEdit",sysWorkerEdit);
-		    		}else{
-						$show("请正确输入编辑行数据!");
-						return false;	    		
-		    		}
-		    	}
-		    	$sysWorkerDatagrid.datagrid('editCell',{index:index,field:field});
-	            sysWorkerEdit = index;
+		    	
 	        },
 	        onAfterEdit:function(rowIndex,rowData,changes){
-		    	$.post("sysWorkerAction!saveOrUpdateWorkerGrid.act",
-		    			{"jsonStr":Some.util.jsonToStr(rowData)},
-	       			 function(data){
-	      			 	handlerResult(data,
-	      			 		function(json){
-								$show(json.message);
-								$sysWorkerDatagrid.datagrid('updateRow',{
-									index: rowIndex,
-									row: {
-										id:json.data.id,
-									}
-								});
-							},
-							function(json){
-								$show(json.message);
-							}
-						);
-	       			}
-		    	);
+		    	
 	        }
 	  	});
-	  	
-	  	$("#sysWorkerTable").parent(".datagrid-view").keyEvent({
-			keyCode:13,
-			handler:function(event){
-				sysWorkerOperation.updatesysWorker();
-				event.preventDefault();
-			}
-		});
 	 	
-	 	$("#sysWorker_tabel_search").keyEvent({
+	 	$("#sysOrder_tabel_search").keyEvent({
 			keyCode:13,
 			handler:function(event){
-				sysWorkerOperation.search();
+				sysOrderOperation.search();
 				event.preventDefault();
 			}
 		});
 	});
 	
-	sysWorkerOperation={
-		updatesysWorker:function(){
-			if(sysWorkerEdit!=undefined){
-				if($sysWorkerDatagrid.datagrid("validateRow",sysWorkerEdit)){
-					$sysWorkerDatagrid.datagrid("endEdit",sysWorkerEdit);
-					sysWorkerEdit = undefined;
-				}else{
-					$show("请正确输入编辑行数据!");
-					return false;	    		
-	    		}
-			}
+	sysOrderOperation={
+		addsysOrder:function(){
+			
 		},
-		addsysWorker:function(){
-			if(sysWorkerEdit!=undefined){
-				if($sysWorkerDatagrid.datagrid("validateRow",sysWorkerEdit)){
-					$sysWorkerDatagrid.datagrid("endEdit",sysWorkerEdit);
-					sysWorkerEdit = undefined;
-				}else{
-					$show("请正确输入编辑行数据!");
-					return false;
-				}
-			}
-			var rows = $sysWorkerDatagrid.datagrid("getData").rows;
-			var addIndex = rows.length;
-			$sysWorkerDatagrid.datagrid('insertRow',{
-				index: addIndex,	// 索引从0开始
-				row: {
-					id:addId--,
-					workType:1,
-					sex:1,
-					education:3
-				}
-			});
-			$sysWorkerDatagrid.datagrid("beginEdit",addIndex);
-			sysWorkerEdit = addIndex;
-		},
-		editsysWorker:function(){
-			//不需要页面，直接表格编辑
-			var selected = $sysWorkerDatagrid.datagrid("getSelected");
-			if(null == selected){
-				$alert("请单选工人行，进行编辑!");
-				return false;
-			}
-			if(sysWorkerEdit!=undefined){
-	    		if($sysWorkerDatagrid.datagrid("validateRow",sysWorkerEdit)){
-	    			$sysWorkerDatagrid.datagrid("endEdit",sysWorkerEdit);
-	    		}else{
-					$show("请正确输入编辑行数据!");
-					return false;	    		
-	    		}
-			}
-			var index = $sysWorkerDatagrid.datagrid("getRowIndex",selected);
-			$sysWorkerDatagrid.datagrid("beginEdit",index);
-			sysWorkerEdit = index;
+		editSysOrder:function(){
+			
 		},
 		cancelEdit:function(){
-			$sysWorkerDatagrid.datagrid("reload");
-			sysWorkerEdit = undefined;
-		},
-		deletesysWorker:function(){
-			var checks = $sysWorkerDatagrid.datagrid("getChecked");
-			if(checks.length == 0){
-				$alert("请勾选需要删除的工人!");
-				return false;
-			}
-			$.messager.confirm('确认','确认要删除勾选的工人吗？',function(r){    
-			    if (r){
-			    	var ids = [];
-			    	var deletes = [];
-			    	$.each(checks,function(i,n){
-			    		ids.push(n.id);
-			    		deletes.push(n);
-			    	});
-			        $.post("sysWorkerAction!deleteWorker.act",
-			        	{"ids":ids.join(",")},
-			        	function(data){
-						handlerResult(data,
-				    		function(rs){
-								$show(rs.message);
-								$.each(deletes,function(i,n){
-									var deleteIndex = $sysWorkerDatagrid.datagrid("getRowIndex",n);
-									$sysWorkerDatagrid.datagrid("deleteRow",deleteIndex);
-						    	});
-							},
-							function(rs){
-								$alert(rs.message);
-							}
-						);  
-					},"json");
-			    }    
-			});
+			$sysOrderDatagrid.datagrid("reload");
 		},
 		search:function(){
 			var searchData = {};
@@ -311,7 +187,7 @@
 			searchData["telNum"]=$("#telNum").val();
 			searchData["company"]=$("#company").val();
 			
-			$sysWorkerDatagrid.datagrid("reload",
+			$sysOrderDatagrid.datagrid("reload",
 				{
 					"jsonStr":Some.util.jsonToStr(searchData),
 				}
@@ -319,14 +195,14 @@
 		},
 		
 		reset:function(){
-			sysWorkerOperation.search();
+			sysOrderOperation.search();
 		}
 	};
 </script>
 </head>
 	
 <div class="easyui-layout" data-options="fit:true,border : false">
-	<div id="sysWorker_tabel_search" class = "table_seach_div" data-options="region:'north',title:'查询条件',border:false,split:false" style="overflow: hidden;background-color: #F8F8F8" >
+	<div id="sysOrder_tabel_search" class = "table_seach_div" data-options="region:'north',title:'查询条件',border:false,split:false" style="overflow: hidden;background-color: #F8F8F8" >
 		<div class="search-div">
 			<label>工种</label>
 	       	<s:select id="workType" style="height:22px"
@@ -373,17 +249,15 @@
 		</div>
 		
 		<div class="search-div">
-			<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-search', plain:true" onclick="sysWorkerOperation.search()">搜索</a> 
-			<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-reload', plain:true" onclick="sysWorkerOperation.reset()">重置</a> 
+			<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-search', plain:true" onclick="sysOrderOperation.search()">搜索</a> 
+			<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-reload', plain:true" onclick="sysOrderOperation.reset()">重置</a> 
 		</div>
 	</div>
 	<div data-options="region:'center',border:false">
-		<table id="sysWorkerTable"></table>
+		<table id="orderTable"></table>
 	</div>
 </div>
-<div id="sysWorker_tool_bar">
-	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-add', plain:true" onclick="sysWorkerOperation.addsysWorker()">新增</a>
-	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-edit', plain:true" onclick="sysWorkerOperation.editsysWorker()">编辑</a>
-	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-quxiao', plain:true" onclick="sysWorkerOperation.cancelEdit()">取消编辑</a>
-	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-remove', plain:true" onclick="sysWorkerOperation.deletesysWorker()">删除</a>
+<div id="sysOrder_tool_bar">
+	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-add', plain:true" onclick="sysOrderOperation.addSysOrder()">新增</a>
+	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-edit', plain:true" onclick="sysOrderOperation.editSysOrder()">编辑</a>
 </div>

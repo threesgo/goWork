@@ -35,6 +35,9 @@ public class SysOrder extends AbstractRowVersionModel{
 	@Column(name = "CODE",length = 64,nullable = false)
 	private String code;
 	
+	@Column(name = "CODE",length = 64,nullable = false)
+	private String name;
+	
 	@Column(name = "INFO",length = 2048)
 	private String info;
 	
@@ -60,7 +63,7 @@ public class SysOrder extends AbstractRowVersionModel{
 	private BigDecimal totalAmount;
 	
 	@Column(name = "ORDER_TYPE",nullable = false)
-	private Integer orderType;
+	private Integer orderType; //装修类型
 	
 	@Column(name = "STATUS",columnDefinition = "number default 1")
 	private Integer status;  //0，删除 1，未开始 2、进行中 3，已完成  (手动或者根据时间进行自动管控)
@@ -83,6 +86,14 @@ public class SysOrder extends AbstractRowVersionModel{
 
 	public void setCode(String code) {
 		this.code = code;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getInfo() {

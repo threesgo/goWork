@@ -346,6 +346,18 @@ public class BaseDaoImpl<T> implements BaseDaoI<T> {
 	}
 	
 	@SuppressWarnings("unchecked")
+	@Override
+	public List<T> findAll(String...orders) {
+		Criteria criteria =getSession().createCriteria(getEntityClass());
+		if(orders!=null){
+			for (String order : orders) {
+				criteria.addOrder(Order.asc(order));
+			}
+		}
+		return (List<T>)criteria.list();
+	}
+	
+	@SuppressWarnings("unchecked")
 	public Pager<T> pagedQuery(String hql, int page, int pageSize, Object... values) {
        	int temp=pageSize;
         if(pageSize == 0){
