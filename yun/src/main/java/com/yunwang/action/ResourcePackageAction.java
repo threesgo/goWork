@@ -11,6 +11,7 @@ import org.apache.struts2.convention.annotation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.yunwang.model.pojo.SysDataDictionary;
+import com.yunwang.model.pojo.SysResource;
 import com.yunwang.model.pojo.SysRsRcPackage;
 import com.yunwang.service.SysRsRcPackageService;
 import com.yunwang.util.BaseDataDictionaryUtil;
@@ -20,7 +21,10 @@ import com.yunwang.util.action.AbstractLoginAction;
 	value = "resourcePackageAction", 
 	results = {
 		@Result(name = "index",location="/WEB-INF/web/resourcePackage/index.jsp"),
-		@Result(name = "info",location="/WEB-INF/web/resourcePackage/info.jsp")
+		@Result(name = "info",location="/WEB-INF/web/resourcePackage/info.jsp"),
+		@Result(name = "childrenPage",location="/WEB-INF/web/resourcePackage/childrenPage.jsp"),
+		@Result(name = "saveOrUpdatePackagePage",location="/WEB-INF/web/resourcePackage/saveOrUpdatePackage.jsp"),
+		@Result(name = "resourceList",location="/WEB-INF/web/resourcePackage/resourceList.jsp")
 	}
 )
 public class ResourcePackageAction extends AbstractLoginAction{
@@ -37,7 +41,7 @@ public class ResourcePackageAction extends AbstractLoginAction{
 	@Autowired
 	private SysRsRcPackageService sysRsRcPackageService;
 	
-	private SysRsRcPackage sysRsrcPackage;
+	private SysRsRcPackage sysRsRcPackage;
 	private String id;
 	private List<SysDataDictionary> packageTypeList;
 	
@@ -68,15 +72,13 @@ public class ResourcePackageAction extends AbstractLoginAction{
 				JSONObject json=new JSONObject();
 				json.put("id", "dic"+dic.getValue());
 				json.put("text", dic.getName());
-				JSONObject obj=new JSONObject();
-				obj.put("id",0);
-				json.put("attributes",obj);
+				json.put("attributes",JSONObject.fromObject(dic));
 				json.put("state", "closed");
 				jsonArr.add(json);
 			}
 		}else{
 			//List<SysRsRcPackage> sysRsrcPackages = sysRsRcPackageService.findAll("orderNo");
-			List<SysRsRcPackage> sysRsrcPackages = sysRsRcPackageService.findByPackageType(Integer.parseInt(id));
+			List<SysRsRcPackage> sysRsrcPackages = sysRsRcPackageService.findByPackageType(Integer.parseInt(id.substring(3,id.length())));
 			for(SysRsRcPackage pack : sysRsrcPackages){
 				jsonArr.add(getJson(pack));
 			}
@@ -100,8 +102,21 @@ public class ResourcePackageAction extends AbstractLoginAction{
 	 * <p>组合套餐列表/p>
 	 */
 	public String packageList(){
+		return "childrenPage";
+	}
+	
+	public String childrenData(){
 		return ajaxText(JSONArray.fromObject(
-				sysRsRcPackageService.findByPackageType(sysRsrcPackage.getPackageType())));
+				sysRsRcPackageService.findByPackageType(sysRsRcPackage.getPackageType())));
+	}
+	
+	public String resourceList(){
+		return "resourceList";
+	}
+	
+	public String packageResourceData(){
+		List<SysResource> sysResources = sysRsRcPackageService.findPackageResourceData(sysRsRcPackage.getId());
+		return ajaxJSONArr(sysResources);
 	}
 	
 	
@@ -118,26 +133,26 @@ public class ResourcePackageAction extends AbstractLoginAction{
 	public String infoData(){
 		JSONArray jsonArr=new JSONArray();
 		
-		sysRsrcPackage = sysRsRcPackageService.get(sysRsrcPackage.getId());
+		sysRsRcPackage = sysRsRcPackageService.get(sysRsRcPackage.getId());
 		JSONObject json_name=new JSONObject();
 		json_name.put("attrName", "组合名称");
-		json_name.put("value", sysRsrcPackage.getName());
+		json_name.put("value", sysRsRcPackage.getName());
 		jsonArr.add(json_name);
 		
 		JSONObject json_code=new JSONObject();
 		json_code.put("attrName","组合代号");
-		json_code.put("value", sysRsrcPackage.getCode());
+		json_code.put("value", sysRsRcPackage.getCode());
 		jsonArr.add(json_code);
 		
-		if(sysRsrcPackage.getPackageType() == 1){
+		if(sysRsRcPackage.getPackageType() == 1){
 			JSONObject minPrice=new JSONObject();
 			minPrice.put("attrName","价格最小值");
-			minPrice.put("value", sysRsrcPackage.getMinPrice());
+			minPrice.put("value", sysRsRcPackage.getMinPrice());
 			jsonArr.add(minPrice);
 			
 			JSONObject maxPrice=new JSONObject();
 			maxPrice.put("attrName","价格最大值");
-			maxPrice.put("value", sysRsrcPackage.getMaxPrice());
+			maxPrice.put("value", sysRsRcPackage.getMaxPrice());
 			jsonArr.add(maxPrice);
 		}
 		return ajaxText(jsonArr);
@@ -149,13 +164,35 @@ public class ResourcePackageAction extends AbstractLoginAction{
 	 * @return
 	 * <p>更新产品组合</p>
 	 */
+	public String saveOrUpdatePackagePage(){
+		packageTypeList = BaseDataDictionaryUtil.baseDataMap.get(8);
+		return "saveOrUpdatePackagePage";
+	}
+	
+	/**
+	 * @date 2017-10-20
+	 * @author YBF
+	 * @return
+	 * <p>更新产品组合</p>
+	 */
 	public String saveOrUpdatePackage(){
 		try{
-			packageTypeList = BaseDataDictionaryUtil.baseDataMap.get(8);
+			if(null!=sysRsRcPackage.getId()){
+				SysRsRcPackage updateSysRsRcPackage = sysRsRcPackageService.get(sysRsRcPackage.getId());
+				updateSysRsRcPackage.setCode(sysRsRcPackage.getCode());
+				updateSysRsRcPackage.setName(sysRsRcPackage.getName());
+				updateSysRsRcPackage.setPackageType(sysRsRcPackage.getPackageType());
+				updateSysRsRcPackage.setMinPrice(sysRsRcPackage.getMinPrice());
+				updateSysRsRcPackage.setMaxPrice(sysRsRcPackage.getMaxPrice());
+				sysRsRcPackageService.saveOrUpdateRsRcPackage(updateSysRsRcPackage);
+			}else{
+				sysRsRcPackageService.saveOrUpdateRsRcPackage(sysRsRcPackage);
+			}
+			return success("操作成功!",JSONObject.fromObject(sysRsRcPackage));
 		}catch(Exception e){
 			LOG.error(e.getMessage());
+			return error("操作失败!");
 		}
-		return null;
 	}
 	
 	public String getId() {
@@ -166,12 +203,12 @@ public class ResourcePackageAction extends AbstractLoginAction{
 		this.id = id;
 	}
 
-	public SysRsRcPackage getSysRsrcPackage() {
-		return sysRsrcPackage;
+	public SysRsRcPackage getSysRsRcPackage() {
+		return sysRsRcPackage;
 	}
 
-	public void setSysRsrcPackage(SysRsRcPackage sysRsrcPackage) {
-		this.sysRsrcPackage = sysRsrcPackage;
+	public void setSysRsRcPackage(SysRsRcPackage sysRsRcPackage) {
+		this.sysRsRcPackage = sysRsRcPackage;
 	}
 
 	public List<SysDataDictionary> getPackageTypeList() {

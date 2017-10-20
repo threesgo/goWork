@@ -465,7 +465,7 @@ resourceOperation = {
 		searchData["rsrcName"] = $("#rsrcName").val();
 		searchData["abbreviaName"] = $("#abbreviaName").val();
 		searchData["brand"] = $("#brand").val();
-		searchData["supplierName"] = $("#supplierName").val();
+		searchData["supplierId"] = $("#supplierId").val();
 		
 		var $attrs = $("input[id^='attrib_']");
 		$.each($attrs,function(i,n){
@@ -488,7 +488,7 @@ resourceOperation = {
 		$("#rsrcName").val('');
 		$("#abbreviaName").val('');
 		$("#brand").val('');
-		$("#supplierName").val('');
+		$("#supplierId").val(0);
 		var $attrs = $("input[id^='attrib_']");
 		$.each($attrs,function(i,n){
 			var id = $(n).attr("id").substring(7,$(n).attr("id").length);
@@ -603,8 +603,8 @@ resourceOperation = {
 		 -->
 		
 		<div class="search-div">
-			<label>供应商名称</label>
-	       	<s:select id="sysSupplierId" style="height:22px"
+			<label>供应商</label>
+	       	<s:select id="supplierId" style="height:22px"
 	       		list="sysSuppliers"
 		       	listKey="id"   
 		       	listValue="name" 

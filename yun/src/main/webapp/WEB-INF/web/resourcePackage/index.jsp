@@ -25,16 +25,16 @@
  							if(nodeStart == "dic"){
  								resourcePackageTab.tabs('add',{
  	 	 							title:'组合列表', 
- 	 							    href:"resourcePackageAction!packageList.act?sysRsrcPackage.packageType="+ node.attributes.value
+ 	 							    href:"resourcePackageAction!packageList.act?sysRsRcPackage.packageType="+ node.attributes.value
  	 							});
  							}else{
  								resourcePackageTab.tabs('add',{    
  							    	title:'基本信息', 
- 							    	href:"resourcePackageAction!info.act?sysRsrcPackage.id="+ node.attributes.id
+ 							    	href:"resourcePackageAction!info.act?sysRsRcPackage.id="+ node.attributes.id
  								});
  								resourcePackageTab.tabs('add',{
  		 							title:'产品列表', 
- 								    href:"resourcePackageAction!resourceList.act?sysRsrcPackage.id="+ node.attributes.id
+ 								    href:"resourcePackageAction!resourceList.act?sysRsRcPackage.id="+ node.attributes.id
  								});
  							}
  						}else{
@@ -60,8 +60,8 @@
 	 			$.messager.confirm('确认','确认要删除选择产品组合吗？',function(r){    
 				    if (r){
 				        var node = resourcePackageTree.tree("getSelected");
-				        $.post("resourcePackageAction!deletesysRsrcPackage.act",
-				        	{"sysRsrcPackage.id":node.attributes.id},
+				        $.post("resourcePackageAction!deletesysRsRcPackage.act",
+				        	{"sysRsRcPackage.id":node.attributes.id},
 				        	function(data){
 							handlerResult(data,
 					    		function(rs){
@@ -80,6 +80,7 @@
 	 		},
 	 		
 	 		addPackage:function(){
+	 			var node = resourcePackageTree.tree("getSelected");
 	 			var dialog =$('<div id="addResourcePackage"></div>').dialog({    
 					href : "resourcePackageAction!saveOrUpdatePackagePage.act",
 					width:350,
@@ -92,7 +93,7 @@
 						text:"确定",
 						iconCls:'icon-ok',
 						handler:function(){
-							$('#saveOrUpdate_resource_type').form({    
+							$('#saveOrUpdate_resource_package').form({    
 							    onSubmit: function(){  
 							    },    
 							    success:function(data){ 
@@ -131,7 +132,7 @@
 					resizable:true,
 					title:"编辑类型",
 					method:'post',
-					queryParams:{"sysRsrcPackage.id":node.attributes.id},
+					queryParams:{"sysRsRcPackage.id":node.attributes.id},
 					modal:true,
 					buttons:[{
 						text:"确定",

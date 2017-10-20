@@ -4,65 +4,8 @@
 var $resourceGrid;
 var attrJsons={};
 var resourceOperation = {};
-
 $(function(){
  	columns=[];
- 	<s:iterator value="attribCatalogs" id="attribCatalog" status="list">
-		<s:if test="#attribCatalog.showInListView==1">
-			columns.push(
-				{field:"${attribCatalog.id}",title:"${attribCatalog.rsrcAttribName}",width:150,
-					sortable:true,
-					editor:{
-						<s:if test="#attribCatalog.controlTypeId==104">
-							<s:if test="#attribCatalog.dataTypeId==2">
-								type:"numberbox",
-								options:{
-									min:0,
-									max:${attribCatalog.max},
-									precision:${attribCatalog.dataPrecision}
-						 		}
-							</s:if>
-							
-							<s:else>
-								type:"textbox",
-								options:{
-									required:false,
-									validType:['length[0,${attribCatalog.dataLength}]','illegal']
-						 		}
-							</s:else>
-						</s:if>
-						
-						<s:if test="#attribCatalog.controlTypeId==105">
-							type:"combobox",
-							options:{
-								valueField:'id',
-								textField:'value',
-								data:${attribCatalog.arrDefaultValues}
-							}
-						</s:if>
-						
-						<s:if test="#attribCatalog.controlTypeId==106">
-							type:"combobox",
-							options:{
-								valueField:'id',
-								textField:'value',
-								multiple:true,
-								data:${attribCatalog.arrDefaultValues}
-							}
-						</s:if>
-						
-						<s:if test="#attribCatalog.controlTypeId==107">
-							type:"datebox"
-						</s:if>
-				 	},
-					formatter:function(value,row,index){
-						return value;
-					}
-				}
-			);
-		</s:if>
-	</s:iterator>
-	
 	columns.push(
 		{field:'supplierId',title:"供应商名称",width:100,sortable:true
 			
@@ -96,9 +39,9 @@ $(function(){
         pageSize:20,
         pageList:[20,50,100,150,200],
         pagination:true,
-        url:"resourceAction!resourceListData.act",
+        url:"resourcePackageAction!packageResourceData.act",
         toolbar:"#resource_operation_bar",
-        queryParams:{"sysRsRcCatalog.id":'${sysRsRcCatalog.id}'},
+        queryParams:{"sysRsRcPackage.id":'${sysRsRcPackage.id}'},
         onBeforeLoad:function(){
         },
         onLoadSuccess:function(data){
@@ -150,35 +93,8 @@ $(function(){
 	    onDblClickCell:function(index, field, value) {
         },
 	    onAfterEdit:function(rowIndex,rowData,changes){
-	    	$.post("resourceAction!saveOrUpdateResourceGrid.act",
-	    			{"resourceJsonStr":Some.util.jsonToStr(rowData),"sysRsRcCatalog.id":${sysRsRcCatalog.id}},
-       			 function(data){
-      			 	handlerResult(data,
-      			 		function(json){
-							$show(json.message);
-							$resourceGrid.datagrid('updateRow',{
-								index: rowIndex,
-								row: {
-									id:json.data.id,
-									rsrcCode:json.data.rsrcCode
-								}
-							});
-						},
-						function(json){
-							$show(json.message);
-						}
-					);
-       			}
-	    	);
+	    	
         }
-	});
- 	
- 	$("#resourceGrid").parent(".datagrid-view").keyEvent({
-		keyCode:13,
-		handler:function(event){
-			resourceOperation.updateResource();
-			event.preventDefault();
-		}
 	});
  	
  	$("#searchForm").keyEvent({
@@ -233,7 +149,7 @@ resourceOperation = {
 			height:350,
 			title:"新增产品",
 			method:'post',
-			queryParams:{"sysRsrcPackage.id":${sysRsrcPackage.id}},
+			queryParams:{"sysRsRcPackage.id":'${sysRsRcPackage.id}'},
 			modal:true,
 			resizable:true,
 			buttons:[{
@@ -253,7 +169,6 @@ resourceOperation = {
 				$(this).dialog("destroy");
 			}
 		});
-		*/
 	},
 	
 	search:function(){
@@ -262,20 +177,10 @@ resourceOperation = {
 		searchData["rsrcName"] = $("#rsrcName").val();
 		searchData["abbreviaName"] = $("#abbreviaName").val();
 		searchData["brand"] = $("#brand").val();
-		searchData["supplierName"] = $("#supplierName").val();
-		
-		var $attrs = $("input[id^='attrib_']");
-		$.each($attrs,function(i,n){
-			var id = $(n).attr("id").substring(7,$(n).attr("id").length);
-			searchData[id] = $(n).val();
-			if(isNaN(id)){
-				searchData[id] = $(n).datebox("getValue");
-			}
-		})
+		searchData["supplierId"] = $("#supplierId").val();
 		$resourceGrid.datagrid("reload",
 			{
-				"resourceJsonStr":Some.util.jsonToStr(searchData),
-				"sysRsRcCatalog.id":'${sysRsRcCatalog.id}'
+				"resourceJsonStr":Some.util.jsonToStr(searchData)
 			}
 		);
 	},
@@ -285,16 +190,7 @@ resourceOperation = {
 		$("#rsrcName").val('');
 		$("#abbreviaName").val('');
 		$("#brand").val('');
-		$("#supplierName").val('');
-		var $attrs = $("input[id^='attrib_']");
-		$.each($attrs,function(i,n){
-			var id = $(n).attr("id").substring(7,$(n).attr("id").length);
-			if(isNaN(id)){
-				$(n).datebox("setValue",'');
-			}else{
-				$(n).val('');
-			}
-		})
+		$("#supplierId").val('');
 		resourceOperation.search();
 	}
 };
@@ -328,49 +224,16 @@ resourceOperation = {
 		
 		<!-- 
 		<div class="search-div">
-			<lable for="">供应商名称</lable>
-			<div class="select">
-				<input  type="text"  id="supplierName"/>
-			</div>
-		</div>
-		 -->
-		
-		<div class="search-div">
 			<label>供应商名称</label>
-	       	<s:select id="sysSupplierId" style="height:22px"
+	       	<s:select id="supplierId" style="height:22px"
 	       		list="sysSuppliers"
 		       	listKey="id"   
 		       	listValue="name" 
 		       	headerKey="0"
 		       	headerValue="--请选择--"/>
 		</div>
+		 -->
 		
-		
-		
-		<s:iterator value="attribCatalogs" id="attribCatalog" status="list">
-			<s:if test="#attribCatalog.showInFinder==1">
-				<s:if test="#attribCatalog.controlTypeId==104||
-							#attribCatalog.controlTypeId==105||
-							#attribCatalog.controlTypeId==106">
-					<div class="search-div">
-						<lable for="">${attribCatalog.rsrcAttribName}</lable>
-						<div class="select">
-							<input  id="attrib_${attribCatalog.id}" type="text"/>
-						</div>
-					</div>
-				</s:if>	
-				<s:if test="#attribCatalog.controlTypeId==107">
-					<div class="search-div" style = "width:488px;max-width: 488px;">
-						<lable for="">${attribCatalog.rsrcAttribName}</lable>
-						<div class="select" style="width: 400px;">
-							<input  id="attrib_${attribCatalog.id}_start" class="easyui-datebox" />
-							-
-							<input  id="attrib_${attribCatalog.id}_end" class="easyui-datebox" />
-						</div>
-					 </div>
-				</s:if>
-			</s:if>
-		</s:iterator>
 		<div class="search-div">
 			<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search', plain:true" onclick="resourceOperation.search()">查询</a> 
 			<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-reload', plain:true" onclick="resourceOperation.reset()">重置</a>	

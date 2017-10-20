@@ -96,16 +96,16 @@ public class SysResourceDaoImpl extends BaseDaoImpl<SysResource> implements SysR
 //				map.put("supplierName","%"+ seachJson.getString("supplierName").toUpperCase()+ "%");
 //			}
 			
-			if(seachJson.containsKey("sysSupplierId")&&0!=seachJson.getInt("sysSupplierId")){
-				buf.append("AND sysSupplierId =:sysSupplierId");
-				map.put("sysSupplierId",seachJson.getInt("sysSupplierId"));
+			if(seachJson.containsKey("supplierId")&&0!=seachJson.getInt("supplierId")){
+				buf.append("AND model.supplierId =:supplierId");
+				map.put("supplierId",seachJson.getInt("supplierId"));
 			}
 			
-			if(seachJson.containsKey("packageId")&&0!=seachJson.getInt("packageId")){
-				buf.append("AND model.id IN(SELECT pcResource.resourceId " +
-						" FROM SysRsRcPcResource pcResource WHERE pcResource.packageId=:packageId ) ");
-				map.put("packageId",seachJson.getInt("packageId"));
-			}
+//			if(seachJson.containsKey("packageId")&&0!=seachJson.getInt("packageId")){
+//				buf.append("AND model.id IN(SELECT pcResource.resourceId " +
+//						" FROM SysRsRcPcResource pcResource WHERE pcResource.packageId=:packageId ) ");
+//				map.put("packageId",seachJson.getInt("packageId"));
+//			}
 			
 			@SuppressWarnings("rawtypes")
 			Iterator it = seachJson.keys();
@@ -141,5 +141,15 @@ public class SysResourceDaoImpl extends BaseDaoImpl<SysResource> implements SysR
 		StringBuffer buf = new StringBuffer("SELECT model FROM SysResource model WHERE model.rsrcCatalogId in("+rsRcCatalogIds+") ");
 		buf.append(" ORDER BY model.rsrcCatalogId,model.orderNo");
 		return find(buf.toString());
+	}
+
+	@Override
+	public List<SysResource> findPackageResourceData(Integer packageId) {
+		Map<String, Object> map = new HashMap<String,Object>();
+		StringBuffer buf = new StringBuffer("SELECT model FROM SysResource model WHERE 1=1 ");
+		buf.append("AND model.id IN(SELECT pcResource.resourceId " +
+				" FROM SysRsRcPcResource pcResource WHERE pcResource.packageId=:packageId ) ");
+		map.put("packageId",packageId);
+		return find(buf.toString(),map);
 	}
 }

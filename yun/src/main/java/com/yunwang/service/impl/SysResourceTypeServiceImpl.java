@@ -37,13 +37,15 @@ public class SysResourceTypeServiceImpl implements SysResourceTypeService{
 	
 	@Override
 	public void saveOrUpdateRsRcCatalog(SysRsRcCatalog sysRsRcCatalog) {
-		sysRsRcCatalog.setOrderNo(sysRsRcCatalogDao.findMaxSeqByPfield("orderNo","parentId",sysRsRcCatalog.getParentId())+1);
-		if(sysRsRcCatalog.getParentId() != 0 ){
-			SysRsRcCatalog pSysRsRcCatalog = sysRsRcCatalogDao.get(SysRsRcCatalog.class,sysRsRcCatalog.getParentId());
-			sysRsRcCatalog.setCatalogCode(MyStringUtil.getCombineSeqStr(sysRsRcCatalog.getOrderNo(),pSysRsRcCatalog.getCatalogCode()));
-			sysRsRcCatalog.setCatalogType(pSysRsRcCatalog.getCatalogType());
-		}else{
-			sysRsRcCatalog.setCatalogCode(MyStringUtil.getCombineSeqStr(sysRsRcCatalog.getOrderNo(),sysRsRcCatalog.getCatalogType().toString()));
+		if(null==sysRsRcCatalog.getId()){
+			sysRsRcCatalog.setOrderNo(sysRsRcCatalogDao.findMaxSeqByPfield("orderNo","parentId",sysRsRcCatalog.getParentId())+1);
+			if(sysRsRcCatalog.getParentId() != 0 ){
+				SysRsRcCatalog pSysRsRcCatalog = sysRsRcCatalogDao.get(SysRsRcCatalog.class,sysRsRcCatalog.getParentId());
+				sysRsRcCatalog.setCatalogCode(MyStringUtil.getCombineSeqStr(sysRsRcCatalog.getOrderNo(),pSysRsRcCatalog.getCatalogCode()));
+				sysRsRcCatalog.setCatalogType(pSysRsRcCatalog.getCatalogType());
+			}else{
+				sysRsRcCatalog.setCatalogCode(MyStringUtil.getCombineSeqStr(sysRsRcCatalog.getOrderNo(),sysRsRcCatalog.getCatalogType().toString()));
+			}
 		}
 		sysRsRcCatalogDao.saveOrUpdate(sysRsRcCatalog);		
 	}

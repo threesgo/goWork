@@ -10,7 +10,7 @@ $(function(){
         nowrap:false,
         fit:true,
         toolbar:"#resource_package_info_bar",
-        url:"resourcePackageAction!infoData.act?sysRsrcPackage.id=${sysRsrcPackage.id}",
+        url:"resourcePackageAction!infoData.act?sysRsRcPackage.id=${sysRsRcPackage.id}",
         animate : true,
  		collapsible : true,
   		pagination:false, 

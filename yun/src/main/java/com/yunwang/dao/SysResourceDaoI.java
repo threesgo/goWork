@@ -18,4 +18,6 @@ public interface SysResourceDaoI extends BaseDaoI<SysResource>{
 			int rows, JSONObject seachJson);
 
 	List<SysResource> findByRsRcCatalogIds(String rsRcCatalogIds);
+
+	List<SysResource> findPackageResourceData(Integer packageId);
 }
