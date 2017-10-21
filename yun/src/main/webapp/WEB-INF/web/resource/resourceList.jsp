@@ -92,6 +92,12 @@ $(function(){
                    			rows[resourceEdit].supplierTel = record.telNum;
                    			rows[resourceEdit].supplierPhone = record.phoneNum;
                    			rows[resourceEdit].supplierAddress = record.address;
+               			}else{
+               				var rows = $resourceGrid.datagrid("getRows");
+                   			rows[resourceEdit].supplier = '';
+                   			rows[resourceEdit].supplierTel = '';
+                   			rows[resourceEdit].supplierPhone = '';
+                   			rows[resourceEdit].supplierAddress = '';
                			}
                			/*
               	  		$resourceGrid.datagrid('updateRow',{
@@ -368,7 +374,8 @@ resourceOperation = {
 				rsrcCode:'',
 				rsrcName:'',
 				purchasePrice:0,
-				salePrice:0
+				salePrice:0,
+				supplierId:0
 			}
 		});
 		$resourceGrid.datagrid("beginEdit",addIndex);
@@ -671,6 +678,8 @@ resourceOperation = {
 	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-quxiao', plain:true" onclick="resourceOperation.cancelEdit()">取消</a>
 	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-save', plain:true" onclick="resourceOperation.updateResource()">保存</a>
 	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove', plain:true" onclick="resourceOperation.deleteResource()">删除</a>
-	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-download', plain:true" onclick="resourceOperation.importResource()">导入</a>
+	<s:if test="sysRsRcCatalog.id!=0">
+		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-download', plain:true" onclick="resourceOperation.importResource()">导入</a>
+	</s:if>
 	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-upload', plain:true" onclick="resourceOperation.exportResource()">导出</a>
 </div> 

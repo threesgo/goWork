@@ -28,10 +28,10 @@ public class SysSupplier extends AbstractRowVersionModel{
 	@Column(name = "NAME",length = 1024,nullable = false)
 	private String name;
 	
-	@Column(name = "CONTACT",length = 128,nullable = false)
+	@Column(name = "CONTACT",length = 128)
 	private String contact;  //联系人
 	
-	@Column(name = "PHONENUM",length = 24,nullable = false)
+	@Column(name = "PHONENUM",length = 24)
 	private String phoneNum;  //手机号码
 	
 	@Column(name = "TELNUM",length = 24)
@@ -40,7 +40,7 @@ public class SysSupplier extends AbstractRowVersionModel{
 	@Column(name = "ADDRESS",length = 2048)
 	private String address;  //地址
 	
-	@Column(name = "WORK_TYPE")
+	@Column(name = "WORK_TYPE",nullable = false)
 	private Integer workType;  //工种
 	
 	@Column(name = "STATUS",columnDefinition = "number default 1")

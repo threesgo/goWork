@@ -34,7 +34,7 @@ public class SysWorker extends AbstractRowVersionModel{
 	@Column(name = "SEX")
 	private Integer sex;
 	
-	@Column(name = "PHONENUM",length = 24,nullable = false)
+	@Column(name = "PHONENUM",length = 24)
 	private String phoneNum;
 	
 	@Column(name = "TELNUM",length = 24)
@@ -49,7 +49,7 @@ public class SysWorker extends AbstractRowVersionModel{
 	@Column(name = "BIRTHDAY")
 	private String birthday;
 	
-	@Column(name = "WORK_TYPE")
+	@Column(name = "WORK_TYPE",nullable = false)
 	private Integer workType;
 	
 	@Column(name = "WORK_AGE")

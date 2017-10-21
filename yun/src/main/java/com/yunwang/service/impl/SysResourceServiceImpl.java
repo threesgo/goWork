@@ -16,10 +16,12 @@ import org.springframework.stereotype.Service;
 import com.yunwang.dao.SysResourceDaoI;
 import com.yunwang.dao.SysRsRcAttribDaoI;
 import com.yunwang.dao.SysRsRcCatalogDaoI;
+import com.yunwang.dao.SysSupplierDaoI;
 import com.yunwang.model.page.Pager;
 import com.yunwang.model.pojo.SysResource;
 import com.yunwang.model.pojo.SysRsRcAttrib;
 import com.yunwang.model.pojo.SysRsRcCatalog;
+import com.yunwang.model.pojo.SysSupplier;
 import com.yunwang.service.SysResourceService;
 import com.yunwang.util.collection.CollectionUtil;
 import com.yunwang.util.number.MyNumberUtil;
@@ -35,6 +37,8 @@ public class SysResourceServiceImpl implements SysResourceService{
 	private SysRsRcAttribDaoI sysRsRcAttribDao;
 	@Autowired
 	private SysRsRcCatalogDaoI sysRsRcCatalogDao;
+	@Autowired
+	private SysSupplierDaoI sysSupplierDao;
 
 	@Override
 	public List<SysResource> findByRsRcCatalogId(Integer catalogId) {
@@ -189,9 +193,33 @@ public class SysResourceServiceImpl implements SysResourceService{
 		
 		int orderNo = sysResourceDao.findMaxSeqByPfield("orderNo", "rsrcCatalogId", sysRsRcCatalog.getId());
 		
+		
+		List<SysSupplier> sysSuppliers = sysSupplierDao.findByWorkType(sysRsRcCatalog.getCatalogType());
+		Map<String,SysSupplier> supplierMap = CollectionUtil.listToMap(sysSuppliers,"name");
+		
 		for(SysResource resource:resourceList){
 			//遍历资源库资源
-			SysResource dbResource = resourceMap.get(resource.getRsrcCode());
+			SysResource dbResource = null;
+			if(MyStringUtil.isNotBlank(resource.getRsrcCode())){
+				dbResource = resourceMap.get(resource.getRsrcCode().trim());
+			}
+			SysSupplier sysSupplier = null;
+			if(MyStringUtil.isNotBlank(resource.getSupplierName())){
+				sysSupplier = supplierMap.get(resource.getSupplierName());
+				if(null == sysSupplier){
+					sysSupplier = new SysSupplier();
+					sysSupplier.setCode((sysSupplierDao.findMaxSeq("code")+1));			
+					sysSupplier.setStatus(1);
+					sysSupplier.setName(resource.getSupplierName().trim());
+					sysSupplier.setContact(resource.getSupplier());
+					sysSupplier.setPhoneNum(resource.getSupplierPhone());
+					sysSupplier.setTelNum(resource.getSupplierTel());
+					sysSupplier.setAddress(resource.getSupplierTel());
+					sysSupplier.setWorkType(sysRsRcCatalog.getCatalogType());
+					sysSupplierDao.saveOrUpdate(sysSupplier);
+				}
+			}
+			
 			if(null != dbResource){
 				//更新
 				dbResource.setRsrcName(resource.getRsrcName());
@@ -200,12 +228,10 @@ public class SysResourceServiceImpl implements SysResourceService{
 				dbResource.setSalePrice(resource.getSalePrice());
 				//dbResource.setWorkType(resource.getWorkType());
 				dbResource.setAbbreviaName(resource.getAbbreviaName());
-				
 				dbResource.setBrand(resource.getBrand());
-				dbResource.setSupplierName(resource.getSupplierName());
-				dbResource.setSupplierAddress(resource.getSupplierAddress());
-				dbResource.setSupplierPhone(resource.getSupplierPhone());
-				
+				if(null != sysSupplier){
+					dbResource.setSupplierId(sysSupplier.getId());
+				}
 				Map<Integer,SysRsRcAttrib> attrMap = attribMap.get(dbResource.getId());
 				
 				for(SysRsRcAttrib attrib:resource.getSysRcRsrcAttribList()){
@@ -227,7 +253,11 @@ public class SysResourceServiceImpl implements SysResourceService{
 				resource.setOrderNo(++orderNo);
 				resource.setCreateDate(new Date());
 				resource.setRsrcCode(MyStringUtil.getCombineSeqStr(resource.getOrderNo(),sysRsRcCatalog.getCatalogCode()));
+				if(null != sysSupplier){
+					resource.setSupplierId(sysSupplier.getId());
+				}
 				sysResourceDao.save(resource);
+				resourceMap.put(resource.getRsrcCode(), resource);
 				for(SysRsRcAttrib attrib:resource.getSysRcRsrcAttribList()){
 					attrib.setRsrcCatalogId(sysRsRcCatalog.getId());
 					attrib.setRsrcId(resource.getId());

@@ -33,8 +33,10 @@ import com.yunwang.model.pojo.SysRsRcAttrib;
 import com.yunwang.model.pojo.SysRsRcAttribCatalog;
 import com.yunwang.model.pojo.SysRsRcBaseData;
 import com.yunwang.model.pojo.SysRsRcCatalog;
+import com.yunwang.model.pojo.SysSupplier;
 import com.yunwang.service.SysResourceService;
 import com.yunwang.service.SysResourceTypeService;
+import com.yunwang.service.SysSupplierService;
 import com.yunwang.util.PoiUtil;
 import com.yunwang.util.SysRcBaseDataTypeUtil;
 import com.yunwang.util.action.AbstractUpDownAction;
@@ -71,6 +73,9 @@ public class ResourceUpDownAction extends AbstractUpDownAction{
 	private SysResourceService sysResourceService;
 	@Autowired
 	private SysResourceTypeService sysResourceTypeService;
+	@Autowired
+	private SysSupplierService sysSupplierService;
+	
 	
 	/** 
 	  * importResourcePage() method
@@ -116,10 +121,13 @@ public class ResourceUpDownAction extends AbstractUpDownAction{
 		List<SysRsRcAttrib> sysRsRcAttribs = sysResourceService.findSysRsRcAttribByResourceIds(
 					StringBufferByCollectionUtil.convertCollection(sysResources,"id"));
 		
+		List<SysSupplier> sysSuppliers = sysSupplierService.findByWorkType(sysRsRcCatalog.getCatalogType());
+		Map<Integer,SysSupplier> supplierMap = CollectionUtil.listToMap(sysSuppliers,"id");
+		
 		JSONArray arr = packageRsources(attrList, sysResources, sysRsRcAttribs);
 		Workbook workbook=null;
         try {
-            workbook = exportExcel(arr,attrList);
+            workbook = exportExcel(arr,attrList,supplierMap);
         } catch (Exception e) {
             LOG.error(e.getMessage());
         }
@@ -169,7 +177,9 @@ public class ResourceUpDownAction extends AbstractUpDownAction{
 	  * @return 
 	  * @return Workbook  
 	*/ 
-	public Workbook exportExcel(JSONArray resourceList,List<SysRsRcAttribCatalog> attrList)  {
+	public Workbook exportExcel(JSONArray resourceList,
+			List<SysRsRcAttribCatalog> attrList,
+			Map<Integer,SysSupplier> supplierMap)  {
 	    Workbook wb = new HSSFWorkbook();
 		Sheet sheet = wb.createSheet("exportResource");
 		int nCol = 0;  //列编号
@@ -189,8 +199,9 @@ public class ResourceUpDownAction extends AbstractUpDownAction{
 		
 		results.add(getText("供应商名称"));
 		results.add(getText("供应商联系人"));
-		results.add(getText("供应商地址"));
+		results.add(getText("联系人手机"));
 		results.add(getText("供应商电话"));
+		results.add(getText("供应商地址"));
 		
 		// 创建单元格样式
 		CellStyle style = wb.createCellStyle();
@@ -202,7 +213,11 @@ public class ResourceUpDownAction extends AbstractUpDownAction{
 		row.setHeightInPoints(15);// 设定行的高度
 		nCol = 0;
 		for (String s : results) {
-			sheet.setColumnWidth(nCol, 4000);
+			if("供应商地址".equals(s)){
+				sheet.setColumnWidth(nCol, 10000);
+			}else{
+				sheet.setColumnWidth(nCol, 4000);
+			}
 			cell = row.createCell(nCol++);
 			cell.setCellStyle(style);
 			cell.setCellValue(s);
@@ -254,22 +269,30 @@ public class ResourceUpDownAction extends AbstractUpDownAction{
 				}
 			}
 			
-			
-			cell = row.createCell(nCol++);
-			cell.setCellStyle(style);
-			cell.setCellValue(obj.getString("supplierName"));
-			
-			cell = row.createCell(nCol++);
-			cell.setCellStyle(style);
-			cell.setCellValue(obj.getString("supplier"));
-			
-			cell = row.createCell(nCol++);
-			cell.setCellStyle(style);
-			cell.setCellValue(obj.getString("supplierAddress"));
-			
-			cell = row.createCell(nCol++);
-			cell.setCellStyle(style);
-			cell.setCellValue(obj.getString("supplierPhone"));
+			SysSupplier supplier = supplierMap.get(obj.getInt("supplierId"));
+			if(null != supplier){
+				cell = row.createCell(nCol++);
+				cell.setCellStyle(style);
+				cell.setCellValue(supplier.getName());
+				
+				cell = row.createCell(nCol++);
+				cell.setCellStyle(style);
+				cell.setCellValue(supplier.getContact());
+				
+				cell = row.createCell(nCol++);
+				cell.setCellStyle(style);
+				cell.setCellValue(supplier.getPhoneNum());
+				
+				cell = row.createCell(nCol++);
+				cell.setCellStyle(style);
+				cell.setCellValue(supplier.getTelNum());
+				
+				cell = row.createCell(nCol++);
+				cell.setCellStyle(style);
+				cell.setCellValue(supplier.getAddress());
+			}else{
+				
+			}
 		}
 	 return wb;
 	}
@@ -284,6 +307,10 @@ public class ResourceUpDownAction extends AbstractUpDownAction{
 	*/ 
 	public String importResource(){
 		sysRsRcCatalog = sysResourceTypeService.getRsRcCatalogInfo(sysRsRcCatalog.getId());
+		
+		if(null == sysRsRcCatalog){
+			throw new MineException("请选择具体的子集大类进行导入,确认产品属于具体的工程类别!");
+		}
 		
 		List<SysRsRcAttribCatalog> attrList =  sysResourceTypeService.findAllAttr(sysRsRcCatalog);
 		
@@ -320,7 +347,12 @@ public class ResourceUpDownAction extends AbstractUpDownAction{
 							if(cellNum > 5){
 								cell=row.getCell(cellNum);
 								String value=cutAfterPoint(PoiUtil.getCellValue(cell,sheet,workBook));
-								if(!value.equals("供应商名称")&&!value.equals("供应商联系人")&&!value.equals("供应商地址")&&!value.equals("供应商电话")){
+								if(!value.equals("供应商名称")&&
+										!value.equals("供应商联系人")&&
+										!value.equals("联系人手机")&&
+										!value.equals("供应商电话")&&
+										!value.equals("供应商地址")
+									){
 									SysRsRcAttribCatalog attrCata=attrMap.get(value);
 									if(null==attrCata){
 										throw new MineException(
@@ -370,18 +402,18 @@ public class ResourceUpDownAction extends AbstractUpDownAction{
 	private String packResourceList(Row row,Sheet sheet,Workbook workBook,
 			Map<Integer,SysRsRcAttribCatalog> importAttrMap,List<SysResource> resourceList){
 		SysResource sysRcResource = new SysResource();
-		sysRcResource.setRsrcCode(cutAfterPoint(PoiUtil.getCellValue(row.getCell(1),sheet,workBook)));
-		if(null==sysRcResource.getRsrcCode()){
-			return String.format("第(%s)行的产品代号不能为空",row.getRowNum()+1);
-		}
+		sysRcResource.setRsrcCode(cutAfterPoint(PoiUtil.getCellValue(row.getCell(0),sheet,workBook)));
+//		if(null==sysRcResource.getRsrcCode()){
+//			return String.format("第(%s)行的产品代号不能为空",row.getRowNum()+1);
+//		}
 		//后来添加（以前写在service层）主要判断导入数据的相同性
 		boolean flag=true;
-		
-		for(SysResource addResource:resourceList){
-			if(addResource.getRsrcCode().equals(sysRcResource.getRsrcCode())){
-				flag=false;
-			}
-		}
+//		
+//		for(SysResource addResource:resourceList){
+//			if(addResource.getRsrcCode().equals(sysRcResource.getRsrcCode())){
+//				flag=false;
+//			}
+//		}
 		if(flag){
 //			String workType = PoiUtil.getCellValue(row.getCell(0),sheet,workBook);
 //			if(MyStringUtil.isBlank(workType)){
@@ -465,9 +497,10 @@ public class ResourceUpDownAction extends AbstractUpDownAction{
 			}
 			sysRcResource.setSupplierName(cutAfterPoint(PoiUtil.getCellValue(row.getCell(cellNumIndex++),sheet,workBook)));
 			sysRcResource.setSupplier(cutAfterPoint(PoiUtil.getCellValue(row.getCell(cellNumIndex++),sheet,workBook)));
-			sysRcResource.setSupplierAddress(cutAfterPoint(PoiUtil.getCellValue(row.getCell(cellNumIndex++),sheet,workBook)));
 			sysRcResource.setSupplierPhone(cutAfterPoint(PoiUtil.getCellValue(row.getCell(cellNumIndex++),sheet,workBook)));
-			
+			sysRcResource.setSupplierTel(cutAfterPoint(PoiUtil.getCellValue(row.getCell(cellNumIndex++),sheet,workBook)));
+			sysRcResource.setSupplierAddress(cutAfterPoint(PoiUtil.getCellValue(row.getCell(cellNumIndex++),sheet,workBook)));
+
 			sysRcResource.setSysRcRsrcAttribList(sysRcRsrcAttribList);
 			resourceList.add(sysRcResource);
 		}

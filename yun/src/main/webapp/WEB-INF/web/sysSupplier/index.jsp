@@ -60,7 +60,7 @@
 				{field:'contact',title: "供应商联系人",width:120,sortable:true
 					,editor:{
 		        		type:"textbox",
-		        		options:{required:true,validType:['length[1,40]','illegal']}
+		        		options:{required:false,validType:['length[1,40]','illegal']}
 		        	}
 				},
 				{field:'phoneNum',title: "联系人手机",width:120,sortable:true

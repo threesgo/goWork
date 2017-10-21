@@ -92,7 +92,7 @@
 				{field:'phoneNum',title: "手机号码",width:100,sortable:true
 					,editor:{
 		        		type:"textbox",
-		        		options:{required:true,validType:['length[1,24]','mobile']}
+		        		options:{required:false,validType:['length[1,24]','mobile']}
 		        	}
 				},
 				{field:'telNum',title: "电话号码",width:100,sortable:true
