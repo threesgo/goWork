@@ -34,7 +34,7 @@
  								});
  								resourcePackageTab.tabs('add',{
  		 							title:'产品列表', 
- 								    href:"resourcePackageAction!resourceList.act?sysRsRcPackage.id="+ node.attributes.id
+ 								    href:"resourcePackageAction!packageResourceList.act?sysRsRcPackage.id="+ node.attributes.id
  								});
  							}
  						}else{
@@ -60,15 +60,14 @@
 	 			$.messager.confirm('确认','确认要删除选择产品组合吗？',function(r){    
 				    if (r){
 				        var node = resourcePackageTree.tree("getSelected");
-				        $.post("resourcePackageAction!deletesysRsRcPackage.act",
+				        $.post("resourcePackageAction!deleteSysRsRcPackage.act",
 				        	{"sysRsRcPackage.id":node.attributes.id},
 				        	function(data){
 							handlerResult(data,
 					    		function(rs){
 				    				resourcePackageTree.tree("remove",node.target);
 									$show(rs.message);
-									var rootNode = resourcePackageTree.tree("getRoot");
-									resourcePackageTree.tree('changeFolder',rootNode.target);
+									$resourceTypeChildrenTable.datagrid("reload");
 								},
 								function(rs){
 									$alert(rs.message);
@@ -84,7 +83,7 @@
 	 			var dialog =$('<div id="addResourcePackage"></div>').dialog({    
 					href : "resourcePackageAction!saveOrUpdatePackagePage.act",
 					width:350,
-					height:250,
+					height:280,
 					title:"新增组合",
 					method:'post',
 					modal:true,
@@ -128,9 +127,9 @@
 	 			var dialog =$('<div id="updateResourceType"></div>').dialog({    
 					href : "resourcePackageAction!saveOrUpdatePackagePage.act",
 					width:350,
-					height:250,
+					height:280,
 					resizable:true,
-					title:"编辑类型",
+					title:"编辑组合",
 					method:'post',
 					queryParams:{"sysRsRcPackage.id":node.attributes.id},
 					modal:true,
@@ -138,7 +137,7 @@
 						text:"确定",
 						iconCls:'icon-ok',
 						handler:function(){
-							$('#saveOrUpdate_resource_type').form({    
+							$('#saveOrUpdate_resource_package').form({    
 							    onSubmit: function(){  
 							    },    
 							    success:function(data){ 
@@ -146,10 +145,10 @@
 							    		function(rs){
 							    			dialog.dialog("destroy");
 											$show(rs.message);
-											$resourceTypeInfoTable.datagrid("reload");
+											$resourcePackageInfoTable.datagrid("reload");
 											resourcePackageTree.tree('update', {
 												target: node.target,
-												text:rs.data.catalogCode+","+rs.data.catalogName
+												text:rs.data.name
 											});
 										},
 										function(rs){

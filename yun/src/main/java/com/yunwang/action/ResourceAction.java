@@ -19,7 +19,6 @@ import com.yunwang.model.pojo.SysResource;
 import com.yunwang.model.pojo.SysRsRcAttrib;
 import com.yunwang.model.pojo.SysRsRcAttribCatalog;
 import com.yunwang.model.pojo.SysRsRcCatalog;
-import com.yunwang.model.pojo.SysRsRcPackage;
 import com.yunwang.model.pojo.SysSupplier;
 import com.yunwang.service.SysResourceService;
 import com.yunwang.service.SysResourceTypeService;
@@ -27,7 +26,6 @@ import com.yunwang.service.SysSupplierService;
 import com.yunwang.util.BaseDataDictionaryUtil;
 import com.yunwang.util.action.AbstractLoginAction;
 import com.yunwang.util.collection.CollectionUtil;
-import com.yunwang.util.string.MyStringUtil;
 import com.yunwang.util.string.StringBufferByCollectionUtil;
 
 @Action(
@@ -41,6 +39,8 @@ import com.yunwang.util.string.StringBufferByCollectionUtil;
 				  "inputName","exportResourceStream","contentDisposition","attachment;filename=${exportResourceFileName}"}),
 		@Result(name="importResourcePage",location="/WEB-INF/web/resource/importResourcePage.jsp"),
 		@Result(name="resourceSelect",location="/WEB-INF/web/resource/resourceSelect.jsp"),
+		@Result(name="selectResourceList",location="/WEB-INF/web/resource/selectResourceList.jsp")
+		
 	}
 )
 public class ResourceAction extends AbstractLoginAction{
@@ -69,7 +69,6 @@ public class ResourceAction extends AbstractLoginAction{
 	private Map<String,Object> hashMap;
 	private String resourceJsonStr;
 	private List<SysSupplier> sysSuppliers;
-	private SysRsRcPackage sysRsRcPackage;
 	
 	@Override
 	public String execute() throws Exception {
@@ -77,6 +76,11 @@ public class ResourceAction extends AbstractLoginAction{
 	} 
 	
 	public String resourceList(){
+		initResourceListData();
+		return "resourceList";
+	}
+
+	private void initResourceListData() {
 		//sysRsRcCatalog = sysResourceTypeService.getRsRcCatalogInfo(sysRsRcCatalog.getId());
 		attribCatalogs = new ArrayList<SysRsRcAttribCatalog>();
 		attribCatalogs.addAll(sysResourceTypeService.findExtendsAttr(sysRsRcCatalog));
@@ -111,15 +115,6 @@ public class ResourceAction extends AbstractLoginAction{
 		arr.add(0,firstSelect);
 		hashMap.put("supplierObj",supplierObj);
 		hashMap.put("supplierArr",arr);
-		
-		return "resourceList";
-	}
-	
-	/**
-	 * @return 资源选择页面
-	 */
-	public String resourceSelect(){
-		return "resourceSelect";
 	}
 	
 	/**
@@ -129,12 +124,6 @@ public class ResourceAction extends AbstractLoginAction{
 	public String resourceListData(){
 		JSONObject obj=new JSONObject();
 		JSONObject seachObj = JSONObject.fromObject(resourceJsonStr);
-		if(null != sysRsRcPackage && null != sysRsRcPackage.getId()){
-			if(null == seachObj){
-				seachObj = new JSONObject();
-			}
-			seachObj.put("packageId", sysRsRcPackage.getId());
-		}
 		Pager<SysResource> pager = sysResourceService.findByRsRcCatalogId(sysRsRcCatalog.getId(),page,rows,
 			seachObj);
 		JSONArray arr = new JSONArray();
@@ -201,6 +190,22 @@ public class ResourceAction extends AbstractLoginAction{
 			}
 		}
 		return map;
+	}
+	
+	/**
+	 * @return 资源选择页面
+	 */
+	public String resourceSelect(){
+		return "resourceSelect";
+	}
+	
+	
+	/**
+	 * @return 资源选择页面
+	 */
+	public String selectResourceList(){
+		initResourceListData();
+		return "selectResourceList";
 	}
 	
 	public String addPage(){
@@ -314,13 +319,5 @@ public class ResourceAction extends AbstractLoginAction{
 
 	public void setSysSuppliers(List<SysSupplier> sysSuppliers) {
 		this.sysSuppliers = sysSuppliers;
-	}
-
-	public SysRsRcPackage getSysRsRcPackage() {
-		return sysRsRcPackage;
-	}
-
-	public void setSysRsRcPackage(SysRsRcPackage sysRsRcPackage) {
-		this.sysRsRcPackage = sysRsRcPackage;
 	}
 }

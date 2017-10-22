@@ -18,4 +18,16 @@
        	name="sysRsRcPackage.packageType"
        	/>
    	</div>
+   	
+   	<div>   
+        <label for="name">最小价格:</label>   
+        <input class="easyui-numberbox" id="edit_package_minPrice" type="text" name="sysRsRcPackage.minPrice" 
+        style="width:200px;" data-options="required:true,min:1,precision:2,max:9999999.99" value="${sysRsRcPackage.minPrice}"/>   
+    </div>
+    
+    <div>   
+        <label for="name">最大价格:</label>   
+        <input class="easyui-numberbox" id="edit_package_maxPrice" type="text" name="sysRsRcPackage.maxPrice" 
+        style="width:200px;" data-options="required:true,min:1,precision:2,max:9999999.99" value="${sysRsRcPackage.maxPrice}"/>   
+    </div>
 </form>

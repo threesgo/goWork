@@ -171,7 +171,7 @@ $(function(){
         pagination:true,
         url:"resourceAction!resourceListData.act",
         toolbar:"#resource_operation_bar",
-        queryParams:{"sysRsRcCatalog.id":'${sysRsRcCatalog.id}',"sysRsRcPackage.id":'${sysRsRcPackage.id}'},
+        queryParams:{"sysRsRcCatalog.id":'${sysRsRcCatalog.id}'},
         onBeforeLoad:function(){
         },
         onLoadSuccess:function(data){

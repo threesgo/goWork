@@ -2,10 +2,10 @@
 <%@taglib prefix="s" uri="/struts-tags"%>
 <script type="text/javascript">
 var $packageResourceGrid;
-var attrJsons={};
-var resourceOperation = {};
+var packageResourceOperation = {};
 $(function(){
  	columns=[];
+ 	/*
 	columns.push(
 		{field:'supplierId',title:"供应商名称",width:100,sortable:true
 			
@@ -23,7 +23,7 @@ $(function(){
         	
         }
 	);
-	
+	*/
  	$packageResourceGrid=$("#packageResourceGrid").datagrid({
         fitColumns:false,
         striped:true,
@@ -40,7 +40,7 @@ $(function(){
         pageList:[20,50,100,150,200],
         pagination:true,
         url:"resourcePackageAction!packageResourceData.act",
-        toolbar:"#resource_operation_bar",
+        toolbar:"#package_resource_operation_bar",
         queryParams:{"sysRsRcPackage.id":'${sysRsRcPackage.id}'},
         onBeforeLoad:function(){
         },
@@ -49,44 +49,16 @@ $(function(){
         frozenColumns:[[
 	        {field:'ck',checkbox:true},
 	        {field:'rsrcName',title:"产品名称",width:80,sortable:true,
-	        	editor:{
-	        		type:"textbox",
-	        		options:{required:false,validType:['length[1,30]','illegal']}
-	        	}
+	        	
 	        },
 	        {field:'abbreviaName',title:"产品简称",width:80,sortable:true,
-	        	editor:{
-	        		type:"textbox",
-	        		options:{validType:['length[1,30]','illegal']}
-	        	}
-	        },
-	        {field:'purchasePrice',title:"采购价格",width:80,sortable:true,align:'right',
-	        	editor:{
-	        		type:"numberbox",
-					options:{
-						required:true,
-						min:0,
-						max:9999999.99,
-						precision:2
-			 		}
-	        	}
+	        	
 	        },
 	        {field:'salePrice',title:"销售价格",width:80,sortable:true,align:'right',
-	        	editor:{
-	        		type:"numberbox",
-					options:{
-						required:true,
-						min:0,
-						max:9999999.99,
-						precision:2
-			 		}
-	        	}
+	        	
 	       	},
 	       	{field:'brand',title:"品牌",width:80,sortable:true,
-	        	editor:{
-	        		type:"textbox",
-	        		options:{validType:['length[1,30]','illegal']}
-	        	}
+	        	
 	       	}
         ]],
 	    columns:[columns],
@@ -106,7 +78,7 @@ $(function(){
 	});
 });
 
-resourceOperation = {
+packageResourceOperation = {
 	deleteResource:function(){
 		var checks = $resourceGrid.datagrid("getChecked");
 		if(checks.length == 0){
@@ -145,8 +117,8 @@ resourceOperation = {
 		//添加页面
 		var dialog =$('<div id="resourceSelect"></div>').dialog({    
 			href : "resourceAction!resourceSelect.act",
-			width:700,
-			height:400,
+			width:800,
+			height:450,
 			title:"新增产品",
 			method:'post',
 			queryParams:{"sysRsRcPackage.id":'${sysRsRcPackage.id}'},
@@ -235,8 +207,8 @@ resourceOperation = {
 		 --%>
 		
 		<div class="search-div">
-			<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search', plain:true" onclick="resourceOperation.search()">查询</a> 
-			<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-reload', plain:true" onclick="resourceOperation.reset()">重置</a>	
+			<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search', plain:true" onclick="packageResourceOperation.search()">查询</a> 
+			<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-reload', plain:true" onclick="packageResourceOperation.reset()">重置</a>	
 		</div>
 	</div>
 	<div data-options="region:'center',border:false">
@@ -244,7 +216,7 @@ resourceOperation = {
 	</div>
 </div>
 
-<div  id="resource_operation_bar">
-    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add', plain:true" onclick="resourceOperation.addResource()">新增</a>
-	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove', plain:true" onclick="resourceOperation.deleteResource()">删除</a>
+<div  id="package_resource_operation_bar">
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add', plain:true" onclick="packageResourceOperation.addResource()">新增</a>
+	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove', plain:true" onclick="packageResourceOperation.deleteResource()">删除</a>
 </div> 

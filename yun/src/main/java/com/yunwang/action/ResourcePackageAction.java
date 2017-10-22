@@ -24,7 +24,7 @@ import com.yunwang.util.action.AbstractLoginAction;
 		@Result(name = "info",location="/WEB-INF/web/resourcePackage/info.jsp"),
 		@Result(name = "childrenPage",location="/WEB-INF/web/resourcePackage/childrenPage.jsp"),
 		@Result(name = "saveOrUpdatePackagePage",location="/WEB-INF/web/resourcePackage/saveOrUpdatePackage.jsp"),
-		@Result(name = "resourceList",location="/WEB-INF/web/resourcePackage/resourceList.jsp")
+		@Result(name = "packageResourceList",location="/WEB-INF/web/resourcePackage/packageResourceList.jsp")
 	}
 )
 public class ResourcePackageAction extends AbstractLoginAction{
@@ -113,8 +113,8 @@ public class ResourcePackageAction extends AbstractLoginAction{
 	/**
 	 * @return 组合关联的资源页面
 	 */
-	public String resourceList(){
-		return "resourceList";
+	public String packageResourceList(){
+		return "packageResourceList";
 	}
 	
 	/**
@@ -172,6 +172,9 @@ public class ResourcePackageAction extends AbstractLoginAction{
 	 */
 	public String saveOrUpdatePackagePage(){
 		packageTypeList = BaseDataDictionaryUtil.baseDataMap.get(8);
+		if(null != sysRsRcPackage&&null != sysRsRcPackage.getId()){
+			sysRsRcPackage = sysRsRcPackageService.get(sysRsRcPackage.getId());
+		}
 		return "saveOrUpdatePackagePage";
 	}
 	
@@ -200,6 +203,11 @@ public class ResourcePackageAction extends AbstractLoginAction{
 			return error("操作失败!");
 		}
 	}
+	
+	public String deleteResourcePackage(){
+		return null;
+	}
+	
 	
 	public String getId() {
 		return id;

@@ -25,7 +25,7 @@
 					closeAllTab(resourceSelectTab);
 					resourceSelectTab.tabs('add',{
 						title:'产品列表', 
-				    	href:"resourceAction!resourceList.act?sysRsRcPackage.id=${sysRsRcPackage.id}&sysRsRcCatalog.id="+ node.attributes.id
+				    	href:"resourceAction!selectResourceList.act?sysRsRcCatalog.id="+ node.attributes.id
 					});
 				},
 				onLoadSuccess:function(node,data){
