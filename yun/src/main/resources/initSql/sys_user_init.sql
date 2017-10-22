@@ -39,7 +39,9 @@ insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type)
 values(14,'报表管理','','chart_bar',0,5,1,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
 values(15,'报表管理','orderAction.act','chart_bar',14,1,1,1);
-delete FROM sys_role_menu t WHERE t.id in (1,2,3,4,5,6,7,8,9,10,11,12,13,14,15);
+insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
+values(16,'部门管理','sysDepartMentAction.act','status_online',1,3,1,1);
+delete FROM sys_role_menu t WHERE t.id in (1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16);
 insert into sys_role_menu (id,row_version,role_id,menu_id)
 values (1, 0, 1 ,1);
 insert into sys_role_menu (id,row_version,role_id,menu_id)
@@ -70,4 +72,6 @@ insert into sys_role_menu (id,row_version,role_id,menu_id)
 values (14, 0, 1 ,14);
 insert into sys_role_menu (id,row_version,role_id,menu_id)
 values (15, 0, 1 ,15);
+insert into sys_role_menu (id,row_version,role_id,menu_id)
+values (16, 0, 1 ,16);
 END;
