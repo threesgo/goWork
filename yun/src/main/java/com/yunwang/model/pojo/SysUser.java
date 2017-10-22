@@ -52,6 +52,9 @@ public class SysUser extends AbstractRowVersionModel{
 	
 	@Column(name = "DEPARTMENT_ID")
 	private Integer departmentId; // 部门
+	
+	@Column(name = "POSITION_ID")
+	private Integer positionId; // 部门
 
 	@Transient
 	private Date createStartDate;
@@ -208,6 +211,14 @@ public class SysUser extends AbstractRowVersionModel{
 
 	public void setRoleIds(String roleIds) {
 		this.roleIds = roleIds;
+	}
+
+	public Integer getPositionId() {
+		return positionId;
+	}
+
+	public void setPositionId(Integer positionId) {
+		this.positionId = positionId;
 	}
 	
 }
