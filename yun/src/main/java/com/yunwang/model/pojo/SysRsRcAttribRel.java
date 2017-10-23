@@ -26,13 +26,13 @@ public class SysRsRcAttribRel extends AbstractRowVersionModel{
 	private Integer rsrcRelId;//资源ID
 	
 	@Column(name="RSRC_ATTRIB_CATALOG_REL_ID", nullable = false)
-	private Integer rsraAttribCatalogRelId;//属性ID
+	private Integer rsrcAttribCatalogId;//属性ID
 	
 	@Column(name="RSRC_ATTRIB_VALUE", length=256)
 	private String rsrcAttribValue;//属性值
 	
 	@Column(name="RSRC_CATALOG_ID", nullable = false)
-	private Integer rsrcCatalogRelId;// 资源类型Id  //便于通过类型删除操作
+	private Integer rsrcCatalogId;// 资源类型Id  //便于通过类型删除操作
 
 	public SysRsRcAttribRel(){
 		
@@ -62,19 +62,19 @@ public class SysRsRcAttribRel extends AbstractRowVersionModel{
 		this.rsrcRelId = rsrcRelId;
 	}
 
-	public Integer getRsraAttribCatalogRelId() {
-		return rsraAttribCatalogRelId;
+	public Integer getRsrcAttribCatalogId() {
+		return rsrcAttribCatalogId;
 	}
 
-	public void setRsraAttribCatalogRelId(Integer rsraAttribCatalogRelId) {
-		this.rsraAttribCatalogRelId = rsraAttribCatalogRelId;
+	public void setRsrcAttribCatalogId(Integer rsrcAttribCatalogId) {
+		this.rsrcAttribCatalogId = rsrcAttribCatalogId;
 	}
 
-	public Integer getRsrcCatalogRelId() {
-		return rsrcCatalogRelId;
+	public Integer getRsrcCatalogId() {
+		return rsrcCatalogId;
 	}
 
-	public void setRsrcCatalogRelId(Integer rsrcCatalogRelId) {
-		this.rsrcCatalogRelId = rsrcCatalogRelId;
+	public void setRsrcCatalogId(Integer rsrcCatalogId) {
+		this.rsrcCatalogId = rsrcCatalogId;
 	}
 }

@@ -54,6 +54,9 @@ $(function(){
 	        {field:'abbreviaName',title:"产品简称",width:80,sortable:true,
 	        	
 	        },
+	        {field:'keyWord',title:"产品关键词",width:200,sortable:true,
+	        	
+	        },
 	        {field:'salePrice',title:"销售价格",width:80,sortable:true,align:'right',
 	        	
 	       	},
@@ -116,7 +119,7 @@ packageResourceOperation = {
 	addResource:function(){
 		//添加页面
 		var dialog =$('<div id="resourceSelect"></div>').dialog({    
-			href : "resourceAction!resourceSelect.act",
+			href : "resourceAction!relResourceSelect.act",
 			width:800,
 			height:450,
 			title:"新增产品",
@@ -124,19 +127,24 @@ packageResourceOperation = {
 			queryParams:{"sysRsRcPackage.id":'${sysRsRcPackage.id}'},
 			modal:true,
 			resizable:true,
-			buttons:[{
-				text:"确定",
-				iconCls:'icon-ok',
-				handler:function(){
-					
+			buttons:[
+				/*
+				{
+					text:"确定",
+					iconCls:'icon-ok',
+					handler:function(){
+						
+					}
+				},
+				*/
+				{
+					text:"取消",
+					iconCls:'icon-cancel',
+					handler:function(){
+						dialog.dialog("destroy");
+					}
 				}
-			},{
-				text:"取消",
-				iconCls:'icon-cancel',
-				handler:function(){
-					dialog.dialog("destroy");
-				}
-			}],
+			],
 			onClose:function(){
 				$(this).dialog("destroy");
 			}

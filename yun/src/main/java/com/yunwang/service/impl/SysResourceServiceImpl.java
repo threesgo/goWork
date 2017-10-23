@@ -14,12 +14,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.yunwang.dao.SysResourceDaoI;
+import com.yunwang.dao.SysResourceRelDaoI;
+import com.yunwang.dao.SysRsRcAttribCatalogDaoI;
 import com.yunwang.dao.SysRsRcAttribDaoI;
+import com.yunwang.dao.SysRsRcAttribRelDaoI;
 import com.yunwang.dao.SysRsRcCatalogDaoI;
 import com.yunwang.dao.SysSupplierDaoI;
 import com.yunwang.model.page.Pager;
 import com.yunwang.model.pojo.SysResource;
+import com.yunwang.model.pojo.SysResourceRel;
 import com.yunwang.model.pojo.SysRsRcAttrib;
+import com.yunwang.model.pojo.SysRsRcAttribCatalog;
+import com.yunwang.model.pojo.SysRsRcAttribRel;
 import com.yunwang.model.pojo.SysRsRcCatalog;
 import com.yunwang.model.pojo.SysSupplier;
 import com.yunwang.service.SysResourceService;
@@ -39,6 +45,13 @@ public class SysResourceServiceImpl implements SysResourceService{
 	private SysRsRcCatalogDaoI sysRsRcCatalogDao;
 	@Autowired
 	private SysSupplierDaoI sysSupplierDao;
+	@Autowired
+	private SysResourceRelDaoI sysResourceRelDao;
+	@Autowired
+	private SysRsRcAttribRelDaoI sysRsRcAttribRelDao;
+	@Autowired
+	private SysRsRcAttribCatalogDaoI sysRsRcAttribCatalogDao;
+
 
 	@Override
 	public List<SysResource> findByRsRcCatalogId(Integer catalogId) {
@@ -111,6 +124,7 @@ public class SysResourceServiceImpl implements SysResourceService{
          
          rowData.put("rsrcCode", sysResource.getRsrcCode());
          rowData.put("id", sysResource.getId());
+         rowData.put("rsrcStatus", sysResource.getRsrcStatus());
          
          Iterator it = rowData.keys();  
          while (it.hasNext()) {  
@@ -127,7 +141,7 @@ public class SysResourceServiceImpl implements SysResourceService{
             			 sysRsRcAttrib.setRsrcAttribValue(value);
             		 }else{
             			 sysRsRcAttrib = new SysRsRcAttrib();
-            			 sysRsRcAttrib.setRsraAttribCatalogId(Integer.parseInt(key));
+            			 sysRsRcAttrib.setRsrcAttribCatalogId(Integer.parseInt(key));
             			 sysRsRcAttrib.setRsrcCatalogId(sysRsRcCatalog.getId());
             			 sysRsRcAttrib.setRsrcId(sysResource.getId());
             			 sysRsRcAttrib.setRsrcAttribValue(value);
@@ -160,8 +174,13 @@ public class SysResourceServiceImpl implements SysResourceService{
 
 	@Override
 	public void deleteResource(String ids) {
-		sysRsRcAttribDao.deleteByPropertys("rsrcId", ids);
-		sysResourceDao.deleteByPropertys("id",ids);
+		List<SysResource>  sysResources = sysResourceDao.findInPropertys("id", ids);
+		for(SysResource sysResource:sysResources){
+			sysResource.setRsrcStatus(0);
+			sysResourceDao.update(sysResource);
+		}
+		//sysRsRcAttribDao.deleteByPropertys("rsrcId", ids);
+		//sysResourceDao.deleteByPropertys("id",ids);
 	}
 
 	private Map<Integer,Map<Integer,SysRsRcAttrib>> conAttribToMap(List<SysRsRcAttrib> sysRsRcAttribs){
@@ -169,10 +188,10 @@ public class SysResourceServiceImpl implements SysResourceService{
 		for(SysRsRcAttrib attrib:sysRsRcAttribs){
 			Map<Integer,SysRsRcAttrib> childMap = map.get(attrib.getRsrcId());
 			if(null!=childMap){
-				childMap.put(attrib.getRsraAttribCatalogId(), attrib);
+				childMap.put(attrib.getRsrcAttribCatalogId(), attrib);
 			}else{
 				childMap = new HashMap<Integer,SysRsRcAttrib>();
-				childMap.put(attrib.getRsraAttribCatalogId(), attrib);
+				childMap.put(attrib.getRsrcAttribCatalogId(), attrib);
 				map.put(attrib.getRsrcId(), childMap);
 			}
 		}
@@ -235,7 +254,7 @@ public class SysResourceServiceImpl implements SysResourceService{
 				Map<Integer,SysRsRcAttrib> attrMap = attribMap.get(dbResource.getId());
 				
 				for(SysRsRcAttrib attrib:resource.getSysRcRsrcAttribList()){
-					SysRsRcAttrib dbAttrib = attrMap.get(attrib.getRsraAttribCatalogId());
+					SysRsRcAttrib dbAttrib = attrMap.get(attrib.getRsrcAttribCatalogId());
 					if(null != dbAttrib){
 						dbAttrib.setRsrcAttribValue(attrib.getRsrcAttribValue());
 						sysRsRcAttribDao.update(dbAttrib);
@@ -275,5 +294,84 @@ public class SysResourceServiceImpl implements SysResourceService{
 		List<SysRsRcCatalog> children = sysRsRcCatalogDao.findByParentId(parentId);
 		getChildrens(ids,children);
 		return sysResourceDao.findByRsRcCatalogIds(StringBufferByCollectionUtil.convertCollection(ids));
+	}
+
+	@Override
+	public void releaseResource(String ids) {
+		List<SysResource>  sysResources = sysResourceDao.findInPropertys("id", ids);
+		
+		List<SysRsRcAttrib> sysRsRcAttribs = sysRsRcAttribDao.findByResourceIds(
+				StringBufferByCollectionUtil.convertCollection(sysResources,"id"));
+		Map<Integer,Map<Integer,SysRsRcAttrib>> attribMap = conAttribToMap(sysRsRcAttribs);
+		
+		
+		for(SysResource sysResource:sysResources){
+			sysResource.setRsrcStatus(3);
+			sysResourceDao.update(sysResource);
+			//发布数据移动到发布区
+			SysResourceRel sysResourceRel = sysResourceRelDao.getByResourceId(sysResource.getId());
+			
+			if(null != sysResourceRel){
+				setDataToSysResource(sysResource, sysResourceRel);
+				sysResourceRelDao.update(sysResourceRel);
+				sysRsRcAttribRelDao.deleteByProperty("rsrcRelId", sysResourceRel.getId());
+			}else{
+				sysResourceRel = new SysResourceRel();
+				setDataToSysResource(sysResource, sysResourceRel);
+				sysResourceRelDao.save(sysResourceRel);
+			}
+			
+			StringBuffer buf = new StringBuffer();
+			buf.append((MyStringUtil.isNotBlank(sysResource.getBrand())?sysResource.getBrand():"")
+					+(MyStringUtil.isNotBlank(sysResource.getRsrcName())?sysResource.getRsrcName():""));
+			
+			Map<Integer,SysRsRcAttrib> rattribMap = attribMap.get(sysResource.getId());
+			List<Integer> attribCatalogIdList = new ArrayList<Integer>();
+			if(null != rattribMap && rattribMap.size() > 0 ){
+				for(Integer key:rattribMap.keySet()){
+					SysRsRcAttrib attrib = rattribMap.get(key);
+					SysRsRcAttribRel sysRsRcAttribRel = new SysRsRcAttribRel();
+					sysRsRcAttribRel.setRsrcRelId(sysResourceRel.getId());
+					sysRsRcAttribRel.setRsrcAttribCatalogId(attrib.getRsrcAttribCatalogId());
+					sysRsRcAttribRel.setRsrcCatalogId(attrib.getRsrcCatalogId());
+					sysRsRcAttribRel.setRsrcAttribValue(attrib.getRsrcAttribValue());
+					attribCatalogIdList.add(attrib.getRsrcAttribCatalogId());
+				}
+			}
+			if(attribCatalogIdList.size() > 0){
+				buf.append("(");
+				List<SysRsRcAttribCatalog> attribCatalogs = sysRsRcAttribCatalogDao.findByIds(StringBufferByCollectionUtil.convertCollection(attribCatalogIdList));
+				for(SysRsRcAttribCatalog attribCatalog : attribCatalogs){
+					buf.append(attribCatalog.getRsrcAttribName()+":"+rattribMap.get(attribCatalog.getId()).getRsrcAttribValue()+" ");
+				}
+			}
+			buf.append(")");
+			sysResourceRel.setKeyWord(buf.toString());
+			sysResourceRelDao.update(sysResourceRel);
+		}
+	}
+
+	private void setDataToSysResource(SysResource sysResource,
+			SysResourceRel sysResourceRel) {
+		sysResourceRel.setResourceId(sysResource.getId());
+		sysResourceRel.setKeyWord((MyStringUtil.isNotBlank(sysResource.getBrand())?sysResource.getBrand():"")
+							+(MyStringUtil.isNotBlank(sysResource.getRsrcName())?sysResource.getRsrcName():""));
+		sysResourceRel.setRsrcCode(sysResource.getRsrcCode());
+		sysResourceRel.setRsrcName(sysResource.getRsrcName());
+		sysResourceRel.setAbbreviaName(sysResource.getAbbreviaName());
+		sysResourceRel.setOrderNo(sysResource.getOrderNo());
+		sysResourceRel.setRsrcCatalogId(sysResource.getRsrcCatalogId());
+		sysResourceRel.setSalePrice(sysResource.getSalePrice());	
+		sysResourceRel.setBrand(sysResource.getBrand());
+		sysResourceRel.setSupplierId(sysResource.getSupplierId());
+		sysResourceRel.setReleaseDate(new Date());
+		sysResourceRel.setRsrcStatus(1);
+	}
+
+	@Override
+	public Pager<SysResourceRel> findRelResources(int page, int rows,
+			JSONObject seachObj) {
+		// TODO Auto-generated method stub
+		return sysResourceRelDao.findRelResources(page,rows,seachObj);
 	}
 }

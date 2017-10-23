@@ -9,4 +9,6 @@ public interface SysRsRcAttribCatalogDaoI extends BaseDaoI<SysRsRcAttribCatalog>
 	List<SysRsRcAttribCatalog> findByCatalogIds(String catalogIds);
 
 	SysRsRcAttribCatalog getRsrcAttribName(SysRsRcAttribCatalog sysRsRcAttribCatalog);
+
+	List<SysRsRcAttribCatalog> findByIds(String ids);
 }

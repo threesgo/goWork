@@ -30,4 +30,10 @@ public class SysRsRcAttribCatalogDaoImpl extends BaseDaoImpl<SysRsRcAttribCatalo
 		map.put("rsrcAttribName",sysRsRcAttribCatalog.getRsrcAttribName());
 		return get(buf.toString(),map);
 	}
+
+	@Override
+	public List<SysRsRcAttribCatalog> findByIds(String ids) {
+		return find("SELECT model FROM SysRsRcAttribCatalog model "+
+				" WHERE model.id in ("+ids+") ORDER BY model.orderNo ");
+	}
 }

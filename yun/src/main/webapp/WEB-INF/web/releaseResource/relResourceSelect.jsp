@@ -3,23 +3,8 @@
 <script type="text/javascript">
 var $selectResourceGrid;
 var selectResourceOperation = {};
-var supplierObj = new Function("return " + '${hashMap.supplierObj}')();
-
 $(function(){
  	columns=[];
- 	<s:iterator value="attribCatalogs" id="attribCatalog" status="list">
-		<s:if test="#attribCatalog.showInListView==1">
-			columns.push(
-				{field:"${attribCatalog.id}",title:"${attribCatalog.rsrcAttribName}",width:150,
-					sortable:true,
-					formatter:function(value,row,index){
-						return value;
-					}
-				}
-			);
-		</s:if>
-	</s:iterator>
-	
 	columns.push(
 		{field:'supplierId',title:"供应商名称",width:150,sortable:true,
 			formatter:function(value, rowData) {
@@ -78,9 +63,9 @@ $(function(){
         pageSize:20,
         pageList:[20,50,100,150,200],
         pagination:true,
-        url:"resourceAction!resourceListData.act",
+        url:"resourceAction!relResourceListData.act",
         toolbar:"#selectResource_operation_bar",
-        queryParams:{"sysRsRcCatalog.id":'${sysRsRcCatalog.id}'},
+        queryParams:{},
         onBeforeLoad:function(){
         },
         onLoadSuccess:function(data){
@@ -120,22 +105,19 @@ $(function(){
 selectResourceOperation = {
 	search:function(){
 		var searchData = {};
-		searchData["rsrcCode"] = $("#selectSearchForm #rsrcCode").val();
-		searchData["rsrcName"] = $("#selectSearchForm #rsrcName").val();
+		searchData["keyWord"] = $("#selectSearchForm #keyWord").val();
 		searchData["abbreviaName"] = $("#selectSearchForm #abbreviaName").val();
 		searchData["brand"] = $("#selectSearchForm #brand").val();
 		searchData["supplierId"] = $("#selectSearchForm #supplierId").val();
 		$resourceGrid.datagrid("reload",
 			{
-				"resourceJsonStr":Some.util.jsonToStr(searchData),
-				"sysRsRcCatalog.id":'${sysRsRcCatalog.id}'
+				"resourceJsonStr":Some.util.jsonToStr(searchData)
 			}
 		);
 	},
 	
 	reset:function(){
-		$("#selectSearchForm #rsrcCode").val('');
-		$("#selectSearchForm #rsrcName").val('');
+		$("#selectSearchForm #keyWord").val('');
 		$("#selectSearchForm #abbreviaName").val('');
 		$("#selectSearchForm #brand").val('');
 		$("#selectSearchForm #supplierId").val(0);
@@ -146,15 +128,9 @@ selectResourceOperation = {
 <div class="easyui-layout" data-options="fit:true,border : false">
 	<div id="selectSearchForm" class = "table_seach_div" data-options="region:'north',title:'查询条件',border:false,split:false" style="overflow: hidden;background-color: #F8F8F8" >
 		<div class="search-div">
-			<lable for="">产品编号</lable>
+			<lable for="">产品关键字</lable>
 			<div class="select">
-				<input  type="text"  id="rsrcCode"/>
-			</div>
-		</div>
-		<div class="search-div">
-			<lable for="">产品名称</lable>
-			<div class="select">
-				<input  type="text"  id="rsrcName"/>
+				<input  type="text"  id="keyWord"/>
 			</div>
 		</div>
 		<div class="search-div">
@@ -169,6 +145,17 @@ selectResourceOperation = {
 				<input  type="text"  id="brand"/>
 			</div>
 		</div>
+		
+		<div class="search-div">
+			<label>工种</label>
+	       	<s:select id="workType" style="height:22px"
+	       		list="flowList"
+		       	listKey="value"   
+		       	listValue="name" 
+		       	headerKey="0"
+		       	headerValue="--请选择--"/>
+		</div>
+		
 		<div class="search-div">
 			<label>供应商</label>
 	       	<s:select id="supplierId" style="height:22px"
@@ -190,5 +177,5 @@ selectResourceOperation = {
 </div>
 
 <div  id="select_resource_operation_bar">
-    
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-ok', plain:true" onclick="selectResourceOperation.addResource()">确认选择</a>
 </div> 

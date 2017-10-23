@@ -95,10 +95,10 @@ public class ResourceUpDownAction extends AbstractUpDownAction{
 		for(SysRsRcAttrib attrib:sysRsRcAttribs){
 			Map<Integer,SysRsRcAttrib> childMap = map.get(attrib.getRsrcId());
 			if(null!=childMap){
-				childMap.put(attrib.getRsraAttribCatalogId(), attrib);
+				childMap.put(attrib.getRsrcAttribCatalogId(), attrib);
 			}else{
 				childMap = new HashMap<Integer,SysRsRcAttrib>();
-				childMap.put(attrib.getRsraAttribCatalogId(), attrib);
+				childMap.put(attrib.getRsrcAttribCatalogId(), attrib);
 				map.put(attrib.getRsrcId(), childMap);
 			}
 		}
@@ -459,7 +459,7 @@ public class ResourceUpDownAction extends AbstractUpDownAction{
 				SysRsRcAttribCatalog sysRcRsrcAttribType = importAttrMap.get(key);
 				if(null!=sysRcRsrcAttribType){
 					SysRsRcAttrib sysRcRsrcAttrib = new SysRsRcAttrib();
-					sysRcRsrcAttrib.setRsraAttribCatalogId(sysRcRsrcAttribType.getId());
+					sysRcRsrcAttrib.setRsrcAttribCatalogId(sysRcRsrcAttribType.getId());
 					String stringValue=PoiUtil.getCellValue(row.getCell(key),sheet,workBook);
 					//当单元格数据不为空
 					if(null!=stringValue){

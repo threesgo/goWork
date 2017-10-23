@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.yunwang.model.page.Pager;
 import com.yunwang.model.pojo.SysDataDictionary;
 import com.yunwang.model.pojo.SysResource;
+import com.yunwang.model.pojo.SysResourceRel;
 import com.yunwang.model.pojo.SysRsRcAttrib;
 import com.yunwang.model.pojo.SysRsRcAttribCatalog;
 import com.yunwang.model.pojo.SysRsRcCatalog;
@@ -182,10 +183,10 @@ public class ResourceAction extends AbstractLoginAction{
 		for(SysRsRcAttrib attrib:sysRsRcAttribs){
 			Map<Integer,SysRsRcAttrib> childMap = map.get(attrib.getRsrcId());
 			if(null!=childMap){
-				childMap.put(attrib.getRsraAttribCatalogId(), attrib);
+				childMap.put(attrib.getRsrcAttribCatalogId(), attrib);
 			}else{
 				childMap = new HashMap<Integer,SysRsRcAttrib>();
-				childMap.put(attrib.getRsraAttribCatalogId(), attrib);
+				childMap.put(attrib.getRsrcAttribCatalogId(), attrib);
 				map.put(attrib.getRsrcId(), childMap);
 			}
 		}
@@ -281,9 +282,56 @@ public class ResourceAction extends AbstractLoginAction{
 		//1、资源类型不发布，编辑状态资源和发布资源共用现有的资源类型，以及资源类型属性
 		//2、发布资源的时候、直接写入发布资源表，以及发布资源与类型自定义属性的值（原有资源关联的属性值）		
 		//3、新增或者删除属性不更新资源状态，删除的时候直接删除编辑资源，以及发布资源的属性数据
-				
-				
-		return null;
+		try{
+			sysResourceService.releaseResource(ids);
+			return success("操作成功!");
+		}catch(Exception e){
+			LOG.error(e.getMessage());
+			return error("操作失败!");
+		}
+	}
+	
+	
+	/**
+	 * @return 发布资源选择页面(现在只要一个页面就可以了)
+	 */
+	public String relResourceSelect(){
+		//流程数据
+		flowList = BaseDataDictionaryUtil.baseDataMap.get(4);
+		sysSuppliers =sysSupplierService.findByWorkType(null);
+		return "relResourceSelect";
+	}
+	
+	public String relResourceListData(){
+		JSONObject obj=new JSONObject();
+		JSONObject seachObj = JSONObject.fromObject(resourceJsonStr);
+		Pager<SysResourceRel> pager = sysResourceService.findRelResources(page,rows,seachObj);
+		JSONArray arr = new JSONArray();
+		if(null!=pager && null!=pager.getData()){
+			@SuppressWarnings("unchecked")
+			List<SysResourceRel> sysResources = (List<SysResourceRel>) pager.getData();
+			sysSuppliers =sysSupplierService.findByWorkType(null);
+  			Map<Integer,SysSupplier> supplierMap = CollectionUtil.listToMap(sysSuppliers,"id");
+  			for(SysResourceRel resource:sysResources){
+  				if(null != resource.getSupplierId()&&0!=resource.getSupplierId()){
+  					SysSupplier supplier = supplierMap.get(resource.getSupplierId());
+  	  				if(null != supplier){
+  	  					resource.setSupplier(supplier.getContact());
+  	  					resource.setSupplierName(supplier.getName());
+  	  					resource.setSupplierPhone(supplier.getPhoneNum());
+  	  					resource.setSupplierTel(supplier.getTelNum());
+  	  					resource.setSupplierAddress(supplier.getAddress());
+  	  				}
+  				}
+  				JSONObject newObj = JSONObject.fromObject(resource);
+  				arr.add(newObj);
+  			}
+  			obj.put("total", pager.getTotalRows());
+  	    }else{
+  	        obj.put("total",0); 
+  	    }
+		obj.put("rows", arr);
+  		return ajaxText(JSONObject.fromObject(obj).toString());
 	}
 	
 	public SysResource getSysResource() {

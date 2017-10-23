@@ -6,6 +6,7 @@ import net.sf.json.JSONObject;
 
 import com.yunwang.model.page.Pager;
 import com.yunwang.model.pojo.SysResource;
+import com.yunwang.model.pojo.SysResourceRel;
 import com.yunwang.model.pojo.SysRsRcAttrib;
 import com.yunwang.model.pojo.SysRsRcCatalog;
 
@@ -33,4 +34,9 @@ public interface SysResourceService {
 	void saveImportResources(List<SysResource> resourceList,SysRsRcCatalog sysRsRcCatalog);
 
 	List<SysResource> findParentByRsRcCatalogId(Integer parentId);
+
+	void releaseResource(String ids);
+
+	Pager<SysResourceRel> findRelResources(int page, int rows,
+			JSONObject seachObj);
 }

@@ -178,6 +178,29 @@ $(function(){
         },
         frozenColumns:[[
 	        {field:'ck',checkbox:true},
+	        {field:'rsrcStatus',title:"状态",width:36,
+	        	formatter:function(value,row,index){
+	        		if(value == 0){
+	        			return "删除";
+	        		}else if(value == 1){
+	        			return "新增";
+	        		}else if(value == 2){
+	        			return "编辑";
+	        		}else if(value == 3){
+	        			return "发布";
+	        		}
+				},
+				styler: function(value,row,index){
+					if(value == 0){
+	        			//return 'background-color:red;color:white;';
+	        		}else if(value == 1){
+	        		}else if(value == 2){
+	        			
+	        		}else if(value == 3){
+	        			return 'background-color:green;color:white;';
+	        		}
+				}
+			},
 	 		//{field:'rsrcTypeName',title:"产品类别",width:80,sortable:true},
 	 		//{field:'rsrcOrgName',title:"产品类型",width:80,sortable:true},
 	 		/*
@@ -240,7 +263,12 @@ $(function(){
 						max:9999999.99,
 						precision:2
 			 		}
-	        	}
+	        	},
+	        	styler: function(value,row,index){
+	        		if(value < row.purchasePrice){
+	        			return 'background-color:#ffee00;color:red;';
+	        		}
+				}
 	       	},
 	       	{field:'brand',title:"品牌",width:80,sortable:true,
 	        	editor:{
@@ -289,7 +317,8 @@ $(function(){
 								index: rowIndex,
 								row: {
 									id:json.data.id,
-									rsrcCode:json.data.rsrcCode
+									rsrcCode:json.data.rsrcCode,
+									rsrcStatus:json.data.rsrcStatus
 								}
 							});
 						},
@@ -570,6 +599,37 @@ resourceOperation = {
 			handler:function(){
 			}
 		});
+	},
+	
+	releaseResource:function(){
+		var checks = $resourceGrid.datagrid("getChecked");
+		if(checks.length == 0){
+			$alert("请勾选需要发布的产品!");
+			return false;
+		}
+		$.messager.confirm('确认','确认要发布勾选的产品吗？',function(r){    
+		    if (r){
+		    	var ids = [];
+		    	var releases = [];
+		    	$.each(checks,function(i,n){
+		    		ids.push(n.id);
+		    		releases.push(n);
+		    	});
+		        $.post("resourceAction!releaseResource.act",
+		        	{"ids":ids.join(",")},
+		        	function(data){
+					handlerResult(data,
+			    		function(rs){
+							$show(rs.message);
+							$resourceGrid.datagrid("reload");
+						},
+						function(rs){
+							$alert(rs.message);
+						}
+					);  
+				},"json");
+		    }    
+		});
 	}
 };
 </script>
@@ -682,4 +742,5 @@ resourceOperation = {
 		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-download', plain:true" onclick="resourceOperation.importResource()">导入</a>
 	</s:if>
 	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-upload', plain:true" onclick="resourceOperation.exportResource()">导出</a>
+	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-release', plain:true" onclick="resourceOperation.releaseResource()">发布</a>
 </div> 

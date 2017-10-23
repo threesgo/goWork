@@ -1,9 +1,7 @@
 package com.yunwang.model.pojo;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,6 +30,9 @@ public class SysResourceRel extends AbstractRowVersionModel{
 	@Column(name="RESOURCE_ID")
 	private Integer resourceId;
 	
+	@Column(name="KEY_WORD",length=128, nullable = false)
+	private String keyWord;  //自动生成，可修改（产品显示字段）
+	
 	@Column(name="RSRC_CODE", length=128, nullable = false)
 	private String rsrcCode; //资源型号
 	
@@ -47,9 +48,6 @@ public class SysResourceRel extends AbstractRowVersionModel{
 	@Column(name="RSRC_CATALOG_ID", nullable = false)
 	private Integer rsrcCatalogId;// 资源类型Id  //发布资源类型表中的ID
 	
-	@Column(name="PURCHASE_PRICE",precision=9, scale=2,nullable = false)
-	private BigDecimal purchasePrice; //采购价格、
-	
 	@Column(name="SALE_PRICE",precision=9, scale=2, nullable = false)
 	private BigDecimal salePrice;  //销售价格
 	
@@ -57,13 +55,32 @@ public class SysResourceRel extends AbstractRowVersionModel{
 	private String brand;  //品牌
 	
 	@Column(name = "SUPPLIER_ID")
-	private String supplierId;  //供应商名称 //后期改成id
+	private Integer supplierId;  //供应商名称 //后期改成id
 	
 	@Column(name = "RELEASE_DATE")
 	private Date releaseDate; // 创建时间
 	
+	@Column(name="RSRC_STUTAS",nullable = false)
+	private Integer rsrcStatus;//状态  0 失效  1，正常
+	
+	
 	@Transient
-	private List<SysRsRcAttrib> sysRcRsrcAttribList = new ArrayList<SysRsRcAttrib>();
+	private String supplierName;  //供应商名称
+	
+	@Transient
+	private String supplier;  //供应商联系人
+	
+	@Transient
+	private String supplierPhone;  //供应商联系人手机
+	
+	@Transient
+	private String supplierTel;  //供应商
+	
+	@Transient
+	private String supplierAddress;  //供应商地址
+	
+	@Transient
+	private Integer workType;
 	
 	
 	public SysResourceRel(){
@@ -84,6 +101,14 @@ public class SysResourceRel extends AbstractRowVersionModel{
 
 	public void setResourceId(Integer resourceId) {
 		this.resourceId = resourceId;
+	}
+	
+	public String getKeyWord() {
+		return keyWord;
+	}
+
+	public void setKeyWord(String keyWord) {
+		this.keyWord = keyWord;
 	}
 
 	public String getRsrcName() {
@@ -118,14 +143,6 @@ public class SysResourceRel extends AbstractRowVersionModel{
 		this.orderNo = orderNo;
 	}
 
-	public BigDecimal getPurchasePrice() {
-		return purchasePrice;
-	}
-
-	public void setPurchasePrice(BigDecimal purchasePrice) {
-		this.purchasePrice = purchasePrice;
-	}
-
 	public BigDecimal getSalePrice() {
 		return salePrice;
 	}
@@ -150,14 +167,6 @@ public class SysResourceRel extends AbstractRowVersionModel{
 		this.abbreviaName = abbreviaName;
 	}
 
-	public List<SysRsRcAttrib> getSysRcRsrcAttribList() {
-		return sysRcRsrcAttribList;
-	}
-
-	public void setSysRcRsrcAttribList(List<SysRsRcAttrib> sysRcRsrcAttribList) {
-		this.sysRcRsrcAttribList = sysRcRsrcAttribList;
-	}
-
 	public String getBrand() {
 		return brand;
 	}
@@ -166,11 +175,67 @@ public class SysResourceRel extends AbstractRowVersionModel{
 		this.brand = brand;
 	}
 
-	public String getSupplierId() {
+	public Integer getSupplierId() {
 		return supplierId;
 	}
 
-	public void setSupplierId(String supplierId) {
+	public void setSupplierId(Integer supplierId) {
 		this.supplierId = supplierId;
+	}
+
+	public Integer getRsrcStatus() {
+		return rsrcStatus;
+	}
+
+	public void setRsrcStatus(Integer rsrcStatus) {
+		this.rsrcStatus = rsrcStatus;
+	}
+
+	public String getSupplierName() {
+		return supplierName;
+	}
+
+	public void setSupplierName(String supplierName) {
+		this.supplierName = supplierName;
+	}
+
+	public String getSupplier() {
+		return supplier;
+	}
+
+	public void setSupplier(String supplier) {
+		this.supplier = supplier;
+	}
+
+	public String getSupplierPhone() {
+		return supplierPhone;
+	}
+
+	public void setSupplierPhone(String supplierPhone) {
+		this.supplierPhone = supplierPhone;
+	}
+
+	public String getSupplierTel() {
+		return supplierTel;
+	}
+
+	public void setSupplierTel(String supplierTel) {
+		this.supplierTel = supplierTel;
+	}
+
+	public String getSupplierAddress() {
+		return supplierAddress;
+	}
+
+	public void setSupplierAddress(String supplierAddress) {
+		this.supplierAddress = supplierAddress;
+	}
+
+	public Integer getWorkType() {
+		return workType;
+	}
+
+	public void setWorkType(Integer workType) {
+		this.workType = workType;
 	}
 }

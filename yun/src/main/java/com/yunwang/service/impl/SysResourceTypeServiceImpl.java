@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.yunwang.dao.SysResourceDaoI;
+import com.yunwang.dao.SysResourceRelDaoI;
 import com.yunwang.dao.SysRsRcAttribCatalogDaoI;
 import com.yunwang.dao.SysRsRcAttribDaoI;
+import com.yunwang.dao.SysRsRcAttribRelDaoI;
 import com.yunwang.dao.SysRsRcBaseDataDaoI;
 import com.yunwang.dao.SysRsRcCatalogDaoI;
 import com.yunwang.model.pojo.SysResource;
@@ -34,6 +36,10 @@ public class SysResourceTypeServiceImpl implements SysResourceTypeService{
 	private SysRsRcAttribDaoI sysRsRcAttribDao;
 	@Autowired
 	private SysRsRcBaseDataDaoI sysRsRcBaseDataDao;
+	@Autowired
+	private SysRsRcAttribRelDaoI sysRsRcAttribRelDao;
+	@Autowired
+	private SysResourceRelDaoI sysResourceRelDao;
 	
 	@Override
 	public void saveOrUpdateRsRcCatalog(SysRsRcCatalog sysRsRcCatalog) {
@@ -60,6 +66,9 @@ public class SysResourceTypeServiceImpl implements SysResourceTypeService{
 		sysResourceDao.deleteByPropertys("rsrcCatalogId", StringBufferByCollectionUtil.convertCollection(ids));
 		sysRsRcAttribCatalogDao.deleteByPropertys("rsrcCatalogId", StringBufferByCollectionUtil.convertCollection(ids));
 		sysRsRcAttribDao.deleteByPropertys("rsrcCatalogId",StringBufferByCollectionUtil.convertCollection(ids));
+		
+		sysResourceRelDao.deleteByPropertys("rsrcCatalogId", StringBufferByCollectionUtil.convertCollection(ids));
+		sysRsRcAttribRelDao.deleteByPropertys("rsrcCatalogId",StringBufferByCollectionUtil.convertCollection(ids));
 	}
 	
 	private void getChildrens(List<Integer> childrenIds,List<SysRsRcCatalog> children){
@@ -126,6 +135,7 @@ public class SysResourceTypeServiceImpl implements SysResourceTypeService{
 	@Override
 	public void deleteSysRsRcAttribCatalogs(String ids) {
 		sysRsRcAttribDao.deleteByPropertys("rsraAttribCatalogId", ids);
+		sysRsRcAttribRelDao.deleteByPropertys("rsraAttribCatalogId", ids);
 		sysRsRcAttribCatalogDao.deleteByPropertys("id", ids);
 	}
 

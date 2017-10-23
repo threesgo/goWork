@@ -26,7 +26,7 @@ public class SysRsRcAttrib extends AbstractRowVersionModel{
 	private Integer rsrcId;//资源ID
 	
 	@Column(name="RSRC_ATTRIB_CATALOG_ID", nullable = false)
-	private Integer rsraAttribCatalogId;//属性ID
+	private Integer rsrcAttribCatalogId;//属性ID
 	
 	@Column(name="RSRC_ATTRIB_VALUE", length=256)
 	private String rsrcAttribValue;//属性值
@@ -54,12 +54,12 @@ public class SysRsRcAttrib extends AbstractRowVersionModel{
 		this.rsrcId = rsrcId;
 	}
 
-	public Integer getRsraAttribCatalogId() {
-		return rsraAttribCatalogId;
+	public Integer getRsrcAttribCatalogId() {
+		return rsrcAttribCatalogId;
 	}
 
-	public void setRsraAttribCatalogId(Integer rsraAttribCatalogId) {
-		this.rsraAttribCatalogId = rsraAttribCatalogId;
+	public void setRsrcAttribCatalogId(Integer rsrcAttribCatalogId) {
+		this.rsrcAttribCatalogId = rsrcAttribCatalogId;
 	}
 
 	public String getRsrcAttribValue() {
