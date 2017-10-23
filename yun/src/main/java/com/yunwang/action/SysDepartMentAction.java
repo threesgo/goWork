@@ -5,7 +5,6 @@ import java.util.List;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,10 +29,7 @@ public class SysDepartMentAction extends AbstractLoginAction{
 	private SysUserService sysUserService;
 	
 	private SysDepartMent sysDepartMent;
-	 
 	private String id;
-	
-	private String operateType;
 	
 	private String nodeId;
 	
@@ -43,8 +39,6 @@ public class SysDepartMentAction extends AbstractLoginAction{
 	public String execute(){
 		return "index";
 	}	
-	
-	
 	
 	/**
 	 * @date 2017.10.23
@@ -60,6 +54,9 @@ public class SysDepartMentAction extends AbstractLoginAction{
 			json.put("id","root");
 			json.put("text","部门列表");
 			json.put("state", "closed");
+			JSONObject obj = new JSONObject();
+			obj.put("id",0);
+			json.put("attributes",obj);
 			jsoArr.add(json);
 		}else if(id.startsWith("root")){
 			List<SysDepartMent> listSysDepartMent = sysUserService.findDepartMentByParentId(0);
@@ -95,10 +92,6 @@ public class SysDepartMentAction extends AbstractLoginAction{
 	 * </p>
 	 */
 	public String preAddOrEdit(){
-		//if("del".equals(operateType)){
-			
-		//}
-		//sysRole=sysUserService.findRoleByRoleId(sysRole.getId());
 		return "preAddOrEdit";
 	}
 	
@@ -128,13 +121,18 @@ public class SysDepartMentAction extends AbstractLoginAction{
 	/**
 	 * <p>部门列表-保部门信息</p>
 	 */
-	public String add(){
-		if(sysUserService.isExistDepartMent(sysDepartMent.getCode())){
-			sysUserService.saveSysDepartMent(sysDepartMent);
-			return success(getText("添加成功"),JSONObject.fromObject(sysDepartMent));
+	public String saveOrUpdate(){
+		if(sysDepartMent.getId() == null){
+			if(sysUserService.isExistDepartMent(sysDepartMent.getCode())){
+				sysUserService.saveSysDepartMent(sysDepartMent);
+				return success(getText("添加成功"),JSONObject.fromObject(sysDepartMent));
+			}else{
+				return error(getText("该部门已存在"));
+			}
 		}else{
-			return error(getText("该部门已存在"));
+			return null;
 		}
+		
 	}
 	
 	/**
@@ -160,14 +158,6 @@ public class SysDepartMentAction extends AbstractLoginAction{
 		this.id = id;
 	}
 
-	public String getOperateType() {
-		return operateType;
-	}
-
-	public void setOperateType(String operateType) {
-		this.operateType = operateType;
-	}
-
 	public String getNodeId() {
 		return nodeId;
 	}
@@ -175,6 +165,13 @@ public class SysDepartMentAction extends AbstractLoginAction{
 	public void setNodeId(String nodeId) {
 		this.nodeId = nodeId;
 	}
+
+	public SysDepartMent getSysDepartMent() {
+		return sysDepartMent;
+	}
+
+	public void setSysDepartMent(SysDepartMent sysDepartMent) {
+		this.sysDepartMent = sysDepartMent;
+	}
 	 
-	
 }

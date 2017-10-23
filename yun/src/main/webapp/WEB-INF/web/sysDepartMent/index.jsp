@@ -19,7 +19,8 @@
 		<div id="add_DepartMent" class="easyui-menu" style="width:120px;">
 			<div onclick="append()" data-options="iconCls:'icon-add'">添加</div>
 		</div>
-		<div id="del_DepartMent" class="easyui-menu" style="width:120px;">
+		<div id="departMent" class="easyui-menu" style="width:120px;">
+			<div onclick="append()" data-options="iconCls:'icon-add'">添加</div>
 			<div onclick="del(this)" data-options="iconCls:'icon-remove'">删除</div>
 		</div>
  		<script type="text/javascript" > 
@@ -27,14 +28,15 @@
  		var layoutTab;
  		var majorId;
  		var id;//所选角色id
+ 		var parentId;//所选角色parentid
 	 	(function($){
 	 		//添加树结构
 	 		departMentTree=$('#departMentTree').tree({
  					url:"sysDepartMentAction!findTree.act?",
  					animate:true,
  					onSelect:function(node){//onSelect是选择节点时触发
- 						closeAllTab(layoutTab);//此函数在public中定义，关闭中间布局的选项卡
- 						if(departMentTree.tree("isLeaf",node.target)){//判断是否为叶子节点
+ 						//closeAllTab(layoutTab);//此函数在public中定义，关闭中间布局的选项卡
+ 						/* if(departMentTree.tree("isLeaf",node.target)){//判断是否为叶子节点
  							layoutTab.tabs('add',
  								{
  									title :"关联模块",
@@ -51,12 +53,13 @@
  	 								}
  								);
  							}
- 						}
+ 						} */
  					},
  					//右键菜单
  					onContextMenu:function(e,node){
  						id=node.id;
- 						if(node.id.substring(0,4)=="root"){
+ 						parentId = node.attributes.id;
+ 						if(node.attributes.id == 0){
 	 						e.preventDefault();
 							// 查找节点
 							$('#departMentTree').tree('select', node.target);
@@ -68,16 +71,13 @@
 						}else{
 	 						e.preventDefault();
 							// 查找节点
-							$('#departMentTree').tree('select', node.target);
+							//$('#departMentTree').tree('select', node.target);
 							// 显示快捷菜单
-							$('#add_DepartMent').menu('show', {//添加
+							$('#departMent').menu('show', {
 								left: e.pageX,
 								top: e.pageY,
 							});
-							$('#del_DepartMent').menu('show', {//删除
-								left: e.pageX,
-								top: e.pageY,
-							});
+							
 						}
  					}
  				});
@@ -99,7 +99,7 @@
 				height:"auto",
 				resizable:true,
 				href:"sysDepartMentAction!preAddOrEdit.act",
-				queryParams:{"nodeId":id,"operateType":"add"},
+				queryParams:{"sysDepartMent.parentId":parentId},
 				method:"post", 
 				buttons:[{
 					text:"确定",
@@ -109,8 +109,8 @@
 							success:function(data){
 								handlerResult(data,function(rs){
 									$show(rs.message);
-									var root = roleTree.tree("getRoot");
-									roleTree.tree('reload',root.target);
+									var departMent = departMentTree.tree("getRoot");
+									departMentTree.tree('reload',departMent.target);
 									addDepartMentDilog.dialog("close");
 								},function(rs){
 									$alert(rs.message);
@@ -131,6 +131,30 @@
 				}
 			});
 	 	};
+	 	//删除部门
+	 	function del(node){
+	 		$.messager.confirm('确认','您确认想要删除所选角色吗？',function(r){
+			    if (r){
+			    	$.post("sysRoleAction!delete.act",
+			    		   {"sysRole.id":id.substring(4,id.length)},//id是节点的id属性名
+			    		   function(data){
+								handlerResult(data,function(rs){
+									$show(rs.message);
+									$('#roleTree').tree('remove',node.target);
+									var root = roleTree.tree("getRoot");
+									roleTree.tree('reload',root.target);
+									roleTree.tree('select',root.target);
+								},function(rs){
+									$alert(rs.message);
+								});
+			    		   }
+					);
+			        
+			    }    
+			}); 
+	 		
+	 	};
+	 	
 	 	</script>
 	 </body>
 </html>

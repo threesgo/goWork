@@ -319,12 +319,15 @@ public class SysUserServiceImpl implements SysUserService{
 		String maxStrOrderNo = sysDepartMentDao.findMaxStrSeqByPfield("strOrderNo", "parentId",sysDepartMent.getParentId());
 		if(StringUtils.isBlank(maxStrOrderNo)){
 			if(0 == sysDepartMent.getParentId()){
-				maxStrOrderNo = "001";
+				maxStrOrderNo = "000";
 			}else{
 				SysDepartMent parentDep = sysDepartMentDao.get(SysDepartMent.class,sysDepartMent.getParentId());
-				maxStrOrderNo = parentDep.getStrOrderNo()+"001";
+				maxStrOrderNo = parentDep.getStrOrderNo()+"000";
 			}
 		}
+		Integer num = Integer.parseInt(maxStrOrderNo.substring(maxStrOrderNo.length()-1, maxStrOrderNo.length()))+1;
+		String strOrderNo = maxStrOrderNo.substring(0, maxStrOrderNo.length()-1)+num.toString();
+		departMent.setStrOrderNo(strOrderNo);
 		sysDepartMentDao.save(departMent);
 	}
 }
