@@ -20,7 +20,7 @@ public class SysRsRcCatalog extends AbstractRowVersionModel{
 
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator="my_entity_seq_gen")
-    @SequenceGenerator(name="my_entity_seq_gen", sequenceName="SEQ_BOP_TM_RSRC_CATALOG")
+    @SequenceGenerator(name="my_entity_seq_gen", sequenceName="SEQ_SYS_RSRC_CATALOG")
 	private Integer id;
 	
 	@Column(name="ORDER_NO", nullable = false)
@@ -38,7 +38,7 @@ public class SysRsRcCatalog extends AbstractRowVersionModel{
 	@Column(name="CATALOG_STUTAS",precision=1,nullable = false,columnDefinition = "number default 1")
 	private Integer catalogStatus;//状态     0，删除tree不显示，发布区显示(发布后物理删除,发布区也删除)   1、新增  2、编辑   3、发布      (第一次创建：新增 ;新增状态下编辑：新增 ;发布和删除状态下编辑：编辑 )
 	
-	@Column(name="CATALOG_TYPE",precision=2, nullable = false)
+	@Column(name="CATALOG_TYPE",nullable = false)
 	private Integer catalogType;//资源类别
 	
 	@Transient
