@@ -21,24 +21,19 @@
  					onSelect:function(node){//onSelect是选择节点时触发
  						closeAllTab(resourcePackageTab);
  						if("root" != node.id){
- 							var nodeStart = node.id.substring(0,3);
- 							if(nodeStart == "dic"){
- 								resourcePackageTab.tabs('add',{
- 	 	 							title:'组合列表', 
- 	 							    href:"resourcePackageAction!packageList.act?sysRsRcPackage.packageType="+ node.attributes.value
- 	 							});
- 							}else{
- 								resourcePackageTab.tabs('add',{    
- 							    	title:'基本信息', 
- 							    	href:"resourcePackageAction!info.act?sysRsRcPackage.id="+ node.attributes.id
- 								});
- 								resourcePackageTab.tabs('add',{
- 		 							title:'产品列表', 
- 								    href:"resourcePackageAction!packageResourceList.act?sysRsRcPackage.id="+ node.attributes.id
- 								});
- 							}
+							resourcePackageTab.tabs('add',{    
+						    	title:'基本信息', 
+						    	href:"resourcePackageAction!info.act?sysRsRcPackage.id="+ node.attributes.id
+							});
+							resourcePackageTab.tabs('add',{
+	 							title:'产品列表', 
+							    href:"resourcePackageAction!packageResourceList.act?sysRsRcPackage.id="+ node.attributes.id
+							});
  						}else{
- 							
+ 							resourcePackageTab.tabs('add',{
+ 	 							title:'组合列表', 
+ 							    href:"resourcePackageAction!packageList.act"
+ 							});
  						}
  					}
  				}

@@ -9,6 +9,7 @@
         style="width:200px;" data-options="required:true,validType:['length[1,40]','illegal']" value="${sysRsRcPackage.name}"/>   
     </div>
     
+    <!--
     <div>   
         <label for="type">组合类别:</label>
       	<s:select id="type" 
@@ -18,7 +19,8 @@
        	name="sysRsRcPackage.packageType"
        	/>
    	</div>
-   	
+   	-->
+   	  
    	<div>   
         <label for="name">最小价格:</label>   
         <input class="easyui-numberbox" id="edit_package_minPrice" type="text" name="sysRsRcPackage.minPrice" 

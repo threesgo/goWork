@@ -10,11 +10,9 @@ import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.yunwang.model.pojo.SysDataDictionary;
 import com.yunwang.model.pojo.SysResource;
 import com.yunwang.model.pojo.SysRsRcPackage;
 import com.yunwang.service.SysRsRcPackageService;
-import com.yunwang.util.BaseDataDictionaryUtil;
 import com.yunwang.util.action.AbstractLoginAction;
 
 @Action(
@@ -43,8 +41,6 @@ public class ResourcePackageAction extends AbstractLoginAction{
 	
 	private SysRsRcPackage sysRsRcPackage;
 	private String id;
-	private List<SysDataDictionary> packageTypeList;
-	
 	
 	@Override
 	public String execute() throws Exception {
@@ -67,18 +63,18 @@ public class ResourcePackageAction extends AbstractLoginAction{
 			json.put("state", "closed");
 			jsonArr.add(json);
 		}else if("root".equals(id)){
-			packageTypeList = BaseDataDictionaryUtil.baseDataMap.get(8);
-			for(SysDataDictionary dic : packageTypeList){
-				JSONObject json=new JSONObject();
-				json.put("id", "dic"+dic.getValue());
-				json.put("text", dic.getName());
-				json.put("attributes",JSONObject.fromObject(dic));
-				json.put("state", "closed");
-				jsonArr.add(json);
-			}
-		}else{
-			//List<SysRsRcPackage> sysRsrcPackages = sysRsRcPackageService.findAll("orderNo");
-			List<SysRsRcPackage> sysRsrcPackages = sysRsRcPackageService.findByPackageType(Integer.parseInt(id.substring(3,id.length())));
+//			packageTypeList = BaseDataDictionaryUtil.baseDataMap.get(8);
+//			for(SysDataDictionary dic : packageTypeList){
+//				JSONObject json=new JSONObject();
+//				json.put("id", "dic"+dic.getValue());
+//				json.put("text", dic.getName());
+//				json.put("attributes",JSONObject.fromObject(dic));
+//				json.put("state", "closed");
+//				jsonArr.add(json);
+//			}
+//		}else{
+			List<SysRsRcPackage> sysRsrcPackages = sysRsRcPackageService.findAll("orderNo");
+			//List<SysRsRcPackage> sysRsrcPackages = sysRsRcPackageService.findByPackageType(Integer.parseInt(id.substring(3,id.length())));
 			for(SysRsRcPackage pack : sysRsrcPackages){
 				jsonArr.add(getJson(pack));
 			}
@@ -107,7 +103,7 @@ public class ResourcePackageAction extends AbstractLoginAction{
 	
 	public String childrenData(){
 		return ajaxText(JSONArray.fromObject(
-				sysRsRcPackageService.findByPackageType(sysRsRcPackage.getPackageType())));
+				sysRsRcPackageService.findAll("orderNo")));
 	}
 	
 	/**
@@ -150,17 +146,15 @@ public class ResourcePackageAction extends AbstractLoginAction{
 		json_code.put("value", sysRsRcPackage.getCode());
 		jsonArr.add(json_code);
 		
-		if(sysRsRcPackage.getPackageType() == 1){
-			JSONObject minPrice=new JSONObject();
-			minPrice.put("attrName","价格最小值");
-			minPrice.put("value", sysRsRcPackage.getMinPrice());
-			jsonArr.add(minPrice);
-			
-			JSONObject maxPrice=new JSONObject();
-			maxPrice.put("attrName","价格最大值");
-			maxPrice.put("value", sysRsRcPackage.getMaxPrice());
-			jsonArr.add(maxPrice);
-		}
+		JSONObject minPrice=new JSONObject();
+		minPrice.put("attrName","价格最小值");
+		minPrice.put("value", sysRsRcPackage.getMinPrice());
+		jsonArr.add(minPrice);
+		
+		JSONObject maxPrice=new JSONObject();
+		maxPrice.put("attrName","价格最大值");
+		maxPrice.put("value", sysRsRcPackage.getMaxPrice());
+		jsonArr.add(maxPrice);
 		return ajaxText(jsonArr);
 	}
 	
@@ -171,7 +165,6 @@ public class ResourcePackageAction extends AbstractLoginAction{
 	 * <p>更新产品组合</p>
 	 */
 	public String saveOrUpdatePackagePage(){
-		packageTypeList = BaseDataDictionaryUtil.baseDataMap.get(8);
 		if(null != sysRsRcPackage&&null != sysRsRcPackage.getId()){
 			sysRsRcPackage = sysRsRcPackageService.get(sysRsRcPackage.getId());
 		}
@@ -190,7 +183,6 @@ public class ResourcePackageAction extends AbstractLoginAction{
 				SysRsRcPackage updateSysRsRcPackage = sysRsRcPackageService.get(sysRsRcPackage.getId());
 				updateSysRsRcPackage.setCode(sysRsRcPackage.getCode());
 				updateSysRsRcPackage.setName(sysRsRcPackage.getName());
-				updateSysRsRcPackage.setPackageType(sysRsRcPackage.getPackageType());
 				updateSysRsRcPackage.setMinPrice(sysRsRcPackage.getMinPrice());
 				updateSysRsRcPackage.setMaxPrice(sysRsRcPackage.getMaxPrice());
 				sysRsRcPackageService.saveOrUpdateRsRcPackage(updateSysRsRcPackage);
@@ -223,13 +215,5 @@ public class ResourcePackageAction extends AbstractLoginAction{
 
 	public void setSysRsRcPackage(SysRsRcPackage sysRsRcPackage) {
 		this.sysRsRcPackage = sysRsRcPackage;
-	}
-
-	public List<SysDataDictionary> getPackageTypeList() {
-		return packageTypeList;
-	}
-
-	public void setPackageTypeList(List<SysDataDictionary> packageTypeList) {
-		this.packageTypeList = packageTypeList;
 	}
 }

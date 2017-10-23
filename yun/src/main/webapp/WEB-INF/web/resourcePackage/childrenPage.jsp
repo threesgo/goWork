@@ -16,7 +16,7 @@ $(function(){
   		pagination:false, 
   		pageSize:20,  
         pageList:[10,20,50,100,150,200],
-      	url:"resourcePackageAction!childrenData.act?sysRsRcPackage.packageType=${sysRsRcPackage.packageType}",
+      	url:"resourcePackageAction!childrenData.act",
 		onBeforeLoad:function(){
 		},
 		columns : [ [

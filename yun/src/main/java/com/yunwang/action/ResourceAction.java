@@ -40,7 +40,9 @@ import com.yunwang.util.string.StringBufferByCollectionUtil;
 				  "inputName","exportResourceStream","contentDisposition","attachment;filename=${exportResourceFileName}"}),
 		@Result(name="importResourcePage",location="/WEB-INF/web/resource/importResourcePage.jsp"),
 		@Result(name="resourceSelect",location="/WEB-INF/web/resource/resourceSelect.jsp"),
-		@Result(name="selectResourceList",location="/WEB-INF/web/resource/selectResourceList.jsp")
+		@Result(name="selectResourceList",location="/WEB-INF/web/resource/selectResourceList.jsp"),
+		@Result(name="relResourceSelect",location="/WEB-INF/web/releaseResource/relResourceSelect.jsp")
+		
 		
 	}
 )

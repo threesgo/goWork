@@ -32,9 +32,6 @@ public class SysRsRcPackage extends AbstractRowVersionModel{
 	@Column(name="ORDER_NO", nullable = false)
 	private Integer orderNo;//顺序号
 	
-	@Column(name="PACKAGE_TYPE")
-	private Integer packageType;
-	
 	@Column(name="MIN_PRICE")
 	private BigDecimal minPrice;//最小价格
 	
@@ -91,13 +88,5 @@ public class SysRsRcPackage extends AbstractRowVersionModel{
 
 	public void setMaxPrice(BigDecimal maxPrice) {
 		this.maxPrice = maxPrice;
-	}
-
-	public Integer getPackageType() {
-		return packageType;
-	}
-
-	public void setPackageType(Integer packageType) {
-		this.packageType = packageType;
 	}
 }
