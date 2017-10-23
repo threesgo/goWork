@@ -3,6 +3,7 @@ package com.yunwang.service;
 import java.util.List;
 
 import com.yunwang.model.page.Pager;
+import com.yunwang.model.pojo.SysDepartMent;
 import com.yunwang.model.pojo.SysMenu;
 import com.yunwang.model.pojo.SysRole;
 import com.yunwang.model.pojo.SysUser;
@@ -53,6 +54,8 @@ public interface SysUserService {
 	
 	public boolean isExist(String name);
 	
+	public boolean isExistDepartMent(String code);
+	
 	public void saveSysRole(SysRole sysRole);
 	
 	public SysRole findRoleByRoleId(Integer sysRoleId);
@@ -60,4 +63,8 @@ public interface SysUserService {
 	public void deleteSysRole(SysRole sysRole);
 	
 	public void updateRole(SysRole sysRole);
+	
+	public List<SysDepartMent> findDepartMentByParentId(Integer parentId);
+	
+	public void saveSysDepartMent(SysDepartMent sysDepartMent);
 }

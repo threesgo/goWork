@@ -540,6 +540,13 @@ public class BaseDaoImpl<T> implements BaseDaoI<T> {
 		return maxOrder==null?0:maxOrder;
 	}
     
+	@Override
+    public String findMaxStrSeqByPfield(String seqField,String pField,Integer pValue) {
+		String hql="SELECT MAX(model."+seqField+") FROM "+entityClass.getSimpleName()+" model WHERE model."+pField+"=? ";
+		String maxOrder=getUniqueResult(hql,pValue);
+		return maxOrder==null?"":maxOrder;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public <N> N getUniqueResult(String hql, Object... values) {
 		Query query =creatQuery(hql,values);

@@ -291,6 +291,8 @@ public interface BaseDaoI<T> {
 	public <N> List<N> findByIdsToPaging(String ids, OriginalQuerior<N> sqlQuery);
 
 	public Integer findMaxSeqByPfield(String seqField, String pField, Integer pValue);
+	
+	public String findMaxStrSeqByPfield(String seqField, String pField, Integer pValue);
 
 	public Integer findMaxSeq(String field);
 	

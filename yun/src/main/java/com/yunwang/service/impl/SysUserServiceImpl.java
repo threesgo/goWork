@@ -7,16 +7,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSONObject;
+import com.yunwang.dao.SysDepartMentDaoI;
 import com.yunwang.dao.SysMenuDaoI;
 import com.yunwang.dao.SysRoleDaoI;
 import com.yunwang.dao.SysRoleMenuDaoI;
 import com.yunwang.dao.SysUserDaoI;
 import com.yunwang.dao.SysUserRoleDaoI;
 import com.yunwang.model.page.Pager;
+import com.yunwang.model.pojo.SysDepartMent;
 import com.yunwang.model.pojo.SysMenu;
 import com.yunwang.model.pojo.SysRole;
 import com.yunwang.model.pojo.SysUser;
@@ -44,6 +47,9 @@ public class SysUserServiceImpl implements SysUserService{
 	
 	@Autowired
 	SysRoleMenuDaoI sysRoleMenuDao;
+	
+	@Autowired
+	SysDepartMentDaoI sysDepartMentDao;
 
 	@Override
 	public List<SysUser> findList() {
@@ -261,5 +267,64 @@ public class SysUserServiceImpl implements SysUserService{
 	@Override
 	public void updateRole(SysRole sysRole) {
 		sysRoleDao.update(sysRole);
+	}
+
+	/**
+	 * @Description: 根据父级id查找部门
+	 * @param   
+	 * @return  
+	 * @throws
+	 * @author KXL
+	 * @date 2017-10-23
+	 */
+	@Override
+	public List<SysDepartMent> findDepartMentByParentId(Integer parentId) {
+		return sysDepartMentDao.findDepartMentByParentId(parentId);
+	}
+
+	/**
+	 * @Description: 根据部门code判断是否存在
+	 * @param   
+	 * @return  
+	 * @throws
+	 * @author KXL
+	 * @date 2017-10-23
+	 */
+	@Override
+	public boolean isExistDepartMent(String code) {
+		List<SysDepartMent> list = sysDepartMentDao.findByProperty("code", code);
+		if(list.size()>0){
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * @Description: 新建部门信息
+	 * @param   
+	 * @return  
+	 * @throws
+	 * @author KXL
+	 * @date 2017-10-23
+	 */
+	@Override
+	public void saveSysDepartMent(SysDepartMent sysDepartMent) {
+		SysDepartMent departMent = new SysDepartMent();
+		departMent.setCode(sysDepartMent.getCode());
+		departMent.setName(sysDepartMent.getName());
+		departMent.setParentId(sysDepartMent.getParentId());
+		Integer maxOrderNo = sysDepartMentDao.findMaxSeqByPfield("orderNo", "parentId", sysDepartMent.getParentId());
+		departMent.setOrderNo(maxOrderNo+1);
+		//组合顺序号
+		String maxStrOrderNo = sysDepartMentDao.findMaxStrSeqByPfield("strOrderNo", "parentId",sysDepartMent.getParentId());
+		if(StringUtils.isBlank(maxStrOrderNo)){
+			if(0 == sysDepartMent.getParentId()){
+				maxStrOrderNo = "001";
+			}else{
+				SysDepartMent parentDep = sysDepartMentDao.get(SysDepartMent.class,sysDepartMent.getParentId());
+				maxStrOrderNo = parentDep.getStrOrderNo()+"001";
+			}
+		}
+		sysDepartMentDao.save(departMent);
 	}
 }

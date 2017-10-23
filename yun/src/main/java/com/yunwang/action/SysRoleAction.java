@@ -53,20 +53,6 @@ public class SysRoleAction extends AbstractLoginAction{
 	private String roles;
 	private String jsonInfo;
 	
-	/*private String moduleIds;
-	
-	
-	
-	private Integer majorId;*/
-	
-	/*@Autowired
-	private SysRoleService sysRoleService;
-	@Autowired
-	private ISysModuleService sysModuleService;
-	@Autowired
-	private ISysRoleModuleService sysRoleModuleService;
-*/
-	
 	private static final long serialVersionUID = 1L;
 	
 	
@@ -77,31 +63,6 @@ public class SysRoleAction extends AbstractLoginAction{
 		return "index";
 	}	
 	
-	/**
-	 * @author SW
-	 * @date 2017-3-23
-	 * <p>根据专业查询角色类型</p>
-	 * @param
-	 * @throws
-	 * @return String
-	 *//*
-	public String roleList(){
-		JSONArray json = sysRoleService.findByMajorIdToJSON(majorId);
-		return ajaxText(json.toString());
-	}*/
-	
-	/**
-	 * @author SW
-	 * @date 2017-5-2
-	 * <p>从数据字典里查询所有的专业</p>
-	 * @param
-	 * @throws
-	 * @return String
-	 *//*
-	public String majorList(){
-		JSONArray json = sysRoleService.findMajorToJSON();
-		return ajaxText(json.toString());
-	}*/
 	
 	/**
 	 * @date 2017.10.3
@@ -133,7 +94,6 @@ public class SysRoleAction extends AbstractLoginAction{
 			}
 		}
 		return ajaxText(jsoArr);
-		//return null;
 	}
 	 
 	/**
@@ -183,10 +143,10 @@ public class SysRoleAction extends AbstractLoginAction{
 	 * @return
 	 * <p>跳转修改角色名称页面</p>
 	 */
-	public String preEdit(){
+/*	public String preEdit(){
 		sysRole=sysUserService.findRoleByRoleId(sysRole.getId());
 		return "preEdit";
-	}
+	}*/
 	
 	/**
 	 * @date 2016-12-12
