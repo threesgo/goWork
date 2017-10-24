@@ -74,7 +74,7 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 			buf.append(" AND model.ID NOT IN (SELECT pcResource.RESOURCE_ID FROM SYS_RSRC_PC_RESOURCE pcResource WHERE pcResource.PACKAGE_ID =:packageId)");
 			parmeMap.put("packageId",sysRsRcPackage.getId());
 		}
-		buf.append(" ORDER BY rsCatalog.CATALOG_TYPE,model.ORDER_NO");
+		buf.append(" ORDER BY model.RSRC_CODE");
 		
 		Map<String, Type> scalarMap = new HashMap<String, Type>();
 		scalarMap.put("id", new IntegerType());
@@ -99,7 +99,8 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 		Map<String, Object> map = new HashMap<String,Object>();
 		StringBuffer buf = new StringBuffer("SELECT model FROM SysResourceRel model WHERE 1=1 ");
 		buf.append("AND model.id IN(SELECT pcResource.resourceId " +
-				" FROM SysRsRcPcResource pcResource WHERE pcResource.packageId=:packageId ) ");
+				" FROM SysRsRcPcResource pcResource WHERE pcResource.packageId=:packageId ) " +
+				" ORDER BY model.rsrcCode");
 		map.put("packageId",packageId);
 		return find(buf.toString(),map);
 	}
@@ -148,7 +149,7 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 			}
 		}
 		
-		buf.append(" ORDER BY rsCatalog.CATALOG_TYPE,model.ORDER_NO");
+		buf.append("  ORDER BY model.RSRC_CODE");
 		
 		Map<String, Type> scalarMap = new HashMap<String, Type>();
 		scalarMap.put("id", new IntegerType());

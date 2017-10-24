@@ -132,7 +132,7 @@ public class SysResourceDaoImpl extends BaseDaoImpl<SysResource> implements SysR
 	             }
 			}
 		}
-		buf.append(" ORDER BY model.rsrcCatalogId,model.orderNo");
+		buf.append(" ORDER BY model.rsrcCode");
 		return pagedQuery(buf.toString(), page, rows, map);
 	}
 
