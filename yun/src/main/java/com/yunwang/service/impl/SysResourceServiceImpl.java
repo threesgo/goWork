@@ -19,6 +19,7 @@ import com.yunwang.dao.SysRsRcAttribCatalogDaoI;
 import com.yunwang.dao.SysRsRcAttribDaoI;
 import com.yunwang.dao.SysRsRcAttribRelDaoI;
 import com.yunwang.dao.SysRsRcCatalogDaoI;
+import com.yunwang.dao.SysRsRcPcResourceDaoI;
 import com.yunwang.dao.SysSupplierDaoI;
 import com.yunwang.model.page.Pager;
 import com.yunwang.model.pojo.SysResource;
@@ -27,6 +28,8 @@ import com.yunwang.model.pojo.SysRsRcAttrib;
 import com.yunwang.model.pojo.SysRsRcAttribCatalog;
 import com.yunwang.model.pojo.SysRsRcAttribRel;
 import com.yunwang.model.pojo.SysRsRcCatalog;
+import com.yunwang.model.pojo.SysRsRcPackage;
+import com.yunwang.model.pojo.SysRsRcPcResource;
 import com.yunwang.model.pojo.SysSupplier;
 import com.yunwang.service.SysResourceService;
 import com.yunwang.util.collection.CollectionUtil;
@@ -51,6 +54,8 @@ public class SysResourceServiceImpl implements SysResourceService{
 	private SysRsRcAttribRelDaoI sysRsRcAttribRelDao;
 	@Autowired
 	private SysRsRcAttribCatalogDaoI sysRsRcAttribCatalogDao;
+	@Autowired
+	private SysRsRcPcResourceDaoI sysRsRcPcResourceDao;
 
 
 	@Override
@@ -344,8 +349,8 @@ public class SysResourceServiceImpl implements SysResourceService{
 				for(SysRsRcAttribCatalog attribCatalog : attribCatalogs){
 					buf.append(attribCatalog.getRsrcAttribName()+":"+rattribMap.get(attribCatalog.getId()).getRsrcAttribValue()+" ");
 				}
+				buf.append(")");
 			}
-			buf.append(")");
 			sysResourceRel.setKeyWord(buf.toString());
 			sysResourceRelDao.update(sysResourceRel);
 		}
@@ -369,9 +374,23 @@ public class SysResourceServiceImpl implements SysResourceService{
 	}
 
 	@Override
-	public Pager<SysResourceRel> findRelResources(int page, int rows,
+	public Pager<SysResourceRel> findRelResources(SysRsRcPackage sysRsRcPackage,int page, int rows,
 			JSONObject seachObj) {
 		// TODO Auto-generated method stub
-		return sysResourceRelDao.findRelResources(page,rows,seachObj);
+		return sysResourceRelDao.findRelResources(sysRsRcPackage,page,rows,seachObj);
+	}
+
+	@Override
+	public void addRelResourceToPackage(Integer packageId,String ids) {
+		if(MyStringUtil.isNotBlank(ids)){
+			String[] idArr = ids.split(",");
+			for(String id:idArr){
+				SysRsRcPcResource sysRsRcPcResource = new SysRsRcPcResource();
+				sysRsRcPcResource.setPackageId(packageId);
+				sysRsRcPcResource.setResourceId(Integer.parseInt(id));
+				sysRsRcPcResource.setOrderNo(sysRsRcPcResourceDao.findMaxSeq("orderNo")+1);
+				sysRsRcPcResourceDao.save(sysRsRcPcResource);
+			}
+		}
 	}
 }

@@ -3,6 +3,8 @@
 <script type="text/javascript">
 var $selectResourceGrid;
 var selectResourceOperation = {};
+var flowObj = new Function("return " + '${hashMap.flowObj}')();
+
 $(function(){
  	columns=[];
 	columns.push(
@@ -47,8 +49,8 @@ $(function(){
         	*/
         }
 	);
-	
- 	$selectResourceGrid=$("#selectResourceGrid").datagrid({
+
+	$selectResourceGrid=$("#selectResourceGrid").datagrid({
         fitColumns:false,
         striped:true,
         singleSelect:true,
@@ -63,8 +65,7 @@ $(function(){
         pageSize:20,
         pageList:[20,50,100,150,200],
         pagination:true,
-        url:"resourceAction!relResourceListData.act",
-        toolbar:"#selectResource_operation_bar",
+        url:"resourceAction!relResourceListData.act?sysRsRcPackage.id=${sysRsRcPackage.id}",
         queryParams:{},
         onBeforeLoad:function(){
         },
@@ -72,13 +73,21 @@ $(function(){
         },
         frozenColumns:[[
 	        {field:'ck',checkbox:true},
+			{field:'keyWord',title:"关键字描述",width:150,sortable:true
+	        	
+	        },
+	        {field:'workType',title:"工种",width:80,sortable:true,
+				formatter : function(value, rowData) {
+					return flowObj[value];
+				} 
+	 		},
 	        {field:'rsrcName',title:"产品名称",width:80,sortable:true,
 	        	
 	        },
 	        {field:'abbreviaName',title:"产品简称",width:80,sortable:true,
 	        	
 	        },
-	         /*
+	        /*
 	        {field:'purchasePrice',title:"采购价格",width:80,sortable:true,align:'right',
 	        	
 	        },
@@ -87,6 +96,9 @@ $(function(){
 	        	
 	       	},
 	       	{field:'brand',title:"品牌",width:80,sortable:true,
+	        	
+	       	},
+			{field:'releaseDateStr',title:"发布时间",width:80,sortable:true,
 	        	
 	       	}
         ]],
@@ -175,7 +187,3 @@ selectResourceOperation = {
 		<table id="selectResourceGrid"></table>
 	</div>
 </div>
-
-<div  id="select_resource_operation_bar">
-    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-ok', plain:true" onclick="selectResourceOperation.addResource()">确认选择</a>
-</div> 

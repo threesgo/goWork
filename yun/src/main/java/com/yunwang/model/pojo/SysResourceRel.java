@@ -12,6 +12,8 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.yunwang.util.date.MyDateUtils;
+
 
 /**
  * @author YBF
@@ -237,5 +239,9 @@ public class SysResourceRel extends AbstractRowVersionModel{
 
 	public void setWorkType(Integer workType) {
 		this.workType = workType;
+	}
+	
+	public String getReleaseDateStr(){
+		return MyDateUtils.getStringByDateTime (releaseDate) ;
 	}
 }

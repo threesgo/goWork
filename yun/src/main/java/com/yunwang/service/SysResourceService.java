@@ -9,6 +9,7 @@ import com.yunwang.model.pojo.SysResource;
 import com.yunwang.model.pojo.SysResourceRel;
 import com.yunwang.model.pojo.SysRsRcAttrib;
 import com.yunwang.model.pojo.SysRsRcCatalog;
+import com.yunwang.model.pojo.SysRsRcPackage;
 
 
 
@@ -37,6 +38,8 @@ public interface SysResourceService {
 
 	void releaseResource(String ids);
 
-	Pager<SysResourceRel> findRelResources(int page, int rows,
+	Pager<SysResourceRel> findRelResources(SysRsRcPackage sysRsRcPackage,int page, int rows,
 			JSONObject seachObj);
+
+	void addRelResourceToPackage(Integer packageId,String ids);
 }

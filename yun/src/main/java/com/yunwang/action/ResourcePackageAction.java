@@ -41,6 +41,7 @@ public class ResourcePackageAction extends AbstractLoginAction{
 	
 	private SysRsRcPackage sysRsRcPackage;
 	private String id;
+	private String jsonStr;
 	
 	@Override
 	public String execute() throws Exception {
@@ -117,6 +118,9 @@ public class ResourcePackageAction extends AbstractLoginAction{
 	 * @return 组合关联的资源数据
 	 */
 	public String packageResourceData(){
+		
+		//分页查询
+		
 		List<SysResource> sysResources = sysRsRcPackageService.findPackageResourceData(sysRsRcPackage.getId());
 		return ajaxJSONArr(sysResources);
 	}
@@ -215,5 +219,13 @@ public class ResourcePackageAction extends AbstractLoginAction{
 
 	public void setSysRsRcPackage(SysRsRcPackage sysRsRcPackage) {
 		this.sysRsRcPackage = sysRsRcPackage;
+	}
+
+	public String getJsonStr() {
+		return jsonStr;
+	}
+
+	public void setJsonStr(String jsonStr) {
+		this.jsonStr = jsonStr;
 	}
 }

@@ -5,14 +5,17 @@ import java.util.Map;
 
 import net.sf.json.JSONObject;
 
+import org.hibernate.type.BigDecimalType;
 import org.hibernate.type.IntegerType;
 import org.hibernate.type.StringType;
+import org.hibernate.type.TimestampType;
 import org.hibernate.type.Type;
 import org.springframework.stereotype.Repository;
 
 import com.yunwang.dao.SysResourceRelDaoI;
 import com.yunwang.model.page.Pager;
 import com.yunwang.model.pojo.SysResourceRel;
+import com.yunwang.model.pojo.SysRsRcPackage;
 import com.yunwang.util.string.MyStringUtil;
 
 @Repository
@@ -26,15 +29,15 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 	}
 
 	@Override
-	public Pager<SysResourceRel> findRelResources(int page, int rows,
+	public Pager<SysResourceRel> findRelResources(SysRsRcPackage sysRsRcPackage,int page, int rows,
 			JSONObject seachJson) {
 		StringBuffer buf = new StringBuffer(
-				"SELECT model.ID id,model.RESOURCE_ID resourceId, " +
-				"model.KEY_WORD keyWord,model.RSRC_CODE rsrcCode,model.RSRC_NAME rsrcName," +
-				"model.ABBREVIA_NAME abbreviaName,model.ORDER_NO orderNo,model.RSRC_CATALOG_ID rsrcCatalogId," +
-				"model.SALE_PRICE salePrice,model.BRAND brand,model.SUPPLIER_ID supplierId,model.RELEASE_DATE releaseDate" +
-				"model.RSRC_STUTAS rsrcStatus,rsCatalog.CATALOG_TYPE workType" +
-				"FROM SYS_RESOURCE_REL model" +
+				" SELECT model.ID id,model.RESOURCE_ID resourceId, " +
+				" model.KEY_WORD keyWord,model.RSRC_CODE rsrcCode,model.RSRC_NAME rsrcName," +
+				" model.ABBREVIA_NAME abbreviaName,model.ORDER_NO orderNo,model.RSRC_CATALOG_ID rsrcCatalogId," +
+				" model.SALE_PRICE salePrice,model.BRAND brand,model.SUPPLIER_ID supplierId,model.RELEASE_DATE releaseDate," +
+				" model.RSRC_STUTAS rsrcStatus,rsCatalog.CATALOG_TYPE workType" +
+				" FROM SYS_RESOURCE_REL model" +
 				" LEFT JOIN SYS_RSRC_CATALOG rsCatalog ON model.RSRC_CATALOG_ID = rsCatalog.ID " +
 				" WHERE model.RSRC_STUTAS!=0 ");
 		
@@ -58,8 +61,11 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 				parmeMap.put("supplierId",seachJson.getInt("supplierId"));
 			}
 		}
-		buf.append(" ORDER BY rsCatalog.catalogType,model.orderNo");
-		
+		if(null != sysRsRcPackage && null != sysRsRcPackage.getId()){
+			buf.append("AND model.ID NOT IN (SELECT pcResource.RESOURCE_ID FROM SYS_RSRC_PC_RESOURCE pcResource WHERE pcResource.PACKAGE_ID =:packageId)");
+			parmeMap.put("packageId",sysRsRcPackage.getId());
+		}
+		buf.append(" ORDER BY rsCatalog.CATALOG_TYPE,model.ORDER_NO");
 		
 		Map<String, Type> scalarMap = new HashMap<String, Type>();
 		scalarMap.put("id", new IntegerType());
@@ -68,12 +74,12 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 		scalarMap.put("rsrcName", new StringType());
 		scalarMap.put("rsrcCode", new StringType());
 		scalarMap.put("abbreviaName", new StringType());
-		scalarMap.put("orderNo", new StringType());
-		scalarMap.put("salePrice", new StringType());
-		scalarMap.put("rsrcCatalogId", new StringType());
+		scalarMap.put("orderNo", new IntegerType());
+		scalarMap.put("salePrice", new BigDecimalType());
+		scalarMap.put("rsrcCatalogId", new IntegerType());
 		scalarMap.put("brand", new StringType());
-		scalarMap.put("releaseDate", new StringType());
-		scalarMap.put("workType", new StringType());
+		scalarMap.put("releaseDate", new TimestampType());
+		scalarMap.put("workType", new IntegerType());
 		
 		return pagedSqlQuery(buf.toString(),page,rows,parmeMap,scalarMap);
 	}

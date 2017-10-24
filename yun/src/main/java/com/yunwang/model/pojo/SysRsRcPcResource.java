@@ -31,7 +31,7 @@ public class SysRsRcPcResource extends AbstractRowVersionModel{
 	private Integer packageId;
 	
 	@Column(name="RESOURCE_ID", nullable = false)
-	private Integer resourceId;
+	private Integer resourceId;   //发布后的产品id
 	
 	@Column(name="ORDER_NO", nullable = false)
 	private Integer orderNo;//顺序号

@@ -20,6 +20,7 @@ import com.yunwang.model.pojo.SysResourceRel;
 import com.yunwang.model.pojo.SysRsRcAttrib;
 import com.yunwang.model.pojo.SysRsRcAttribCatalog;
 import com.yunwang.model.pojo.SysRsRcCatalog;
+import com.yunwang.model.pojo.SysRsRcPackage;
 import com.yunwang.model.pojo.SysSupplier;
 import com.yunwang.service.SysResourceService;
 import com.yunwang.service.SysResourceTypeService;
@@ -72,6 +73,7 @@ public class ResourceAction extends AbstractLoginAction{
 	private Map<String,Object> hashMap;
 	private String resourceJsonStr;
 	private List<SysSupplier> sysSuppliers;
+	private SysRsRcPackage sysRsRcPackage;
 	
 	@Override
 	public String execute() throws Exception {
@@ -301,13 +303,19 @@ public class ResourceAction extends AbstractLoginAction{
 		//流程数据
 		flowList = BaseDataDictionaryUtil.baseDataMap.get(4);
 		sysSuppliers =sysSupplierService.findByWorkType(null);
+		hashMap = new HashMap<String,Object>();
+		JSONObject obj = new JSONObject();
+		for(SysDataDictionary dictionary:flowList){
+			obj.put(dictionary.getValue(), dictionary.getName());
+		}
+		hashMap.put("flowObj",obj);
 		return "relResourceSelect";
 	}
 	
 	public String relResourceListData(){
 		JSONObject obj=new JSONObject();
 		JSONObject seachObj = JSONObject.fromObject(resourceJsonStr);
-		Pager<SysResourceRel> pager = sysResourceService.findRelResources(page,rows,seachObj);
+		Pager<SysResourceRel> pager = sysResourceService.findRelResources(sysRsRcPackage,page,rows,seachObj);
 		JSONArray arr = new JSONArray();
 		if(null!=pager && null!=pager.getData()){
 			@SuppressWarnings("unchecked")
@@ -334,6 +342,22 @@ public class ResourceAction extends AbstractLoginAction{
   	    }
 		obj.put("rows", arr);
   		return ajaxText(JSONObject.fromObject(obj).toString());
+	}
+	
+	/**
+	 * @date 2017-10-24
+	 * @author YBF
+	 * @return
+	 * <p>添加产品到组合</p>
+	 */
+	public String addRelResourceToPackage(){
+		try{
+			sysResourceService.addRelResourceToPackage(sysRsRcPackage.getId(),ids);
+			return success("操作成功!");
+		}catch(Exception e){
+			LOG.error(e.getMessage());
+			return error("操作失败!");
+		}
 	}
 	
 	public SysResource getSysResource() {
@@ -398,5 +422,13 @@ public class ResourceAction extends AbstractLoginAction{
 
 	public void setSysSuppliers(List<SysSupplier> sysSuppliers) {
 		this.sysSuppliers = sysSuppliers;
+	}
+
+	public SysRsRcPackage getSysRsRcPackage() {
+		return sysRsRcPackage;
+	}
+
+	public void setSysRsRcPackage(SysRsRcPackage sysRsRcPackage) {
+		this.sysRsRcPackage = sysRsRcPackage;
 	}
 }

@@ -121,22 +121,45 @@ packageResourceOperation = {
 		var dialog =$('<div id="resourceSelect"></div>').dialog({    
 			href : "resourceAction!relResourceSelect.act",
 			width:800,
-			height:450,
+			height:550,
 			title:"新增产品",
 			method:'post',
 			queryParams:{"sysRsRcPackage.id":'${sysRsRcPackage.id}'},
 			modal:true,
 			resizable:true,
 			buttons:[
-				/*
 				{
 					text:"确定",
 					iconCls:'icon-ok',
 					handler:function(){
+						var checkeds = $selectResourceGrid.datagrid("getChecked");
+							if(checkeds.length == 0){
+							$alert("请勾选产品!");
+							return false;
+						}
+						var addIds = [];
 						
+						$.each(checkeds,function(i,n){
+							addIds.push(n.id);
+						});
+						var loading=new Some.loading();
+						loading.show();
+						$.post("resourceAction!addRelResourceToPackage.act",{"ids":addIds.join(","),"sysRsRcPackage.id":'${sysRsRcPackage.id}'},
+					  			function(data){
+								loading.close();
+				   	  			handlerResult(data,
+								function(rs){
+									$show(rs.message);
+									dialog.close();
+									$packageResourceGrid.datagrid("reload");
+								},
+								function(rs){
+									$alert(rs.message);
+								}
+							);
+						},"json");
 					}
 				},
-				*/
 				{
 					text:"取消",
 					iconCls:'icon-cancel',
