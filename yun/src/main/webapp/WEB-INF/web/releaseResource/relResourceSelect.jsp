@@ -3,7 +3,6 @@
 <script type="text/javascript">
 var $selectResourceGrid;
 var selectResourceOperation = {};
-var flowObj = new Function("return " + '${hashMap.flowObj}')();
 
 $(function(){
  	columns=[];
@@ -73,10 +72,10 @@ $(function(){
         },
         frozenColumns:[[
 	        {field:'ck',checkbox:true},
-			{field:'keyWord',title:"关键字描述",width:150,sortable:true
+			{field:'keyWord',title:"关键字描述",width:100,sortable:true
 	        	
 	        },
-	        {field:'workType',title:"工种",width:80,sortable:true,
+	        {field:'workType',title:"工种",width:60,sortable:true,
 				formatter : function(value, rowData) {
 					return flowObj[value];
 				} 
@@ -92,13 +91,13 @@ $(function(){
 	        	
 	        },
 	        */
-	        {field:'salePrice',title:"销售价格",width:80,sortable:true,align:'right',
+	        {field:'salePrice',title:"销售价格",width:60,sortable:true,align:'right',
 	        	
 	       	},
 	       	{field:'brand',title:"品牌",width:80,sortable:true,
 	        	
 	       	},
-			{field:'releaseDateStr',title:"发布时间",width:80,sortable:true,
+			{field:'releaseDateStr',title:"发布时间",width:100,sortable:true,
 	        	
 	       	}
         ]],
@@ -118,10 +117,12 @@ selectResourceOperation = {
 	search:function(){
 		var searchData = {};
 		searchData["keyWord"] = $("#selectSearchForm #keyWord").val();
+		searchData["rsrcName"] = $("#selectSearchForm #rsrcName").val();
 		searchData["abbreviaName"] = $("#selectSearchForm #abbreviaName").val();
 		searchData["brand"] = $("#selectSearchForm #brand").val();
 		searchData["supplierId"] = $("#selectSearchForm #supplierId").val();
-		$resourceGrid.datagrid("reload",
+		searchData["workType"] = $("#selectSearchForm #workType").val();
+		$selectResourceGrid.datagrid("reload",
 			{
 				"resourceJsonStr":Some.util.jsonToStr(searchData)
 			}
@@ -130,9 +131,11 @@ selectResourceOperation = {
 	
 	reset:function(){
 		$("#selectSearchForm #keyWord").val('');
+		$("#selectSearchForm #rsrcName").val('');
 		$("#selectSearchForm #abbreviaName").val('');
 		$("#selectSearchForm #brand").val('');
 		$("#selectSearchForm #supplierId").val(0);
+		$("#selectSearchForm #workType").val(0);
 		selectResourceOperation.search();
 	}
 }
@@ -143,6 +146,12 @@ selectResourceOperation = {
 			<lable for="">产品关键字</lable>
 			<div class="select">
 				<input  type="text"  id="keyWord"/>
+			</div>
+		</div>
+		<div class="search-div">
+			<lable for="">产品名称</lable>
+			<div class="select">
+				<input  type="text"  id="rsrcName"/>
 			</div>
 		</div>
 		<div class="search-div">

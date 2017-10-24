@@ -36,15 +36,15 @@ public class SysResourceDaoImpl extends BaseDaoImpl<SysResource> implements SysR
 		
 		if(null!=seachJson && !seachJson.isEmpty()){
 			if(seachJson.containsKey("rsrcCode")&&MyStringUtil.isNotBlank(seachJson.getString("rsrcCode"))){
-				buf.append("AND upper(model.rsrcCode) like:rsrcCode");
+				buf.append(" AND upper(model.rsrcCode) like:rsrcCode");
 				map.put("rsrcCode","%"+seachJson.getString("rsrcCode").toUpperCase()+ "%");
 			}
 			if(seachJson.containsKey("rsrcName")&&MyStringUtil.isNotBlank(seachJson.getString("rsrcName"))){
-				buf.append("AND upper(model.rsrcName) like:rsrcName");
+				buf.append(" AND upper(model.rsrcName) like:rsrcName");
 				map.put("rsrcName","%"+ seachJson.getString("rsrcName").toUpperCase()+ "%");
 			}
 			if(seachJson.containsKey("abbreviaName")&&MyStringUtil.isNotBlank(seachJson.getString("abbreviaName"))){
-				buf.append("AND upper(model.abbreviaName) like:abbreviaName");
+				buf.append(" AND upper(model.abbreviaName) like:abbreviaName");
 				map.put("abbreviaName","%"+ seachJson.getString("abbreviaName").toUpperCase()+ "%");
 			}
 			@SuppressWarnings("rawtypes")
@@ -55,7 +55,7 @@ public class SysResourceDaoImpl extends BaseDaoImpl<SysResource> implements SysR
 	             if(MyNumberUtil.isNumber(key)&&MyStringUtil.isNotBlank(value)){
 	            	//属性值按照in值判断
 	     			buf.append(" AND model.id in (");
-	     			buf.append("SELECT attrib.rsrcId FROM SysRsRcAttrib attrib WHERE attrib.rsraAttribCatalogId ="+key
+	     			buf.append(" SELECT attrib.rsrcId FROM SysRsRcAttrib attrib WHERE attrib.rsraAttribCatalogId ="+key
 	     					+" AND attrib.rsrcAttribValue like '%"+value+"%'");
 	     			buf.append(")");
 	             }
@@ -75,19 +75,19 @@ public class SysResourceDaoImpl extends BaseDaoImpl<SysResource> implements SysR
 		
 		if(null!=seachJson && !seachJson.isEmpty()){
 			if(seachJson.containsKey("rsrcCode")&&MyStringUtil.isNotBlank(seachJson.getString("rsrcCode"))){
-				buf.append("AND upper(model.rsrcCode) like:rsrcCode");
+				buf.append(" AND upper(model.rsrcCode) like:rsrcCode");
 				map.put("rsrcCode","%"+seachJson.getString("rsrcCode").toUpperCase()+ "%");
 			}
 			if(seachJson.containsKey("rsrcName")&&MyStringUtil.isNotBlank(seachJson.getString("rsrcName"))){
-				buf.append("AND upper(model.rsrcName) like:rsrcName");
+				buf.append(" AND upper(model.rsrcName) like:rsrcName");
 				map.put("rsrcName","%"+ seachJson.getString("rsrcName").toUpperCase()+ "%");
 			}
 			if(seachJson.containsKey("abbreviaName")&&MyStringUtil.isNotBlank(seachJson.getString("abbreviaName"))){
-				buf.append("AND upper(model.abbreviaName) like:abbreviaName");
+				buf.append(" AND upper(model.abbreviaName) like:abbreviaName");
 				map.put("abbreviaName","%"+ seachJson.getString("abbreviaName").toUpperCase()+ "%");
 			}
 			if(seachJson.containsKey("brand")&&MyStringUtil.isNotBlank(seachJson.getString("brand"))){
-				buf.append("AND upper(model.brand) like:brand");
+				buf.append(" AND upper(model.brand) like:brand");
 				map.put("brand","%"+ seachJson.getString("brand").toUpperCase()+ "%");
 			}
 			
@@ -97,7 +97,7 @@ public class SysResourceDaoImpl extends BaseDaoImpl<SysResource> implements SysR
 //			}
 			
 			if(seachJson.containsKey("supplierId")&&0!=seachJson.getInt("supplierId")){
-				buf.append("AND model.supplierId =:supplierId");
+				buf.append(" AND model.supplierId =:supplierId");
 				map.put("supplierId",seachJson.getInt("supplierId"));
 			}
 			
@@ -116,12 +116,12 @@ public class SysResourceDaoImpl extends BaseDaoImpl<SysResource> implements SysR
 	            	//属性值按照in值判断
 	            	if(MyNumberUtil.isNumber(key)){
 	            		buf.append(" AND model.id in (");
-		     			buf.append("SELECT attrib.rsrcId FROM SysRsRcAttrib attrib WHERE attrib.rsraAttribCatalogId ="+key
+		     			buf.append(" SELECT attrib.rsrcId FROM SysRsRcAttrib attrib WHERE attrib.rsraAttribCatalogId ="+key
 		     					+" AND attrib.rsrcAttribValue like '%"+value+"%'");
 		     			buf.append(")");
 	            	}else{
 	            		buf.append(" AND model.id in (");
-		     			buf.append("SELECT attrib.rsrcId FROM SysRsRcAttrib attrib WHERE attrib.rsraAttribCatalogId ="+key.substring(0,key.length()-6)
+		     			buf.append(" SELECT attrib.rsrcId FROM SysRsRcAttrib attrib WHERE attrib.rsraAttribCatalogId ="+key.substring(0,key.length()-6)
 		     					+" AND to_date(attrib.rsrcAttribValue,'yyyy-mm-dd') >= to_date('"+value+"','yyyy-mm-dd')");
 		     			String endKey = key.substring(0,key.length()-6)+"_end";
 		     			if(seachJson.containsKey(endKey)&&MyStringUtil.isNotBlank(seachJson.getString(endKey))){

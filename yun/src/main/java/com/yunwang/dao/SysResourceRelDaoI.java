@@ -19,4 +19,6 @@ public interface SysResourceRelDaoI extends BaseDaoI<SysResourceRel>{
 	Pager<SysResourceRel> findPackageResourceData(Integer packageId, int page,
 			int rows, JSONObject seachObj);
 
+	void deletePackageResource(String ids);
+
 }

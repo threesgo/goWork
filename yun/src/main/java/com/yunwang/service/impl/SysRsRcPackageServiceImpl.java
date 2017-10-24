@@ -65,4 +65,9 @@ public class SysRsRcPackageServiceImpl implements SysRsRcPackageService{
 		// TODO Auto-generated method stub
 		return sysResourceRelDao.findPackageResourceData(packageId,page,rows,seachObj);
 	}
+
+	@Override
+	public void deletePackageResource(String ids) {
+		sysResourceRelDao.deletePackageResource(ids);
+	}
 }

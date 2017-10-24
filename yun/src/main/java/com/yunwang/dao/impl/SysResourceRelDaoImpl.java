@@ -46,24 +46,32 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 		
 		if(null!=seachJson && !seachJson.isEmpty()){
 			if(seachJson.containsKey("keyWord")&&MyStringUtil.isNotBlank(seachJson.getString("keyWord"))){
-				buf.append("AND upper(model.KEY_WORD) like:keyWord");
+				buf.append(" AND upper(model.KEY_WORD) like:keyWord");
 				parmeMap.put("keyWord","%"+ seachJson.getString("keyWord").toUpperCase()+ "%");
 			}
+			if(seachJson.containsKey("rsrcName")&&MyStringUtil.isNotBlank(seachJson.getString("rsrcName"))){
+				buf.append(" AND upper(model.RSRC_NAME) like:rsrcName");
+				parmeMap.put("rsrcName","%"+ seachJson.getString("rsrcName").toUpperCase()+ "%");
+			}
 			if(seachJson.containsKey("abbreviaName")&&MyStringUtil.isNotBlank(seachJson.getString("abbreviaName"))){
-				buf.append("AND upper(model.ABBREVIA_NAME) like:abbreviaName");
+				buf.append(" AND upper(model.ABBREVIA_NAME) like:abbreviaName");
 				parmeMap.put("abbreviaName","%"+ seachJson.getString("abbreviaName").toUpperCase()+ "%");
 			}
 			if(seachJson.containsKey("brand")&&MyStringUtil.isNotBlank(seachJson.getString("brand"))){
-				buf.append("AND upper(model.BRAND) like:brand");
+				buf.append(" AND upper(model.BRAND) like:brand");
 				parmeMap.put("brand","%"+ seachJson.getString("brand").toUpperCase()+ "%");
 			}
 			if(seachJson.containsKey("supplierId")&&0!=seachJson.getInt("supplierId")){
-				buf.append("AND model.SUPPLIER_ID =:supplierId");
+				buf.append(" AND model.SUPPLIER_ID =:supplierId");
 				parmeMap.put("supplierId",seachJson.getInt("supplierId"));
+			}
+			if(seachJson.containsKey("workType")&&0!=seachJson.getInt("workType")){
+				buf.append(" AND rsCatalog.CATALOG_TYPE =:workType");
+				parmeMap.put("workType",seachJson.getInt("workType"));
 			}
 		}
 		if(null != sysRsRcPackage && null != sysRsRcPackage.getId()){
-			buf.append("AND model.ID NOT IN (SELECT pcResource.RESOURCE_ID FROM SYS_RSRC_PC_RESOURCE pcResource WHERE pcResource.PACKAGE_ID =:packageId)");
+			buf.append(" AND model.ID NOT IN (SELECT pcResource.RESOURCE_ID FROM SYS_RSRC_PC_RESOURCE pcResource WHERE pcResource.PACKAGE_ID =:packageId)");
 			parmeMap.put("packageId",sysRsRcPackage.getId());
 		}
 		buf.append(" ORDER BY rsCatalog.CATALOG_TYPE,model.ORDER_NO");
@@ -78,6 +86,7 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 		scalarMap.put("orderNo", new IntegerType());
 		scalarMap.put("salePrice", new BigDecimalType());
 		scalarMap.put("rsrcCatalogId", new IntegerType());
+		scalarMap.put("supplierId", new IntegerType());
 		scalarMap.put("brand", new StringType());
 		scalarMap.put("releaseDate", new TimestampType());
 		scalarMap.put("workType", new IntegerType());
@@ -110,23 +119,32 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 				" WHERE pcResource.PACKAGE_ID=:packageId AND model.RSRC_STUTAS!=0 ");
 		
 		Map<String, Object> parmeMap = new HashMap<String,Object>();
+		parmeMap.put("packageId", packageId);
 		
 		if(null!=seachJson && !seachJson.isEmpty()){
 			if(seachJson.containsKey("keyWord")&&MyStringUtil.isNotBlank(seachJson.getString("keyWord"))){
-				buf.append("AND upper(model.KEY_WORD) like:keyWord");
+				buf.append(" AND upper(model.KEY_WORD) like:keyWord");
 				parmeMap.put("keyWord","%"+ seachJson.getString("keyWord").toUpperCase()+ "%");
 			}
+			if(seachJson.containsKey("rsrcName")&&MyStringUtil.isNotBlank(seachJson.getString("rsrcName"))){
+				buf.append(" AND upper(model.RSRC_NAME) like:rsrcName");
+				parmeMap.put("rsrcName","%"+ seachJson.getString("rsrcName").toUpperCase()+ "%");
+			}
 			if(seachJson.containsKey("abbreviaName")&&MyStringUtil.isNotBlank(seachJson.getString("abbreviaName"))){
-				buf.append("AND upper(model.ABBREVIA_NAME) like:abbreviaName");
+				buf.append(" AND upper(model.ABBREVIA_NAME) like:abbreviaName");
 				parmeMap.put("abbreviaName","%"+ seachJson.getString("abbreviaName").toUpperCase()+ "%");
 			}
 			if(seachJson.containsKey("brand")&&MyStringUtil.isNotBlank(seachJson.getString("brand"))){
-				buf.append("AND upper(model.BRAND) like:brand");
+				buf.append(" AND upper(model.BRAND) like:brand");
 				parmeMap.put("brand","%"+ seachJson.getString("brand").toUpperCase()+ "%");
 			}
 			if(seachJson.containsKey("supplierId")&&0!=seachJson.getInt("supplierId")){
-				buf.append("AND model.SUPPLIER_ID =:supplierId");
+				buf.append(" AND model.SUPPLIER_ID =:supplierId");
 				parmeMap.put("supplierId",seachJson.getInt("supplierId"));
+			}
+			if(seachJson.containsKey("workType")&&0!=seachJson.getInt("workType")){
+				buf.append(" AND rsCatalog.CATALOG_TYPE =:workType");
+				parmeMap.put("workType",seachJson.getInt("workType"));
 			}
 		}
 		
@@ -142,10 +160,17 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 		scalarMap.put("orderNo", new IntegerType());
 		scalarMap.put("salePrice", new BigDecimalType());
 		scalarMap.put("rsrcCatalogId", new IntegerType());
+		scalarMap.put("supplierId", new IntegerType());
 		scalarMap.put("brand", new StringType());
 		scalarMap.put("releaseDate", new TimestampType());
 		scalarMap.put("workType", new IntegerType());
 		
 		return pagedSqlQuery(buf.toString(),page,rows,parmeMap,scalarMap);
+	}
+
+	@Override
+	public void deletePackageResource(String ids) {
+		String hql = "DELETE FROM SysRsRcPcResource model WHERE model.resourceId IN("+ids+")";
+		executeHql(hql);
 	}
 }

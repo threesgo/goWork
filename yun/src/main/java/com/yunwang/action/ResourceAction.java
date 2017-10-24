@@ -234,7 +234,7 @@ public class ResourceAction extends AbstractLoginAction{
 			return success("行数据保存成功!",obj);
 		}catch(Exception e){
 			LOG.error(e.getMessage());
-			return error("行数据保存失败!");
+			return error("行数据保存失败!",e);
 		}
 	}
 	
@@ -247,7 +247,7 @@ public class ResourceAction extends AbstractLoginAction{
 			return success("操作成功!");
 		}catch(Exception e){
 			LOG.error(e.getMessage());
-			return error("操作失败!");
+			return error("操作失败!",e);
 		}
 	}
 	
@@ -258,7 +258,7 @@ public class ResourceAction extends AbstractLoginAction{
 			return success("操作成功!");
 		}catch(Exception e){
 			LOG.error(e.getMessage());
-			return error("操作失败!");
+			return error("操作失败!",e);
 		}
 	}
 	
@@ -291,7 +291,7 @@ public class ResourceAction extends AbstractLoginAction{
 			return success("操作成功!");
 		}catch(Exception e){
 			LOG.error(e.getMessage());
-			return error("操作失败!");
+			return error("操作失败!",e);
 		}
 	}
 	
@@ -301,8 +301,8 @@ public class ResourceAction extends AbstractLoginAction{
 	 */
 	public String relResourceSelect(){
 		//流程数据
-//		flowList = BaseDataDictionaryUtil.baseDataMap.get(4);
-//		sysSuppliers =sysSupplierService.findByWorkType(null);
+		flowList = BaseDataDictionaryUtil.baseDataMap.get(4);
+		sysSuppliers =sysSupplierService.findByWorkType(null);
 //		hashMap = new HashMap<String,Object>();
 //		JSONObject obj = new JSONObject();
 //		for(SysDataDictionary dictionary:flowList){

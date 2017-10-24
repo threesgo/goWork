@@ -54,7 +54,10 @@ public class SysResource extends AbstractRowVersionModel{
 	private BigDecimal salePrice;  //销售价格
 	
 	@Column(name="RSRC_STUTAS",nullable = false,columnDefinition = "number default 1")
-	private Integer rsrcStatus = 1;//状态  0，删除 (发布后物理删除,发布区变为失效状态)   1、新增  2、编辑   3、发布      (第一次创建：新增 ;新增状态下编辑：新增 ;发布状态下编辑：编辑 )
+	private Integer rsrcStatus;//状态  0，删除  1、新增  2、编辑   3、正常  
+	
+	@Column(name="IS_RELEASE",nullable = false,columnDefinition = "number default 0")
+	private Integer isRelease;
 	
 	@Column(name = "CREATE_DATE")
 	private Date createDate; // 创建时间
@@ -242,5 +245,13 @@ public class SysResource extends AbstractRowVersionModel{
 
 	public void setSupplier(String supplier) {
 		this.supplier = supplier;
+	}
+
+	public Integer getIsRelease() {
+		return isRelease;
+	}
+
+	public void setIsRelease(Integer isRelease) {
+		this.isRelease = isRelease;
 	}
 }

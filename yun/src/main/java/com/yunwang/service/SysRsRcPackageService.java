@@ -23,4 +23,6 @@ public interface SysRsRcPackageService {
 	Pager<SysResourceRel> findPackageResourceData(Integer packageId, int page,
 			int rows, JSONObject seachObj);
 
+	void deletePackageResource(String ids);
+
 }

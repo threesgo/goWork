@@ -56,6 +56,7 @@ public class ResourcePackageAction extends AbstractLoginAction{
 	private List<SysDataDictionary> flowList;
 	private Map<String,Object> hashMap;
 	private List<SysSupplier> sysSuppliers;
+	private String ids;
 	
 	@Override
 	public String execute() throws Exception {
@@ -133,7 +134,12 @@ public class ResourcePackageAction extends AbstractLoginAction{
 		for(SysDataDictionary dictionary:flowList){
 			obj.put(dictionary.getValue(), dictionary.getName());
 		}
+		JSONObject supplierObj = new JSONObject();
+		for(SysSupplier sysSupplier:sysSuppliers){
+			supplierObj.put(sysSupplier.getId(),sysSupplier.getName());
+		}
 		hashMap.put("flowObj",obj);
+		hashMap.put("supplierObj",supplierObj);
 		return "packageResourceList";
 	}
 	
@@ -234,7 +240,6 @@ public class ResourcePackageAction extends AbstractLoginAction{
 		try{
 			if(null!=sysRsRcPackage.getId()){
 				SysRsRcPackage updateSysRsRcPackage = sysRsRcPackageService.get(sysRsRcPackage.getId());
-				updateSysRsRcPackage.setCode(sysRsRcPackage.getCode());
 				updateSysRsRcPackage.setName(sysRsRcPackage.getName());
 				updateSysRsRcPackage.setMinPrice(sysRsRcPackage.getMinPrice());
 				updateSysRsRcPackage.setMaxPrice(sysRsRcPackage.getMaxPrice());
@@ -250,7 +255,13 @@ public class ResourcePackageAction extends AbstractLoginAction{
 	}
 	
 	public String deleteResourcePackage(){
-		return null;
+		try{
+			sysRsRcPackageService.deletePackageResource(ids);
+			return success("操作成功!");
+		}catch(Exception e){
+			LOG.error(e.getMessage());
+			return error("操作失败!");
+		}
 	}
 	
 	
@@ -300,5 +311,13 @@ public class ResourcePackageAction extends AbstractLoginAction{
 
 	public void setSysSuppliers(List<SysSupplier> sysSuppliers) {
 		this.sysSuppliers = sysSuppliers;
+	}
+
+	public String getIds() {
+		return ids;
+	}
+
+	public void setIds(String ids) {
+		this.ids = ids;
 	}
 }

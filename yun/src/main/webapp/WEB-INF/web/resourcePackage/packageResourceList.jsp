@@ -5,13 +5,18 @@ var $packageResourceGrid;
 var packageResourceOperation = {};
 
 var flowObj = new Function("return " + '${hashMap.flowObj}')();
+var supplierObj = new Function("return " + '${hashMap.supplierObj}')();
 
 $(function(){
  	columns=[];
- 	/*
 	columns.push(
-		{field:'supplierId',title:"供应商名称",width:100,sortable:true
-			
+		{field:'supplierId',title:"供应商名称",width:100,sortable:true,
+			formatter:function(value, rowData) {
+				if(value == 0 ){
+					return "";
+				}
+				return supplierObj[value];
+			} 
         },
         {field:'supplier',title:"供应商联系人",width:100,sortable:true
         	
@@ -26,7 +31,6 @@ $(function(){
         	
         }
 	);
-	*/
  	$packageResourceGrid=$("#packageResourceGrid").datagrid({
         fitColumns:false,
         striped:true,
@@ -91,7 +95,7 @@ $(function(){
 
 packageResourceOperation = {
 	deleteResource:function(){
-		var checks = $resourceGrid.datagrid("getChecked");
+		var checks = $packageResourceGrid.datagrid("getChecked");
 		if(checks.length == 0){
 			$alert("请勾选需要删除的产品!");
 			return false;
@@ -104,7 +108,7 @@ packageResourceOperation = {
 		    		ids.push(n.id);
 		    		deletes.push(n);
 		    	});
-		        $.post("resourcePackageAction!deleteResource.act",
+		        $.post("resourcePackageAction!deleteResourcePackage.act",
 		        	{"ids":ids.join(",")},
 		        	function(data){
 					handlerResult(data,
@@ -128,8 +132,8 @@ packageResourceOperation = {
 		//添加页面
 		var dialog =$('<div id="resourceSelect"></div>').dialog({    
 			href : "resourceAction!relResourceSelect.act",
-			width:800,
-			height:550,
+			width:880,
+			height:500,
 			title:"新增产品",
 			method:'post',
 			queryParams:{"sysRsRcPackage.id":'${sysRsRcPackage.id}'},
@@ -184,24 +188,28 @@ packageResourceOperation = {
 	
 	search:function(){
 		var searchData = {};
-		searchData["rsrcCode"] = $("#rsrcCode").val();
-		searchData["rsrcName"] = $("#rsrcName").val();
-		searchData["abbreviaName"] = $("#abbreviaName").val();
-		searchData["brand"] = $("#brand").val();
-		searchData["supplierId"] = $("#supplierId").val();
+		searchData["keyWord"] = $("#searchForm #keyWord").val();
+		searchData["rsrcName"] = $("#searchForm #rsrcName").val();
+		searchData["abbreviaName"] = $("#searchForm #abbreviaName").val();
+		searchData["brand"] = $("#searchForm #brand").val();
+		searchData["supplierId"] = $("#searchForm #supplierId").val();
+		searchData["workType"] = $("#searchForm #workType").val();
+		
 		$packageResourceGrid.datagrid("reload",
 			{
+				"sysRsRcPackage.id":'${sysRsRcPackage.id}',
 				"jsonStr":Some.util.jsonToStr(searchData)
 			}
 		);
 	},
 	
 	reset:function(){
-		$("#rsrcCode").val('');
-		$("#rsrcName").val('');
-		$("#abbreviaName").val('');
-		$("#brand").val('');
-		$("#supplierId").val('');
+		$("#searchForm #rsrcCode").val('');
+		$("#searchForm #rsrcName").val('');
+		$("#searchForm #abbreviaName").val('');
+		$("#searchForm #brand").val('');
+		$("#searchForm #supplierId").val(0);
+		$("#searchForm #workType").val(0);
 		resourceOperation.search();
 	}
 };
@@ -209,17 +217,19 @@ packageResourceOperation = {
 <div class="easyui-layout" data-options="fit:true,border : false">
 	<div id="searchForm" class = "table_seach_div" data-options="region:'north',title:'查询条件',border:false,split:false" style="overflow: hidden;background-color: #F8F8F8" >
 		<div class="search-div">
-			<lable for="">产品编号</lable>
+			<lable for="">产品关键字</lable>
 			<div class="select">
-				<input  type="text"  id="rsrcCode"/>
+				<input  type="text"  id="keyWord"/>
 			</div>
 		</div>
+		
 		<div class="search-div">
 			<lable for="">产品名称</lable>
 			<div class="select">
 				<input  type="text"  id="rsrcName"/>
 			</div>
 		</div>
+		
 		<div class="search-div">
 			<lable for="">产品简称</lable>
 			<div class="select">
@@ -233,7 +243,16 @@ packageResourceOperation = {
 			</div>
 		</div>
 		
-		<%--
+		<div class="search-div">
+			<label>工种</label>
+	       	<s:select id="workType" style="height:22px"
+	       		list="flowList"
+		       	listKey="value"   
+		       	listValue="name" 
+		       	headerKey="0"
+		       	headerValue="--请选择--"/>
+		</div>
+		
 		<div class="search-div">
 			<label>供应商名称</label>
 	       	<s:select id="supplierId" style="height:22px"
@@ -243,7 +262,6 @@ packageResourceOperation = {
 		       	headerKey="0"
 		       	headerValue="--请选择--"/>
 		</div>
-		 --%>
 		
 		<div class="search-div">
 			<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search', plain:true" onclick="packageResourceOperation.search()">查询</a> 

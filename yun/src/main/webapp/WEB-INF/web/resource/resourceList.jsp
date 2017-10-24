@@ -178,7 +178,23 @@ $(function(){
         },
         frozenColumns:[[
 	        {field:'ck',checkbox:true},
-	        {field:'rsrcStatus',title:"状态",width:36,
+	        {field:'isRelease',title:"是否发布",width:54,
+	        	formatter:function(value,row,index){
+	        		if(value == 0){
+	        			return "否";
+	        		}else if(value == 1){
+	        			return "是";
+	        		}
+	        	},
+	        	styler: function(value,row,index){
+					if(value == 0){
+	        			//return 'background-color:red;color:white;';
+	        		}else if(value == 1){
+	        			return 'color:green;';
+	        		}
+				}
+	        },
+	        {field:'rsrcStatus',title:"当前状态",width:54,
 	        	formatter:function(value,row,index){
 	        		if(value == 0){
 	        			return "删除";
@@ -187,17 +203,16 @@ $(function(){
 	        		}else if(value == 2){
 	        			return "编辑";
 	        		}else if(value == 3){
-	        			return "发布";
+	        			return "正常";
 	        		}
 				},
 				styler: function(value,row,index){
 					if(value == 0){
-	        			//return 'background-color:red;color:white;';
+	        			return 'color:red;';
 	        		}else if(value == 1){
 	        		}else if(value == 2){
 	        			
 	        		}else if(value == 3){
-	        			return 'background-color:green;color:white;';
 	        		}
 				}
 			},
@@ -266,7 +281,7 @@ $(function(){
 	        	},
 	        	styler: function(value,row,index){
 	        		if(value < row.purchasePrice){
-	        			return 'background-color:#ffee00;color:red;';
+	        			return 'color:red;';
 	        		}
 				}
 	       	},
@@ -318,7 +333,8 @@ $(function(){
 								row: {
 									id:json.data.id,
 									rsrcCode:json.data.rsrcCode,
-									rsrcStatus:json.data.rsrcStatus
+									rsrcStatus:json.data.rsrcStatus,
+									isRelease:json.data.isRelease
 								}
 							});
 						},
@@ -369,10 +385,13 @@ resourceOperation = {
 					handlerResult(data,
 			    		function(rs){
 							$show(rs.message);
+							$resourceGrid.datagrid("reload");
+							/*
 							$.each(deletes,function(i,n){
 								var deleteIndex = $resourceGrid.datagrid("getRowIndex",n);
 								$resourceGrid.datagrid("deleteRow",deleteIndex);
 					    	});
+					    	*/
 						},
 						function(rs){
 							$alert(rs.message);

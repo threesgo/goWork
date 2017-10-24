@@ -33,6 +33,7 @@ import com.yunwang.model.pojo.SysRsRcPcResource;
 import com.yunwang.model.pojo.SysSupplier;
 import com.yunwang.service.SysResourceService;
 import com.yunwang.util.collection.CollectionUtil;
+import com.yunwang.util.exception.MineException;
 import com.yunwang.util.number.MyNumberUtil;
 import com.yunwang.util.string.MyStringUtil;
 import com.yunwang.util.string.StringBufferByCollectionUtil;
@@ -79,43 +80,46 @@ public class SysResourceServiceImpl implements SysResourceService{
 	public void saveOrUpdateResourceGrid(JSONObject rowData,SysRsRcCatalog sysRsRcCatalog) {
 		
 		sysRsRcCatalog = sysRsRcCatalogDao.get(SysRsRcCatalog.class,sysRsRcCatalog.getId());
-		
-         SysResource sysResource = null;
-         Integer id = rowData.getInt("id");
-         if(id > 0){
+		if(null == sysRsRcCatalog){
+			throw new MineException("请选择具体的子集大类新增,确认产品属于具体的工程类别!");
+		}
+        SysResource sysResource = null;
+        Integer id = rowData.getInt("id");
+        if(id > 0){
     		 sysResource = sysResourceDao.get(SysResource.class,id);
     		 sysResource.setUpdateDate(new Date());
     		 //更新
     		 sysResource.setRsrcStatus(2);
-    	 }else{
+        }else{
     		 sysResource = new SysResource();
     		 sysResource.setCreateDate(new Date());
     		 //正常
     		 sysResource.setRsrcStatus(1);
+    		 sysResource.setIsRelease(0);
     		 sysResource.setRsrcCatalogId(sysRsRcCatalog.getId());
     		 sysResource.setOrderNo(sysResourceDao.findMaxSeqByPfield("orderNo","rsrcCatalogId",sysRsRcCatalog.getId())+1);			
              sysResource.setRsrcCode(MyStringUtil.getCombineSeqStr(sysResource.getOrderNo(),sysRsRcCatalog.getCatalogCode()));
-    	 }
-         //String rsrcCode = rowData.getString("rsrcCode");
+        }
+        //String rsrcCode = rowData.getString("rsrcCode");
          
-         String rsrcName = rowData.getString("rsrcName");
-         sysResource.setRsrcName(rsrcName);
-         String abbreviaName = rowData.getString("abbreviaName");
-         sysResource.setAbbreviaName(abbreviaName);
-         String purchasePrice = rowData.getString("purchasePrice");
-         sysResource.setPurchasePrice(new BigDecimal(purchasePrice));
-         String salePrice = rowData.getString("salePrice");
-         sysResource.setSalePrice(new BigDecimal(salePrice));
-        //Integer workType = rowData.getInt("workType");
-        //sysResource.setWorkType(workType);
-         
-         String brand = rowData.getString("brand");
-         sysResource.setBrand(brand);
-        
-         
-         Integer supplierId = rowData.getInt("supplierId");
-         sysResource.setSupplierId(supplierId);
-         
+	     String rsrcName = rowData.getString("rsrcName");
+	     sysResource.setRsrcName(rsrcName);
+	     String abbreviaName = rowData.getString("abbreviaName");
+	     sysResource.setAbbreviaName(abbreviaName);
+	     String purchasePrice = rowData.getString("purchasePrice");
+	     sysResource.setPurchasePrice(new BigDecimal(purchasePrice));
+	     String salePrice = rowData.getString("salePrice");
+	     sysResource.setSalePrice(new BigDecimal(salePrice));
+	    //Integer workType = rowData.getInt("workType");
+	    //sysResource.setWorkType(workType);
+	     
+	     String brand = rowData.getString("brand");
+	     sysResource.setBrand(brand);
+	    
+	     
+	     Integer supplierId = rowData.getInt("supplierId");
+	     sysResource.setSupplierId(supplierId);
+	     
 //         String supplierName = rowData.getString("supplierName");
 //         sysResource.setSupplierName(supplierName);
 //         String supplier = rowData.getString("supplier");
@@ -124,37 +128,38 @@ public class SysResourceServiceImpl implements SysResourceService{
 //         sysResource.setSupplierAddress(supplierAddress);
 //         String supplierPhone = rowData.getString("supplierPhone");
 //         sysResource.setSupplierPhone(supplierPhone);
-         
-         sysResourceDao.saveOrUpdate(sysResource);
-         
-         rowData.put("rsrcCode", sysResource.getRsrcCode());
-         rowData.put("id", sysResource.getId());
-         rowData.put("rsrcStatus", sysResource.getRsrcStatus());
-         
-         Iterator it = rowData.keys();  
-         while (it.hasNext()) {  
-             String key = (String) it.next(); 
-             String value = rowData.getString(key);
-             if(MyNumberUtil.isNumber(key))
-             {
-            	 //如果属性值为空，不做处理
-            	 if(MyStringUtil.isNotBlank(value)){
-            		 //更新的资源
-            		 SysRsRcAttrib sysRsRcAttrib = null;
-            		 sysRsRcAttrib = sysRsRcAttribDao.getByResourceAndAttr(sysResource.getId(),Integer.parseInt(key));
-            		 if(null!=sysRsRcAttrib){
-            			 sysRsRcAttrib.setRsrcAttribValue(value);
-            		 }else{
-            			 sysRsRcAttrib = new SysRsRcAttrib();
-            			 sysRsRcAttrib.setRsrcAttribCatalogId(Integer.parseInt(key));
-            			 sysRsRcAttrib.setRsrcCatalogId(sysRsRcCatalog.getId());
-            			 sysRsRcAttrib.setRsrcId(sysResource.getId());
-            			 sysRsRcAttrib.setRsrcAttribValue(value);
-            		 }
-                	 sysRsRcAttribDao.saveOrUpdate(sysRsRcAttrib);
-            	 }
-             }
-         } 
+	     
+	     sysResourceDao.saveOrUpdate(sysResource);
+	     
+	     rowData.put("rsrcCode", sysResource.getRsrcCode());
+	     rowData.put("id", sysResource.getId());
+	     rowData.put("rsrcStatus", sysResource.getRsrcStatus());
+	     rowData.put("isRelease", sysResource.getIsRelease());
+	     
+	     Iterator it = rowData.keys();  
+	     while (it.hasNext()) {  
+	         String key = (String) it.next(); 
+	         String value = rowData.getString(key);
+	         if(MyNumberUtil.isNumber(key))
+	         {
+	        	 //如果属性值为空，不做处理
+	        	 if(MyStringUtil.isNotBlank(value)){
+	        		 //更新的资源
+	        		 SysRsRcAttrib sysRsRcAttrib = null;
+	        		 sysRsRcAttrib = sysRsRcAttribDao.getByResourceAndAttr(sysResource.getId(),Integer.parseInt(key));
+	        		 if(null!=sysRsRcAttrib){
+	        			 sysRsRcAttrib.setRsrcAttribValue(value);
+	        		 }else{
+	        			 sysRsRcAttrib = new SysRsRcAttrib();
+	        			 sysRsRcAttrib.setRsrcAttribCatalogId(Integer.parseInt(key));
+	        			 sysRsRcAttrib.setRsrcCatalogId(sysRsRcCatalog.getId());
+	        			 sysRsRcAttrib.setRsrcId(sysResource.getId());
+	        			 sysRsRcAttrib.setRsrcAttribValue(value);
+	        		 }
+	            	 sysRsRcAttribDao.saveOrUpdate(sysRsRcAttrib);
+	        	 }
+	         }
+	     } 
 	}
 
 	@Override
@@ -311,48 +316,58 @@ public class SysResourceServiceImpl implements SysResourceService{
 		
 		
 		for(SysResource sysResource:sysResources){
-			sysResource.setRsrcStatus(3);
-			sysResourceDao.update(sysResource);
 			//发布数据移动到发布区
 			SysResourceRel sysResourceRel = sysResourceRelDao.getByResourceId(sysResource.getId());
-			
-			if(null != sysResourceRel){
-				setDataToSysResource(sysResource, sysResourceRel);
-				sysResourceRelDao.update(sysResourceRel);
-				sysRsRcAttribRelDao.deleteByProperty("rsrcRelId", sysResourceRel.getId());
+			if(sysResource.getRsrcStatus() == 0){
+				if(null != sysResourceRel){
+					sysResourceRel.setRsrcStatus(0);
+					sysResourceRelDao.update(sysResourceRel);  //发布变成失效
+				}
+				sysRsRcAttribDao.deleteByProperty("rsrcId", sysResource.getId());
+				sysResourceDao.delete(sysResource);
 			}else{
-				sysResourceRel = new SysResourceRel();
-				setDataToSysResource(sysResource, sysResourceRel);
-				sysResourceRelDao.save(sysResourceRel);
-			}
-			
-			StringBuffer buf = new StringBuffer();
-			buf.append((MyStringUtil.isNotBlank(sysResource.getBrand())?sysResource.getBrand():"")
-					+(MyStringUtil.isNotBlank(sysResource.getRsrcName())?sysResource.getRsrcName():""));
-			
-			Map<Integer,SysRsRcAttrib> rattribMap = attribMap.get(sysResource.getId());
-			List<Integer> attribCatalogIdList = new ArrayList<Integer>();
-			if(null != rattribMap && rattribMap.size() > 0 ){
-				for(Integer key:rattribMap.keySet()){
-					SysRsRcAttrib attrib = rattribMap.get(key);
-					SysRsRcAttribRel sysRsRcAttribRel = new SysRsRcAttribRel();
-					sysRsRcAttribRel.setRsrcRelId(sysResourceRel.getId());
-					sysRsRcAttribRel.setRsrcAttribCatalogId(attrib.getRsrcAttribCatalogId());
-					sysRsRcAttribRel.setRsrcCatalogId(attrib.getRsrcCatalogId());
-					sysRsRcAttribRel.setRsrcAttribValue(attrib.getRsrcAttribValue());
-					attribCatalogIdList.add(attrib.getRsrcAttribCatalogId());
+				sysResource.setRsrcStatus(3);  //所有状态变成正常
+				sysResource.setIsRelease(1);
+				sysResourceDao.update(sysResource);
+				
+				if(null != sysResourceRel){
+					setDataToSysResource(sysResource, sysResourceRel);
+					sysResourceRelDao.update(sysResourceRel);
+					sysRsRcAttribRelDao.deleteByProperty("rsrcRelId", sysResourceRel.getId());
+				}else{
+					sysResourceRel = new SysResourceRel();
+					setDataToSysResource(sysResource, sysResourceRel);
+					sysResourceRelDao.save(sysResourceRel);
 				}
-			}
-			if(attribCatalogIdList.size() > 0){
-				buf.append("(");
-				List<SysRsRcAttribCatalog> attribCatalogs = sysRsRcAttribCatalogDao.findByIds(StringBufferByCollectionUtil.convertCollection(attribCatalogIdList));
-				for(SysRsRcAttribCatalog attribCatalog : attribCatalogs){
-					buf.append(attribCatalog.getRsrcAttribName()+":"+rattribMap.get(attribCatalog.getId()).getRsrcAttribValue()+" ");
+				
+				StringBuffer buf = new StringBuffer();
+				buf.append((MyStringUtil.isNotBlank(sysResource.getBrand())?sysResource.getBrand():"")
+						+(MyStringUtil.isNotBlank(sysResource.getRsrcName())?sysResource.getRsrcName():""));
+				
+				Map<Integer,SysRsRcAttrib> rattribMap = attribMap.get(sysResource.getId());
+				List<Integer> attribCatalogIdList = new ArrayList<Integer>();
+				if(null != rattribMap && rattribMap.size() > 0 ){
+					for(Integer key:rattribMap.keySet()){
+						SysRsRcAttrib attrib = rattribMap.get(key);
+						SysRsRcAttribRel sysRsRcAttribRel = new SysRsRcAttribRel();
+						sysRsRcAttribRel.setRsrcRelId(sysResourceRel.getId());
+						sysRsRcAttribRel.setRsrcAttribCatalogId(attrib.getRsrcAttribCatalogId());
+						sysRsRcAttribRel.setRsrcCatalogId(attrib.getRsrcCatalogId());
+						sysRsRcAttribRel.setRsrcAttribValue(attrib.getRsrcAttribValue());
+						attribCatalogIdList.add(attrib.getRsrcAttribCatalogId());
+					}
 				}
-				buf.append(")");
+				if(attribCatalogIdList.size() > 0){
+					buf.append("(");
+					List<SysRsRcAttribCatalog> attribCatalogs = sysRsRcAttribCatalogDao.findByIds(StringBufferByCollectionUtil.convertCollection(attribCatalogIdList));
+					for(SysRsRcAttribCatalog attribCatalog : attribCatalogs){
+						buf.append(attribCatalog.getRsrcAttribName()+":"+rattribMap.get(attribCatalog.getId()).getRsrcAttribValue()+" ");
+					}
+					buf.append(")");
+				}
+				sysResourceRel.setKeyWord(buf.toString());
+				sysResourceRelDao.update(sysResourceRel);
 			}
-			sysResourceRel.setKeyWord(buf.toString());
-			sysResourceRelDao.update(sysResourceRel);
 		}
 	}
 
