@@ -67,4 +67,6 @@ public interface SysUserService {
 	public List<SysDepartMent> findDepartMentByParentId(Integer parentId);
 	
 	public void saveSysDepartMent(SysDepartMent sysDepartMent);
+	
+	public List<SysDepartMent> findAllDepartMent();
 }

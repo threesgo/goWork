@@ -35,25 +35,22 @@
  					url:"sysDepartMentAction!findTree.act?",
  					animate:true,
  					onSelect:function(node){//onSelect是选择节点时触发
- 						//closeAllTab(layoutTab);//此函数在public中定义，关闭中间布局的选项卡
- 						/* if(departMentTree.tree("isLeaf",node.target)){//判断是否为叶子节点
- 							layoutTab.tabs('add',
+ 						closeAllTab(layoutTab);//此函数在public中定义，关闭中间布局的选项卡
+ 						if(node.attributes.root == 0){//判断是否为叶子节点
+ 							 layoutTab.tabs('add',
  								{
- 									title :"关联模块",
- 									href :"sysRoleAction!edit.act?sysRole.id="+node.attributes.id
- 								}
- 							);   
- 						}                           
- 						else{
- 							if(node.id=="root"){
- 								layoutTab.tabs('add',
-									{
- 										title :"角色列表 ",
- 	 									href :"sysRoleAction!list.act"
- 	 								}
- 								);
- 							}
- 						} */
+ 									title :"部门列表",
+ 									href :"sysDepartMentAction!preDepartMent.act"
+ 								} 
+ 							); 
+ 						}else{
+							layoutTab.tabs('add',
+								{
+									title :"职位列表 ",
+ 									href :"sysPositionAction!findPosition.act?"
+	 							}
+							);
+ 						}  
  					},
  					//右键菜单
  					onContextMenu:function(e,node){

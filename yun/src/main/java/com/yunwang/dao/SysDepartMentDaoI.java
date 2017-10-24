@@ -8,4 +8,6 @@ public interface SysDepartMentDaoI extends BaseDaoI<SysDepartMent>{
 
 	List<SysDepartMent> findDepartMentByParentId(Integer parentId);
 	
+	List<SysDepartMent> findAllDepartMent();
+	
 }
