@@ -15,6 +15,12 @@ public class SysDepartMentDaoImpl extends BaseDaoImpl<SysDepartMent> implements 
 		String hql = "SELECT model FROM SysDepartMent model WHERE model.parentId = ? Order By model.orderNo ";
 		return find(hql, parentId);
 	}
+
+	@Override
+	public List<SysDepartMent> findAllDepartMent() {
+		String hql ="SELECT model FROM SysDepartMent model ORDER BY model.strOrderNo ";
+		return find(hql);
+	}
 	
 	
 

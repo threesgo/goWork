@@ -17,7 +17,8 @@ import com.yunwang.util.action.AbstractLoginAction;
 
 @Action(value = "sysDepartMentAction", results = {
 		@Result(name="index",location="/WEB-INF/web/sysDepartMent/index.jsp"),
-		@Result(name="preAddOrEdit",location="/WEB-INF/web/sysDepartMent/preAddOrEdit.jsp")
+		@Result(name="preAddOrEdit",location="/WEB-INF/web/sysDepartMent/preAddOrEdit.jsp"),
+		@Result(name="preDepartMent",location="/WEB-INF/web/sysDepartMent/preDepartMent.jsp")
 	}
 )
 public class SysDepartMentAction extends AbstractLoginAction{
@@ -55,7 +56,7 @@ public class SysDepartMentAction extends AbstractLoginAction{
 			json.put("text","部门列表");
 			json.put("state", "closed");
 			JSONObject obj = new JSONObject();
-			obj.put("id",0);
+			obj.put("root",0);
 			json.put("attributes",obj);
 			jsoArr.add(json);
 		}else if(id.startsWith("root")){
@@ -83,7 +84,25 @@ public class SysDepartMentAction extends AbstractLoginAction{
 		}
 		return ajaxText(jsoArr);
 	}
+	
+	/**
+	 * <p>
+	 * 	  root-所有部门列表页面
+	 * </p>
+	 */
+	public String preDepartMent(){
+		return "preDepartMent";
+	}
 
+	/**
+	 * <p>
+	 * root-所有部门列表
+	 * </p>
+	 */
+	public String listDepartMent(){
+		List<SysDepartMent> list = sysUserService.findAllDepartMent();
+		return ajaxJSONArr(list);
+	}
 	
 	/**
 	 * <p>
