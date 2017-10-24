@@ -1,6 +1,8 @@
 package com.yunwang.action;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -10,10 +12,17 @@ import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.yunwang.model.page.Pager;
+import com.yunwang.model.pojo.SysDataDictionary;
 import com.yunwang.model.pojo.SysResource;
+import com.yunwang.model.pojo.SysResourceRel;
 import com.yunwang.model.pojo.SysRsRcPackage;
+import com.yunwang.model.pojo.SysSupplier;
 import com.yunwang.service.SysRsRcPackageService;
+import com.yunwang.service.SysSupplierService;
+import com.yunwang.util.BaseDataDictionaryUtil;
 import com.yunwang.util.action.AbstractLoginAction;
+import com.yunwang.util.collection.CollectionUtil;
 
 @Action(
 	value = "resourcePackageAction", 
@@ -39,9 +48,15 @@ public class ResourcePackageAction extends AbstractLoginAction{
 	@Autowired
 	private SysRsRcPackageService sysRsRcPackageService;
 	
+	@Autowired
+	private SysSupplierService sysSupplierService;
+	
 	private SysRsRcPackage sysRsRcPackage;
 	private String id;
 	private String jsonStr;
+	private List<SysDataDictionary> flowList;
+	private Map<String,Object> hashMap;
+	private List<SysSupplier> sysSuppliers;
 	
 	@Override
 	public String execute() throws Exception {
@@ -111,6 +126,15 @@ public class ResourcePackageAction extends AbstractLoginAction{
 	 * @return 组合关联的资源页面
 	 */
 	public String packageResourceList(){
+		//流程数据
+		flowList = BaseDataDictionaryUtil.baseDataMap.get(4);
+		sysSuppliers =sysSupplierService.findByWorkType(null);
+		hashMap = new HashMap<String,Object>();
+		JSONObject obj = new JSONObject();
+		for(SysDataDictionary dictionary:flowList){
+			obj.put(dictionary.getValue(), dictionary.getName());
+		}
+		hashMap.put("flowObj",obj);
 		return "packageResourceList";
 	}
 	
@@ -118,11 +142,37 @@ public class ResourcePackageAction extends AbstractLoginAction{
 	 * @return 组合关联的资源数据
 	 */
 	public String packageResourceData(){
-		
 		//分页查询
-		
-		List<SysResource> sysResources = sysRsRcPackageService.findPackageResourceData(sysRsRcPackage.getId());
-		return ajaxJSONArr(sysResources);
+		//List<SysResource> sysResources = sysRsRcPackageService.findPackageResourceData(sysRsRcPackage.getId());
+		JSONObject obj=new JSONObject();
+		JSONObject seachObj = JSONObject.fromObject(jsonStr);
+		Pager<SysResourceRel> pager = sysRsRcPackageService.findPackageResourceData(sysRsRcPackage.getId(),page,rows,seachObj);
+		JSONArray arr = new JSONArray();
+		if(null!=pager && null!=pager.getData()){
+			@SuppressWarnings("unchecked")
+			List<SysResourceRel> sysResources = (List<SysResourceRel>) pager.getData();
+			sysSuppliers =sysSupplierService.findByWorkType(null);
+  			Map<Integer,SysSupplier> supplierMap = CollectionUtil.listToMap(sysSuppliers,"id");
+  			for(SysResourceRel resource:sysResources){
+  				if(null != resource.getSupplierId()&&0!=resource.getSupplierId()){
+  					SysSupplier supplier = supplierMap.get(resource.getSupplierId());
+  	  				if(null != supplier){
+  	  					resource.setSupplier(supplier.getContact());
+  	  					resource.setSupplierName(supplier.getName());
+  	  					resource.setSupplierPhone(supplier.getPhoneNum());
+  	  					resource.setSupplierTel(supplier.getTelNum());
+  	  					resource.setSupplierAddress(supplier.getAddress());
+  	  				}
+  				}
+  				JSONObject newObj = JSONObject.fromObject(resource);
+  				arr.add(newObj);
+  			}
+  			obj.put("total", pager.getTotalRows());
+  	    }else{
+  	        obj.put("total",0); 
+  	    }
+		obj.put("rows", arr);
+  		return ajaxText(JSONObject.fromObject(obj).toString());
 	}
 	
 	
@@ -227,5 +277,29 @@ public class ResourcePackageAction extends AbstractLoginAction{
 
 	public void setJsonStr(String jsonStr) {
 		this.jsonStr = jsonStr;
+	}
+
+	public List<SysDataDictionary> getFlowList() {
+		return flowList;
+	}
+
+	public void setFlowList(List<SysDataDictionary> flowList) {
+		this.flowList = flowList;
+	}
+
+	public Map<String, Object> getHashMap() {
+		return hashMap;
+	}
+
+	public void setHashMap(Map<String, Object> hashMap) {
+		this.hashMap = hashMap;
+	}
+
+	public List<SysSupplier> getSysSuppliers() {
+		return sysSuppliers;
+	}
+
+	public void setSysSuppliers(List<SysSupplier> sysSuppliers) {
+		this.sysSuppliers = sysSuppliers;
 	}
 }

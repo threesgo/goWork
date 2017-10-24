@@ -301,14 +301,14 @@ public class ResourceAction extends AbstractLoginAction{
 	 */
 	public String relResourceSelect(){
 		//流程数据
-		flowList = BaseDataDictionaryUtil.baseDataMap.get(4);
-		sysSuppliers =sysSupplierService.findByWorkType(null);
-		hashMap = new HashMap<String,Object>();
-		JSONObject obj = new JSONObject();
-		for(SysDataDictionary dictionary:flowList){
-			obj.put(dictionary.getValue(), dictionary.getName());
-		}
-		hashMap.put("flowObj",obj);
+//		flowList = BaseDataDictionaryUtil.baseDataMap.get(4);
+//		sysSuppliers =sysSupplierService.findByWorkType(null);
+//		hashMap = new HashMap<String,Object>();
+//		JSONObject obj = new JSONObject();
+//		for(SysDataDictionary dictionary:flowList){
+//			obj.put(dictionary.getValue(), dictionary.getName());
+//		}
+//		hashMap.put("flowObj",obj);
 		return "relResourceSelect";
 	}
 	

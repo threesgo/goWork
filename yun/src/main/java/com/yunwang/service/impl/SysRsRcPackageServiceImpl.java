@@ -2,12 +2,15 @@ package com.yunwang.service.impl;
 
 import java.util.List;
 
+import net.sf.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.yunwang.dao.SysResourceDaoI;
+import com.yunwang.dao.SysResourceRelDaoI;
 import com.yunwang.dao.SysRsRcPackageDaoI;
-import com.yunwang.model.pojo.SysResource;
+import com.yunwang.model.page.Pager;
+import com.yunwang.model.pojo.SysResourceRel;
 import com.yunwang.model.pojo.SysRsRcPackage;
 import com.yunwang.service.SysRsRcPackageService;
 import com.yunwang.util.string.MyStringUtil;
@@ -24,7 +27,7 @@ public class SysRsRcPackageServiceImpl implements SysRsRcPackageService{
 	private SysRsRcPackageDaoI sysRsRcPackageDao;
 	
 	@Autowired
-	private SysResourceDaoI sysResourceDao;
+	private SysResourceRelDaoI sysResourceRelDao;
 
 	@Override
 	public List<SysRsRcPackage> findAll(String order) {
@@ -51,8 +54,15 @@ public class SysRsRcPackageServiceImpl implements SysRsRcPackageService{
 	}
 
 	@Override
-	public List<SysResource> findPackageResourceData(Integer packageId) {
+	public List<SysResourceRel> findPackageResourceData(Integer packageId) {
 		// TODO Auto-generated method stub
-		return sysResourceDao.findPackageResourceData(packageId);
+		return sysResourceRelDao.findPackageResourceData(packageId);
+	}
+
+	@Override
+	public Pager<SysResourceRel> findPackageResourceData(Integer packageId,
+			int page, int rows, JSONObject seachObj) {
+		// TODO Auto-generated method stub
+		return sysResourceRelDao.findPackageResourceData(packageId,page,rows,seachObj);
 	}
 }

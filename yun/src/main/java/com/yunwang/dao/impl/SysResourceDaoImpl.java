@@ -142,14 +142,4 @@ public class SysResourceDaoImpl extends BaseDaoImpl<SysResource> implements SysR
 		buf.append(" ORDER BY model.rsrcCatalogId,model.orderNo");
 		return find(buf.toString());
 	}
-
-	@Override
-	public List<SysResource> findPackageResourceData(Integer packageId) {
-		Map<String, Object> map = new HashMap<String,Object>();
-		StringBuffer buf = new StringBuffer("SELECT model FROM SysResource model WHERE 1=1 ");
-		buf.append("AND model.id IN(SELECT pcResource.resourceId " +
-				" FROM SysRsRcPcResource pcResource WHERE pcResource.packageId=:packageId ) ");
-		map.put("packageId",packageId);
-		return find(buf.toString(),map);
-	}
 }

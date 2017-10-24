@@ -3,6 +3,9 @@
 <script type="text/javascript">
 var $packageResourceGrid;
 var packageResourceOperation = {};
+
+var flowObj = new Function("return " + '${hashMap.flowObj}')();
+
 $(function(){
  	columns=[];
  	/*
@@ -48,13 +51,18 @@ $(function(){
         },
         frozenColumns:[[
 	        {field:'ck',checkbox:true},
+			{field:'keyWord',title:"产品关键词",width:200,sortable:true,
+	        	
+	        },
+	        {field:'workType',title:"工种",width:80,sortable:true,
+				formatter : function(value, rowData) {
+					return flowObj[value];
+				} 
+	 		},
 	        {field:'rsrcName',title:"产品名称",width:80,sortable:true,
 	        	
 	        },
 	        {field:'abbreviaName',title:"产品简称",width:80,sortable:true,
-	        	
-	        },
-	        {field:'keyWord',title:"产品关键词",width:200,sortable:true,
 	        	
 	        },
 	        {field:'salePrice',title:"销售价格",width:80,sortable:true,align:'right',
@@ -183,7 +191,7 @@ packageResourceOperation = {
 		searchData["supplierId"] = $("#supplierId").val();
 		$packageResourceGrid.datagrid("reload",
 			{
-				"resourceJsonStr":Some.util.jsonToStr(searchData)
+				"jsonStr":Some.util.jsonToStr(searchData)
 			}
 		);
 	},

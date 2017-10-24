@@ -2,7 +2,10 @@ package com.yunwang.service;
 
 import java.util.List;
 
-import com.yunwang.model.pojo.SysResource;
+import net.sf.json.JSONObject;
+
+import com.yunwang.model.page.Pager;
+import com.yunwang.model.pojo.SysResourceRel;
 import com.yunwang.model.pojo.SysRsRcPackage;
 
 public interface SysRsRcPackageService {
@@ -15,6 +18,9 @@ public interface SysRsRcPackageService {
 
 	void saveOrUpdateRsRcPackage(SysRsRcPackage updateSysRsRcPackage);
 
-	List<SysResource> findPackageResourceData(Integer packageId);
+	List<SysResourceRel> findPackageResourceData(Integer packageId);
+
+	Pager<SysResourceRel> findPackageResourceData(Integer packageId, int page,
+			int rows, JSONObject seachObj);
 
 }
