@@ -27,30 +27,32 @@
             url:"sysOrderAction!listData.act",
             frozenColumns:[[
        			{field:'ck',checkbox:true},
+       			/*
        			{field:'code',title: "编号",width:100,sortable:true
 					
 				},
+				*/
 				{field:'name',title: "名称",width:80,sortable:true
 					
 				},
-				{field:'totalArea',title: "总面积",width:80,sortable:true
+				{field:'totalArea',title: "总面积",width:60,sortable:true
 					
 				},
-				{field:'totalAmount',title: "总定价",width:80,sortable:true
+				{field:'totalAmount',title: "总定价",width:60,sortable:true
+					
+				},
+				{field:'orderDate',title: "下单时间",width:100,sortable:true
 					
 				}
-				{field:'orderDate',title: "下单时间",width:80,sortable:true
-					
-				},
             ]],
 			columns:[[
-				{field:'contact',title: "联系人",width:100,sortable:true
+				{field:'contact',title: "联系人",width:80,sortable:true
 					
 				},
-				{field:'contactTel',title: "联系方式",width:100,sortable:true
+				{field:'contactTel',title: "联系方式",width:80,sortable:true
 					
 				},
-				{field:'address',title: "装修地址",width:100,sortable:true
+				{field:'address',title: "装修地址",width:300,sortable:true
 					
 				},
 				{field:'startTimeStr',title: "开始时间",width:100,sortable:true
@@ -81,9 +83,9 @@
 	});
 	
 	sysOrderOperation={
-		addsysOrder:function(){
+		addSysOrder:function(){
  			var dialog = $('<div id="addSysOrder"></div>').dialog({    
-				href : "sysOrderAction!saveOrUpdateOrderPage.act",
+				href : "sysOrderAction!saveOrUpdatePage.act",
 				width:350,
 				height:250,
 				title:"新增订单",
@@ -96,7 +98,7 @@
 					handler:function(){
 						$('#saveOrUpdate_order').form({    
 						    onSubmit: function(){ 
-						    	if(!$("#edit_catalogName").validatebox("isValid")){
+						    	if(!$("#edit_name").validatebox("isValid")){
 						    		return false;
 						    	}
 						    },    
@@ -179,11 +181,13 @@
 			<input type="text" id="contact"/>
 		</div>
 		
-		<div>
+		<div class="search-div" style = "width:488px;max-width: 488px;">
 			<label>预计工期时间</label>
-			<input id="startTime" class="easyui-datebox" />
-			-
-			<input id="endTime" class="easyui-datebox" />
+			<div class="select" style="width: 400px;">
+				<input id="startTime" class="easyui-datebox" />
+				-
+				<input id="endTime" class="easyui-datebox" />
+			</div>
 		</div>
 		
 		<div class="search-div">
@@ -192,7 +196,7 @@
 		</div>
 	</div>
 	<div data-options="region:'center',border:false">
-		<table id="orderTable"></table>
+		<table id="sysOrderTable"></table>
 	</div>
 </div>
 <div id="sysOrder_tool_bar">

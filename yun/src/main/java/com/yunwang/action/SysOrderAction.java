@@ -16,12 +16,15 @@ import com.yunwang.model.page.Pager;
 import com.yunwang.model.pojo.SysDataDictionary;
 import com.yunwang.model.pojo.SysOrder;
 import com.yunwang.service.SysOrderService;
+import com.yunwang.util.BaseDataDictionaryUtil;
 import com.yunwang.util.action.AbstractLoginAction;
 @Action(
 	value = "sysOrderAction", 
 	results = {
-		@Result(name = "index",location="/WEB-INF/web/sysOrder/index.jsp"),
+		@Result(name = "index",location="/WEB-INF/web/sysOrder/showIndex.jsp"),
+		@Result(name = "manageIndex",location="/WEB-INF/web/sysOrder/manageIndex.jsp"),
 		@Result(name = "saveOrUpdatePage",location="/WEB-INF/web/sysOrder/saveOrUpdatePage.jsp"),
+		@Result(name = "workerAndResource",location="/WEB-INF/web/sysOrder/workerAndResource.jsp")
 	}
 )
 public class SysOrderAction  extends AbstractLoginAction{
@@ -43,13 +46,16 @@ public class SysOrderAction  extends AbstractLoginAction{
 	private String ids;
 	private String jsonStr;
 	private List<SysDataDictionary> flowList;
+	private List<SysDataDictionary> dTypeList;
 	
 	@Override
 	public String execute() throws Exception {
 		hashMap = new HashMap<String,Object>();
-		
-		
 		return "index";
+	}
+	
+	public String manageIndex(){
+		return "manageIndex";
 	}
 	
 	public String findTree(){
@@ -120,6 +126,7 @@ public class SysOrderAction  extends AbstractLoginAction{
 	 * <p>保存表格行数据</p>
 	 */
 	public String saveOrUpdatePage(){
+		dTypeList = BaseDataDictionaryUtil.baseDataMap.get(7);
 		return "saveOrUpdatePage";
 	}
 	
@@ -139,6 +146,9 @@ public class SysOrderAction  extends AbstractLoginAction{
 		}
 	}
 	
+	public String workerAndResource(){
+		return "workerAndResource";
+	}
 	
 	public String deleteOrder(){
 		try{
@@ -168,7 +178,7 @@ public class SysOrderAction  extends AbstractLoginAction{
 		jsonArr.add(totalArea);
 		
 		JSONObject totalAmount=new JSONObject();
-		totalAmount.put("attrName", "总面积");
+		totalAmount.put("attrName", "总定价");
 		totalAmount.put("value", sysOrder.getTotalAmount());
 		jsonArr.add(totalAmount);
 		
@@ -251,5 +261,13 @@ public class SysOrderAction  extends AbstractLoginAction{
 
 	public void setFlowList(List<SysDataDictionary> flowList) {
 		this.flowList = flowList;
+	}
+
+	public List<SysDataDictionary> getdTypeList() {
+		return dTypeList;
+	}
+
+	public void setdTypeList(List<SysDataDictionary> dTypeList) {
+		this.dTypeList = dTypeList;
 	}
 }

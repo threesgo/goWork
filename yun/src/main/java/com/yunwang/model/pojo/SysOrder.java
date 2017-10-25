@@ -40,8 +40,11 @@ public class SysOrder extends AbstractRowVersionModel{
 	@Column(name = "NAME",length = 128,nullable = false)
 	private String name;
 	
-	@Column(name = "INFO",length = 2048)
-	private String info;
+	@Column(name = "TOTAL_AREA",nullable = false)
+	private BigDecimal totalArea;
+	
+	@Column(name = "TOTAL_AMOUNT",nullable = false)
+	private BigDecimal totalAmount;
 	
 	@Column(name = "ORDER_DATE")
 	private String orderDate;  //只存日期，tree显示根据日期分组
@@ -61,11 +64,8 @@ public class SysOrder extends AbstractRowVersionModel{
 	@Column(name = "END_TIME")
 	private Date endTime;  //报警提示
 	
-	@Column(name = "TOTAL_AREA",nullable = false)
-	private BigDecimal totalArea;
-	
-	@Column(name = "TOTAL_AMOUNT",nullable = false)
-	private BigDecimal totalAmount;
+	@Column(name = "INFO",length = 2048)
+	private String info;
 	
 	@Column(name = "ORDER_TYPE",nullable = false)
 	private Integer orderType; //装修类型    //默认套餐

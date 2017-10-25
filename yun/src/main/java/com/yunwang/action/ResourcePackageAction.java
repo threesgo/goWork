@@ -72,7 +72,7 @@ public class ResourcePackageAction extends AbstractLoginAction{
 		if (id==null) {
 			JSONObject json=new JSONObject();
 			json.put("id", "root");
-			json.put("text", "组合套餐");
+			json.put("text", "产品套餐");
 			JSONObject obj=new JSONObject();
 			obj.put("id",0);
 			json.put("attributes",obj);

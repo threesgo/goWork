@@ -2,7 +2,7 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
 <script type="text/javascript">
 $(function(){
-	$orderInfoTable=$("#orderInfoTable").datagrid({
+	$sysOrderInfoTable=$("#sysOrderInfoTable").datagrid({
         fitColumns:true,
         remoteSort:false,
         striped:true,
@@ -41,7 +41,7 @@ $(function(){
 	});
 });
 </script>
-<table id="orderInfoTable"></table>
+<table id="sysOrderInfoTable"></table>
 <!-- 
 <div id="order_info_bar">
 	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit', plain:true" 
