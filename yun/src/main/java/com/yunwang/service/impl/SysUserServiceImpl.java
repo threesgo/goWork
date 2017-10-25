@@ -7,13 +7,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.sf.json.JSONObject;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.alibaba.fastjson.JSONObject;
 import com.yunwang.dao.SysDepartMentDaoI;
 import com.yunwang.dao.SysMenuDaoI;
+import com.yunwang.dao.SysPositionDaoI;
 import com.yunwang.dao.SysRoleDaoI;
 import com.yunwang.dao.SysRoleMenuDaoI;
 import com.yunwang.dao.SysUserDaoI;
@@ -21,6 +23,7 @@ import com.yunwang.dao.SysUserRoleDaoI;
 import com.yunwang.model.page.Pager;
 import com.yunwang.model.pojo.SysDepartMent;
 import com.yunwang.model.pojo.SysMenu;
+import com.yunwang.model.pojo.SysPosition;
 import com.yunwang.model.pojo.SysRole;
 import com.yunwang.model.pojo.SysUser;
 import com.yunwang.model.pojo.SysUserRole;
@@ -50,7 +53,9 @@ public class SysUserServiceImpl implements SysUserService{
 	
 	@Autowired
 	SysDepartMentDaoI sysDepartMentDao;
-
+	@Autowired
+	SysPositionDaoI sysPositionDao;
+	
 	@Override
 	public List<SysUser> findList() {
 		return sysUserDao.find("");
@@ -137,7 +142,7 @@ public class SysUserServiceImpl implements SysUserService{
 	@SuppressWarnings("unchecked")
 	@Override
 	public Pager<SysUser> findAllUser(String filterJsons, int page, int rows) {
-		JSONObject json = JSONObject.parseObject(filterJsons);
+		JSONObject json = JSONObject.fromObject(filterJsons);
 		Pager<SysUser> pager = sysUserDao.findAllUser(json, page, rows);
 		List<SysUser> list = (List<SysUser>) pager.getData();
 		
@@ -336,5 +341,37 @@ public class SysUserServiceImpl implements SysUserService{
 	@Override
 	public List<SysDepartMent> findAllDepartMent() {
 		return sysDepartMentDao.findAllDepartMent();
+	}
+
+	/**
+	 * @Description: 更新或保存职位信息
+	 * @param   
+	 * @return  
+	 * @throws
+	 * @author KXL
+	 * @date 2017-10-25
+	 */
+	@Override
+	public void saveOrUpdatePositionGrid(JSONObject obj) {
+		if(null != obj){
+			Integer id = Integer.parseInt(obj.getString("id"));
+			SysPosition sysPosition = null;
+			if(id>0){
+				//更新
+				sysPosition = sysPositionDao.get(SysPosition.class, id);
+				
+			}else{
+				//新增
+				sysPosition = new SysPosition();
+				
+			}
+			String code = obj.getString("code");
+			sysPosition.setCode(code);
+			String name = obj.getString("name");
+			sysPosition.setName(name);
+			String positionType = obj.getString("positionType");
+			sysPosition.setPositionType(Integer.parseInt(positionType));
+		}
+		
 	}
 }
