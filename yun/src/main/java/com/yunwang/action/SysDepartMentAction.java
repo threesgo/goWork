@@ -122,7 +122,7 @@ public class SysDepartMentAction extends AbstractLoginAction{
 	public String saveOrUpdatePositionGrid(){
 		try{
 			JSONObject obj = JSONObject.fromObject(jsonStr);
-			sysUserService.saveOrUpdatePositionGrid(obj);
+			sysUserService.saveOrUpdatePositionGrid(obj,Integer.parseInt(departMentId));
 			return success("行数据保存成功!",obj);
 		}catch(Exception e){
 			LOG.error(e.getMessage());

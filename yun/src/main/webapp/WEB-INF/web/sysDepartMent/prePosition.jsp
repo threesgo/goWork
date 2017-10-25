@@ -105,8 +105,8 @@ $(function(){
             positionEdit = index;
         },
         onAfterEdit:function(rowIndex,rowData,changes){
-        	alert(Some.util.jsonToStr(rowData))
-        	return false;
+        	//alert(Some.util.jsonToStr(rowData))
+        	//return false;
 	    	$.post("sysDepartMentAction!saveOrUpdatePositionGrid.act",
 	    			{"jsonStr":Some.util.jsonToStr(rowData),"departMentId":'${departMentId}'},
        			 function(data){

@@ -72,5 +72,5 @@ public interface SysUserService {
 	
 	public List<SysDepartMent> findAllDepartMent();
 
-	public void saveOrUpdatePositionGrid(JSONObject obj);
+	public void saveOrUpdatePositionGrid(JSONObject obj,Integer departMentId);
 }

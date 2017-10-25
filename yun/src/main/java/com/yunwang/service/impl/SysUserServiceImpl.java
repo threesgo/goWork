@@ -352,7 +352,7 @@ public class SysUserServiceImpl implements SysUserService{
 	 * @date 2017-10-25
 	 */
 	@Override
-	public void saveOrUpdatePositionGrid(JSONObject obj) {
+	public void saveOrUpdatePositionGrid(JSONObject obj,Integer departMentId) {
 		if(null != obj){
 			Integer id = Integer.parseInt(obj.getString("id"));
 			SysPosition sysPosition = null;
@@ -363,7 +363,7 @@ public class SysUserServiceImpl implements SysUserService{
 			}else{
 				//新增
 				sysPosition = new SysPosition();
-				
+				sysPosition.setDepartMentId(departMentId);
 			}
 			String code = obj.getString("code");
 			sysPosition.setCode(code);
@@ -371,6 +371,7 @@ public class SysUserServiceImpl implements SysUserService{
 			sysPosition.setName(name);
 			String positionType = obj.getString("positionType");
 			sysPosition.setPositionType(Integer.parseInt(positionType));
+			sysPositionDao.saveOrUpdate(sysPosition);
 		}
 		
 	}
