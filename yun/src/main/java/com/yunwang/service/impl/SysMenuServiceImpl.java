@@ -9,10 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.yunwang.dao.SysMenuDaoI;
-import com.yunwang.dao.SysRoleDaoI;
 import com.yunwang.dao.SysRoleMenuDaoI;
 import com.yunwang.model.pojo.SysMenu;
-import com.yunwang.model.pojo.SysRole;
 import com.yunwang.model.pojo.SysRoleMenu;
 import com.yunwang.service.SysMenuService;
 
@@ -26,9 +24,6 @@ public class SysMenuServiceImpl implements SysMenuService{
 	@Autowired
 	private SysRoleMenuDaoI sysRoleMenuDao;
 	
-	@Autowired
-	private SysRoleDaoI sysRoleDao;
-
 	/**
 	 * @Description: 查询所有菜单
 	 * @param   
