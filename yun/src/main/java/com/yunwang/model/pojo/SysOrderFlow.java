@@ -1,5 +1,7 @@
 package com.yunwang.model.pojo;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,11 +27,22 @@ public class SysOrderFlow extends AbstractRowVersionModel{
 	@Column(name = "ORDER_ID",nullable = false)
 	private Integer orderId;
 	
+	@Column(name = "NAME",nullable = false,length=256)
+	private String name;
+	
 	@Column(name = "FLOW_TYPE",nullable = false)
 	private Integer flowType;
 	
 	@Column(name = "STATUS",columnDefinition = "number default 1")
 	private Integer status;  //标注每个流程的完成状态，已经流转
+	
+	
+	@Column(name = "START_TIME")
+	private Date startTime;
+	
+	@Column(name = "END_TIME")
+	private Date endTime;  //报警提示
+	
 	
 	public SysOrderFlow(){
 		
@@ -41,6 +54,14 @@ public class SysOrderFlow extends AbstractRowVersionModel{
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public Integer getOrderId() {
@@ -66,4 +87,21 @@ public class SysOrderFlow extends AbstractRowVersionModel{
 	public void setStatus(Integer status) {
 		this.status = status;
 	}
+
+	public Date getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(Date startTime) {
+		this.startTime = startTime;
+	}
+
+	public Date getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(Date endTime) {
+		this.endTime = endTime;
+	}
+	
 }

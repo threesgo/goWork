@@ -20,4 +20,6 @@ public interface SysOrderService {
 
 	List<SysOrder> findOrderTimeGroup();
 
+	List<SysOrder> findByOrderDate(String orderDate);
+
 }

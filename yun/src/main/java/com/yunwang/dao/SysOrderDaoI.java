@@ -8,5 +8,7 @@ public interface SysOrderDaoI extends BaseDaoI<SysOrder>{
 
 	List<SysOrder> findOrderTimeGroup();
 
+	List<SysOrder> findByOrderDate(String orderDate);
+
 
 }

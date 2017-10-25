@@ -45,5 +45,9 @@ public class SysOrderServiceImpl implements SysOrderService {
 	public List<SysOrder> findOrderTimeGroup() {
 		return sysOrderDao.findOrderTimeGroup();
 	}
-	
+
+	@Override
+	public List<SysOrder> findByOrderDate(String orderDate) {
+		return sysOrderDao.findByOrderDate(orderDate);
+	}
 }

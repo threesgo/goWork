@@ -65,10 +65,26 @@ public class SysOrderAction  extends AbstractLoginAction{
 			jsonArr.add(json);
 		}else if("root".equals(id)){
 			//时间分组
-			List<SysOrder> timeGroup = sysOrderService.findOrderTimeGroup();
-			
+			List<SysOrder> timeGroups = sysOrderService.findOrderTimeGroup();
+			for(SysOrder order:timeGroups){
+				JSONObject obj=new JSONObject();
+				obj.put("id", "t"+order.getOrderDate());
+				obj.put("text", order.getOrderDate());
+				jsonArr.add(obj);
+			}
 		}else if("id".startsWith("t")){
 			//具体的订单
+			List<SysOrder> timeGroups = sysOrderService.findByOrderDate(id.substring(1, id.length()));
+			for(SysOrder order:timeGroups){
+				JSONObject obj=new JSONObject();
+				obj.put("id", "o"+order.getId());
+				obj.put("text", order.getName());
+				obj.put("attributes",JSONObject.fromObject(order));
+				obj.put("state", "closed");
+				jsonArr.add(obj);
+			}
+		}else{
+			//订单步骤
 			
 		}
 		return ajaxText(jsonArr);
