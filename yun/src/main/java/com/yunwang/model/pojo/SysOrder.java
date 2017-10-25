@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.yunwang.util.date.MyDateUtils;
+
 @Entity
 @Table(name = "SYS_ORDER")
 public class SysOrder extends AbstractRowVersionModel{
@@ -42,12 +44,15 @@ public class SysOrder extends AbstractRowVersionModel{
 	private String info;
 	
 	@Column(name = "ORDER_DATE")
-	private Date orderDate;  //只存日期，tree显示根据日期分组
+	private String orderDate;  //只存日期，tree显示根据日期分组
 	
-	@Column(name = "CONTACT",nullable = false)
+	@Column(name = "CONTACT",nullable = false,length = 128)
 	private String contact;
 	
-	@Column(name = "ADDRESS",nullable = false)
+	@Column(name = "CONTACT_TEL",length = 128)
+	private String contactTel;
+	
+	@Column(name = "ADDRESS",nullable = false,length = 2048)
 	private String address;
 	
 	@Column(name = "START_TIME")
@@ -63,7 +68,10 @@ public class SysOrder extends AbstractRowVersionModel{
 	private BigDecimal totalAmount;
 	
 	@Column(name = "ORDER_TYPE",nullable = false)
-	private Integer orderType; //装修类型
+	private Integer orderType; //装修类型    //默认套餐
+	
+//	@Column(name = "MEMBER_ID",nullable = false)
+//	private Integer memberId;  //关联工人  业务员，下单人员  
 	
 	@Column(name = "STATUS",columnDefinition = "number default 1")
 	private Integer status;  //0，删除 1，未开始 2、进行中 3，已完成  (手动或者根据时间进行自动管控)
@@ -104,11 +112,11 @@ public class SysOrder extends AbstractRowVersionModel{
 		this.info = info;
 	}
 
-	public Date getOrderDate() {
+	public String getOrderDate() {
 		return orderDate;
 	}
 
-	public void setOrderDate(Date orderDate) {
+	public void setOrderDate(String orderDate) {
 		this.orderDate = orderDate;
 	}
 
@@ -118,6 +126,14 @@ public class SysOrder extends AbstractRowVersionModel{
 
 	public void setContact(String contact) {
 		this.contact = contact;
+	}
+
+	public String getContactTel() {
+		return contactTel;
+	}
+
+	public void setContactTel(String contactTel) {
+		this.contactTel = contactTel;
 	}
 
 	public String getAddress() {
@@ -174,5 +190,13 @@ public class SysOrder extends AbstractRowVersionModel{
 
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+	
+	public String getStartTimeStr(){
+		return MyDateUtils.getStringByDateTime(startTime);
+	}
+	
+	public String getEndTimeStr(){
+		return MyDateUtils.getStringByDateTime(endTime);
 	}
 }
