@@ -32,9 +32,9 @@ values(10,'套餐管理','resourcePackageAction.act','cog_edit',5,5,1,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
 values(11,'订单管理','','book_edit',0,4,1,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
-values(12,'订单查询','sysOrderAction.act','book_edit',11,1,1,1);
+values(12,'订单编辑','sysOrderAction.act','book_edit',11,1,1,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
-values(13,'订单管理','sysOrderAction!manageIndex.act','book_edit',11,2,1,1);
+values(13,'订单流程','sysOrderAction!manageIndex.act','book_edit',11,2,1,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
 values(14,'流程管理','','door_in',0,3,1,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 

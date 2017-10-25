@@ -172,8 +172,15 @@
 		</div>
 		
 		<div class="search-div">
+			<label>地址</label>
+			<input type="text" id="address"/>
+		</div>
+		
+		<div class="search-div" style = "width:288px;max-width:288px;">
 			<label>下单日期</label>
-			<input type="easyui-datebox" id="orderDate"/>
+			<div class="select" style="width: 200px;">
+				<input id="orderDate" class="easyui-datebox" />
+			</div>
 		</div>
 		
 		<div class="search-div">

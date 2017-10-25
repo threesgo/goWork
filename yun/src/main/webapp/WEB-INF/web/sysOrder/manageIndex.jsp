@@ -20,6 +20,7 @@
  					animate:true,
  					onSelect:function(node){//onSelect是选择节点时触发
  						closeAllTab(sysOrderTab);
+ 						/*
  						if("root" != node.id){
 	 						sysOrderTab.tabs('add',{    
 						    	title:'基本信息', 
@@ -37,6 +38,7 @@
 						if("root" != node.id){
 							sysOrderTab.tabs("select",1);
 						}
+						*/
  					},
  					onLoadSuccess:function(node,data){
  						var root = sysOrderTree.tree("getRoot");
