@@ -27,127 +27,40 @@
             url:"sysOrderAction!listData.act",
             frozenColumns:[[
        			{field:'ck',checkbox:true},
-       			{field:'workType',title: "工种",width:100,sortable:true
-					,editor:{
-                    	type:'combobox',
-                     	options:{
-                          	  valueField:'value', 
-                              textField:'name',
-                              editable:false,
-                              data:${hashMap.flowArr},
-                              panelHeight:'auto',
-                              onLoadSuccess: function () {
-                            	 
-                              }	
-                 	 	}
-					},
-					formatter:function(value, rowData) {
-						return flowObj[value];
-					} 
+       			{field:'code',title: "编号",width:100,sortable:true
+					
 				},
-       			{field:'name',title: "姓名",width:100,sortable:true
-					,editor:{
-		        		type:"textbox",
-		        		options:{required:true,validType:['length[1,20]','illegal']}
-		        	}
+				{field:'name',title: "名称",width:80,sortable:true
+					
 				},
-				{field:'sex',title: "性别",width:80,sortable:true
-					,editor:{
-                    	type:'combobox',
-                     	options:{
-                          	  valueField:'value', 
-                              textField:'name',
-                              editable:false,
-                              data:${hashMap.sexArr},
-                              panelHeight:'auto',
-                              onLoadSuccess: function () {
-                            	 
-                              }	
-                 	 	}
-					},
-					formatter:function(value, rowData) {
-						return sexObj[value];
-					} 
+				{field:'totalArea',title: "总面积",width:80,sortable:true
+					
 				},
-				{field:'wages',title:"日薪",width:80,sortable:true,align:'right',
-		        	editor:{
-		        		type:"numberbox",
-						options:{
-							required:true,
-							min:0,
-							max:9999999.99,
-							precision:2
-				 		}
-		        	}
-		        }
+				{field:'totalAmount',title: "总定价",width:80,sortable:true
+					
+				}
+				{field:'orderDate',title: "下单时间",width:80,sortable:true
+					
+				},
             ]],
 			columns:[[
-				{field:'phoneNum',title: "手机号码",width:100,sortable:true
-					,editor:{
-		        		type:"textbox",
-		        		options:{required:false,validType:['length[1,24]','mobile']}
-		        	}
+				{field:'contact',title: "联系人",width:100,sortable:true
+					
 				},
-				{field:'telNum',title: "电话号码",width:100,sortable:true
-					,editor:{
-		        		type:"textbox",
-		        		options:{required:false,validType:['length[1,24]','phone']}
-		        	}
+				{field:'contactTel',title: "联系方式",width:100,sortable:true
+					
 				},
-				{field:'workAge',title: "工龄",width:100,sortable:true
-					,editor:{
-						type:"numberbox",
-						options:{
-							min:0,
-							max:150,
-							precision:0
-				 		}
-		        	}
+				{field:'address',title: "装修地址",width:100,sortable:true
+					
 				},
-				{field:'address',title: "家庭住址",width:450,sortable:true
-					,editor:{
-		        		type:"textbox",
-		        		options:{required:false,validType:['length[1,600]','illegal']}
-		        	}
+				{field:'startTimeStr',title: "开始时间",width:100,sortable:true
+					
 				},
-				{field:'age',title: "年龄",width:100,sortable:true
-					,editor:{
-						type:"numberbox",
-						options:{
-							min:1,
-							max:180,
-							precision:0
-				 		}
-		        	}
+				{field:'endTimeStr',title: "结束时间",width:100,sortable:true
+					
 				},
-				{field:'birthday',title: "生日",width:100,sortable:true
-					,editor:{
-						type:"datebox"
-		        	}
-				},
-				{field:'education',title: "学历",width:100,sortable:true
-					,editor:{
-                    	type:'combobox',
-                     	options:{
-                          	  valueField:'value', 
-                              textField:'name',
-                              editable:false,
-                              data:${hashMap.educationArr},
-                              panelHeight:'auto',
-                              onLoadSuccess: function () {
-                            	 
-                              }	
-                 	 	}
-					},
-					formatter:function(value, rowData) {
-						return educationObj[value];
-					} 
-				},
-				{field:'company',title: "所在公司",width:450,sortable:true
-					,editor:{
-		        		type:"textbox",
-		        		options:{required:false,validType:['length[1,80]','illegal']}
-		        	}
+				{field:'info',title: "备注",width:100,sortable:true
+					
 				}
 			]],
 			onDblClickCell:function(index, field, value) {
@@ -169,23 +82,61 @@
 	
 	sysOrderOperation={
 		addsysOrder:function(){
-			
+ 			var dialog = $('<div id="addSysOrder"></div>').dialog({    
+				href : "sysOrderAction!saveOrUpdateOrderPage.act",
+				width:350,
+				height:250,
+				title:"新增订单",
+				method:'post',
+				modal:true,
+				resizable:true,
+				buttons:[{
+					text:"确定",
+					iconCls:'icon-ok',
+					handler:function(){
+						$('#saveOrUpdate_order').form({    
+						    onSubmit: function(){ 
+						    	if(!$("#edit_catalogName").validatebox("isValid")){
+						    		return false;
+						    	}
+						    },    
+						    success:function(data){ 
+						    	handlerResult(data,
+						    		function(rs){
+						    			dialog.dialog("destroy");
+						    			$sysOrderDatagrid.datagrid("reload");
+										$show(rs.message);
+									},
+									function(rs){
+										$alert(rs.message);
+									}
+								);  
+						    }    
+						}).submit();    
+					}
+				},{
+					text:"取消",
+					iconCls:'icon-cancel',
+					handler:function(){
+						dialog.dialog("destroy");
+					}
+				}],
+				onClose:function(){
+					$(this).dialog("destroy");
+				}
+ 			});
 		},
 		editSysOrder:function(){
 			
 		},
-		cancelEdit:function(){
-			$sysOrderDatagrid.datagrid("reload");
-		},
 		search:function(){
 			var searchData = {};
+			searchData["code"]=$("#code").val();
 			searchData["name"]=$("#name").val();
-			searchData["sex"]=$("#sex").val();
-			searchData["address"]=$("#address").val();
-			searchData["workType"]=$("#workType").val();
-			searchData["phoneNum"]=$("#phoneNum").val();
-			searchData["telNum"]=$("#telNum").val();
-			searchData["company"]=$("#company").val();
+			searchData["orderDate"]=$("#orderDate").datebox("getValue");
+			searchData["contact"]=$("#contact").val();
+			searchData["startTime"]=$("#startTime").datebox("getValue");
+			searchData["endTime"]=$("#startTime").datebox("getValue");
 			
 			$sysOrderDatagrid.datagrid("reload",
 				{
@@ -193,8 +144,13 @@
 				}
 			);
 		},
-		
 		reset:function(){
+			$("#code").val('');
+			$("#name").val('');
+			$("#orderDate").datebox("setValue",'');
+			$("#contact").val('');
+			$("#startTime").datebox("setValue",'');
+			$("#endTime").datebox("setValue",'');
 			sysOrderOperation.search();
 		}
 	};
@@ -204,48 +160,30 @@
 <div class="easyui-layout" data-options="fit:true,border : false">
 	<div id="sysOrder_tabel_search" class = "table_seach_div" data-options="region:'north',title:'查询条件',border:false,split:false" style="overflow: hidden;background-color: #F8F8F8" >
 		<div class="search-div">
-			<label>工种</label>
-	       	<s:select id="workType" style="height:22px"
-	       		list="flowList"
-		       	listKey="value"   
-		       	listValue="name" 
-		       	headerKey="0"
-		       	headerValue="--请选择--"/>
+			<label>编号</label>
+			<input type="text" id="code"/>
 		</div>
 		
 		<div class="search-div">
-			<label>姓名</label>
+			<label>名称</label>
 			<input type="text" id="name"/>
 		</div>
 		
 		<div class="search-div">
-			<label>性别</label>
-			<s:select id="sex" style="height:22px"
-	       		list="sexList"
-		       	listKey="value"   
-		       	listValue="name" 
-		       	headerKey="0"
-		       	headerValue="--请选择--"/>
+			<label>下单日期</label>
+			<input type="easyui-datebox" id="orderDate"/>
 		</div>
 		
 		<div class="search-div">
-			<label>手机号码</label>
-			<input type="text" id="phoneNum"/>
+			<label>联系人</label>
+			<input type="text" id="contact"/>
 		</div>
 		
-		<div class="search-div">
-			<label>电话号码</label>
-			<input type="text" id="telNum"/>
-		</div>
-		
-		<div class="search-div">
-			<label>家庭地址</label>
-			<input type="text" id="address"/>
-		</div>
-		
-		<div class="search-div">
-			<label>所在公司</label>
-			<input type="text" id="company"/>
+		<div>
+			<label>预计工期时间</label>
+			<input id="startTime" class="easyui-datebox" />
+			-
+			<input id="endTime" class="easyui-datebox" />
 		</div>
 		
 		<div class="search-div">

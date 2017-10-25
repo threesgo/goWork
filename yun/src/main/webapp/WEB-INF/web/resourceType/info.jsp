@@ -54,7 +54,7 @@ $(function(){
 			field : 'attrName',
 			title : "属性名称",
 			width : '48%',
-			sortable : true,
+			sortable : false,
 			sorter : function(a, b) {
 				return a > b ? 1 : -1;
 			}
@@ -63,7 +63,7 @@ $(function(){
 			field : 'value',
 			title : "属性值",
 			width : '48%',
-			sortable : true,
+			sortable : false,
 			sorter : function(a, b) {
 				return a > b ? 1 : -1;
 			}
