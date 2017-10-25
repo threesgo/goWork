@@ -4,10 +4,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.sf.json.JSONObject;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 
-import com.alibaba.fastjson.JSONObject;
 import com.yunwang.dao.SysUserDaoI;
 import com.yunwang.model.page.Pager;
 import com.yunwang.model.pojo.SysUser;
@@ -72,4 +73,5 @@ public class SysUserDaoImpl extends BaseDaoImpl<SysUser> implements SysUserDaoI{
 		String hql ="SELECT model FROM SysUser model WHERE model.userName=? AND model.id!=?";
 		return find(hql,userName,userId);
 	}
+
 }

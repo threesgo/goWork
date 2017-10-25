@@ -2,6 +2,8 @@ package com.yunwang.service;
 
 import java.util.List;
 
+import net.sf.json.JSONObject;
+
 import com.yunwang.model.page.Pager;
 import com.yunwang.model.pojo.SysDepartMent;
 import com.yunwang.model.pojo.SysMenu;
@@ -69,4 +71,6 @@ public interface SysUserService {
 	public void saveSysDepartMent(SysDepartMent sysDepartMent);
 	
 	public List<SysDepartMent> findAllDepartMent();
+
+	public void saveOrUpdatePositionGrid(JSONObject obj);
 }

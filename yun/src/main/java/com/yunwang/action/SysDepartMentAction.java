@@ -5,6 +5,8 @@ import java.util.List;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+
+import org.apache.log4j.Logger;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +20,15 @@ import com.yunwang.util.action.AbstractLoginAction;
 @Action(value = "sysDepartMentAction", results = {
 		@Result(name="index",location="/WEB-INF/web/sysDepartMent/index.jsp"),
 		@Result(name="preAddOrEdit",location="/WEB-INF/web/sysDepartMent/preAddOrEdit.jsp"),
-		@Result(name="preDepartMent",location="/WEB-INF/web/sysDepartMent/preDepartMent.jsp")
+		@Result(name="preDepartMent",location="/WEB-INF/web/sysDepartMent/preDepartMent.jsp"),
+		@Result(name="prePosition",location="/WEB-INF/web/sysDepartMent/prePosition.jsp")
 	}
 )
 public class SysDepartMentAction extends AbstractLoginAction{
 	
 	
 	private static final long serialVersionUID = 1L;
+	private final static Logger LOG =Logger.getLogger(SysDepartMentAction.class);
 	
 	@Autowired
 	private SysUserService sysUserService;
@@ -33,7 +37,8 @@ public class SysDepartMentAction extends AbstractLoginAction{
 	private String id;
 	
 	private String nodeId;
-	
+	private String departMentId;
+	private String jsonStr;
 	/**
 	 * 部门管理主页面
 	 */
@@ -93,6 +98,16 @@ public class SysDepartMentAction extends AbstractLoginAction{
 	public String preDepartMent(){
 		return "preDepartMent";
 	}
+	
+	/**
+	 * <p>
+	 * 	    所在部门职位列表页面
+	 * </p>
+	 */
+	public String prePosition(){
+		return "prePosition";
+	}
+	
 
 	/**
 	 * <p>
@@ -102,6 +117,17 @@ public class SysDepartMentAction extends AbstractLoginAction{
 	public String listDepartMent(){
 		List<SysDepartMent> list = sysUserService.findAllDepartMent();
 		return ajaxJSONArr(list);
+	}
+	
+	public String saveOrUpdatePositionGrid(){
+		try{
+			JSONObject obj = JSONObject.fromObject(jsonStr);
+			sysUserService.saveOrUpdatePositionGrid(obj);
+			return success("行数据保存成功!",obj);
+		}catch(Exception e){
+			LOG.error(e.getMessage());
+			return error("行数据保存失败!");
+		}
 	}
 	
 	/**
@@ -192,5 +218,21 @@ public class SysDepartMentAction extends AbstractLoginAction{
 	public void setSysDepartMent(SysDepartMent sysDepartMent) {
 		this.sysDepartMent = sysDepartMent;
 	}
-	 
+
+	public String getDepartMentId() {
+		return departMentId;
+	}
+
+	public void setDepartMentId(String departMentId) {
+		this.departMentId = departMentId;
+	}
+
+	public String getJsonStr() {
+		return jsonStr;
+	}
+
+	public void setJsonStr(String jsonStr) {
+		this.jsonStr = jsonStr;
+	}
+	
 }

@@ -47,7 +47,7 @@
 							layoutTab.tabs('add',
 								{
 									title :"职位列表 ",
- 									href :"sysPositionAction!findPosition.act?"
+ 									href :"sysDepartMentAction!prePosition.act?departMentId="+node.id
 	 							}
 							);
  						}  
@@ -55,8 +55,8 @@
  					//右键菜单
  					onContextMenu:function(e,node){
  						id=node.id;
- 						parentId = node.attributes.id;
- 						if(node.attributes.id == 0){
+ 						parentId = node.attributes.root;
+ 						if(node.attributes.root == 0){
 	 						e.preventDefault();
 							// 查找节点
 							$('#departMentTree').tree('select', node.target);
