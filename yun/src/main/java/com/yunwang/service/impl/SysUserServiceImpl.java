@@ -317,13 +317,18 @@ public class SysUserServiceImpl implements SysUserService{
 		SysDepartMent departMent = new SysDepartMent();
 		departMent.setCode(sysDepartMent.getCode());
 		departMent.setName(sysDepartMent.getName());
-		departMent.setParentId(sysDepartMent.getParentId());
-		Integer maxOrderNo = sysDepartMentDao.findMaxSeqByPfield("orderNo", "parentId", sysDepartMent.getParentId());
+		if(-1 == sysDepartMent.getParentId()){
+			departMent.setParentId(0);
+		}else{
+			departMent.setParentId(sysDepartMent.getParentId());
+		}
+		
+		Integer maxOrderNo = sysDepartMentDao.findMaxSeqByPfield("orderNo", "parentId", departMent.getParentId());
 		departMent.setOrderNo(maxOrderNo+1);
 		//组合顺序号
-		String maxStrOrderNo = sysDepartMentDao.findMaxStrSeqByPfield("strOrderNo", "parentId",sysDepartMent.getParentId());
+		String maxStrOrderNo = sysDepartMentDao.findMaxStrSeqByPfield("strOrderNo", "parentId",departMent.getParentId());
 		if(StringUtils.isBlank(maxStrOrderNo)){
-			if(0 == sysDepartMent.getParentId()){
+			if(0 == departMent.getParentId()){
 				maxStrOrderNo = "000";
 			}else{
 				SysDepartMent parentDep = sysDepartMentDao.get(SysDepartMent.class,sysDepartMent.getParentId());
@@ -373,6 +378,22 @@ public class SysUserServiceImpl implements SysUserService{
 			sysPosition.setPositionType(Integer.parseInt(positionType));
 			sysPositionDao.saveOrUpdate(sysPosition);
 		}
+		
+	}
+
+	@Override
+	public List<SysPosition> findPositionByDepartMentId(Integer departMentId) {
+		return sysPositionDao.findByProperty("departMentId", departMentId);
+	}
+
+	@Override
+	public void deletePositionByIds(String ids) {
+		sysPositionDao.deleteByPropertys("id", ids);
+	}
+
+	@Override
+	public void deleteDepartMentById(Integer id) {
+		sysDepartMentDao.deleteByProperty("id", id);
 		
 	}
 }

@@ -7,11 +7,13 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.apache.log4j.Logger;
+import org.apache.poi.util.SystemOutLogger;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.yunwang.model.pojo.SysDepartMent;
+import com.yunwang.model.pojo.SysPosition;
 import com.yunwang.service.SysUserService;
 import com.yunwang.util.action.AbstractLoginAction;
 
@@ -35,6 +37,7 @@ public class SysDepartMentAction extends AbstractLoginAction{
 	
 	private SysDepartMent sysDepartMent;
 	private String id;
+	private String ids;
 	
 	private String nodeId;
 	private String departMentId;
@@ -61,7 +64,7 @@ public class SysDepartMentAction extends AbstractLoginAction{
 			json.put("text","部门列表");
 			json.put("state", "closed");
 			JSONObject obj = new JSONObject();
-			obj.put("root",0);
+			obj.put("id",-1);
 			json.put("attributes",obj);
 			jsoArr.add(json);
 		}else if(id.startsWith("root")){
@@ -71,7 +74,7 @@ public class SysDepartMentAction extends AbstractLoginAction{
 			    jso=new JSONObject();
 				jso.put("id",departMent.getId());
 				jso.put("text",departMent.getCode()+","+departMent.getName());
-				jso.put("state", "open");
+				jso.put("state", "closed");
 				jso.put("attributes", JSONObject.fromObject(departMent));
 				jsoArr.add(jso);
 			}
@@ -82,7 +85,7 @@ public class SysDepartMentAction extends AbstractLoginAction{
 			    jso=new JSONObject();
 				jso.put("id",departMent.getId());
 				jso.put("text",departMent.getCode()+","+departMent.getName());
-				jso.put("state", "open");
+				jso.put("state", "closed");
 				jso.put("attributes", JSONObject.fromObject(departMent));
 				jsoArr.add(jso);
 			}
@@ -108,7 +111,15 @@ public class SysDepartMentAction extends AbstractLoginAction{
 		return "prePosition";
 	}
 	
-
+	/**
+	 * <p>
+	 * 部门管理--部门下的职位
+	 * </p>
+	 */
+	public String findPosition(){
+		List<SysPosition> list = sysUserService.findPositionByDepartMentId(Integer.parseInt(departMentId));
+		return ajaxJSONArr(list);
+	}
 	/**
 	 * <p>
 	 * root-所有部门列表
@@ -130,6 +141,15 @@ public class SysDepartMentAction extends AbstractLoginAction{
 		}
 	}
 	
+	public String deletePosition(){
+		try{
+			sysUserService.deletePositionByIds(ids);
+			return success("删除成功");
+		}catch(Exception e){
+			LOG.error(e.getMessage());
+			return error("删除失败");
+		}
+	}
 	/**
 	 * <p>
 	 * 1.部门列表-跳转添加部门
@@ -177,22 +197,24 @@ public class SysDepartMentAction extends AbstractLoginAction{
 		}else{
 			return null;
 		}
-		
 	}
 	
 	/**
-	 * <p>关联模块-删除角色信息</p>
+	 * <p>删除部门信息</p>
 	 */
-/*	public String delete(){
+	public String deleteDepartMent(){
 		try{
-			sysRole = sysUserService.findRoleByRoleId(sysRole.getId());
-			sysUserService.deleteSysRole(sysRole);							
-			return success("删除成功",JSONObject.fromObject(sysRole));
+			List<SysDepartMent> list = sysUserService.findDepartMentByParentId(sysDepartMent.getId());
+			if(list.size()>0){
+				return error("请先删除该部门下的子部门");
+			}
+			sysUserService.deleteDepartMentById(sysDepartMent.getId());							
+			return success("删除成功");
 		}catch(Exception e){
 			e.printStackTrace();
 			return error("删除失败");
 		}
-	}*/
+	}
 
 
 	public String getId() {
@@ -233,6 +255,14 @@ public class SysDepartMentAction extends AbstractLoginAction{
 
 	public void setJsonStr(String jsonStr) {
 		this.jsonStr = jsonStr;
+	}
+
+	public String getIds() {
+		return ids;
+	}
+
+	public void setIds(String ids) {
+		this.ids = ids;
 	}
 	
 }

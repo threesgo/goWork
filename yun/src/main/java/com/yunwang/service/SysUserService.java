@@ -7,6 +7,7 @@ import net.sf.json.JSONObject;
 import com.yunwang.model.page.Pager;
 import com.yunwang.model.pojo.SysDepartMent;
 import com.yunwang.model.pojo.SysMenu;
+import com.yunwang.model.pojo.SysPosition;
 import com.yunwang.model.pojo.SysRole;
 import com.yunwang.model.pojo.SysUser;
 
@@ -73,4 +74,10 @@ public interface SysUserService {
 	public List<SysDepartMent> findAllDepartMent();
 
 	public void saveOrUpdatePositionGrid(JSONObject obj,Integer departMentId);
+	
+	public List<SysPosition> findPositionByDepartMentId(Integer departMentId);
+	
+	public void deletePositionByIds(String ids);
+	
+	public void deleteDepartMentById(Integer id);
 }

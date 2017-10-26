@@ -36,7 +36,7 @@
  					animate:true,
  					onSelect:function(node){//onSelect是选择节点时触发
  						closeAllTab(layoutTab);//此函数在public中定义，关闭中间布局的选项卡
- 						if(node.attributes.root == 0){//判断是否为叶子节点
+ 						if(node.attributes.id < 0){//判断是否为叶子节点
  							 layoutTab.tabs('add',
  								{
  									title :"部门列表",
@@ -55,8 +55,8 @@
  					//右键菜单
  					onContextMenu:function(e,node){
  						id=node.id;
- 						parentId = node.attributes.root;
- 						if(node.attributes.root == 0){
+ 						parentId = node.attributes.id;
+ 						if(node.attributes.id < 0){
 	 						e.preventDefault();
 							// 查找节点
 							$('#departMentTree').tree('select', node.target);
@@ -130,17 +130,19 @@
 	 	};
 	 	//删除部门
 	 	function del(node){
+	 		if(parentId == -1){
+	 			$alert("根目录无法删除");
+	 			return false;
+	 		}
 	 		$.messager.confirm('确认','您确认想要删除所选角色吗？',function(r){
 			    if (r){
-			    	$.post("sysRoleAction!delete.act",
-			    		   {"sysRole.id":id.substring(4,id.length)},//id是节点的id属性名
+			    	$.post("sysDepartMentAction!deleteDepartMent.act",
+			    		   {"sysDepartMent.id":id},//id是节点的id属性名
 			    		   function(data){
 								handlerResult(data,function(rs){
 									$show(rs.message);
-									$('#roleTree').tree('remove',node.target);
-									var root = roleTree.tree("getRoot");
-									roleTree.tree('reload',root.target);
-									roleTree.tree('select',root.target);
+									var departMent = departMentTree.tree("getRoot");
+									departMentTree.tree('reload',departMent.target);
 								},function(rs){
 									$alert(rs.message);
 								});

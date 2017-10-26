@@ -22,6 +22,7 @@ $(function(){
 		onBeforeLoad:function(){
 		},
 		columns : [ [
+		 {field:'ck',checkbox:true},            
 		{
 			field : 'code',
 			title : "职位代号",
@@ -105,8 +106,6 @@ $(function(){
             positionEdit = index;
         },
         onAfterEdit:function(rowIndex,rowData,changes){
-        	//alert(Some.util.jsonToStr(rowData))
-        	//return false;
 	    	$.post("sysDepartMentAction!saveOrUpdatePositionGrid.act",
 	    			{"jsonStr":Some.util.jsonToStr(rowData),"departMentId":'${departMentId}'},
        			 function(data){
