@@ -80,10 +80,10 @@ $(function(){
 					return flowObj[value];
 				} 
 	 		},
-	        {field:'rsrcName',title:"产品名称",width:80,sortable:true,
+	        {field:'rsrcName',title:"产品名称",width:80,sortable:true
 	        	
 	        },
-	        {field:'abbreviaName',title:"产品简称",width:80,sortable:true,
+	        {field:'abbreviaName',title:"产品简称",width:80,sortable:true
 	        	
 	        },
 	        /*
@@ -91,13 +91,19 @@ $(function(){
 	        	
 	        },
 	        */
-	        {field:'salePrice',title:"销售价格",width:60,sortable:true,align:'right',
+	        {field:'salePrice',title:"销售价格",width:60,sortable:true,align:'right'
+	        	,formatter:function(value, rowData) {
+					if(value){
+						return 0.00;
+					}else{
+						return value;
+					}
+				} 
+	       	},
+	       	{field:'brand',title:"品牌",width:80,sortable:true
 	        	
 	       	},
-	       	{field:'brand',title:"品牌",width:80,sortable:true,
-	        	
-	       	},
-			{field:'releaseDateStr',title:"发布时间",width:100,sortable:true,
+			{field:'releaseDateStr',title:"发布时间",width:100,sortable:true
 	        	
 	       	}
         ]],

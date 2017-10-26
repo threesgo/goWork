@@ -267,7 +267,14 @@ $(function(){
 						max:9999999.99,
 						precision:2
 			 		}
-	        	}
+	        	},
+				formatter:function(value, rowData) {
+					if(value){
+						return 0.00;
+					}else{
+						return value;
+					}
+				} 
 	        },
 	        {field:'salePrice',title:"销售价格",width:80,sortable:true,align:'right',
 	        	editor:{
@@ -279,6 +286,13 @@ $(function(){
 						precision:2
 			 		}
 	        	},
+	        	formatter:function(value, rowData) {
+					if(value){
+						return 0.00;
+					}else{
+						return value;
+					}
+				},
 	        	styler: function(value,row,index){
 	        		if(value < row.purchasePrice){
 	        			return 'color:red;';
