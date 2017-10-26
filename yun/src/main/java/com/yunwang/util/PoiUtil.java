@@ -109,27 +109,8 @@ public class PoiUtil {
 		if(null==cell){
 			return null;
 		}
-		String str = null;
-		switch (cell.getCellType()) {
-		case Cell.CELL_TYPE_BLANK:
-			str = "";
-			break;
-		case Cell.CELL_TYPE_BOOLEAN:
-			str = String.valueOf(cell.getBooleanCellValue());
-			break;
-		case Cell.CELL_TYPE_FORMULA:
-			str = String.valueOf(cell.getCellFormula());
-			break;
-		case Cell.CELL_TYPE_NUMERIC:
-			str = String.valueOf((long) cell.getNumericCellValue());
-			break;
-		case Cell.CELL_TYPE_STRING:
-			str = String.valueOf(cell.getStringCellValue());
-			break;
-		default:
-			str = null;
-			break;
-		}
+		cell.setCellType(Cell.CELL_TYPE_STRING);
+		String str = String.valueOf(cell.getStringCellValue());
 		if(null!=str){
 			str=str.trim();
 		}
