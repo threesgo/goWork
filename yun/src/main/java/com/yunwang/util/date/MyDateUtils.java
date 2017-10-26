@@ -645,7 +645,11 @@ public class MyDateUtils extends DateUtils {
 			replace("Dec", "12");
 	}
 	
-	
+	public static Date stringToDateTime(String dateTime) throws ParseException{
+		SimpleDateFormat sdf =   new SimpleDateFormat(FORMAT_DATETIME);
+		Date date = sdf.parse(dateTime);
+		return date;
+	}
 	
 	
 	

@@ -76,6 +76,9 @@ public class SysOrder extends AbstractRowVersionModel{
 	@Column(name = "STATUS",columnDefinition = "number default 1")
 	private Integer status;  //0，删除 1，未开始 2、进行中 3，已完成  (手动或者根据时间进行自动管控)
 	
+	@Column(name="ORDER_NO", nullable = false)
+	private Integer orderNo;//顺序号
+	
 	public SysOrder(){
 		
 	}
@@ -192,6 +195,14 @@ public class SysOrder extends AbstractRowVersionModel{
 		this.status = status;
 	}
 	
+	public Integer getOrderNo() {
+		return orderNo;
+	}
+
+	public void setOrderNo(Integer orderNo) {
+		this.orderNo = orderNo;
+	}
+
 	public String getStartTimeStr(){
 		return MyDateUtils.getStringByDateTime(startTime);
 	}

@@ -4,11 +4,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.sf.json.JSONObject;
+
+import org.hibernate.type.BigDecimalType;
+import org.hibernate.type.IntegerType;
 import org.hibernate.type.StringType;
+import org.hibernate.type.TimestampType;
 import org.hibernate.type.Type;
 import org.springframework.stereotype.Repository;
 
 import com.yunwang.dao.SysOrderDaoI;
+import com.yunwang.model.page.Pager;
 import com.yunwang.model.pojo.SysOrder;
 
 @Repository
@@ -29,5 +35,41 @@ public class SysOrderDaoImpl extends BaseDaoImpl<SysOrder> implements SysOrderDa
 		map.put("orderDate",orderDate);
 		return find("SELECT model FROM SysOrder model " 
 				+" WHERE model.orderDate=:orderDate ORDER BY model.code ",map);
+	}
+
+	@Override
+	public Pager<SysOrder> findPageOrder(int page, int rows,
+			JSONObject seachJson) {
+		StringBuffer buf = new StringBuffer(
+				" SELECT model.ID id,model.CODE code, " +
+				" model.NAME name,model.TOTAL_AREA totalArea,model.TOTAL_AMOUNT totalAmount," +
+				" model.ORDER_DATE orderDate,model.CONTACT contact,model.CONTACT_TEL contactTel," +
+				" model.ADDRESS address,model.START_TIME startTime,model.END_TIME endTime,model.INFO info," +
+				" model.ORDER_TYPE orderType,model.STATUS status,model.ORDER_NO orderNo" +
+				" FROM SYS_ORDER model WHERE 1=1 ");
+		Map<String, Object> parmeMap = new HashMap<String,Object>();
+		if(null!=seachJson && !seachJson.isEmpty()){
+			
+		}
+		
+		buf.append("  ORDER BY model.ORDER_NO DESC");
+		
+		Map<String, Type> scalarMap = new HashMap<String, Type>();
+		scalarMap.put("id", new IntegerType());
+		scalarMap.put("code", new StringType());
+		scalarMap.put("name", new StringType());
+		scalarMap.put("totalArea", new BigDecimalType());
+		scalarMap.put("totalAmount", new BigDecimalType());
+		scalarMap.put("orderDate", new StringType());
+		scalarMap.put("contact", new StringType());
+		scalarMap.put("contactTel", new StringType());
+		scalarMap.put("address", new StringType());
+		scalarMap.put("startTime", new TimestampType());
+		scalarMap.put("endTime", new TimestampType());
+		scalarMap.put("info", new StringType());
+		scalarMap.put("orderType", new IntegerType());
+		scalarMap.put("status", new IntegerType());
+		scalarMap.put("orderNo", new IntegerType());
+		return pagedSqlQuery(buf.toString(),page,rows,parmeMap,scalarMap);
 	}
 }

@@ -46,7 +46,7 @@ public class SysOrderAction  extends AbstractLoginAction{
 	private String ids;
 	private String jsonStr;
 	private List<SysDataDictionary> flowList;
-	private List<SysDataDictionary> dTypeList;
+	private List<SysDataDictionary> typeList;
 	
 	@Override
 	public String execute() throws Exception {
@@ -126,7 +126,10 @@ public class SysOrderAction  extends AbstractLoginAction{
 	 * <p>保存表格行数据</p>
 	 */
 	public String saveOrUpdatePage(){
-		dTypeList = BaseDataDictionaryUtil.baseDataMap.get(7);
+		if(null != sysOrder && null != sysOrder.getId()){
+			sysOrder = sysOrderService.get(sysOrder.getId());
+		}
+		typeList = BaseDataDictionaryUtil.baseDataMap.get(7);
 		return "saveOrUpdatePage";
 	}
 	
@@ -239,6 +242,14 @@ public class SysOrderAction  extends AbstractLoginAction{
 		this.sysOrder = sysOrder;
 	}
 
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
 	public String getIds() {
 		return ids;
 	}
@@ -263,11 +274,11 @@ public class SysOrderAction  extends AbstractLoginAction{
 		this.flowList = flowList;
 	}
 
-	public List<SysDataDictionary> getdTypeList() {
-		return dTypeList;
+	public List<SysDataDictionary> getTypeList() {
+		return typeList;
 	}
 
-	public void setdTypeList(List<SysDataDictionary> dTypeList) {
-		this.dTypeList = dTypeList;
+	public void setTypeList(List<SysDataDictionary> typeList) {
+		this.typeList = typeList;
 	}
 }

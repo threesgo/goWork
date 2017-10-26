@@ -100,8 +100,8 @@ $(function(){
 	        */
 	        {field:'salePrice',title:"销售价格",width:80,sortable:true,align:'right'
 	        	,formatter:function(value, rowData) {
-					if(value){
-						return 0.00;
+					if(value == 0){
+						return 0;
 					}else{
 						return value;
 					}

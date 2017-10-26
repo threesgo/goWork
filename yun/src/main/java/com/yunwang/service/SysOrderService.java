@@ -16,7 +16,7 @@ public interface SysOrderService {
 
 	SysOrder get(Integer id);
 
-	void saveOrUpdateOrder(SysOrder sysOrder);
+	void saveOrUpdateOrder(SysOrder sysOrder) throws Exception;
 
 	List<SysOrder> findOrderTimeGroup();
 

@@ -41,7 +41,7 @@
 				{field:'totalAmount',title: "总定价",width:60,sortable:true
 					
 				},
-				{field:'orderDate',title: "下单时间",width:100,sortable:true
+				{field:'orderDate',title: "下单时间",width:80,sortable:true
 					
 				}
             ]],
@@ -55,13 +55,13 @@
 				{field:'address',title: "装修地址",width:300,sortable:true
 					
 				},
-				{field:'startTimeStr',title: "开始时间",width:100,sortable:true
+				{field:'startTimeStr',title: "开始时间",width:140,sortable:true
 					
 				},
-				{field:'endTimeStr',title: "结束时间",width:100,sortable:true
+				{field:'endTimeStr',title: "结束时间",width:140,sortable:true
 					
 				},
-				{field:'info',title: "备注",width:100,sortable:true
+				{field:'info',title: "备注",width:200,sortable:true
 					
 				}
 			]],
@@ -86,8 +86,8 @@
 		addSysOrder:function(){
  			var dialog = $('<div id="addSysOrder"></div>').dialog({    
 				href : "sysOrderAction!saveOrUpdatePage.act",
-				width:350,
-				height:250,
+				width:600,
+				height:380,
 				title:"新增订单",
 				method:'post',
 				modal:true,
@@ -129,7 +129,51 @@
  			});
 		},
 		editSysOrder:function(){
-			
+			var node = $sysOrderDatagrid.datagrid("getSelected");
+			var dialog = $('<div id="addSysOrder"></div>').dialog({    
+				href : "sysOrderAction!saveOrUpdatePage.act",
+				queryParams:{"sysOrder.id":node.id},
+				width:600,
+				height:380,
+				title:"编辑订单",
+				method:'post',
+				modal:true,
+				resizable:true,
+				buttons:[{
+					text:"确定",
+					iconCls:'icon-ok',
+					handler:function(){
+						$('#saveOrUpdate_order').form({    
+						    onSubmit: function(){ 
+						    	if(!$("#edit_name").validatebox("isValid")){
+						    		return false;
+						    	}
+						    },    
+						    success:function(data){ 
+						    	handlerResult(data,
+						    		function(rs){
+						    			dialog.dialog("destroy");
+						    			$sysOrderDatagrid.datagrid("reload");
+										$show(rs.message);
+									},
+									function(rs){
+										$alert(rs.message);
+									}
+								);  
+						    }    
+						}).submit();    
+					}
+				},{
+					text:"取消",
+					iconCls:'icon-cancel',
+					handler:function(){
+						dialog.dialog("destroy");
+					}
+				}],
+				onClose:function(){
+					$(this).dialog("destroy");
+				}
+ 			});
 		},
 		search:function(){
 			var searchData = {};
