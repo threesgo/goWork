@@ -69,11 +69,27 @@
 			     }
 			     
 			});
-			//部门
-			/* $("#sysRoles").combobox({
-				
-			}); */
 			
+			//部门
+			$("#userDepartMent").combobox({
+				valueField:'id',
+				textField:'userDepartMent',
+				multiple:true,
+				editable:false,
+				url:"sysDepartMentAction.findAll.act",
+				onSelect:function(record){
+				    if(!record.id){
+				    	var selects = $("#userDepartMent").combobox("getValues");
+				    		$.each(selects,function(index,name){
+				    			if(name){
+				    				$("#userDepartMent").combobox("userDepartMent",name);
+				    			}
+				    		});
+				    	}else{
+				    		$("#userDepartMent").combobox("unselect","");	
+				    	} 
+				    }
+			}); 
 		});
 		
 		window.user={
@@ -92,7 +108,7 @@
  					searchJSON["userName"] = $("#sysUsreName").val();
  					searchJSON["realName"] = $("#sysRealName").val();
  					searchJSON["roleIds"] = $("#sysRoles").combobox("getValues").join(",");
- 					//searchJSON["deptIds"] = $("#queryDepts").combobox("getValues").join(",");
+ 					searchJSON["userDepartMent"] = $("#userDepartMent").combobox("getValues").join(",");
  					$userList.datagrid("reload",{"filterJsons":Some.util.jsonToStr(searchJSON)});
 				},
 				reset:function(){
@@ -100,16 +116,7 @@
 					$("#sysRoles").combobox("setValue","");
 					$userList.datagrid("reload",{});
 				},
-				//新建用户
-				/* addUser:function(){
-					new Some.dialog({
-						top:100,
-						title:"添加用户",
-						width:450,
-						height:"auto",
-						href:"sysUserAction!preAdd.act",
-					});
-				}, */
+				
 				//新建用户
 				  addUser:function(){
 		 			var addDialog =$('<div id="addSysUser"></div>').dialog({    
@@ -259,12 +266,12 @@
 							<select id="sysRoles"></select>
 						</div>
 					</div>
-					<%-- <div class="search-div">
+					<div class="search-div">
 						<label>部门：</label>
 						<div class="select">
-							<select id="queryDepts"></select>
+							<select id="userDepartMent"></select>
 						</div>
-					</div> --%>
+					</div>
 					<div class="search-div">
 						<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-search', plain:true" onclick="user.search()" >搜索</a> 
 						<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-reload', plain:true" onclick="user.reset()" >重置</a> 

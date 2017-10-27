@@ -50,6 +50,29 @@ public class SysDepartMentAction extends AbstractLoginAction{
 	}	
 	
 	/**
+	 * 
+	 * @Description: 查询所有部门
+	 * @param @return   
+	 * @return String  
+	 * @throws
+	 * @author KXL
+	 * @date 2017-10-27
+	 */
+	public String findAll(){
+		JSONArray arr = new JSONArray();
+		JSONObject obj = new JSONObject();
+		List<SysDepartMent> list = sysUserService.findAllDepartMent();
+		obj.put("id", "");
+		obj.put("userDepartMent", "全部");
+		obj.put("selected", true);
+		for(SysDepartMent departMent:list){
+			obj.put("id", departMent.getId());
+			obj.put("userDepartMent", "全部");
+			obj.put("selected", true);
+		}
+		return null;
+	}
+	/**
 	 * @date 2017.10.23
 	 * @author KXL
 	 * @return
