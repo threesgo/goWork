@@ -98,7 +98,7 @@
 					handler:function(){
 						$('#saveOrUpdate_order').form({    
 						    onSubmit: function(){ 
-						    	if(!$("#edit_name").validatebox("isValid")){
+						    	if(!validateForm()){
 						    		return false;
 						    	}
 						    },    
@@ -144,8 +144,8 @@
 					iconCls:'icon-ok',
 					handler:function(){
 						$('#saveOrUpdate_order').form({    
-						    onSubmit: function(){ 
-						    	if(!$("#edit_name").validatebox("isValid")){
+						    onSubmit: function(){
+						    	if(!validateForm()){
 						    		return false;
 						    	}
 						    },    
@@ -200,6 +200,43 @@
 			sysOrderOperation.search();
 		}
 	};
+	
+	
+	function validateForm(){
+		if(!$("#saveOrUpdate_order #edit_name").validatebox("isValid")){
+    		$("#saveOrUpdate_order #edit_name").focus();
+    		return false;
+    	}else
+    	if(!$("#saveOrUpdate_order #edit_totalAmount").numberbox("isValid")){
+    		$("#saveOrUpdate_order #edit_totalAmount").focus();
+    		return false;
+    	}else
+    	if(!!$("#saveOrUpdate_order #edit_totalArea").numberbox("isValid")){
+    		$("#saveOrUpdate_order #dataLength").focus();
+    		return false;
+    	}else
+    	if(!$("#saveOrUpdate_order #edit_contact").validatebox("isValid")){
+    		$("#saveOrUpdate_order #edit_contact").focus();
+    		return false;
+    	}else
+       	if(!$("#saveOrUpdate_order #edit_contactTel").validatebox("isValid")){
+       		$("#saveOrUpdate_order #edit_contactTel").focus();
+       		return false;
+       	}else
+        if(!$("#saveOrUpdate_order #edit_address").validatebox("isValid")){
+      		$("#saveOrUpdate_order #edit_address").focus();
+      		return false;
+      	}else
+        if(!$("#saveOrUpdate_order #edit_startTime").datetimebox("isValid")){
+       		$("#saveOrUpdate_order #edit_startTime").focus();
+       		return false;
+       	}else
+        if(!$("#saveOrUpdate_order #edit_endTime").datetimebox("isValid")){
+       		$("#saveOrUpdate_order #edit_endTime").focus();
+       		return false;
+       	}
+    	return true;
+	} 
 </script>
 </head>
 	

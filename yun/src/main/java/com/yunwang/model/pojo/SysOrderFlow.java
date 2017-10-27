@@ -43,6 +43,9 @@ public class SysOrderFlow extends AbstractRowVersionModel{
 	@Column(name = "END_TIME")
 	private Date endTime;  //报警提示
 	
+	@Column(name = "INFO",length=4096)
+	private String info;
+	
 	
 	public SysOrderFlow(){
 		
@@ -103,5 +106,12 @@ public class SysOrderFlow extends AbstractRowVersionModel{
 	public void setEndTime(Date endTime) {
 		this.endTime = endTime;
 	}
-	
+
+	public String getInfo() {
+		return info;
+	}
+
+	public void setInfo(String info) {
+		this.info = info;
+	}
 }

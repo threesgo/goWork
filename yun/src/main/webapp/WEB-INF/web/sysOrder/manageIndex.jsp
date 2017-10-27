@@ -20,25 +20,37 @@
  					animate:true,
  					onSelect:function(node){//onSelect是选择节点时触发
  						closeAllTab(sysOrderTab);
- 						/*
- 						if("root" != node.id){
-	 						sysOrderTab.tabs('add',{    
-						    	title:'基本信息', 
-						    	href:"sysOrderAction!info.act?sysRsRcCatalog.id="+ node.attributes.id
+ 						var idStart = node.id.substring(0,1);
+ 						//顶级以及时间节点
+ 						if("r" == idStart || "t" == idStart){
+ 							sysOrderTab.tabs('add',{    
+						    	title:'订单列表', 
+						    	href:"sysOrderAction!seachIndex.act"
 							});
-							sysOrderTab.tabs('add',{
-	 							title:'属性列表', 
-							    href:"sysOrderAction!attrsPage.act?sysRsRcCatalog.id="+ node.attributes.id
+ 						}else if("o" == idStart){
+ 							//订单节点  
+ 							sysOrderTab.tabs('add',{    
+						    	title:'工人材料', 
+						    	href:"sysOrderAction!workerAndResourceByOrder.act"
+							});
+ 							sysOrderTab.tabs('add',{    
+						    	title:'甘特图', 
+						    	href:"sysOrderAction!gtChart.act"
+							});
+ 							sysOrderTab.tabs('add',{    
+						    	title:'费用分配图', 
+						    	href:"sysOrderAction!barChart.act"
+							});
+ 						}else if("s" == idStart){
+ 							sysOrderTab.tabs('add',{    
+						    	title:'步骤信息', 
+						    	href:"sysOrderAction!flowInfo.act"
+							});
+ 							sysOrderTab.tabs('add',{    
+						    	title:'工人材料', 
+						    	href:"sysOrderAction!workerAndResourceByFlow.act"
 							});
  						}
- 						sysOrderTab.tabs('add',{
- 							title:'子集列表', 
-						    href:"sysOrderAction!childrenPage.act?sysRsRcCatalog.id="+ node.attributes.id
-						});
-						if("root" != node.id){
-							sysOrderTab.tabs("select",1);
-						}
-						*/
  					},
  					onLoadSuccess:function(node,data){
  						var root = sysOrderTree.tree("getRoot");
