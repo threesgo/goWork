@@ -11,11 +11,11 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "SYS_ORDER_LAYOUT")
+@Table(name = "SYS_ORDER_FLOW")
 public class SysOrderFlow extends AbstractRowVersionModel{
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO, generator="my_entity_seq_gen")
-	@SequenceGenerator(name="my_entity_seq_gen", sequenceName="SEQ_SYS_ORDER_LAYOUT")
+	@SequenceGenerator(name="my_entity_seq_gen", sequenceName="SEQ_SYS_ORDER_FLOW")
 	private Integer id;
 	
 //	ID	ID	ID		NUMBER(10)
@@ -45,6 +45,9 @@ public class SysOrderFlow extends AbstractRowVersionModel{
 	
 	@Column(name = "INFO",length=4096)
 	private String info;
+	
+	@Column(name="ORDER_NO", nullable = false)
+	private Integer orderNo;//顺序号
 	
 	
 	public SysOrderFlow(){
@@ -114,4 +117,13 @@ public class SysOrderFlow extends AbstractRowVersionModel{
 	public void setInfo(String info) {
 		this.info = info;
 	}
+
+	public Integer getOrderNo() {
+		return orderNo;
+	}
+
+	public void setOrderNo(Integer orderNo) {
+		this.orderNo = orderNo;
+	}
+	
 }

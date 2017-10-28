@@ -1,28 +1,100 @@
-<%@ page language="java" import="java.util.*" pageEncoding="ISO-8859-1"%>
-<%
-String path = request.getContextPath();
-String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
+<%@taglib prefix="s" uri="/struts-tags"%>
+  	<script type="text/javascript">
+  		var workerDataGrid;
+  		var resourceDataGrid;
+  		
+  		var workerEdit=undefined;
+  		var resourceEdit=undefined;
+  		
+  		window.workerResourceEdit={
+  			
+  		};
+  		
+	  	$(function(){
+	  		workerDataGrid=$("#workerGrid").datagrid({
+				resizable:false,
+				collapsible:true,
+	       		//fitColumns:true, 
+	          	striped:true,
+	         	singleSelect:true, 
+	         	multiSort:true,
+	           	singleSelect:true,
+	           	selectOnCheck:false,
+	           	checkOnSelect:false,
+	           	remoteSort:false,
+	         	rownumbers:true,
+	          	nowrap:false,
+	          	fit:true,
+	          	idField:'id',
+	          	//toolbar:'#workerGridBar',
+          	 	//pagination:false, 
+	          	//pageSize:20,  
+	          	//pageList:[20,50,100,150,200],
+	          	url:"",
+				queryParams:{},
+				onDblClickRow: function(index,row){
+ 	      		  	
+			    },
+			    onLoadSuccess:function(){
+			    	
+				},
+	          	onSelect: function(index,row){
+	          		
+	   	  	  	},
+			  	columns:[[
+	  	          	{field:'_checkbox',checkbox:true},
+ 					
+				]]
+	 		});
+	  		
+	  		resourceDataGrid=$("#resourceGrid").datagrid({
+	  			resizable:false,
+				collapsible:true,
+	       		//fitColumns:true, 
+	          	striped:true,
+	         	singleSelect:true, 
+	         	multiSort:true,
+	           	singleSelect:true,
+	           	selectOnCheck:false,
+	           	checkOnSelect:false,
+	           	remoteSort:false,
+	         	rownumbers:true,
+	          	nowrap:false,
+	          	fit:true,
+	          	idField:'id',
+	          	//toolbar:'#workerGridBar',
+          	 	//pagination:false, 
+	          	//pageSize:20,  
+	          	//pageList:[20,50,100,150,200],
+	          	url:"",
+				queryParams:{},
+				onLoadSuccess:function(){
+				},
+				onDblClickRow: function(row){
+					
+			    },
+			    onSelect: function(row){
+	  			
+	   	  	  	},
+				columns : [[ 
+					{field:'_checkbox',checkbox:true},
+					
+				]]
+	 		});
+	  	});
+  	</script>
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-  <head>
-    <base href="<%=basePath%>">
-    
-    <title>My JSP 'workerAndResourceByOrder.jsp' starting page</title>
-    
-	<meta http-equiv="pragma" content="no-cache">
-	<meta http-equiv="cache-control" content="no-cache">
-	<meta http-equiv="expires" content="0">    
-	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
-	<meta http-equiv="description" content="This is my page">
-	<!--
-	<link rel="stylesheet" type="text/css" href="styles.css">
-	-->
-
-  </head>
-  
-  <body>
-    This is my JSP page. <br>
-  </body>
-</html>
+<div id="processBomResourceEdit" class="easyui-layout" data-options="fit:true">  
+	<div data-options="region:'center',split:true,title:''" border="false">
+		<div class="easyui-layout" data-options="fit:true">
+			<div data-options="region:'north',split:true,title:''" style="height:300px" border="false">
+				<table id="workerGrid"></table>
+			</div>
+			
+			<div data-options="region:'center',split:true,title:''" border="false">
+				<table id="resourceGrid"></table>
+			</div>
+		</div>
+	</div>
+</div>

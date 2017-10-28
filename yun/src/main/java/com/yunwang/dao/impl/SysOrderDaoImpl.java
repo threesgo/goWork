@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
 import com.yunwang.dao.SysOrderDaoI;
 import com.yunwang.model.page.Pager;
 import com.yunwang.model.pojo.SysOrder;
+import com.yunwang.util.string.MyStringUtil;
 
 @Repository
 public class SysOrderDaoImpl extends BaseDaoImpl<SysOrder> implements SysOrderDaoI{
@@ -45,11 +46,16 @@ public class SysOrderDaoImpl extends BaseDaoImpl<SysOrder> implements SysOrderDa
 				" model.NAME name,model.TOTAL_AREA totalArea,model.TOTAL_AMOUNT totalAmount," +
 				" model.ORDER_DATE orderDate,model.CONTACT contact,model.CONTACT_TEL contactTel," +
 				" model.ADDRESS address,model.START_TIME startTime,model.END_TIME endTime,model.INFO info," +
-				" model.ORDER_TYPE orderType,model.STATUS status,model.ORDER_NO orderNo" +
+				" model.ORDER_TYPE orderType,model.STATUS status,model.ORDER_NO orderNo," +
+				" model.ROOM_NUM roomNum,model.HALL_NUM hallNum,model.KITCHEN_NUM kitchenNum," +
+				" model.TOILET_NUM toiletNum,model.BALCONY_NUM balconyNum" +
 				" FROM SYS_ORDER model WHERE 1=1 ");
 		Map<String, Object> parmeMap = new HashMap<String,Object>();
 		if(null!=seachJson && !seachJson.isEmpty()){
-			
+			if(seachJson.containsKey("orderDate")&&MyStringUtil.isNotBlank(seachJson.getString("orderDate"))){
+				buf.append(" AND model.ORDER_DATE=:orderDate");
+				parmeMap.put("orderDate",seachJson.getString("orderDate"));
+			}
 		}
 		
 		buf.append("  ORDER BY model.ORDER_NO DESC");
@@ -70,6 +76,11 @@ public class SysOrderDaoImpl extends BaseDaoImpl<SysOrder> implements SysOrderDa
 		scalarMap.put("orderType", new IntegerType());
 		scalarMap.put("status", new IntegerType());
 		scalarMap.put("orderNo", new IntegerType());
+		scalarMap.put("roomNum", new IntegerType());
+		scalarMap.put("hallNum", new IntegerType());
+		scalarMap.put("kitchenNum", new IntegerType());
+		scalarMap.put("toiletNum", new IntegerType());
+		scalarMap.put("balconyNum", new IntegerType());
 		return pagedSqlQuery(buf.toString(),page,rows,parmeMap,scalarMap);
 	}
 }

@@ -35,6 +35,9 @@
 				{field:'name',title: "名称",width:80,sortable:true
 					
 				},
+				{field:'roomsStr',title: "房间数量",width:100,sortable:true
+					
+				},
 				{field:'totalArea',title: "总面积",width:60,sortable:true
 					
 				},
@@ -257,9 +260,9 @@
 			<input type="text" id="address"/>
 		</div>
 		
-		<div class="search-div" style = "width:288px;max-width:288px;">
+		<div class="search-div">
 			<label>下单日期</label>
-			<div class="select" style="width: 200px;">
+			<div class="select">
 				<input id="orderDate" class="easyui-datebox" />
 			</div>
 		</div>

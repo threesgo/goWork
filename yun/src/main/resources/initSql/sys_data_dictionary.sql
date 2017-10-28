@@ -27,7 +27,7 @@ insert into SYS_DATA_DICTIONARY (id,row_version,type,name,value)values(24,0,5,'�
 insert into SYS_DATA_DICTIONARY (id,row_version,type,name,value)values(25,0,5,'高中\中专',3);
 insert into SYS_DATA_DICTIONARY (id,row_version,type,name,value)values(26,0,5,'大专',4);
 insert into SYS_DATA_DICTIONARY (id,row_version,type,name,value)values(27,0,5,'本科',5);
-insert into SYS_DATA_DICTIONARY (id,row_version,type,name,value)values(28,0,5,'研究生',6);
+insert into SYS_DATA_DICTIONARY (id,row_version,type,name,value)values(28,0,5,'硕士',6);
 insert into SYS_DATA_DICTIONARY (id,row_version,type,name,value)values(29,0,5,'博士',7);
 insert into SYS_DATA_DICTIONARY (id,row_version,type,name,value)values(30,0,5,'博士后',8);
 insert into SYS_DATA_DICTIONARY (id,row_version,type,name,value)values(31,0,6,'男',1);

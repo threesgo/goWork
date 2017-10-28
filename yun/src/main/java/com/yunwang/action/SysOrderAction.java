@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.yunwang.model.page.Pager;
 import com.yunwang.model.pojo.SysDataDictionary;
 import com.yunwang.model.pojo.SysOrder;
+import com.yunwang.model.pojo.SysOrderFlow;
 import com.yunwang.service.SysOrderService;
 import com.yunwang.util.BaseDataDictionaryUtil;
 import com.yunwang.util.action.AbstractLoginAction;
@@ -24,7 +25,9 @@ import com.yunwang.util.action.AbstractLoginAction;
 		@Result(name = "index",location="/WEB-INF/web/sysOrder/showIndex.jsp"),
 		@Result(name = "manageIndex",location="/WEB-INF/web/sysOrder/manageIndex.jsp"),
 		@Result(name = "saveOrUpdatePage",location="/WEB-INF/web/sysOrder/saveOrUpdatePage.jsp"),
-		@Result(name = "workerAndResource",location="/WEB-INF/web/sysOrder/workerAndResource.jsp")
+		@Result(name = "workerAndResourceByFlow",location="/WEB-INF/web/sysOrder/workerAndResourceByFlow.jsp"),
+		@Result(name = "workerAndResourceByOrder",location="/WEB-INF/web/sysOrder/workerAndResourceByOrder.jsp"),
+		@Result(name = "seachIndex",location="/WEB-INF/web/sysOrder/seachIndex.jsp")
 	}
 )
 public class SysOrderAction  extends AbstractLoginAction{
@@ -45,8 +48,8 @@ public class SysOrderAction  extends AbstractLoginAction{
 	private String id;
 	private String ids;
 	private String jsonStr;
-	private List<SysDataDictionary> flowList;
 	private List<SysDataDictionary> typeList;
+	private String dateStr;
 	
 	@Override
 	public String execute() throws Exception {
@@ -56,6 +59,10 @@ public class SysOrderAction  extends AbstractLoginAction{
 	
 	public String manageIndex(){
 		return "manageIndex";
+	}
+	
+	public String seachIndex(){
+		return "seachIndex";
 	}
 	
 	public String findTree(){
@@ -76,6 +83,9 @@ public class SysOrderAction  extends AbstractLoginAction{
 				JSONObject obj=new JSONObject();
 				obj.put("id", "t"+order.getOrderDate());
 				obj.put("text", order.getOrderDate());
+				JSONObject attr=new JSONObject();
+				attr.put("id",order.getOrderDate());
+				obj.put("attributes",attr);
 				obj.put("state", "closed");
 				jsonArr.add(obj);
 			}
@@ -92,7 +102,16 @@ public class SysOrderAction  extends AbstractLoginAction{
 			}
 		}else{
 			//订单步骤 s开头
-			
+			List<SysOrderFlow> orderFlows = sysOrderService.findOrderFlow(
+					Integer.parseInt(id.substring(1, id.length())));
+			for(SysOrderFlow orderFlow:orderFlows){
+				JSONObject obj=new JSONObject();
+				obj.put("id", "s"+orderFlow.getId());
+				obj.put("text", orderFlow.getName());
+				obj.put("attributes",JSONObject.fromObject(orderFlow));
+				obj.put("state", "open");
+				jsonArr.add(obj);
+			}
 		}
 		return ajaxText(jsonArr);
 	}
@@ -150,8 +169,12 @@ public class SysOrderAction  extends AbstractLoginAction{
 		}
 	}
 	
-	public String workerAndResource(){
-		return "workerAndResource";
+	public String workerAndResourceByFlow(){
+		return "workerAndResourceByFlow";
+	}
+	
+	public String workerAndResourceByOrder(){
+		return "workerAndResourceByOrder";
 	}
 	
 	public String deleteOrder(){
@@ -267,19 +290,19 @@ public class SysOrderAction  extends AbstractLoginAction{
 		this.jsonStr = jsonStr;
 	}
 
-	public List<SysDataDictionary> getFlowList() {
-		return flowList;
-	}
-
-	public void setFlowList(List<SysDataDictionary> flowList) {
-		this.flowList = flowList;
-	}
-
 	public List<SysDataDictionary> getTypeList() {
 		return typeList;
 	}
 
 	public void setTypeList(List<SysDataDictionary> typeList) {
 		this.typeList = typeList;
+	}
+
+	public String getDateStr() {
+		return dateStr;
+	}
+
+	public void setDateStr(String dateStr) {
+		this.dateStr = dateStr;
 	}
 }

@@ -17,6 +17,20 @@
     </div>
     
     <div>   
+        <label for="edit_totalRooms">房间数量:</label>   
+   	室:<input class="easyui-numberbox" id="edit_roomNum" type="text" name="sysOrder.roomNum" 
+        style="width:30px;" data-options="required:true,min:0,precision:0,max:9999999" value="${sysOrder.roomNum}"/>
+            厅:<input class="easyui-numberbox" id="edit_hallNum" type="text" name="sysOrder.hallNum" 
+        style="width:30px;" data-options="required:true,min:0,precision:0,max:9999999" value="${sysOrder.hallNum}"/>   
+            厨房:<input class="easyui-numberbox" id="edit_kitchenNum" type="text" name="sysOrder.kitchenNum" 
+        style="width:30px;" data-options="required:true,min:0,precision:0,max:9999999" value="${sysOrder.kitchenNum}"/>   
+            卫生间:<input class="easyui-numberbox" id="edit_toiletNum" type="text" name="sysOrder.toiletNum" 
+        style="width:30px;" data-options="required:true,min:0,precision:0,max:9999999" value="${sysOrder.toiletNum}"/>   
+            阳台:<input class="easyui-numberbox" id="edit_balconyNum" type="text" name="sysOrder.balconyNum" 
+        style="width:30px;" data-options="required:true,min:0,precision:0,max:9999999" value="${sysOrder.balconyNum}"/>   
+    </div>
+    
+    <div>   
         <label for="edit_totalAmount">订单定价:</label>   
         <input class="easyui-numberbox" id="edit_totalAmount" type="text" name="sysOrder.totalAmount" 
         style="width:200px;" data-options="required:true,min:1,precision:2,max:9999999.99" value="${sysOrder.totalAmount}"/>   

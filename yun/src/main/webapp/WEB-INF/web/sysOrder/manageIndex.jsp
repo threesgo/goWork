@@ -21,14 +21,23 @@
  					onSelect:function(node){//onSelect是选择节点时触发
  						closeAllTab(sysOrderTab);
  						var idStart = node.id.substring(0,1);
- 						//顶级以及时间节点
- 						if("r" == idStart || "t" == idStart){
+ 						//顶级以及时间节点 dateStr
+ 						if("r" == idStart){
  							sysOrderTab.tabs('add',{    
 						    	title:'订单列表', 
-						    	href:"sysOrderAction!seachIndex.act"
+						    	href:"sysOrderAction!seachIndex.act?dateStr=''"
+							});
+ 						}else if("t" == idStart){
+ 							sysOrderTab.tabs('add',{    
+						    	title:'订单列表', 
+						    	href:"sysOrderAction!seachIndex.act?dateStr="+node.attributes.id
 							});
  						}else if("o" == idStart){
  							//订单节点  
+ 							sysOrderTab.tabs('add',{    
+						    	title:'订单信息', 
+						    	href:"sysOrderAction!workerAndResourceByOrder.act"
+							});
  							sysOrderTab.tabs('add',{    
 						    	title:'工人材料', 
 						    	href:"sysOrderAction!workerAndResourceByOrder.act"
@@ -54,8 +63,8 @@
  						sysOrderTab.tabs("select",0);
  					},
  					onLoadSuccess:function(node,data){
- 						var root = sysOrderTree.tree("getRoot");
- 						sysOrderTree.tree("select",root.target);
+ 						//var root = sysOrderTree.tree("getRoot");
+ 						//sysOrderTree.tree("select",root.target);
  					}
  				}
 	 		);

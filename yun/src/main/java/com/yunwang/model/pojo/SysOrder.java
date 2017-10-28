@@ -58,13 +58,13 @@ public class SysOrder extends AbstractRowVersionModel{
 	@Column(name = "CMB_PROVINCE",nullable = false,length = 256)
 	private String cmbProvince;
 	
-	@Column(name = "CMB_CITY",nullable = false,length = 256)
+	@Column(name = "CMB_CITY",length = 256)
 	private String cmbCity;
 	
-	@Column(name = "CMB_AREA",nullable = false,length = 256)
+	@Column(name = "CMB_AREA",length = 256)
 	private String cmbArea;
 	
-	@Column(name = "ADDRESS",nullable = false,length = 2048)
+	@Column(name = "ADDRESS",length = 2048)
 	private String address;
 	
 	@Column(name = "START_TIME")
@@ -82,11 +82,26 @@ public class SysOrder extends AbstractRowVersionModel{
 //	@Column(name = "MEMBER_ID",nullable = false)
 //	private Integer memberId;  //关联工人  业务员，下单人员  
 	
-	@Column(name = "STATUS",columnDefinition = "number default 1")
+	@Column(name = "STATUS",nullable = false,columnDefinition = "number default 1")
 	private Integer status;  //0，删除 1，未开始 2、进行中 3，已完成  (手动或者根据时间进行自动管控)
 	
-	@Column(name="ORDER_NO", nullable = false)
+	@Column(name="ORDER_NO",nullable = false,columnDefinition = "number default 0")
 	private Integer orderNo;//顺序号
+	
+	@Column(name="ROOM_NUM",columnDefinition = "number default 0")
+	private Integer roomNum;  //几室
+	
+	@Column(name="HALL_NUM",columnDefinition = "number default 0")
+	private Integer hallNum;  //几厅
+	
+	@Column(name="KITCHEN_NUM",columnDefinition = "number default 0")
+	private Integer kitchenNum;  //厨房
+	
+	@Column(name="TOILET_NUM",columnDefinition = "number default 0")
+	private Integer toiletNum;  //卫生间
+	
+	@Column(name="BALCONY_NUM",columnDefinition = "number default 0")
+	private Integer balconyNum;  //阳台
 	
 	public SysOrder(){
 		
@@ -236,11 +251,55 @@ public class SysOrder extends AbstractRowVersionModel{
 		this.orderNo = orderNo;
 	}
 
+	public Integer getRoomNum() {
+		return roomNum;
+	}
+
+	public void setRoomNum(Integer roomNum) {
+		this.roomNum = roomNum;
+	}
+
+	public Integer getHallNum() {
+		return hallNum;
+	}
+
+	public void setHallNum(Integer hallNum) {
+		this.hallNum = hallNum;
+	}
+
+	public Integer getKitchenNum() {
+		return kitchenNum;
+	}
+
+	public void setKitchenNum(Integer kitchenNum) {
+		this.kitchenNum = kitchenNum;
+	}
+
+	public Integer getToiletNum() {
+		return toiletNum;
+	}
+
+	public void setToiletNum(Integer toiletNum) {
+		this.toiletNum = toiletNum;
+	}
+
+	public Integer getBalconyNum() {
+		return balconyNum;
+	}
+
+	public void setBalconyNum(Integer balconyNum) {
+		this.balconyNum = balconyNum;
+	}
+
 	public String getStartTimeStr(){
 		return MyDateUtils.getStringByDateTime(startTime);
 	}
 	
 	public String getEndTimeStr(){
 		return MyDateUtils.getStringByDateTime(endTime);
+	}
+	
+	public String getRoomsStr(){
+		return roomNum+"室"+hallNum+"厅"+kitchenNum+"厨"+toiletNum+"卫"+balconyNum+"阳台";
 	}
 }
