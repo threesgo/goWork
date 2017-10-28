@@ -71,6 +71,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/extendScript/editor.js"></script> 
 <script type="text/javascript" src="${pageContext.request.contextPath}/extendScript/checkbox.js"></script> 
 <script type="text/javascript" src="${pageContext.request.contextPath}/extendScript/datagrid-dnd.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/extendScript/jsAddress.js"></script>
 
 <script>
 (function(window,$){

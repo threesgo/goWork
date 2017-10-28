@@ -36,9 +36,18 @@
         style="width:200px;" data-options="required:false,validType:['length[1,40]','illegal']" value="${sysOrder.contactTel}"/> 
     </div>
     
+    <!-- 
+  	<div>   
+        <label for="edit_address">省&nbsp;&nbsp;市&nbsp;区:</label> 
+        <select id="cmbProvince" name="sysOrder.cmbProvince" value="${sysOrder.cmbProvince}"></select>  
+    	<select id="cmbCity" name="sysOrder.cmbCity" value="${sysOrder.cmbCity}"></select>  
+    	<select id="cmbArea" name="sysOrder.cmbArea" value="${sysOrder.cmbArea}"></select>  
+    </div>
+     -->
+     
     <div>   
-        <label for="edit_address">装修地址:</label>   
-        <input class="easyui-validatebox" id="edit_address" type="text" name="sysOrder.address" 
+        <label for="edit_address">装修地址:</label> 
+        <input class="easyui-validatebox" id="edit_address" placeholder="康桥镇御青路1051弄25号601室" type="text" name="sysOrder.address" 
         style="width:460px;" data-options="required:true,validType:['length[1,300]','illegal']" value="${sysOrder.address}"/>   
     </div>
     
@@ -58,3 +67,14 @@
         style="width:460px;" data-options="required:false,validType:['length[1,600]','illegal']" value="${sysOrder.info}"/>   
     </div>
 </form>
+
+<script type="text/javascript"> 
+/* 
+$(function(){
+	addressInit('cmbProvince', 'cmbCity', 'cmbArea');
+	$("#cmbProvince option[value='四川']").click();
+	$("#cmbCity option[value='成都市']").attr("selected", "selected");
+	$("#cmbArea option[value='金牛区']").attr("selected", "selected");
+});
+*/
+</script>  

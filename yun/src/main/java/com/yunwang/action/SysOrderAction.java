@@ -76,9 +76,10 @@ public class SysOrderAction  extends AbstractLoginAction{
 				JSONObject obj=new JSONObject();
 				obj.put("id", "t"+order.getOrderDate());
 				obj.put("text", order.getOrderDate());
+				obj.put("state", "closed");
 				jsonArr.add(obj);
 			}
-		}else if("id".startsWith("t")){
+		}else if(id.startsWith("t")){
 			//具体的订单
 			List<SysOrder> timeGroups = sysOrderService.findByOrderDate(id.substring(1, id.length()));
 			for(SysOrder order:timeGroups){

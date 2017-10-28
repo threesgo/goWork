@@ -55,6 +55,15 @@ public class SysOrder extends AbstractRowVersionModel{
 	@Column(name = "CONTACT_TEL",length = 128)
 	private String contactTel;
 	
+	@Column(name = "CMB_PROVINCE",nullable = false,length = 256)
+	private String cmbProvince;
+	
+	@Column(name = "CMB_CITY",nullable = false,length = 256)
+	private String cmbCity;
+	
+	@Column(name = "CMB_AREA",nullable = false,length = 256)
+	private String cmbArea;
+	
 	@Column(name = "ADDRESS",nullable = false,length = 2048)
 	private String address;
 	
@@ -137,6 +146,30 @@ public class SysOrder extends AbstractRowVersionModel{
 
 	public void setContactTel(String contactTel) {
 		this.contactTel = contactTel;
+	}
+
+	public String getCmbProvince() {
+		return cmbProvince;
+	}
+
+	public void setCmbProvince(String cmbProvince) {
+		this.cmbProvince = cmbProvince;
+	}
+
+	public String getCmbCity() {
+		return cmbCity;
+	}
+
+	public void setCmbCity(String cmbCity) {
+		this.cmbCity = cmbCity;
+	}
+
+	public String getCmbArea() {
+		return cmbArea;
+	}
+
+	public void setCmbArea(String cmbArea) {
+		this.cmbArea = cmbArea;
 	}
 
 	public String getAddress() {

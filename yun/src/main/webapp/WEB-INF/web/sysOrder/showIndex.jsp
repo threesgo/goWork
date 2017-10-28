@@ -98,9 +98,9 @@
 					handler:function(){
 						$('#saveOrUpdate_order').form({    
 						    onSubmit: function(){ 
-						    	if(!validateForm()){
-						    		return false;
-						    	}
+						    	//if(!validateForm()){
+						    	//	return false;
+						    	//}
 						    },    
 						    success:function(data){ 
 						    	handlerResult(data,
@@ -145,9 +145,9 @@
 					handler:function(){
 						$('#saveOrUpdate_order').form({    
 						    onSubmit: function(){
-						    	if(!validateForm()){
-						    		return false;
-						    	}
+						    	//if(!validateForm()){
+						    	//	return false;
+						    	//}
 						    },    
 						    success:function(data){ 
 						    	handlerResult(data,

@@ -51,6 +51,7 @@
 						    	href:"sysOrderAction!workerAndResourceByFlow.act"
 							});
  						}
+ 						sysOrderTab.tabs("select",0);
  					},
  					onLoadSuccess:function(node,data){
  						var root = sysOrderTree.tree("getRoot");
