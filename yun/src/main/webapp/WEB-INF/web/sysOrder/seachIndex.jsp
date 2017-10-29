@@ -38,7 +38,7 @@
 				{field:'totalArea',title: "总面积",width:60,sortable:true
 					
 				},
-				{field:'totalAmount',title: "总定价",width:60,sortable:true
+				{field:'totalAmount',title: "总价",width:60,sortable:true
 					
 				},
 				{field:'orderDate',title: "下单时间",width:80,sortable:true

@@ -8,7 +8,7 @@
         style="width:200px;" data-options="required:true,validType:['length[1,40]','illegal']" value="${sysOrder.name}"/>   
     
     	<label for="edit_orderType">装修级别:</label>   
-   		<s:select id="edit_orderType" style="height:22px;width:200px;"
+   		<s:select id="edit_orderType" style="height:22px;width:100px;"
        		list="typeList"
 	       	listKey="value"   
 	       	listValue="name"
@@ -31,21 +31,27 @@
     </div>
     
     <div>   
-        <label for="edit_totalAmount">订单定价:</label>   
-        <input class="easyui-numberbox" id="edit_totalAmount" type="text" name="sysOrder.totalAmount" 
-        style="width:200px;" data-options="required:true,min:1,precision:2,max:9999999.99" value="${sysOrder.totalAmount}"/>   
-    
    	 	<label for="edit_totalArea">订单面积:</label>   
         <input class="easyui-numberbox" id="edit_totalArea" name="sysOrder.totalArea" 
         style="width:200px;" data-options="required:true,min:1,precision:2,max:9999999.99" value="${sysOrder.totalArea}"/>   
+   		㎡
+    </div>
+    
+    <div>   
+   	 	<label for="edit_totalAmount">订单总价:</label>   
+        <input class="easyui-numberbox" id="edit_totalAmount" type="text" name="sysOrder.totalAmount" 
+        style="width:200px;" data-options="required:true,min:1,precision:2,max:9999999.99" value="${sysOrder.totalAmount}"/>   
+    	元
     </div>
     
     <div>   
         <label for="edit_contact">联&nbsp;&nbsp;系&nbsp;人:</label>   
         <input class="easyui-validatebox" id="edit_contact" type="text" name="sysOrder.contact" 
         style="width:200px;" data-options="required:true,validType:['length[1,40]','illegal']" value="${sysOrder.contact}"/>   
-   
-   		<label for="edit_contactTel">联系方式:</label>   
+    </div>
+    
+    <div>   
+       	<label for="edit_contactTel">联系方式:</label>   
         <input class="easyui-validatebox" id="edit_contactTel" type="text" name="sysOrder.contactTel" 
         style="width:200px;" data-options="required:false,validType:['length[1,40]','illegal']" value="${sysOrder.contactTel}"/> 
     </div>

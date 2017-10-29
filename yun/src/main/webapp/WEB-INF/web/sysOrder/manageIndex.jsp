@@ -36,7 +36,7 @@
  							//订单节点  
  							sysOrderTab.tabs('add',{    
 						    	title:'订单信息', 
-						    	href:"sysOrderAction!workerAndResourceByOrder.act"
+						    	href:"sysOrderAction!orderInfo.act?sysOrder.id="+node.attributes.id
 							});
  							sysOrderTab.tabs('add',{    
 						    	title:'工人材料', 

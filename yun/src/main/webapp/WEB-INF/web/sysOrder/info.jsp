@@ -10,7 +10,7 @@ $(function(){
         nowrap:false,
         fit:true,
         //toolbar:"#order_info_bar",
-        url:"sysOrderAction!infoData.act?sysOrder.id=${sysOrder.id}",
+        url:"sysOrderAction!orderInfoData.act?sysOrder.id=${sysOrder.id}",
         animate : true,
  		collapsible : true,
   		pagination:false, 

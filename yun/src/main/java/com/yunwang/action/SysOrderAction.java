@@ -27,7 +27,9 @@ import com.yunwang.util.action.AbstractLoginAction;
 		@Result(name = "saveOrUpdatePage",location="/WEB-INF/web/sysOrder/saveOrUpdatePage.jsp"),
 		@Result(name = "workerAndResourceByFlow",location="/WEB-INF/web/sysOrder/workerAndResourceByFlow.jsp"),
 		@Result(name = "workerAndResourceByOrder",location="/WEB-INF/web/sysOrder/workerAndResourceByOrder.jsp"),
-		@Result(name = "seachIndex",location="/WEB-INF/web/sysOrder/seachIndex.jsp")
+		@Result(name = "seachIndex",location="/WEB-INF/web/sysOrder/seachIndex.jsp"),
+		@Result(name = "orderInfo",location="/WEB-INF/web/sysOrder/info.jsp"),
+		@Result(name = "flowInfo",location="/WEB-INF/web/sysOrder/flowInfo.jsp")
 	}
 )
 public class SysOrderAction  extends AbstractLoginAction{
@@ -57,10 +59,16 @@ public class SysOrderAction  extends AbstractLoginAction{
 		return "index";
 	}
 	
+	/**
+	 * @return  订单流程管理
+	 */
 	public String manageIndex(){
 		return "manageIndex";
 	}
 	
+	/**
+	 * @return  订单查询新增编辑管理
+	 */
 	public String seachIndex(){
 		return "seachIndex";
 	}
@@ -116,8 +124,15 @@ public class SysOrderAction  extends AbstractLoginAction{
 		return ajaxText(jsonArr);
 	}
 	
+	public String orderInfo(){
+		return "orderInfo";
+	}
 	
-	public String infoData(){
+	public String flowInfo(){
+		return "flowInfo";
+	}
+	
+	public String orderInfoData(){
 		sysOrder = sysOrderService.get(sysOrder.getId());
 		JSONArray jsonArr=new JSONArray();
 		addInfoData(jsonArr);
@@ -189,24 +204,29 @@ public class SysOrderAction  extends AbstractLoginAction{
 	
 	//后期根据国际化来做
 	private void addInfoData(JSONArray jsonArr) {
-		JSONObject json_code=new JSONObject();
-		json_code.put("attrName", "编号");
-		json_code.put("value", sysOrder.getCode());
-		jsonArr.add(json_code);
+//		JSONObject json_code=new JSONObject();
+//		json_code.put("attrName", "编号");
+//		json_code.put("value", sysOrder.getCode());
+//		jsonArr.add(json_code);
 		
 		JSONObject json_name=new JSONObject();
 		json_name.put("attrName", "名称");
 		json_name.put("value", sysOrder.getName());
 		jsonArr.add(json_name);
 		
+		JSONObject json_rooms=new JSONObject();
+		json_rooms.put("attrName", "房间数量");
+		json_rooms.put("value", sysOrder.getRoomsStr());
+		jsonArr.add(json_rooms);
+		
 		JSONObject totalArea=new JSONObject();
 		totalArea.put("attrName", "总面积");
-		totalArea.put("value", sysOrder.getTotalArea());
+		totalArea.put("value", sysOrder.getTotalArea()+"㎡");
 		jsonArr.add(totalArea);
 		
 		JSONObject totalAmount=new JSONObject();
-		totalAmount.put("attrName", "总定价");
-		totalAmount.put("value", sysOrder.getTotalAmount());
+		totalAmount.put("attrName", "总价");
+		totalAmount.put("value", sysOrder.getTotalAmount()+"元");
 		jsonArr.add(totalAmount);
 		
 		JSONObject orderType=new JSONObject();
@@ -236,7 +256,7 @@ public class SysOrderAction  extends AbstractLoginAction{
 		
 		JSONObject time=new JSONObject();
 		time.put("attrName", "预计装修时间");
-		time.put("value", sysOrder.getStartTimeStr()+"-"+sysOrder.getEndTimeStr());
+		time.put("value", sysOrder.getStartTimeStr()+"至"+sysOrder.getEndTimeStr());
 		jsonArr.add(time);
 		
 		JSONObject info=new JSONObject();
@@ -247,7 +267,7 @@ public class SysOrderAction  extends AbstractLoginAction{
 		JSONObject status=new JSONObject();
 		status.put("attrName", "状态");
 		status.put("value", sysOrder.getStatus());
-		jsonArr.add(info);
+		jsonArr.add(status);
 	}
 
 	public Map<String, Object> getHashMap() {
