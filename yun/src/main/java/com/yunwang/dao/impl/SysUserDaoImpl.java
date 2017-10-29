@@ -38,7 +38,7 @@ public class SysUserDaoImpl extends BaseDaoImpl<SysUser> implements SysUserDaoI{
 		buf.append("SELECT distinct model FROM SysUser model,SysRole sysRole,SysUserRole sysUserRole "
 				+ " WHERE model.id = sysUserRole.userId AND sysUserRole.roleId = sysRole.id ");
 		
-		if(json != null){
+		if(!json.isEmpty()){
 			//用户名,模糊查询
 			String sysUsreName = json.getString("userName");
 			if(StringUtils.isNotBlank(sysUsreName)){

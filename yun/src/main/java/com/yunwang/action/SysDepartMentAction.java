@@ -58,7 +58,7 @@ public class SysDepartMentAction extends AbstractLoginAction{
 	 * @author KXL
 	 * @date 2017-10-27
 	 */
-	public String findAll(){
+/*	public String findAll(){
 		JSONArray arr = new JSONArray();
 		JSONObject obj = new JSONObject();
 		List<SysDepartMent> list = sysUserService.findAllDepartMent();
@@ -71,7 +71,7 @@ public class SysDepartMentAction extends AbstractLoginAction{
 			obj.put("selected", true);
 		}
 		return null;
-	}
+	}*/
 	/**
 	 * @date 2017.10.23
 	 * @author KXL
