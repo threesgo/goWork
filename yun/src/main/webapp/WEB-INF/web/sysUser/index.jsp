@@ -42,7 +42,7 @@
 					{field:'realEmail',title:"电子邮箱",width:190,align:"center",	sortable:true, sorter:function(a,b){ return a>b? 1:-1; }},
 					{field:'phoneNum',title:"手机号码",width:190,align:"center",	sortable:true,  sorter:function(a,b){ return a>b? 1:-1; }},
 					{field:'deptName',title:"部门",width:190,align:"center",	sortable:true,  sorter:function(a,b){ return a>b? 1:-1; }},
-					{field:'createDt',title:"创建时间",width:190,align:"center",sortable:true,  sorter:function(a,b){ return a>b? 1:-1;  }},
+					//{field:'createData',title:"创建时间",width:190,align:"center",sortable:true,  sorter:function(a,b){ return a>b? 1:-1;  }},
 					{field:'roles',title:"角色",width:180,align:"center",sortable:true,sorter:function(a,b){ return a>b? 1:-1 ; }}
 				]]
 		  	});
@@ -71,12 +71,12 @@
 			});
 			
 			//部门
-			/* $("#userDepartMent").combobox({
+			$("#userDepartMent").combobox({
 				valueField:'id',
 				textField:'userDepartMent',
 				multiple:true,
 				editable:false,
-				//url:"sysDepartMentAction.findAll.act",
+				url:"sysDepartMentAction!findAll.act",
 				onSelect:function(record){
 				    if(!record.id){
 				    	var selects = $("#userDepartMent").combobox("getValues");
@@ -89,7 +89,7 @@
 				    		$("#userDepartMent").combobox("unselect","");	
 				    	} 
 				    }
-			}); */ 
+			}); 
 		});
 		
 		window.user={

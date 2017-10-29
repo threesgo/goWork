@@ -64,6 +64,7 @@ public class SysUserAction extends AbstractLoginAction{
 		JSONObject obj = new JSONObject();
 		if(null != pager){
 			obj.put("total", pager.getTotalRows());
+			//List<SysUser>  list = (List<SysUser>) pager.getData();
 			obj.put("rows", JSONArray.fromObject(pager.getData()));
 		}else{
 			obj.put("total", 0);

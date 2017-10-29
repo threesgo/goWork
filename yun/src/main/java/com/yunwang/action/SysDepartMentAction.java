@@ -58,20 +58,24 @@ public class SysDepartMentAction extends AbstractLoginAction{
 	 * @author KXL
 	 * @date 2017-10-27
 	 */
-/*	public String findAll(){
+	public String findAll(){
 		JSONArray arr = new JSONArray();
-		JSONObject obj = new JSONObject();
+		JSONObject obj = null;
 		List<SysDepartMent> list = sysUserService.findAllDepartMent();
+		obj = new JSONObject();
 		obj.put("id", "");
 		obj.put("userDepartMent", "全部");
 		obj.put("selected", true);
+		arr.add(obj);
 		for(SysDepartMent departMent:list){
+			obj = new JSONObject();
 			obj.put("id", departMent.getId());
-			obj.put("userDepartMent", "全部");
-			obj.put("selected", true);
+			obj.put("userDepartMent", departMent.getCode()+","+departMent.getName());
+			arr.add(obj);
 		}
-		return null;
-	}*/
+		return ajaxText(arr);
+	}
+	
 	/**
 	 * @date 2017.10.23
 	 * @author KXL
