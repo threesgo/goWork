@@ -16,7 +16,7 @@ values(2,'角色管理','sysRoleAction.act','status_online',1,1,1,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
 values(3,'用户管理','sysUserAction.act','status_online',1,2,1,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
-values(4,'部门管理','','status_online',1,3,1,1);
+values(4,'部门管理','sysDepartMentAction.act','status_online',1,3,1,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
 values(5,'产品管理','','cog_edit',0,2,1,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 

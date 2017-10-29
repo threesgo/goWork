@@ -71,12 +71,12 @@
 			});
 			
 			//部门
-			$("#userDepartMent").combobox({
+			/* $("#userDepartMent").combobox({
 				valueField:'id',
 				textField:'userDepartMent',
 				multiple:true,
 				editable:false,
-				url:"sysDepartMentAction.findAll.act",
+				//url:"sysDepartMentAction.findAll.act",
 				onSelect:function(record){
 				    if(!record.id){
 				    	var selects = $("#userDepartMent").combobox("getValues");
@@ -89,7 +89,7 @@
 				    		$("#userDepartMent").combobox("unselect","");	
 				    	} 
 				    }
-			}); 
+			}); */ 
 		});
 		
 		window.user={
