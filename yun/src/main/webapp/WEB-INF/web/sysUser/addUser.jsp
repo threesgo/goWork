@@ -11,13 +11,13 @@
 		      editable:false,
 		      url:"sysRoleAction!findAll.act",
 		}); 
-		
+		//部门下拉框，单选
 		$('#addDept').combobox({ 
 			  valueField:'id',
-			  textField:'dept',
+			  textField:'userDepartMent',
 		      multiple:false,
 		      editable:true,
-		     // url:"systemAdmin!findAllDept.act"
+		      url:"sysDepartMentAction!findAll.act?noAll=1"
 		}); 
 	});
 
@@ -67,7 +67,7 @@
        <div class="fitem">  
 	       	<span style="color: red;font-size:14;margin-right: 5px;">&nbsp;&nbsp;</span>
 	        <label style="margin-right: 25px;">部门：</label>  
-			<select id="addDept" name="sysUser.dept" style="width:200px;">
+			<select id="addDept" name="sysUser.departmentId" style="width:200px;">
 			</select> 
         	<span style="color: red;font-size:14;margin-right: 5px;">&nbsp;*</span>
             <label style="margin-right: 20px;">角色：</label>  

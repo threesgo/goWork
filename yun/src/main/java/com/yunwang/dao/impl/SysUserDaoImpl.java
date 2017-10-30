@@ -50,7 +50,8 @@ public class SysUserDaoImpl extends BaseDaoImpl<SysUser> implements SysUserDaoI{
 				//+ "model.CREATE_DATE createDate, "
 				+ "model.UPDATE_DATE updateDate,"
 				+ "model.DEPARTMENT_ID departmentId, "
-				+ "model.POSITION_ID positionId "
+				+ "model.POSITION_ID positionId,"
+				+ "sysDepartMent.CODE code "
 				+ "FROM SYS_USER model "
 				+ "LEFT JOIN SYS_USER_ROLE sysUserRole ON model.ID=sysUserRole.USER_ID "
 				+ "LEFT JOIN SYS_ROLE sysRole ON sysUserRole.ROLE_ID=sysRole.ID "
@@ -58,23 +59,51 @@ public class SysUserDaoImpl extends BaseDaoImpl<SysUser> implements SysUserDaoI{
 				+ "LEFT JOIN SYS_POSITION sysPosition ON model.POSITION_ID=sysPosition.ID ");
 		
 		Map<String, Object> parmeMap = new HashMap<String,Object>();
+		System.out.println(buf.indexOf("WHERE"));
 		if(!json.isEmpty()){
 			//用户名,模糊查询
 			String sysUsreName = json.getString("userName");
 			if(StringUtils.isNotBlank(sysUsreName)){
-				buf.append("AND model.USER_NAME LIKE '%"+sysUsreName+"%' ");
+				if(buf.indexOf("WHERE") == -1){
+					buf.append(" WHERE ");
+				}else{
+					buf.append(" AND ");
+				}
+				buf.append(" model.USER_NAME LIKE '%"+sysUsreName+"%' ");
 			}
 			
 			//真实姓名,模糊查询
 			String sysRealName = json.getString("realName");
 			if(StringUtils.isNotBlank(sysRealName)){
-				buf.append("AND model.REAL_NAME LIKE '%"+sysRealName+"%' ");
+				if(buf.indexOf("WHERE") == -1){
+					buf.append(" WHERE ");
+				}else{
+					buf.append(" AND ");
+				}
+				buf.append(" model.REAL_NAME LIKE '%"+sysRealName+"%' ");
 			}
 			
 			//角色,多选
 			String sysRole = json.getString("roleIds");
 			if(StringUtils.isNotBlank(sysRole)){
-				buf.append("AND sysUserRole.role_Id IN ("+sysRole+") ");
+				if(buf.indexOf("WHERE") == -1){
+					buf.append(" WHERE ");
+				}else{
+					buf.append(" AND ");
+				}
+				buf.append(" sysUserRole.role_Id IN ("+sysRole+") ");
+			}
+			
+			//部门,单选
+			String userDepartMent = json.getString("userDepartMent");
+			if(StringUtils.isNotBlank(userDepartMent)){
+				if(buf.indexOf("WHERE") == -1){
+					buf.append(" WHERE ");
+				}else{
+					buf.append(" AND ");
+				}
+				buf.append(" model.DEPARTMENT_ID=:userDepartMent ");
+				parmeMap.put("userDepartMent", userDepartMent);
 			}
 		}
 		
@@ -90,6 +119,7 @@ public class SysUserDaoImpl extends BaseDaoImpl<SysUser> implements SysUserDaoI{
 		scalarMap.put("updateDate", new DateType());
 		scalarMap.put("departmentId", new IntegerType());
 		scalarMap.put("positionId", new IntegerType());
+		scalarMap.put("code", new StringType());
 		
 		return pagedSqlQuery(buf.toString(),page,rows,parmeMap,scalarMap);
 		//return pagedQuery(buf.toString(), page, rows);

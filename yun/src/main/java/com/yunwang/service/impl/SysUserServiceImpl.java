@@ -218,6 +218,7 @@ public class SysUserServiceImpl implements SysUserService{
 		updateUser.setPassWord(user.getPassWord());
 		updateUser.setPhoneNum(user.getPhoneNum());
 		updateUser.setRelMail(user.getRelMail());
+		updateUser.setDepartmentId(user.getDepartmentId());
 		sysUserDao.update(updateUser);
 		sysUserRoleDao.deleteByProperty("userId",user.getId());
 		SysUserRole userRole =null;

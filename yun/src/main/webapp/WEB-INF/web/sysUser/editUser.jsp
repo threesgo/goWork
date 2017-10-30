@@ -3,8 +3,10 @@
 
 <script type="text/javascript">
     var role_id;
+    var department_id;
 	$(function(){
 		role_id = '${roleIds}';
+		department_id = '${sysUser.departmentId}';
 		$('#editSysRole').combobox({
 			  valueField:'id',
 			  textField:'sysRole',
@@ -21,6 +23,18 @@
 		      }
 		}); 
 		
+		$('#editDept').combobox({
+			 valueField:'id',
+			  textField:'userDepartMent',
+		      multiple:false,
+		      editable:false,
+		      url:"sysDepartMentAction!findAll.act?noAll=1",
+		      onLoadSuccess:function(){
+		    	   if(department_id){
+			    	  $('#editDept').combobox("select",department_id);
+		    	  } 
+		      }	  
+		});
 	});
 
 </script>
@@ -68,11 +82,11 @@
        <div class="fitem">  
 	       	<span style="color: red;font-size:14;margin-right: 5px;">&nbsp;&nbsp;</span>
 	           <label style="margin-right:25px">部门：</label>  
-			<select id="editDept" class="easyui-combobox" name="sysUser.dept" style="width:200px;">
+			<select id="editDept"  name="sysUser.departmentId" style="width:200px;">
 			</select> 
         	<span style="color: red;font-size:14;margin-right: 5px;">&nbsp;*</span>
             <label style="margin-right:20px">角色：</label>  
-			<select id="editSysRole" class="easyui-combobox" name="sysUser.roleIds" style="width:200px;" data-options="required:true">
+			<select id="editSysRole" name="sysUser.roleIds" style="width:200px;" data-options="required:true">
 			</select> 
 	   </div>
         

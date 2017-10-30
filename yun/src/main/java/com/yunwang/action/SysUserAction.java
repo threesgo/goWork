@@ -116,7 +116,6 @@ public class SysUserAction extends AbstractLoginAction{
 			if(listUser.size()>0){
 				return error("用户名已存在");
 			}
-			System.out.println(roleIds);
 			sysUserService.updateUserAndRole(sysUser);
 			return success("添加成功");
 		}catch(Exception e){

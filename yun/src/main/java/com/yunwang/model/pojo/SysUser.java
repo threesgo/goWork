@@ -68,7 +68,8 @@ public class SysUser extends AbstractRowVersionModel{
 	private String roles;
 	@Transient
 	private String roleIds;
-	
+	@Transient
+	private String code;
 
 	public Date getCreateStartDate() {
 		return createStartDate;
@@ -219,6 +220,14 @@ public class SysUser extends AbstractRowVersionModel{
 
 	public void setPositionId(Integer positionId) {
 		this.positionId = positionId;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
 	}
 	
 }

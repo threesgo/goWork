@@ -12,10 +12,13 @@ import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import antlr.StringUtils;
+
 import com.yunwang.model.pojo.SysDepartMent;
 import com.yunwang.model.pojo.SysPosition;
 import com.yunwang.service.SysUserService;
 import com.yunwang.util.action.AbstractLoginAction;
+import com.yunwang.util.string.MyStringUtil;
 
 
 
@@ -42,6 +45,7 @@ public class SysDepartMentAction extends AbstractLoginAction{
 	private String nodeId;
 	private String departMentId;
 	private String jsonStr;
+	private String noAll;
 	/**
 	 * 部门管理主页面
 	 */
@@ -62,11 +66,14 @@ public class SysDepartMentAction extends AbstractLoginAction{
 		JSONArray arr = new JSONArray();
 		JSONObject obj = null;
 		List<SysDepartMent> list = sysUserService.findAllDepartMent();
-		obj = new JSONObject();
-		obj.put("id", "");
-		obj.put("userDepartMent", "全部");
-		obj.put("selected", true);
-		arr.add(obj);
+		if(MyStringUtil.isBlank(noAll)){
+			obj = new JSONObject();
+			obj.put("id", "");
+			obj.put("userDepartMent", "全部");
+			obj.put("selected", true);
+			arr.add(obj);
+		}
+		
 		for(SysDepartMent departMent:list){
 			obj = new JSONObject();
 			obj.put("id", departMent.getId());
@@ -290,6 +297,14 @@ public class SysDepartMentAction extends AbstractLoginAction{
 
 	public void setIds(String ids) {
 		this.ids = ids;
+	}
+
+	public String getNoAll() {
+		return noAll;
+	}
+
+	public void setNoAll(String noAll) {
+		this.noAll = noAll;
 	}
 	
 }
