@@ -4,7 +4,7 @@
 <html lang="zh-cn">
 	<head>
 		<meta charset="utf-8" />
-		<title>云网装饰</title>
+		<title>云网装饰平台</title>
 
 		<meta name="description" content="User login page" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -32,16 +32,16 @@
 								<div id="login-box" class="login-box visible widget-box no-border">
 									<div class="widget-body">
 										<div class="widget-main">
-											<!--  
-											<img alt="" src="images/logo.png" style="width: 300px;height:50px">
-										     -->
+											<img alt="" src="${pageContext.request.contextPath}/style/images/logo.png" style="height:60px">
+										     <!--
 												<h1>
 													<i class="icon-leaf green"></i>
 													<span class="red" style="font-weight: bold;">云网装饰平台</span>
-												</h1>											
-											<h4 class="header blue lighter bigger" style="font-weight: bold;">
+												</h1>	
+											 -->										
+											<h4 class="header blue lighter bigger">
 												<i class="icon-coffee green"></i>
-												请输入用户名和密码
+												<span style="font-weight: bold;font-size: 18px;color: #0093DB">请输入用户名和密码</span>
 											</h4>
 
 											<div class="space-6"></div>

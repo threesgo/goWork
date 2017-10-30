@@ -46,7 +46,7 @@ public class SysOrder extends AbstractRowVersionModel{
 	@Column(name = "TOTAL_AMOUNT",nullable = false)
 	private BigDecimal totalAmount;
 	
-	@Column(name = "ORDER_DATE")
+	@Column(name = "ORDER_DATE",length = 64)
 	private String orderDate;  //只存日期，tree显示根据日期分组
 	
 	@Column(name = "CONTACT",nullable = false,length = 128)
