@@ -186,11 +186,14 @@ public class SysResourceServiceImpl implements SysResourceService{
 	public void deleteResource(String ids) {
 		List<SysResource>  sysResources = sysResourceDao.findInPropertys("id", ids);
 		for(SysResource sysResource:sysResources){
-			sysResource.setRsrcStatus(0);
-			sysResourceDao.update(sysResource);
+			if(sysResource.getIsRelease() == 1){
+				sysResource.setRsrcStatus(0);
+				sysResourceDao.update(sysResource);
+			}else{
+				sysRsRcAttribDao.deleteByProperty("rsrcId", sysResource.getId());
+				sysResourceDao.deleteByProperty("id",sysResource.getId());
+			}
 		}
-		//sysRsRcAttribDao.deleteByPropertys("rsrcId", ids);
-		//sysResourceDao.deleteByPropertys("id",ids);
 	}
 
 	private Map<Integer,Map<Integer,SysRsRcAttrib>> conAttribToMap(List<SysRsRcAttrib> sysRsRcAttribs){

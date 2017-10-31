@@ -17,6 +17,7 @@ public class SysMenuDaoImpl extends BaseDaoImpl<SysMenu> implements SysMenuDaoI{
 		Map<String, Object> map = new HashMap<String,Object>();
 		map.put("roleId",roleId);
 		return find("SELECT model FROM SysMenu model,SysRoleMenu roleMenu " 
-				+"WHERE model.id = roleMenu.menuId AND roleMenu.roleId=:roleId ",map);
+				+"WHERE model.id = roleMenu.menuId AND roleMenu.roleId=:roleId "
+				+"ORDER BY model.id",map);
 	}
 }
