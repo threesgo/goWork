@@ -87,8 +87,8 @@
 				 		}
 		        	}
 					,formatter:function(value, rowData) {
-						if(value){
-							return 0.00;
+						if(value == 0){
+							return 0;
 						}else{
 							return value;
 						}
