@@ -232,4 +232,19 @@ public class MyStringUtil extends StringUtils{
 			return cSeq.substring(1,cSeq.length());
 		}
 	}
+	
+	/**
+	 * 
+	* @Title: isSafePwd
+	* @Description:是否是安全密码（密码需要包含字母和数字）
+	* @param @param pwd
+	* @param @return    设定文件
+	* @return boolean    返回类型
+	* @throws
+	 */
+	public static boolean isSafePwd(String pwd){
+		String regexNum = "[+-]?[1-9]+[0-9]*(\\.[0-9]+)?";
+		String regexAlpha = "[a-zA-Z]+";
+		return !(pwd.matches(regexNum) || pwd.matches(regexAlpha));
+	}
 }

@@ -14,6 +14,7 @@ import com.yunwang.model.page.Pager;
 import com.yunwang.model.pojo.SysUser;
 import com.yunwang.service.SysUserService;
 import com.yunwang.util.action.AbstractLoginAction;
+import com.yunwang.util.string.SecurityUtil;
 
 @Action(value = "sysUserAction", results = {
 		@Result(name="index",location="/WEB-INF/web/sysUser/index.jsp")//用户管理主页面
@@ -116,6 +117,7 @@ public class SysUserAction extends AbstractLoginAction{
 			if(listUser.size()>0){
 				return error("用户名已存在");
 			}
+			sysUser.setPassWord(SecurityUtil.getMD5(sysUser.getPassWord()));
 			sysUserService.updateUserAndRole(sysUser);
 			return success("添加成功");
 		}catch(Exception e){

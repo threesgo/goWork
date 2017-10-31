@@ -144,22 +144,21 @@ public class SysUserServiceImpl implements SysUserService{
 	public Pager<SysUser> findAllUser(String filterJsons, int page, int rows) {
 		JSONObject json = JSONObject.fromObject(filterJsons);
 		Pager<SysUser> pager = sysUserDao.findAllUser(json, page, rows);
-		List<SysUser> list = (List<SysUser>) pager.getData();
-		
-		List<SysUserRole> listUserRole = sysUserRoleDao.findUserAndRole();
-		Map<Integer, List<SysUserRole>> mapList = new HashMap<Integer,List<SysUserRole>>();
-		List<SysUserRole> listUR = null;
-		for(SysUserRole userRole:listUserRole){
-			if(null == mapList.get(userRole.getUserId())){
-				listUR = new ArrayList<SysUserRole>();
-				listUR.add(userRole);
-				mapList.put(userRole.getUserId(), listUR);
-			}else{
-				mapList.get(userRole.getUserId()).add(userRole);
+		if(null != pager){
+			List<SysUser> list = (List<SysUser>) pager.getData();
+			List<SysUserRole> listUserRole = sysUserRoleDao.findUserAndRole();
+			Map<Integer, List<SysUserRole>> mapList = new HashMap<Integer,List<SysUserRole>>();
+			List<SysUserRole> listUR = null;
+			for(SysUserRole userRole:listUserRole){
+				if(null == mapList.get(userRole.getUserId())){
+					listUR = new ArrayList<SysUserRole>();
+					listUR.add(userRole);
+					mapList.put(userRole.getUserId(), listUR);
+				}else{
+					mapList.get(userRole.getUserId()).add(userRole);
+				}
 			}
-		}
-		
-		if(null != list){
+			
 			for(SysUser user:list){
 				List<SysUserRole> userRoleList = mapList.get(user.getId());
 				if(userRoleList != null){
@@ -167,12 +166,8 @@ public class SysUserServiceImpl implements SysUserService{
 					user.setRoleIds(StringBufferByCollectionUtil.convertCollection(userRoleList, "roleId", ","));
 				}
 			}
-			return pager;
-		}else{
-			return null;
 		}
-		
-		
+		return pager;
 		
 	}
 
@@ -199,6 +194,7 @@ public class SysUserServiceImpl implements SysUserService{
 	@Override
 	public void saveUserAndRole(SysUser user, String roleIds) {
 		user.setCreateDate(new Date());
+		user.setPassWord(SecurityUtil.getMD5(user.getPassWord()));
 		sysUserDao.save(user);
 		SysUserRole userRole =null;
 		String[] roleId = roleIds.split(",");

@@ -77,7 +77,7 @@ public class SysDepartMentAction extends AbstractLoginAction{
 		for(SysDepartMent departMent:list){
 			obj = new JSONObject();
 			obj.put("id", departMent.getId());
-			obj.put("userDepartMent", departMent.getCode()+","+departMent.getName());
+			obj.put("userDepartMent",departMent.getName());
 			arr.add(obj);
 		}
 		return ajaxText(arr);

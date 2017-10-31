@@ -41,7 +41,7 @@ public class SysUserDaoImpl extends BaseDaoImpl<SysUser> implements SysUserDaoI{
 		StringBuffer buf = new StringBuffer();
 //		buf.append("SELECT distinct model FROM SysUser model,SysRole sysRole,SysUserRole sysUserRole "
 //				+ " WHERE model.id = sysUserRole.userId AND sysUserRole.roleId = sysRole.id ");
-		buf.append("SELECT model.ID id, "
+		buf.append("SELECT DISTINCT model.ID id, "
 				+ "model.PASSWORD passWord, "
 				+ "model.USER_NAME userName,"
 				+ "model.REAL_NAME realName,"
@@ -59,7 +59,6 @@ public class SysUserDaoImpl extends BaseDaoImpl<SysUser> implements SysUserDaoI{
 				+ "LEFT JOIN SYS_POSITION sysPosition ON model.POSITION_ID=sysPosition.ID ");
 		
 		Map<String, Object> parmeMap = new HashMap<String,Object>();
-		System.out.println(buf.indexOf("WHERE"));
 		if(!json.isEmpty()){
 			//用户名,模糊查询
 			String sysUsreName = json.getString("userName");

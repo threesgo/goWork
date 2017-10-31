@@ -75,7 +75,7 @@
            	   style="margin-left:8px;width:198px;" value="${sysUser.relMail}"/>  
        	   <span style="color: red;font-size:14;margin-right: 7px;">&nbsp;&nbsp;</span> 
            <label>手机号码:</label>  
-           <input name="sysUser.phoneNum" class="easyui-validatebox" data-options="validType:['phone','max[11]']"
+           <input name="sysUser.phoneNum" class="easyui-validatebox" data-options="validType:['mobile','max[11]']"
            style="margin-left:8px;width:198px;" value="${sysUser.phoneNum}"/>  
        </div>  
         

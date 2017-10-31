@@ -79,7 +79,7 @@
 									//更新编辑的节点名称
 									 $('#roleTree').tree('update',{
 										target:node.target,
-										text:"角色,"+rs.data.name
+										text:rs.data.name
 									}); 
 								},function(rs){
 									$alert(rs.message);
