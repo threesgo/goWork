@@ -7,12 +7,9 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.apache.log4j.Logger;
-import org.apache.poi.util.SystemOutLogger;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import antlr.StringUtils;
 
 import com.yunwang.model.pojo.SysDepartMent;
 import com.yunwang.model.pojo.SysPosition;

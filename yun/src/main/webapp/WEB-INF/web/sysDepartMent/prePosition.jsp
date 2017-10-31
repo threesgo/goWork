@@ -74,13 +74,13 @@ $(function(){
                       editable:false,
                       data:[{    
                     	    "id":1,    
-                    	    "name":"总监"   
+                    	    "name":"职员"   
                     	},{    
                     	    "id":2,    
                     	    "name":"经理"   
                     	},{    
-                    	    "id":3,    
-                    	    "name":"部长",    
+                    	    "id":4,    
+                    	    "name":"总监",    
                     	    "selected":false   
                     	}],  
                       panelHeight:'auto',
