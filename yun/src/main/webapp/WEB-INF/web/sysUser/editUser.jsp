@@ -60,31 +60,30 @@
            <input name="sysUser.passWord" type="password" id="passWord" class="easyui-validatebox"
 		       data-options="required:false,validType:['length[6,32]','illegal']"
 		       style="margin-left:33px;width:198px;" />  
-       	   <span style="color: red;font-size:14;margin-right: 5px;">&nbsp;*</span> 
+       	   <!-- <span style="color: red;font-size:14;margin-right: 5px;">&nbsp;*</span> 
            <label>确认密码:</label>  
-           
            <input id="cfmPassword" name="passWord" type="password" class="easyui-validatebox" 
 		       data-options="required:false,validType:['length[6,32]','equals[\'#passWord\']','illegal'],invalidMessage:'两次密码不一致'"
-		       style="margin-left:8px;width:198px;" />  
-       </div>
-       
-       <div class="fitem">  
-       	   <span style="color: red;font-size:14;margin-right: 7px;">&nbsp;&nbsp;</span> 
+		       style="margin-left:8px;width:198px;" />   -->
+		   <span style="color: red;font-size:14;margin-right: 7px;">&nbsp;&nbsp;</span> 
            <label>电子邮箱:</label>  
            <input name="sysUser.relMail"  class="easyui-validatebox" 
            	   data-options="validType:['email','max[128]','illegal']" 
            	   style="margin-left:8px;width:198px;" value="${sysUser.relMail}"/>  
+       </div>
+       
+       <div class="fitem">  
        	   <span style="color: red;font-size:14;margin-right: 7px;">&nbsp;&nbsp;</span> 
            <label>手机号码:</label>  
            <input name="sysUser.phoneNum" class="easyui-validatebox" data-options="validType:['mobile','max[11]']"
            style="margin-left:8px;width:198px;" value="${sysUser.phoneNum}"/>  
-       </div>  
-        
-       <div class="fitem">  
-	       	<span style="color: red;font-size:14;margin-right: 5px;">&nbsp;&nbsp;</span>
+           <span style="color: red;font-size:14;margin-right: 5px;">&nbsp;&nbsp;</span>
 	           <label style="margin-right:25px">部门：</label>  
 			<select id="editDept"  name="sysUser.departmentId" style="width:200px;">
 			</select> 
+       </div>  
+        
+       <div class="fitem">  
         	<span style="color: red;font-size:14;margin-right: 5px;">&nbsp;*</span>
             <label style="margin-right:20px">角色：</label>  
 			<select id="editSysRole" name="sysUser.roleIds" style="width:200px;" data-options="required:true">

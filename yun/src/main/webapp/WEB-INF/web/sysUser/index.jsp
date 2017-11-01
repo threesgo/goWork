@@ -180,12 +180,12 @@
 						text:"确定",
 						iconCls:'icon-ok',
 						handler:function(){
-							var pw = $("#passWord").val();
+							/* var pw = $("#passWord").val();
 							var cfpw = $("#cfmPassword").val();
 							if(pw&&!cfpw){
 								$alert("请输入确认密码");
 								return false;
-							}
+							} */
 							new Some.form({
 								render:"#edit_fm",
 								success:function(data){
