@@ -50,14 +50,14 @@
 												<fieldset>
 													<label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<input type="text" class="form-control"  name="sysUser.userName"  placeholder="用户名" value="admin"/>
+															<input type="text" class="form-control"  name="sysUser.userName"  placeholder="用户名" value=""/>
 															<i class="icon-user"></i>
 														</span>
 													</label>
 
 													<label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<input type="password" class="form-control" name="sysUser.passWord" placeholder="密码" value="admin"/>
+															<input type="password" class="form-control" name="sysUser.passWord" placeholder="密码" value=""/>
 															<i class="icon-lock"></i>
 														</span>
 													</label>
