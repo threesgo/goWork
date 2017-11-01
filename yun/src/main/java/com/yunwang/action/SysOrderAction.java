@@ -16,7 +16,9 @@ import com.yunwang.model.page.Pager;
 import com.yunwang.model.pojo.SysDataDictionary;
 import com.yunwang.model.pojo.SysOrder;
 import com.yunwang.model.pojo.SysOrderFlow;
+import com.yunwang.model.pojo.SysSupplier;
 import com.yunwang.service.SysOrderService;
+import com.yunwang.service.SysSupplierService;
 import com.yunwang.util.BaseDataDictionaryUtil;
 import com.yunwang.util.action.AbstractLoginAction;
 @Action(
@@ -44,9 +46,12 @@ public class SysOrderAction  extends AbstractLoginAction{
 	
 	@Autowired
 	private SysOrderService sysOrderService;
+	@Autowired
+	private SysSupplierService sysSupplierService;
 	
 	private Map<String,Object> hashMap;
 	private SysOrder sysOrder;
+	private SysOrderFlow sysOrderFlow;
 	private String id;
 	private String ids;
 	private String jsonStr;
@@ -135,7 +140,7 @@ public class SysOrderAction  extends AbstractLoginAction{
 	public String orderInfoData(){
 		sysOrder = sysOrderService.get(sysOrder.getId());
 		JSONArray jsonArr=new JSONArray();
-		addInfoData(jsonArr);
+		orderInfoData(jsonArr);
 		return ajaxText(jsonArr);
 	}
 
@@ -185,13 +190,37 @@ public class SysOrderAction  extends AbstractLoginAction{
 	}
 	
 	public String workerAndResourceByFlow(){
+		initData();
 		return "workerAndResourceByFlow";
 	}
 	
 	public String workerAndResourceByOrder(){
+		initData();
 		return "workerAndResourceByOrder";
 	}
 	
+	private void initData(){
+		hashMap = new HashMap<String,Object>();
+		List<SysSupplier> sysSuppliers = sysSupplierService.findByWorkType(null);
+		JSONObject supplierObj = new JSONObject();
+		for(SysSupplier sysSupplier:sysSuppliers){
+			supplierObj.put(sysSupplier.getId(),sysSupplier.getName());
+		}
+		hashMap.put("supplierObj",supplierObj);
+		List<SysDataDictionary> sexList = BaseDataDictionaryUtil.baseDataMap.get(6);
+		JSONObject sexObj = new JSONObject();
+		for(SysDataDictionary dictionary:sexList){
+			sexObj.put(dictionary.getValue(), dictionary.getName());
+		}
+		hashMap.put("sexObj",sexObj);
+	}
+	
+	/**
+	 * @date 2017-11-1
+	 * @author YBF
+	 * @return
+	 * <p>删除订单</p>
+	 */
 	public String deleteOrder(){
 		try{
 			sysOrderService.deleteOrder(ids);
@@ -202,8 +231,28 @@ public class SysOrderAction  extends AbstractLoginAction{
 		}
 	}
 	
+	
+	/**
+	 * @date 2017-11-1
+	 * @author YBF
+	 * @return
+	 * <p>订单操作步骤信息</p>
+	 */
+	public String orderFlowInfoData(){
+		sysOrderFlow = sysOrderService.getOrderFlow(sysOrderFlow.getId());
+		JSONArray jsonArr=new JSONArray();
+		orderFlowInfoData(jsonArr);
+		return ajaxText(jsonArr);
+	}
+	
+	
+	private void orderFlowInfoData(JSONArray jsonArr) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	//后期根据国际化来做
-	private void addInfoData(JSONArray jsonArr) {
+	private void orderInfoData(JSONArray jsonArr) {
 //		JSONObject json_code=new JSONObject();
 //		json_code.put("attrName", "编号");
 //		json_code.put("value", sysOrder.getCode());
@@ -324,5 +373,13 @@ public class SysOrderAction  extends AbstractLoginAction{
 
 	public void setDateStr(String dateStr) {
 		this.dateStr = dateStr;
+	}
+
+	public SysOrderFlow getSysOrderFlow() {
+		return sysOrderFlow;
+	}
+
+	public void setSysOrderFlow(SysOrderFlow sysOrderFlow) {
+		this.sysOrderFlow = sysOrderFlow;
 	}
 }

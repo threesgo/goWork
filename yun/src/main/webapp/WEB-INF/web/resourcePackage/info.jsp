@@ -45,4 +45,6 @@ $(function(){
 <div id="resource_package_info_bar">
 	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit', plain:true" 
 		onclick="resourcePackageOperation.editPackage()">编辑</a>
+	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit', plain:true" 
+		onclick="resourcePackageOperation.deletePackage()">删除</a>
 </div>

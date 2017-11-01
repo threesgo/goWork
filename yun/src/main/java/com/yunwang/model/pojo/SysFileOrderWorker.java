@@ -46,8 +46,8 @@ public class SysFileOrderWorker extends AbstractRowVersionModel{
 	@Column(name = "FLOW_TIME_ID")
 	private Integer flowTimeId;  //一期先不用，直接放到流程上面
 	
-	@Column(name = "QUANTITY")
-	private BigDecimal quantity;
+	@Column(name = "WORK_TIME",precision=9, scale=2,nullable = false)
+	private BigDecimal workTime;
 	
 	
 	public SysFileOrderWorker(){
@@ -94,12 +94,12 @@ public class SysFileOrderWorker extends AbstractRowVersionModel{
 		this.flowTimeId = flowTimeId;
 	}
 
-	public BigDecimal getQuantity() {
-		return quantity;
+	public BigDecimal getWorkTime() {
+		return workTime;
 	}
 
-	public void setQuantity(BigDecimal quantity) {
-		this.quantity = quantity;
+	public void setWorkTime(BigDecimal workTime) {
+		this.workTime = workTime;
 	}
 
 	public Integer getWorkerName() {

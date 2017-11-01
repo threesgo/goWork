@@ -22,8 +22,14 @@ import com.yunwang.util.string.MyStringUtil;
 public class SysOrderDaoImpl extends BaseDaoImpl<SysOrder> implements SysOrderDaoI{
 
 	@Override
+	public void updateStatus(String ids,Integer status) {
+		String hql ="UPDATE SYS_ORDER model SET model.STATUS="+status+" WHERE model.ID IN("+ids+")";
+		executeHql(hql);
+	}
+	
+	@Override
 	public List<SysOrder> findOrderTimeGroup() {
-		String sql = "SELECT model.ORDER_DATE orderDate FROM SYS_ORDER model " +
+		String sql = "SELECT model.ORDER_DATE orderDate FROM SYS_ORDER model WHERE model.STATUS!=0 " +
 				" GROUP BY model.ORDER_DATE ORDER BY model.ORDER_DATE";
 		Map<String, Type> scalarMap = new HashMap<String, Type>();
 		scalarMap.put("orderDate", new StringType());
@@ -35,7 +41,7 @@ public class SysOrderDaoImpl extends BaseDaoImpl<SysOrder> implements SysOrderDa
 		Map<String, Object> map = new HashMap<String,Object>();
 		map.put("orderDate",orderDate);
 		return find("SELECT model FROM SysOrder model " 
-				+" WHERE model.orderDate=:orderDate ORDER BY model.code ",map);
+				+" WHERE model.orderDate=:orderDate AND model.status!=0 ORDER BY model.code ",map);
 	}
 
 	@Override
@@ -49,7 +55,7 @@ public class SysOrderDaoImpl extends BaseDaoImpl<SysOrder> implements SysOrderDa
 				" model.ORDER_TYPE orderType,model.STATUS status,model.ORDER_NO orderNo," +
 				" model.ROOM_NUM roomNum,model.HALL_NUM hallNum,model.KITCHEN_NUM kitchenNum," +
 				" model.TOILET_NUM toiletNum,model.BALCONY_NUM balconyNum" +
-				" FROM SYS_ORDER model WHERE 1=1 ");
+				" FROM SYS_ORDER model WHERE model.STATUS!=0 ");
 		Map<String, Object> parmeMap = new HashMap<String,Object>();
 		if(null!=seachJson && !seachJson.isEmpty()){
 			if(seachJson.containsKey("orderDate")&&MyStringUtil.isNotBlank(seachJson.getString("orderDate"))){

@@ -1,5 +1,7 @@
 package com.yunwang.model.pojo;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -29,6 +31,9 @@ public class SysOrderWorker extends AbstractRowVersionModel{
 	
 	@Column(name = "ORDER_ID",nullable = false)
 	private Integer orderId;
+	
+	@Column(name = "WORK_TIME",precision=9, scale=2,nullable = false)
+	private BigDecimal workTime;
 	
 	public SysOrderWorker(){
 		
@@ -64,5 +69,13 @@ public class SysOrderWorker extends AbstractRowVersionModel{
 
 	public void setOrderId(Integer orderId) {
 		this.orderId = orderId;
+	}
+
+	public BigDecimal getWorkTime() {
+		return workTime;
+	}
+
+	public void setWorkTime(BigDecimal workTime) {
+		this.workTime = workTime;
 	}
 }

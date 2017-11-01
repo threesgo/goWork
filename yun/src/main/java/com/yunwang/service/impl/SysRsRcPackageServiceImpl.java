@@ -7,8 +7,10 @@ import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.yunwang.dao.SysOrderPackageDaoI;
 import com.yunwang.dao.SysResourceRelDaoI;
 import com.yunwang.dao.SysRsRcPackageDaoI;
+import com.yunwang.dao.SysRsRcPcResourceDaoI;
 import com.yunwang.model.page.Pager;
 import com.yunwang.model.pojo.SysResourceRel;
 import com.yunwang.model.pojo.SysRsRcPackage;
@@ -28,6 +30,12 @@ public class SysRsRcPackageServiceImpl implements SysRsRcPackageService{
 	
 	@Autowired
 	private SysResourceRelDaoI sysResourceRelDao;
+	
+	@Autowired
+	private SysRsRcPcResourceDaoI sysRsRcPcResourceDao;
+	
+	@Autowired
+	private SysOrderPackageDaoI sysOrderPackageDao;
 
 	@Override
 	public List<SysRsRcPackage> findAll(String order) {
@@ -69,5 +77,15 @@ public class SysRsRcPackageServiceImpl implements SysRsRcPackageService{
 	@Override
 	public void deletePackageResource(String ids) {
 		sysResourceRelDao.deletePackageResource(ids);
+	}
+
+	@Override
+	public void deleteResourcePackage(Integer packageId) {
+		//订单套餐
+		sysOrderPackageDao.deleteByProperty("rsrcPackageId", packageId);
+		//套餐资源
+		sysRsRcPcResourceDao.deleteByProperty("packageId", packageId);
+		//套餐本身
+		sysRsRcPackageDao.deleteByProperty("id", packageId);
 	}
 }

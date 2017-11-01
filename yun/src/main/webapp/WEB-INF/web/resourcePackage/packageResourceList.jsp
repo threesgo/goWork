@@ -114,7 +114,7 @@ packageResourceOperation = {
 		    		ids.push(n.id);
 		    		deletes.push(n);
 		    	});
-		        $.post("resourcePackageAction!deleteResourcePackage.act",
+		        $.post("resourcePackageAction!deleteResourceOfPackage.act",
 		        	{"ids":ids.join(",")},
 		        	function(data){
 					handlerResult(data,

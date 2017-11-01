@@ -55,14 +55,14 @@
 	 			$.messager.confirm('确认','确认要删除选择产品组合吗？',function(r){    
 				    if (r){
 				        var node = resourcePackageTree.tree("getSelected");
-				        $.post("resourcePackageAction!deleteSysRsRcPackage.act",
+				        $.post("resourcePackageAction!deleteResourcePackage.act",
 				        	{"sysRsRcPackage.id":node.attributes.id},
 				        	function(data){
 							handlerResult(data,
 					    		function(rs){
 				    				resourcePackageTree.tree("remove",node.target);
 									$show(rs.message);
-									$resourceTypeChildrenTable.datagrid("reload");
+									$resourcePackageChildrenTable.datagrid("reload");
 								},
 								function(rs){
 									$alert(rs.message);

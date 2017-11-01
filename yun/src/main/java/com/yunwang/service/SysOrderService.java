@@ -25,4 +25,6 @@ public interface SysOrderService {
 
 	List<SysOrderFlow> findOrderFlow(Integer orderId);
 
+	SysOrderFlow getOrderFlow(Integer orderFlowId);
+
 }

@@ -82,6 +82,11 @@
     </div>
     
     <div>   
+        <label for="relation_package">关联套餐:</label>   
+       	<input id="relationPackage" class="easyui-combobox">
+    </div>
+    
+    <div>   
         <label for="edit_info">订单备注:</label>   
         <input class="easyui-validatebox" id="edit_info" type="text" name="sysOrder.info"
         style="width:460px;" data-options="required:false,validType:['length[1,600]','illegal']" value="${sysOrder.info}"/>   
@@ -89,6 +94,16 @@
 </form>
 
 <script type="text/javascript"> 
+$(function(){
+	$('#relationPackage').combobox({    
+	    data:,    
+	    valueField:'id',    
+	    textField:'text',
+	    onLoadSuccess:function(){
+	    	//$('#relationPackage').setValues();
+	    }
+	}); 
+}
 /* 
 $(function(){
 	addressInit('cmbProvince', 'cmbCity', 'cmbArea');

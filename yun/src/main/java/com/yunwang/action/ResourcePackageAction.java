@@ -254,7 +254,13 @@ public class ResourcePackageAction extends AbstractLoginAction{
 		}
 	}
 	
-	public String deleteResourcePackage(){
+	/**
+	 * @date 2017-11-1
+	 * @author YBF
+	 * @return
+	 * <p>删除组合里面的资源</p>
+	 */
+	public String deleteResourceOfPackage(){
 		try{
 			sysRsRcPackageService.deletePackageResource(ids);
 			return success("操作成功!");
@@ -264,6 +270,21 @@ public class ResourcePackageAction extends AbstractLoginAction{
 		}
 	}
 	
+	/**
+	 * @date 2017-11-1
+	 * @author YBF
+	 * @return
+	 * <p>删除资源组合</p>
+	 */
+	public String deleteResourcePackage(){
+		try{
+			sysRsRcPackageService.deleteResourcePackage(sysRsRcPackage.getId());
+			return success("操作成功!");
+		}catch(Exception e){
+			LOG.error(e.getMessage());
+			return error("操作失败!");
+		}
+	}
 	
 	public String getId() {
 		return id;

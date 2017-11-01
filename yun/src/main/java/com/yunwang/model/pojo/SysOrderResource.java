@@ -33,7 +33,7 @@ public class SysOrderResource extends AbstractRowVersionModel{
 	@Column(name = "ORDER_ID",nullable = false)
 	private Integer orderId;
 	
-	@Column(name = "QUANTITY")
+	@Column(name = "QUANTITY",precision=9, scale=2,nullable = false)
 	private BigDecimal quantity;
 	
 	public SysOrderResource(){

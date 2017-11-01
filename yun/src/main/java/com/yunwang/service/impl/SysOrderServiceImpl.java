@@ -34,8 +34,11 @@ public class SysOrderServiceImpl implements SysOrderService {
 
 	@Override
 	public void deleteOrder(String ids) {
-		// TODO Auto-generated method stub
-		
+		List<SysOrder> sysOrders =  sysOrderDao.findInPropertys("id", ids);
+		for(SysOrder sysOrder:sysOrders){
+			sysOrder.setStatus(0);
+			sysOrderDao.update(sysOrder);
+		}
 	}
 
 	@Override
@@ -100,5 +103,10 @@ public class SysOrderServiceImpl implements SysOrderService {
 	@Override
 	public List<SysOrderFlow> findOrderFlow(Integer orderId) {
 		return sysOrderFlowDao.findByOrderId(orderId);
+	}
+
+	@Override
+	public SysOrderFlow getOrderFlow(Integer orderFlowId) {
+		return sysOrderFlowDao.get(SysOrderFlow.class,orderFlowId);
 	}
 }

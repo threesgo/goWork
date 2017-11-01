@@ -25,4 +25,6 @@ public interface SysRsRcPackageService {
 
 	void deletePackageResource(String ids);
 
+	void deleteResourcePackage(Integer packageId);
+
 }
