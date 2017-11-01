@@ -38,25 +38,18 @@
 	   	  	  	
 	   	  		frozenColumns:[[
  	        		{field:'ck',checkbox:true},
- 	        		{field:'workTime',title:"工时(天)",width:80,sortable:true,
-		   	  		    ,editor:{
-			   	  		   type:"numberbox",
-							options:{
-								min:1,
-								max:9999999.99,
-								precision:2
-					 		}
-		   	        	}
+ 	        		{field:'workTime',title:"工时(天)",width:80,sortable:true
+		   	  		   
    	  		 		},
  	        		{field:'name',title: "姓名",width:100,sortable:true
  	 					
  	 				},
  	 				{field:'sex',title: "性别",width:80,sortable:true
- 	 					formatter:function(value, rowData) {
+ 	 					,formatter:function(value, rowData) {
  	 						return sexObj[value];
  	 					} 
  	 				},
- 	 				{field:'wages',title:"日薪",width:80,sortable:true,align:'right',
+ 	 				{field:'wages',title:"日薪",width:80,sortable:true,align:'right'
  	 					,formatter:function(value, rowData) {
  	 						if(value == 0){
  	 							return 0;
@@ -73,7 +66,7 @@
  	 				{field:'telNum',title: "电话号码",width:100,sortable:true
  	 					
  	 				},
- 	 				{field:'workAge',title: "工龄",width:100,sortable:true
+ 	 				{field:'workAge',title: "工龄",width:100,sortable:true,
  	 		        	formatter:function(value, rowData) {
  	 						if(value==0){
  	 							return '';
@@ -82,7 +75,7 @@
  	 						}
  	 					} 
  	 				},
- 	 				{field:'age',title: "年龄",width:100,sortable:true
+ 	 				{field:'age',title: "年龄",width:100,sortable:true,
  	 		        	formatter:function(value, rowData) {
  	 						if(value==0){
  	 							return '';
@@ -131,15 +124,8 @@
    	  				{field:'keyWord',title:"产品关键词",width:200,sortable:true
    	  		        	
    	  		        },
-   	  		        {field:'quantity',title:"数量",width:80,sortable:true,
-		   	  		    ,editor:{
-			   	  		   type:"numberbox",
-							options:{
-								min:1,
-								max:9999999.99,
-								precision:2
-					 		}
-		   	        	}
+   	  		        {field:'quantity',title:"数量",width:80,sortable:true
+		   	  		   
    	  		 		},
    	  		        {field:'rsrcName',title:"产品名称",width:80,sortable:true
    	  		        	
@@ -172,13 +158,13 @@
 					{field:'supplier',title:"供应商联系人",width:100,sortable:true
 						
 					},
-					{field:'supplierTel',title:"联系人手机",width:100,sortable:true
+					{field:'supplierPhone',title:"联系人手机",width:100,sortable:true
 					
 					},
-					{field:'supplierPhone',title:"供应商电话",width:100,sortable:true
+					{field:'supplierTel',title:"供应商电话",width:100,sortable:true
 						
-					}
-					,{field:'supplierAddress',title:"供应商地址",width:450,sortable:true
+					},
+					{field:'supplierAddress',title:"供应商地址",width:450,sortable:true
 						
 					}     
    	  		    ]],

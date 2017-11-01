@@ -2,7 +2,7 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
 <script type="text/javascript">
 $(function(){
-	$sysOrderInfoTable=$("#sysOrderInfoTable").datagrid({
+	$sysOrderInfoTable=$("#sysOrderFlowInfoTable").datagrid({
         fitColumns:true,
         remoteSort:false,
         striped:true,

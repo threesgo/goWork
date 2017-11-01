@@ -143,7 +143,7 @@ public class SysResourceServiceImpl implements SysResourceService{
 	         if(MyNumberUtil.isNumber(key))
 	         {
 	        	 //如果属性值为空，不做处理
-	        	 if(MyStringUtil.isNotBlank(value)){
+	        	 //if(MyStringUtil.isNotBlank(value)){
 	        		 //更新的资源
 	        		 SysRsRcAttrib sysRsRcAttrib = null;
 	        		 sysRsRcAttrib = sysRsRcAttribDao.getByResourceAndAttr(sysResource.getId(),Integer.parseInt(key));
@@ -157,7 +157,7 @@ public class SysResourceServiceImpl implements SysResourceService{
 	        			 sysRsRcAttrib.setRsrcAttribValue(value);
 	        		 }
 	            	 sysRsRcAttribDao.saveOrUpdate(sysRsRcAttrib);
-	        	 }
+	        	 //}
 	         }
 	     } 
 	}

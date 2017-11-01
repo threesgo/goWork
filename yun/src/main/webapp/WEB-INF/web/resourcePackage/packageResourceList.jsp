@@ -21,10 +21,10 @@ $(function(){
         {field:'supplier',title:"供应商联系人",width:100,sortable:true
         	
         },
-        {field:'supplierTel',title:"联系人手机",width:100,sortable:true
+        {field:'supplierPhone',title:"联系人手机",width:100,sortable:true
         
         },
-        {field:'supplierPhone',title:"供应商电话",width:100,sortable:true
+        {field:'supplierTel',title:"供应商电话",width:100,sortable:true
         	
         }
         ,{field:'supplierAddress',title:"供应商地址",width:450,sortable:true
