@@ -96,6 +96,8 @@ $(function(){
 							isParentId = undefined;
 							departMentEdit = undefined;
 							$sysDepartMentTable.datagrid("reload");
+							var departMent = departMentTree.tree("getRoot");
+							departMentTree.tree('reload',departMent.target);
 							if(addMore){
 								var rows = $sysDepartMentTable.datagrid("getData").rows;
 								var addIndex = rows.length;
@@ -178,9 +180,12 @@ sysDepartMenttHandle={
 			departMentEdit = index;
 		},
 		cancelEdit:function(){
-			$sysDepartMentTable.datagrid("reload");
-			departMentEdit = undefined;
-			isParentId = undefined;
+			if(departMentEdit != undefined||isParentId != undefined){
+				$sysDepartMentTable.datagrid("reload");
+				departMentEdit = undefined;
+				isParentId = undefined;
+			}
+			
 		},
 		//删除
 		deleteDepartMent:function(){
