@@ -4,12 +4,17 @@
 var $sysDepartMentTable;
 var departMentEdit = undefined;
 var addId = 0; 
+var isParentId = undefined;
+var addMore = undefined;
+var nowSelectIndex = undefined;//实现单选下再次选中取消选择
 $(function(){
 	$sysDepartMentTable=$("#sysDepartMentTable").datagrid({
         fitColumns:true,
         remoteSort:false,
         striped:true,
         singleSelect:true,
+        checkOnSelect:false,
+        selectOnCheck:false,
         nowrap:false,
         fit:true,
         toolbar:"#sys_DepartMent_tool_bar",
@@ -21,32 +26,42 @@ $(function(){
       	url:"sysDepartMentAction!listDepartMent.act",
 		onBeforeLoad:function(){
 		},
+		onClickRow:function(index, row){
+			nowSelectIndex = index;
+		},
+		onSelect:function(index, row){
+			if(index == nowSelectIndex){
+				$sysDepartMentTable.datagrid("unselectRow",index)
+			}
+		},
 		columns : [ [
+		{field:'',checkbox:true},
+		{field:'orderNo',title:"序号",width : '18%'},
 		{
 			field : 'code',
 			title : "部门编号",
-			width : '49%',
+			width : '40%',
 			sortable : true,
 			sorter : function(a, b) {
 				return a > b ? 1 : -1;
 			},
 			editor:{
 				type:'textbox',
-				options:{required:false,validType:['length[1,64]','illegal']}
+				options:{required:true,validType:['length[1,64]','illegal']}
 			}
 			
 		},
 		{
 			field : 'name',
 			title : "部门名称",
-			width : '49%',
+			width : '40%',
 			sortable : true,
 			sorter : function(a, b) {
 				return a > b ? 1 : -1;
 			},
 			editor:{
 				type:'textbox',
-				options:{required:false,validType:['length[1,64]','illegal']}
+				options:{required:true,validType:['length[1,64]','illegal']}
 			}
 		}
 		]],
@@ -63,8 +78,11 @@ $(function(){
             departMentEdit = index;
         },
         onAfterEdit:function(rowIndex,rowData,changes){
-	    	$.post("sysDepartMentAction!saveOrUpdatePositionGrid.act",
-	    			{"jsonStr":Some.util.jsonToStr(rowData),"departMentId":'${departMentId}'},
+        	if(isParentId == undefined){
+        		isParentId = 0;
+        	}
+	    	$.post("sysDepartMentAction!saveOrUpdateDepartMentGrid.act",
+	    			{"jsonStr":Some.util.jsonToStr(rowData),"parentId":isParentId},
        			 function(data){
       			 	handlerResult(data,
       			 		function(json){
@@ -75,14 +93,37 @@ $(function(){
 									id:json.data.id,
 								}
 							});
+							isParentId = undefined;
+							departMentEdit = undefined;
+							$sysDepartMentTable.datagrid("reload");
+							if(addMore){
+								var rows = $sysDepartMentTable.datagrid("getData").rows;
+								var addIndex = rows.length;
+								var select = $sysDepartMentTable.datagrid("getSelected");
+								if(select){
+									isParentId = select.id;
+								}
+								$sysDepartMentTable.datagrid('insertRow',{
+									index: addIndex,	// 索引从0开始
+									row: {
+										id:addId--,
+									}
+								});
+								$sysDepartMentTable.datagrid("beginEdit",addIndex);
+								departMentEdit = addIndex;
+								addMore = undefined;
+							}
 						},
 						function(json){
-							$show(json.message);
+							$alert(json.message);
+							$sysDepartMentTable.datagrid('beginEdit',rowIndex);
+							departMentEdit = rowIndex;
 						}
 					);
        			}
 	    	);
         }
+       
 	});
 });
 
@@ -91,23 +132,30 @@ sysDepartMenttHandle={
 		addDepartMent:function(){
 			if(departMentEdit!=undefined){
 				if($sysDepartMentTable.datagrid("validateRow",departMentEdit)){
+					addMore = 1;
 					$sysDepartMentTable.datagrid("endEdit",departMentEdit);
 					departMentEdit = undefined;
 				}else{
 					$show("请正确输入编辑行数据!");
 					return false;
 				}
-			}
-			var rows = $sysDepartMentTable.datagrid("getData").rows;
-			var addIndex = rows.length;
-			$sysDepartMentTable.datagrid('insertRow',{
-				index: addIndex,	// 索引从0开始
-				row: {
-					id:addId--,
+			}else{
+				var rows = $sysDepartMentTable.datagrid("getData").rows;
+				var addIndex = rows.length;
+				var select = $sysDepartMentTable.datagrid("getSelected");
+				if(select){
+					isParentId = select.id;
 				}
-			});
-			$sysDepartMentTable.datagrid("beginEdit",addIndex);
-			departMentEdit = addIndex;
+				$sysDepartMentTable.datagrid('insertRow',{
+					index: addIndex,	// 索引从0开始
+					row: {
+						id:addId--,
+					}
+				});
+				$sysDepartMentTable.datagrid("beginEdit",addIndex);
+				departMentEdit = addIndex;	
+			}
+			
 		},
 
 		editDepartMent:function(){
@@ -132,7 +180,9 @@ sysDepartMenttHandle={
 		cancelEdit:function(){
 			$sysDepartMentTable.datagrid("reload");
 			departMentEdit = undefined;
+			isParentId = undefined;
 		},
+		//删除
 		deleteDepartMent:function(){
 			var checks = $sysDepartMentTable.datagrid("getChecked");
 			if(checks.length == 0){
@@ -147,16 +197,17 @@ sysDepartMenttHandle={
 			    		ids.push(n.id);
 			    		deletes.push(n);
 			    	});
-			        $.post("sysDepartMentAction!deletePosition.act",
+			        $.post("sysDepartMentAction!deleteDepartMent.act",
 			        	{"ids":ids.join(",")},
 			        	function(data){
 						handlerResult(data,
 				    		function(rs){
 								$show(rs.message);
-								$.each(deletes,function(i,n){
+								/*$.each(deletes,function(i,n){
 									var deleteIndex = $sysDepartMentTable.datagrid("getRowIndex",n);
 									$sysDepartMentTable.datagrid("deleteRow",deleteIndex);
-						    	});
+						    	});*/
+								$sysDepartMentTable.datagrid("reload");
 							},
 							function(rs){
 								$alert(rs.message);
@@ -166,11 +217,12 @@ sysDepartMenttHandle={
 			    }    
 			});
 		},
+		//保存
 		updateDepartMent:function(){
 			if(departMentEdit!=undefined){
 				if($sysDepartMentTable.datagrid("validateRow",departMentEdit)){
 					$sysDepartMentTable.datagrid("endEdit",departMentEdit);
-					departMentEdit = undefined;
+					//departMentEdit = undefined;
 				}else{
 					$show("请正确输入编辑行数据!");
 					return false;	    		

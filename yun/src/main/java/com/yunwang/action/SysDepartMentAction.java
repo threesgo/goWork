@@ -43,6 +43,7 @@ public class SysDepartMentAction extends AbstractLoginAction{
 	private String departMentId;
 	private String jsonStr;
 	private String noAll;
+	private String parentId;//部门的父级id
 	/**
 	 * 部门管理主页面
 	 */
@@ -161,6 +162,15 @@ public class SysDepartMentAction extends AbstractLoginAction{
 		return ajaxJSONArr(list);
 	}
 	
+	/**
+	 * 
+	 * @Description: 保存或更新职位信息
+	 * @param @return   
+	 * @return String  
+	 * @throws
+	 * @author KXL
+	 * @date 2017-11-1
+	 */
 	public String saveOrUpdatePositionGrid(){
 		try{
 			JSONObject obj = JSONObject.fromObject(jsonStr);
@@ -171,6 +181,37 @@ public class SysDepartMentAction extends AbstractLoginAction{
 			return error("行数据保存失败!");
 		}
 	}
+	
+	/**
+	 * 
+	 * @Description:保存或更新部门信息
+	 * @param @return   
+	 * @return String  
+	 * @throws
+	 * @author KXL
+	 * @date 2017-11-1
+	 */
+	public String saveOrUpdateDepartMentGrid(){
+		try{
+			JSONObject obj = JSONObject.fromObject(jsonStr);
+			if(obj != null){
+				String code = obj.getString("code");
+				String id = obj.getString("id");
+				if(Integer.parseInt(id)<=0&&!sysUserService.isExistDepartMent(code)){
+					return error("部门信息已存在,无法保存!");
+				}else{
+					sysUserService.saveOrUpdateDepartMentGrid(obj,Integer.parseInt(parentId));
+					return success("行数据保存成功!",obj);
+				}
+			}else{
+				return success("行数据保存成功!",obj);
+			}
+		}catch(Exception e){
+			LOG.error(e.getMessage());
+			return error("行数据保存失败!");
+		}
+	}
+	
 	
 	public String deletePosition(){
 		try{
@@ -235,11 +276,11 @@ public class SysDepartMentAction extends AbstractLoginAction{
 	 */
 	public String deleteDepartMent(){
 		try{
-			List<SysDepartMent> list = sysUserService.findDepartMentByParentId(sysDepartMent.getId());
+			/*List<SysDepartMent> list = sysUserService.findDepartMentByParentId(sysDepartMent.getId());
 			if(list.size()>0){
 				return error("请先删除该部门下的子部门");
-			}
-			sysUserService.deleteDepartMentById(sysDepartMent.getId());							
+			}*/
+			sysUserService.deleteDepartMentById(ids);							
 			return success("删除成功");
 		}catch(Exception e){
 			e.printStackTrace();
@@ -303,5 +344,12 @@ public class SysDepartMentAction extends AbstractLoginAction{
 	public void setNoAll(String noAll) {
 		this.noAll = noAll;
 	}
-	
+
+	public String getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(String parentId) {
+		this.parentId = parentId;
+	}
 }

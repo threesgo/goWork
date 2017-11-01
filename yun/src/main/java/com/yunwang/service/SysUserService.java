@@ -75,9 +75,11 @@ public interface SysUserService {
 
 	public void saveOrUpdatePositionGrid(JSONObject obj,Integer departMentId);
 	
+	public void saveOrUpdateDepartMentGrid(JSONObject obj,Integer parentId);
+	
 	public List<SysPosition> findPositionByDepartMentId(Integer departMentId);
 	
 	public void deletePositionByIds(String ids);
 	
-	public void deleteDepartMentById(Integer id);
+	public void deleteDepartMentById(String ids);
 }

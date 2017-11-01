@@ -321,7 +321,8 @@ public class BaseDaoImpl<T> implements BaseDaoI<T> {
 	public void deleteByPropertys(String property, String values) {
 		String hql = "DELETE FROM " + entityClass.getSimpleName()
 				+ " model WHERE model." + property + " IN (" + values + ")";
-		executeHql(hql);
+		int a = executeHql(hql);
+		System.out.println(a);
 	}
 
 	@SuppressWarnings("unchecked")
