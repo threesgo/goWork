@@ -209,9 +209,11 @@ public class SysUserServiceImpl implements SysUserService{
 	
 	public void updateUserAndRole(SysUser user){
 		SysUser updateUser = sysUserDao.get(SysUser.class, user.getId());
+		if(StringUtils.isNotBlank(user.getPassWord())){
+			updateUser.setPassWord(SecurityUtil.getMD5(user.getPassWord()));
+		}
 		updateUser.setUserName(user.getUserName());
 		updateUser.setRealName(user.getRealName());
-		updateUser.setPassWord(user.getPassWord());
 		updateUser.setPhoneNum(user.getPhoneNum());
 		updateUser.setRelMail(user.getRelMail());
 		updateUser.setDepartmentId(user.getDepartmentId());

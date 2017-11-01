@@ -39,7 +39,7 @@
 						}
 					},
 					{field:'realName',title:"真实姓名",width:190,align:"center",sortable:true,  sorter:function(a,b){  return a>b? 1:-1; }	},
-					{field:'realEmail',title:"电子邮箱",width:190,align:"center",	sortable:true, sorter:function(a,b){ return a>b? 1:-1; }},
+					{field:'relMail',title:"电子邮箱",width:190,align:"center",	sortable:true, sorter:function(a,b){ return a>b? 1:-1; }},
 					{field:'phoneNum',title:"手机号码",width:190,align:"center",	sortable:true,  sorter:function(a,b){ return a>b? 1:-1; }},
 					{field:'code',title:"部门",width:190,align:"center",	sortable:true,  sorter:function(a,b){ return a>b? 1:-1; }},
 					//{field:'code',title:"职位",width:190,align:"center",	sortable:true,  sorter:function(a,b){ return a>b? 1:-1; }},
@@ -180,6 +180,12 @@
 						text:"确定",
 						iconCls:'icon-ok',
 						handler:function(){
+							var pw = $("#passWord").val();
+							var cfpw = $("#cfmPassword").val();
+							if(pw&&!cfpw){
+								$alert("请输入确认密码");
+								return false;
+							}
 							new Some.form({
 								render:"#edit_fm",
 								success:function(data){

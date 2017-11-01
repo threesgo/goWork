@@ -5,6 +5,7 @@ import java.util.List;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Result;
@@ -117,7 +118,7 @@ public class SysUserAction extends AbstractLoginAction{
 			if(listUser.size()>0){
 				return error("用户名已存在");
 			}
-			sysUser.setPassWord(SecurityUtil.getMD5(sysUser.getPassWord()));
+			
 			sysUserService.updateUserAndRole(sysUser);
 			return success("添加成功");
 		}catch(Exception e){
