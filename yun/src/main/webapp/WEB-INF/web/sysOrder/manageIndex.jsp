@@ -159,7 +159,7 @@
 							    			sysOrderTree.tree('append', {
 												parent: node.target,
 												data: [{
-													id: rs.data.id,
+													id: "s"+rs.data.id,
 													text: rs.data.name,
 													attributes:rs.data
 												}]
@@ -211,13 +211,10 @@
 							    	handlerResult(data,
 							    		function(rs){
 							    			dialog.dialog("destroy");
-							    			sysOrderTree.tree('append', {
-												parent: node.target,
-												data: [{
-													id: rs.data.id,
-													text: rs.data.name,
-													attributes:rs.data
-												}]
+							    			$sysOrderInfoTable.datagrid("reload");
+							    			sysOrderTree.tree('update', {
+												target: node.target,
+												text:rs.data.name
 											});
 											$show(rs.message);
 										},
@@ -239,7 +236,27 @@
 						$(this).dialog("destroy");
 					}
 	 			});
-	 		}
+	 		},
+	 		deleteOrderFlow:function(){
+	 			$.messager.confirm('确认','确认要删除选择的订单步骤吗？',function(r){    
+				    if (r){
+				        var node = sysOrderTree.tree("getSelected");
+				        $.post("sysOrderAction!deleteOrderFlow.act",
+				        	{"sysOrderFlow.id":node.attributes.id},
+				        	function(data){
+								handlerResult(data,
+					    		function(rs){
+				    				sysOrderTree.tree("remove",node.target);
+									$show(rs.message);
+								},
+								function(rs){
+									$alert(rs.message);
+								}
+							);  
+						},"json");
+				    }    
+				});
+			}
 	 	};
 		</script>
 	</head>

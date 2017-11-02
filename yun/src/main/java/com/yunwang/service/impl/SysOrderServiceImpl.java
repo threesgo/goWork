@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import com.yunwang.dao.SysOrderDaoI;
 import com.yunwang.dao.SysOrderFlowDaoI;
 import com.yunwang.dao.SysOrderPackageDaoI;
+import com.yunwang.dao.SysOrderResourceDaoI;
+import com.yunwang.dao.SysOrderWorkerDaoI;
 import com.yunwang.model.page.Pager;
 import com.yunwang.model.pojo.SysDataDictionary;
 import com.yunwang.model.pojo.SysOrder;
@@ -26,12 +28,14 @@ public class SysOrderServiceImpl implements SysOrderService {
 	
 	@Autowired
 	private SysOrderDaoI sysOrderDao;
-	
 	@Autowired
 	private SysOrderFlowDaoI sysOrderFlowDao;
-	
 	@Autowired
 	private SysOrderPackageDaoI sysOrderPackageDao;
+	@Autowired
+	private SysOrderWorkerDaoI sysOrderWorkerDao;
+	@Autowired
+	private SysOrderResourceDaoI sysOrderResourceDao;
 
 	@Override
 	public Pager<SysOrder> findAll(int page, int rows, JSONObject seachJson) {
@@ -184,5 +188,15 @@ public class SysOrderServiceImpl implements SysOrderService {
 			sysOrderFlow.setStatus(1);
 			sysOrderFlowDao.save(sysOrderFlow);
 		}
+	}
+
+	@Override
+	public void deleteOrderFlow(SysOrderFlow sysOrderFlow) {
+		// TODO Auto-generated method stub
+		//删除步骤与产品
+		sysOrderWorkerDao.deleteByProperty("orderFlowId", sysOrderFlow.getId());
+		//删除步骤与工人
+		sysOrderResourceDao.deleteByProperty("orderFlowId", sysOrderFlow.getId());
+		sysOrderFlowDao.deleteByProperty("id", sysOrderFlow.getId());
 	}
 }

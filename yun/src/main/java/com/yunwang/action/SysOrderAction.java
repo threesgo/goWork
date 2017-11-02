@@ -326,6 +326,24 @@ public class SysOrderAction  extends AbstractLoginAction{
 	}
 	
 	
+
+	/**
+	 * @date 2017-11-2
+	 * @author YBF
+	 * @return
+	 * <p>订单步骤流程顺序调整</p>
+	 */
+	public String deleteOrderFlow(){
+		try{
+			sysOrderService.deleteOrderFlow(sysOrderFlow);
+			return success("操作成功!");
+		}catch(Exception e){
+			LOG.error(e.getMessage());
+			return error("操作失败!");
+		}
+	}
+	
+	
 	private void orderFlowInfoData(JSONArray jsonArr) {
 		JSONObject json_name=new JSONObject();
 		json_name.put("attrName", "名称");

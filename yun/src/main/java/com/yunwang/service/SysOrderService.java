@@ -34,4 +34,6 @@ public interface SysOrderService {
 
 	void saveOrUpdateOrderFlow(SysOrderFlow sysOrderFlow);
 
+	void deleteOrderFlow(SysOrderFlow sysOrderFlow);
+
 }

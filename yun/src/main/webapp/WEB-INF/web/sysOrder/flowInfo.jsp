@@ -9,7 +9,7 @@ $(function(){
         singleSelect:true,
         nowrap:false,
         fit:true,
-        //toolbar:"#order_info_bar",
+        toolbar:"#orderFlow_info_bar",
         url:"sysOrderAction!orderFlowInfoData.act?sysOrderFlow.id=${sysOrderFlow.id}",
         animate : true,
  		collapsible : true,
@@ -42,9 +42,9 @@ $(function(){
 });
 </script>
 <table id="sysOrderFlowInfoTable"></table>
-<!-- 
-<div id="order_info_bar">
+<div id="orderFlow_info_bar">
 	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit', plain:true" 
-		onclick="resourcePackageOperation.editPackage()">编辑</a>
+		onclick="sysOrderFlowOperation.updateOrderFlow()">编辑</a>
+	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove', plain:true" 
+		onclick="sysOrderFlowOperation.deleteOrderFlow()">删除</a>
 </div>
- -->
