@@ -88,12 +88,12 @@
 		$("#editPassWord").click(
 			function(){
 				modifyPwdDialog=$('<div id="editPassWord"></div>').dialog({
-					href : "systemAdmin!preUpdatePassword.act",		
+					href : "sysUserAction!preUpdatePassword.act",		
 					resizable:true,         
 					closed: false,
 					title:"修改用户密码",
-					width:500,
-					height:300,
+					width:400,
+					height:250,
 					modal: true,
 					onClose:function(){
 						modifyPwdDialog.dialog("destroy");
@@ -103,8 +103,25 @@
 				    	text: '确认',
 				    	iconCls: 'icon-ok',
 				    	handler: function () {
+				    		//var $update_form=$("#modify_password_form");
+				    		new Some.form({
+								render:"#modify_password_form",
+								success:function(data){
+									handlerResult(data,function(rs){
+										$show(rs.message);
+										//$update_form[0].reset();
+									},function(rs){
+										$alert(rs.message);
+									});
+								},
+								onSubmit: function(param){
+									
+							    }  
+							}).submit();   
+				    		
 				    		modifyPassWord(modifyPwdDialog);
-				    	}},
+				    	}
+				   },
 				    	{
 				        text: '取消',
 				        iconCls: 'icon-cancel',

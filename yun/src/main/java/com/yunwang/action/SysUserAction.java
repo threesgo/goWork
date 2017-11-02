@@ -19,11 +19,8 @@ import com.yunwang.util.action.AbstractLoginAction;
 		@Result(name="index",location="/WEB-INF/web/sysUser/index.jsp")//用户管理主页面
 		,@Result(name="addUser",location="/WEB-INF/web/sysUser/addUser.jsp")//新建页面
 		,@Result(name="editUser",location="/WEB-INF/web/sysUser/editUser.jsp")//编辑页面
+		,@Result(name="modifyPassWord",location="/WEB-INF/web/sysUser/modifyPassWord.jsp")
 		
-		,@Result(name="modifyAdminInfo",location="/WEB-INF/web/adminRightsManage/modifyAdminInfo.jsp")
-		,@Result(name="modifyPassWord",location="/WEB-INF/web/adminRightsManage/modifyPassWord.jsp")
-		,@Result(name="userInfo",location="/WEB-INF/web/ProjectAuthorityManage/userInfo.jsp")
-		,@Result(name="addRight",location="/WEB-INF/web/adminRightsManage/accreditAdmin.jsp")
 	}
 )
 public class SysUserAction extends AbstractLoginAction{
@@ -53,6 +50,12 @@ public class SysUserAction extends AbstractLoginAction{
 	public String execute()   {
 		return "index";
 	}
+	
+	
+	public String preUpdatePassword(){
+	    return "modifyPassWord";
+	}
+	
 	
 	/*
 	 * @date 2017-9-29
@@ -153,6 +156,24 @@ public class SysUserAction extends AbstractLoginAction{
 		}
 	}
 
+	public String updatePassword(){
+		SysUser updateUser = sysUserService.get(sysUser.getId());
+		/*try{
+			if(!SecurityUtil.getMD5(oldPassword).equals(updateUser.getPassWord())){
+			    throw new AmeException(getText("the_original_password_input_error_please_check"));
+			}
+			//判断是否为安全密码
+			if(!MyStringUtil.isSafePwd(usrSmUser.getPassword())){
+				throw new AmeException(getText("password_security_level_is_low"));
+			}
+			updateUser.setPassword(SecurityUtil.getMD5(usrSmUser.getPassword()));
+			usrSmUserService.update(updateUser);
+			return success(getText("password_modification_success"));
+		}catch(Exception e){
+		    return error(handlerException(e,getText("password_modification_failed")));
+		}*/
+		return null;
+	}
 
 	public Integer getRoleId() {
 		return roleId;
