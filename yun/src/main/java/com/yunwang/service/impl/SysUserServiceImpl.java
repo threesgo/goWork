@@ -414,52 +414,6 @@ public class SysUserServiceImpl implements SysUserService{
 		sysDepartMentDao.deleteByPropertys("parentId", ids);
 	}
 
-	/**
-	 * @Description:创建或保存部门信息
-	 * @param   
-	 * @return  
-	 * @throws
-	 * @author KXL
-	 * @date 2017-11-1
-	 */
-	@Override
-	public void saveOrUpdateDepartMentGrid(JSONObject obj, Integer parentId) {
-		if(null != obj){
-			Integer id = Integer.parseInt(obj.getString("id"));
-			SysDepartMent sysDepartMent = null;
-			if(id>0){
-				//更新
-				sysDepartMent = sysDepartMentDao.get(SysDepartMent.class, id);
-			}else{
-				//新增
-				sysDepartMent = new SysDepartMent();
-				sysDepartMent.setParentId(parentId);
-				Integer maxOrderNo = sysDepartMentDao.findMaxSeqByPfield("orderNo", "parentId", sysDepartMent.getParentId());
-				sysDepartMent.setOrderNo(maxOrderNo+1);
-				//组合顺序号
-				String maxStrOrderNo = sysDepartMentDao.findMaxStrSeqByPfield("strOrderNo", "parentId",sysDepartMent.getParentId());
-				if(StringUtils.isBlank(maxStrOrderNo)){
-					if(0 == sysDepartMent.getParentId()){
-						maxStrOrderNo = "000";
-					}else{
-						SysDepartMent parentDep = sysDepartMentDao.get(SysDepartMent.class,sysDepartMent.getParentId());
-						maxStrOrderNo = parentDep.getStrOrderNo()+"000";
-					}
-				}
-				String format = "%0"+maxStrOrderNo.length()+"d";
-				Integer num = Integer.parseInt(maxStrOrderNo)+1;
-				
-				String strOrderNo = String.format(format, num);
-				sysDepartMent.setStrOrderNo(strOrderNo);
-			}
-			String code = obj.getString("code");
-			sysDepartMent.setCode(code);
-			String name = obj.getString("name");
-			sysDepartMent.setName(name);
-			sysDepartMentDao.saveOrUpdate(sysDepartMent);
-		}
-		
-	}
 
 
 	@Override

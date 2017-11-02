@@ -182,36 +182,6 @@ public class SysDepartMentAction extends AbstractLoginAction{
 		}
 	}
 	
-	/**
-	 * 
-	 * @Description:保存或更新部门信息
-	 * @param @return   
-	 * @return String  
-	 * @throws
-	 * @author KXL
-	 * @date 2017-11-1
-	 */
-	public String saveOrUpdateDepartMentGrid(){
-		try{
-			JSONObject obj = JSONObject.fromObject(jsonStr);
-			if(obj != null){
-				String code = obj.getString("code");
-				String id = obj.getString("id");
-				if(Integer.parseInt(id)<=0&&!sysUserService.isExistDepartMent(code)){
-					return error("部门信息已存在,无法保存!");
-				}else{
-					sysUserService.saveOrUpdateDepartMentGrid(obj,Integer.parseInt(parentId));
-					return success("行数据保存成功!",obj);
-				}
-			}else{
-				return success("行数据保存成功!",obj);
-			}
-		}catch(Exception e){
-			LOG.error(e.getMessage());
-			return error("行数据保存失败!");
-		}
-	}
-	
 	
 	public String deletePosition(){
 		try{
