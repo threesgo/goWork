@@ -10,13 +10,16 @@ import org.springframework.stereotype.Service;
 
 import com.yunwang.dao.SysOrderDaoI;
 import com.yunwang.dao.SysOrderFlowDaoI;
+import com.yunwang.dao.SysOrderPackageDaoI;
 import com.yunwang.model.page.Pager;
 import com.yunwang.model.pojo.SysDataDictionary;
 import com.yunwang.model.pojo.SysOrder;
 import com.yunwang.model.pojo.SysOrderFlow;
+import com.yunwang.model.pojo.SysOrderPackage;
 import com.yunwang.service.SysOrderService;
 import com.yunwang.util.BaseDataDictionaryUtil;
 import com.yunwang.util.date.MyDateUtils;
+import com.yunwang.util.string.MyStringUtil;
 
 @Service
 public class SysOrderServiceImpl implements SysOrderService {
@@ -26,6 +29,9 @@ public class SysOrderServiceImpl implements SysOrderService {
 	
 	@Autowired
 	private SysOrderFlowDaoI sysOrderFlowDao;
+	
+	@Autowired
+	private SysOrderPackageDaoI sysOrderPackageDao;
 
 	@Override
 	public Pager<SysOrder> findAll(int page, int rows, JSONObject seachJson) {
@@ -48,6 +54,7 @@ public class SysOrderServiceImpl implements SysOrderService {
 
 	@Override
 	public void saveOrUpdateOrder(SysOrder sysOrder) throws Exception {
+		Integer orderId;
 		if(null != sysOrder.getId()){
 			SysOrder dbOrder = sysOrderDao.get(SysOrder.class,sysOrder.getId());
 			dbOrder.setName(sysOrder.getName());
@@ -65,7 +72,8 @@ public class SysOrderServiceImpl implements SysOrderService {
 			dbOrder.setHallNum(sysOrder.getHallNum());
 			dbOrder.setKitchenNum(sysOrder.getKitchenNum());
 			dbOrder.setToiletNum(sysOrder.getToiletNum());
-			sysOrderDao.update(sysOrder);
+			sysOrderDao.update(dbOrder);
+			orderId = dbOrder.getId();
 		}else{
 			sysOrder.setStatus(1);
 			sysOrder.setOrderDate(MyDateUtils.getStringByDate(new Date()));
@@ -82,10 +90,23 @@ public class SysOrderServiceImpl implements SysOrderService {
 				sysOrderFlow.setName(sysDataDictionary.getName());
 				sysOrderFlow.setFlowType(Integer.parseInt(sysDataDictionary.getValue()));
 				sysOrderFlow.setOrderNo(sysOrderFlowDao.findMaxSeqByPfield(
-						"orderNo", "orderId", sysOrder.getId()));
+						"orderNo", "orderId", sysOrder.getId())+1);
 				sysOrderFlow.setStatus(1);
 				sysOrderFlow.setOrderId(sysOrder.getId());
 				sysOrderFlowDao.save(sysOrderFlow);
+			}
+			orderId = sysOrder.getId();
+		}
+		
+		//新建订单与套餐关联
+		sysOrderPackageDao.deleteByProperty("rsrcPackageId", orderId);
+		if(MyStringUtil.isNotBlank(sysOrder.getOrderPackages())){
+			String[] ids = sysOrder.getOrderPackages().split("\\,");
+			for(String id:ids){
+				SysOrderPackage sysOrderPackage = new SysOrderPackage();
+				sysOrderPackage.setOrderId(orderId);
+				sysOrderPackage.setRsrcPackageId(Integer.parseInt(id));
+				sysOrderPackageDao.save(sysOrderPackage);
 			}
 		}
 	}
@@ -108,5 +129,60 @@ public class SysOrderServiceImpl implements SysOrderService {
 	@Override
 	public SysOrderFlow getOrderFlow(Integer orderFlowId) {
 		return sysOrderFlowDao.get(SysOrderFlow.class,orderFlowId);
+	}
+
+	@Override
+	public void dragOrderFlow(Integer point, Integer targetId, Integer sourceId) {
+		
+		SysOrderFlow source = sysOrderFlowDao.get(SysOrderFlow.class,sourceId);
+		SysOrderFlow target = sysOrderFlowDao.get(SysOrderFlow.class,targetId);
+		
+		//只有上移或者下移
+		//下移或者下移的方法一样（大于source减1，大于target加1）
+		
+		//先把大于移动节点顺序的节点减1
+		List<SysOrderFlow> sourceGreaters = sysOrderFlowDao.findGreaterOrder(source.getOrderId(),source.getOrderNo());
+		for(SysOrderFlow orderFlow:sourceGreaters){
+			orderFlow.setOrderNo(orderFlow.getOrderNo()-1);
+			sysOrderFlowDao.update(orderFlow);
+		}
+		
+		//再把大于移到节点顺序的节点加1
+		List<SysOrderFlow> targetGreaters = sysOrderFlowDao.findGreaterOrder(target.getOrderId(),target.getOrderNo());
+		for(SysOrderFlow orderFlow:targetGreaters){
+			orderFlow.setOrderNo(orderFlow.getOrderNo()+1);
+			sysOrderFlowDao.update(orderFlow);
+		}
+		
+		if(point == 1){
+			source.setOrderNo(target.getOrderNo()+1);
+		}else if(point == 2){
+			source.setOrderNo(target.getOrderNo());
+			target.setOrderNo(target.getOrderNo()+1);
+		}
+		
+	}
+
+	@Override
+	public List<SysOrderPackage> findOrderPackage(Integer orderId) {
+		return sysOrderPackageDao.findByOrderId(orderId);
+	}
+
+	@Override
+	public void saveOrUpdateOrderFlow(SysOrderFlow sysOrderFlow) {
+		if(null != sysOrderFlow.getId()){
+			SysOrderFlow dbSysOrderFlow = sysOrderFlowDao.get(SysOrderFlow.class,sysOrderFlow.getId());
+			dbSysOrderFlow.setFlowType(sysOrderFlow.getFlowType());
+			dbSysOrderFlow.setStartTime(sysOrderFlow.getStartTime());
+			dbSysOrderFlow.setEndTime(sysOrderFlow.getEndTime());
+			dbSysOrderFlow.setInfo(sysOrderFlow.getInfo());
+			dbSysOrderFlow.setName(sysOrderFlow.getName());
+			sysOrderFlowDao.update(dbSysOrderFlow);
+		}else{
+			sysOrderFlow.setOrderNo(sysOrderFlowDao.findMaxSeqByPfield(
+					"orderNo", "orderId", sysOrderFlow.getOrderId())+1);
+			sysOrderFlow.setStatus(1);
+			sysOrderFlowDao.save(sysOrderFlow);
+		}
 	}
 }

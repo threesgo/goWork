@@ -7,6 +7,7 @@ import net.sf.json.JSONObject;
 import com.yunwang.model.page.Pager;
 import com.yunwang.model.pojo.SysOrder;
 import com.yunwang.model.pojo.SysOrderFlow;
+import com.yunwang.model.pojo.SysOrderPackage;
 
 
 public interface SysOrderService {
@@ -26,5 +27,11 @@ public interface SysOrderService {
 	List<SysOrderFlow> findOrderFlow(Integer orderId);
 
 	SysOrderFlow getOrderFlow(Integer orderFlowId);
+
+	void dragOrderFlow(Integer point, Integer targetId, Integer sourceId);
+
+	List<SysOrderPackage> findOrderPackage(Integer orderId);
+
+	void saveOrUpdateOrderFlow(SysOrderFlow sysOrderFlow);
 
 }

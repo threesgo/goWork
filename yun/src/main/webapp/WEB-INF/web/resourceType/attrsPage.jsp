@@ -203,20 +203,14 @@
 	};
 	
 	function validateForm(){
-		if(!$("#saveOrUpdate_resource_attr #code").validatebox("isValid")){
-    		$("#saveOrUpdate_resource_attr #code").focus();
-    		return false;
-    	}else
     	if(!$("#saveOrUpdate_resource_attr #name").validatebox("isValid")){
     		$("#saveOrUpdate_resource_attr #name").focus();
     		return false;
     	}else
     	if(!$("#saveOrUpdate_resource_attr #dataLength").numberbox("isValid")){
-    		$("#saveOrUpdate_resource_attr #dataLength").focus();
     		return false;
     	}else
     	if(!$("#saveOrUpdate_resource_attr #orderNo").numberbox("isValid")){
-    		$("#saveOrUpdate_resource_attr #orderNo").focus();
     		return false;
     	}
     	return true;

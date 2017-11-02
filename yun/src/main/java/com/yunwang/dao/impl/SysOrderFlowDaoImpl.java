@@ -16,6 +16,16 @@ public class SysOrderFlowDaoImpl extends BaseDaoImpl<SysOrderFlow> implements Sy
 	public List<SysOrderFlow> findByOrderId(Integer orderId) {
 		Map<String, Object> map = new HashMap<String,Object>();
 		map.put("orderId",orderId);
-		return find("SELECT model FROM SysOrderFlow model WHERE model.orderId=:orderId",map);
+		return find("SELECT model FROM SysOrderFlow model WHERE model.orderId=:orderId ORDER BY model.orderNo ",map);
+	}
+
+	@Override
+	public List<SysOrderFlow> findGreaterOrder(Integer orderId,Integer orderNo) {
+		String hql="SELECT model FROM SysOrderFlow as model " +
+				"WHERE model.orderId=:orderId AND model.orderNo>:orderNo ";
+		Map<String, Object> map = new HashMap<String,Object>();
+		map.put("orderId",orderId);
+		map.put("orderNo",orderNo);
+		return find(hql,map);
 	}
 }

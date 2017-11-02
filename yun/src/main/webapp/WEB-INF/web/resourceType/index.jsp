@@ -170,6 +170,7 @@
 							$('#saveOrUpdate_resource_type').form({    
 							    onSubmit: function(){ 
 							    	if(!$("#edit_catalogName").validatebox("isValid")){
+							    		$("#edit_catalogName").focus();
 							    		return false;
 							    	}
 							    },    
@@ -227,6 +228,7 @@
 							$('#saveOrUpdate_resource_type').form({    
 							    onSubmit: function(){
 							    	if(!$("#edit_catalogName").validatebox("isValid")){
+							    		$("#edit_catalogName").focus();
 							    		return false;
 							    	}
 							    },    
@@ -238,7 +240,7 @@
 											$resourceTypeInfoTable.datagrid("reload");
 											resourceTypeTree.tree('update', {
 												target: node.target,
-												text:rs.data.catalogCode+","+rs.data.catalogName
+												text:rs.data.catalogName
 											});
 										},
 										function(rs){

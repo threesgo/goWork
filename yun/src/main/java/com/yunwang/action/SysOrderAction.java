@@ -16,22 +16,28 @@ import com.yunwang.model.page.Pager;
 import com.yunwang.model.pojo.SysDataDictionary;
 import com.yunwang.model.pojo.SysOrder;
 import com.yunwang.model.pojo.SysOrderFlow;
+import com.yunwang.model.pojo.SysOrderPackage;
+import com.yunwang.model.pojo.SysRsRcPackage;
 import com.yunwang.model.pojo.SysSupplier;
 import com.yunwang.service.SysOrderService;
+import com.yunwang.service.SysRsRcPackageService;
 import com.yunwang.service.SysSupplierService;
 import com.yunwang.util.BaseDataDictionaryUtil;
 import com.yunwang.util.action.AbstractLoginAction;
+import com.yunwang.util.collection.CollectionUtil;
+import com.yunwang.util.string.MyStringUtil;
 @Action(
 	value = "sysOrderAction", 
 	results = {
 		@Result(name = "index",location="/WEB-INF/web/sysOrder/showIndex.jsp"),
 		@Result(name = "manageIndex",location="/WEB-INF/web/sysOrder/manageIndex.jsp"),
-		@Result(name = "saveOrUpdatePage",location="/WEB-INF/web/sysOrder/saveOrUpdatePage.jsp"),
+		@Result(name = "saveOrUpdateOrderPage",location="/WEB-INF/web/sysOrder/saveOrUpdateOrderPage.jsp"),
 		@Result(name = "workerAndResourceByFlow",location="/WEB-INF/web/sysOrder/workerAndResourceByFlow.jsp"),
 		@Result(name = "workerAndResourceByOrder",location="/WEB-INF/web/sysOrder/workerAndResourceByOrder.jsp"),
 		@Result(name = "seachIndex",location="/WEB-INF/web/sysOrder/seachIndex.jsp"),
-		@Result(name = "orderInfo",location="/WEB-INF/web/sysOrder/info.jsp"),
-		@Result(name = "flowInfo",location="/WEB-INF/web/sysOrder/flowInfo.jsp")
+		@Result(name = "orderInfo",location="/WEB-INF/web/sysOrder/orderInfo.jsp"),
+		@Result(name = "flowInfo",location="/WEB-INF/web/sysOrder/flowInfo.jsp"),
+		@Result(name = "saveOrUpdateOrderFlowPage",location="/WEB-INF/web/sysOrder/saveOrUpdateOrderFlowPage.jsp"),
 	}
 )
 public class SysOrderAction  extends AbstractLoginAction{
@@ -48,6 +54,8 @@ public class SysOrderAction  extends AbstractLoginAction{
 	private SysOrderService sysOrderService;
 	@Autowired
 	private SysSupplierService sysSupplierService;
+	@Autowired
+	private SysRsRcPackageService sysRsRcPackageService;
 	
 	private Map<String,Object> hashMap;
 	private SysOrder sysOrder;
@@ -57,6 +65,11 @@ public class SysOrderAction  extends AbstractLoginAction{
 	private String jsonStr;
 	private List<SysDataDictionary> typeList;
 	private String dateStr;
+	private List<SysDataDictionary> flowList;
+	
+	private Integer point;
+	private Integer targetId;
+	private Integer sourceId;
 	
 	@Override
 	public String execute() throws Exception {
@@ -165,12 +178,30 @@ public class SysOrderAction  extends AbstractLoginAction{
 	 * @return
 	 * <p>保存表格行数据</p>
 	 */
-	public String saveOrUpdatePage(){
+	public String saveOrUpdateOrderPage(){
+		Map<Integer,SysOrderPackage> orderPackageMap = new HashMap<Integer,SysOrderPackage>();
 		if(null != sysOrder && null != sysOrder.getId()){
 			sysOrder = sysOrderService.get(sysOrder.getId());
+			List<SysOrderPackage> sysOrderPackages = sysOrderService.findOrderPackage(sysOrder.getId());
+			orderPackageMap = CollectionUtil.listToMap(sysOrderPackages,"rsrcPackageId");
 		}
 		typeList = BaseDataDictionaryUtil.baseDataMap.get(7);
-		return "saveOrUpdatePage";
+		
+		//查找所有的套餐
+		hashMap = new HashMap<String,Object>();
+		JSONArray packageArr = new JSONArray();
+		List<SysRsRcPackage> sysRsRcPackages = sysRsRcPackageService.findAll("orderNo");
+		for(SysRsRcPackage sysRsRcPackage:sysRsRcPackages){
+			JSONObject obj = new JSONObject();
+			obj.put("id", sysRsRcPackage.getId());
+			obj.put("text", sysRsRcPackage.getName());
+			if(orderPackageMap.get(sysRsRcPackage.getId())!=null){
+				obj.put("selected",true);
+			}
+			packageArr.add(obj);
+		}
+		hashMap.put("packageArr", packageArr);
+		return "saveOrUpdateOrderPage";
 	}
 	
 	/**
@@ -246,11 +277,85 @@ public class SysOrderAction  extends AbstractLoginAction{
 	}
 	
 	
-	private void orderFlowInfoData(JSONArray jsonArr) {
-		// TODO Auto-generated method stub
-		
+	/**
+	 * @date 2017-11-2
+	 * @author YBF
+	 * @return
+	 * <p>新增和更新订单步骤流程</p>
+	 */
+	public String saveOrUpdateOrderFlowPage(){
+		if(null != sysOrderFlow && null != sysOrderFlow.getId()){
+			sysOrderFlow = sysOrderService.getOrderFlow(sysOrderFlow.getId());
+		}
+		flowList = BaseDataDictionaryUtil.baseDataMap.get(4);
+		return "saveOrUpdateOrderFlowPage";
 	}
-
+	
+	
+	/**
+	 * @date 2017-11-2
+	 * @author YBF
+	 * @return
+	 * <p>新增和更新订单步骤流程</p>
+	 */
+	public String saveOrUpdateOrderFlow(){
+		try{
+			sysOrderService.saveOrUpdateOrderFlow(sysOrderFlow);
+			return success("行数据保存成功!",sysOrderFlow);
+		}catch(Exception e){
+			LOG.error(e.getMessage());
+			return error("行数据保存失败!",e);
+		}
+	}
+	
+	
+	/**
+	 * @date 2017-11-2
+	 * @author YBF
+	 * @return
+	 * <p>订单步骤流程顺序调整</p>
+	 */
+	public String dragOrderFlow(){
+		try{
+			sysOrderService.dragOrderFlow(point,targetId,sourceId);
+			return success("操作成功!");
+		}catch(Exception e){
+			LOG.error(e.getMessage());
+			return error("操作失败!");
+		}
+	}
+	
+	
+	private void orderFlowInfoData(JSONArray jsonArr) {
+		JSONObject json_name=new JSONObject();
+		json_name.put("attrName", "名称");
+		json_name.put("value", sysOrderFlow.getName());
+		jsonArr.add(json_name);
+		
+		JSONObject json_rooms=new JSONObject();
+		json_rooms.put("attrName", "步骤类型");
+		json_rooms.put("value", sysOrderFlow.getFlowType());
+		jsonArr.add(json_rooms);
+		
+		JSONObject totalStatus=new JSONObject();
+		totalStatus.put("attrName", "状态");
+		totalStatus.put("value", sysOrderFlow.getStatus());
+		jsonArr.add(totalStatus);
+		
+		JSONObject time=new JSONObject();
+		time.put("attrName", "预计装修时间");
+		time.put("value", 
+				(MyStringUtil.isNotBlank(sysOrderFlow.getStartTimeStr())?sysOrderFlow.getStartTimeStr():"")
+				+"至"+
+				(MyStringUtil.isNotBlank(sysOrderFlow.getEndTimeStr())?sysOrderFlow.getEndTimeStr():""));
+		jsonArr.add(time);
+		
+		JSONObject info=new JSONObject();
+		info.put("attrName", "备注");
+		info.put("value", sysOrderFlow.getInfo());
+		jsonArr.add(info);
+	}
+	
 	//后期根据国际化来做
 	private void orderInfoData(JSONArray jsonArr) {
 //		JSONObject json_code=new JSONObject();
@@ -381,5 +486,37 @@ public class SysOrderAction  extends AbstractLoginAction{
 
 	public void setSysOrderFlow(SysOrderFlow sysOrderFlow) {
 		this.sysOrderFlow = sysOrderFlow;
+	}
+
+	public Integer getPoint() {
+		return point;
+	}
+
+	public void setPoint(Integer point) {
+		this.point = point;
+	}
+
+	public Integer getTargetId() {
+		return targetId;
+	}
+
+	public void setTargetId(Integer targetId) {
+		this.targetId = targetId;
+	}
+
+	public Integer getSourceId() {
+		return sourceId;
+	}
+
+	public void setSourceId(Integer sourceId) {
+		this.sourceId = sourceId;
+	}
+
+	public List<SysDataDictionary> getFlowList() {
+		return flowList;
+	}
+
+	public void setFlowList(List<SysDataDictionary> flowList) {
+		this.flowList = flowList;
 	}
 }

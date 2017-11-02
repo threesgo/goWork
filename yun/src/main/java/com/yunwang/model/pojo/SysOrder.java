@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.yunwang.util.date.MyDateUtils;
 
@@ -55,7 +56,7 @@ public class SysOrder extends AbstractRowVersionModel{
 	@Column(name = "CONTACT_TEL",length = 128)
 	private String contactTel;
 	
-	@Column(name = "CMB_PROVINCE",nullable = false,length = 256)
+	@Column(name = "CMB_PROVINCE",length = 256)
 	private String cmbProvince;
 	
 	@Column(name = "CMB_CITY",length = 256)
@@ -102,6 +103,9 @@ public class SysOrder extends AbstractRowVersionModel{
 	
 	@Column(name="BALCONY_NUM",columnDefinition = "number default 0")
 	private Integer balconyNum;  //阳台
+	
+	@Transient
+	private String orderPackages;
 	
 	public SysOrder(){
 		
@@ -289,6 +293,14 @@ public class SysOrder extends AbstractRowVersionModel{
 
 	public void setBalconyNum(Integer balconyNum) {
 		this.balconyNum = balconyNum;
+	}
+
+	public String getOrderPackages() {
+		return orderPackages;
+	}
+
+	public void setOrderPackages(String orderPackages) {
+		this.orderPackages = orderPackages;
 	}
 
 	public String getStartTimeStr(){

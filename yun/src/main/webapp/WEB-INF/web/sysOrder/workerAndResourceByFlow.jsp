@@ -192,6 +192,15 @@
    	  		    ]],
 	 		});
 	  	});
+	  	
+	  	
+	  	workerResourceEdit = {
+	  		addResource:function(){
+	  			
+	  		}
+	  			
+	  	}
+	  	
   	</script>
 
 <div id="workerResourceEdit" class="easyui-layout" data-options="fit:true">  

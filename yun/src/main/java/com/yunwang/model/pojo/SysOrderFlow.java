@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.yunwang.util.date.MyDateUtils;
+
 @Entity
 @Table(name = "SYS_ORDER_FLOW")
 public class SysOrderFlow extends AbstractRowVersionModel{
@@ -125,5 +127,12 @@ public class SysOrderFlow extends AbstractRowVersionModel{
 	public void setOrderNo(Integer orderNo) {
 		this.orderNo = orderNo;
 	}
+
+	public String getStartTimeStr(){
+		return MyDateUtils.getStringByDateTime(startTime);
+	}
 	
+	public String getEndTimeStr(){
+		return MyDateUtils.getStringByDateTime(endTime);
+	}
 }

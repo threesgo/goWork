@@ -44,9 +44,9 @@ $(function(){
         url:"resourceTypeAction!infoData.act?sysRsRcCatalog.id=${sysRsRcCatalog.id}",
         animate : true,
  		collapsible : true,
-  		pagination:false, 
-  		pageSize:20,  
-        pageList:[10,20,50,100,150,200],
+  		//pagination:false, 
+  		//pageSize:20,  
+        //pageList:[10,20,50,100,150,200],
 		onBeforeLoad:function(){
 		},
 		columns : [ [

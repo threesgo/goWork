@@ -2,15 +2,15 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
 <script type="text/javascript">
 $(function(){
-	$sysOrderInfoTable=$("#sysOrderFlowInfoTable").datagrid({
+	$sysOrderInfoTable=$("#sysOrderInfoTable").datagrid({
         fitColumns:true,
         remoteSort:false,
         striped:true,
         singleSelect:true,
         nowrap:false,
         fit:true,
-        //toolbar:"#order_info_bar",
-        url:"sysOrderAction!orderFlowInfoData.act?sysOrderFlow.id=${sysOrderFlow.id}",
+        toolbar:"#order_info_bar",
+        url:"sysOrderAction!orderInfoData.act?sysOrder.id=${sysOrder.id}",
         animate : true,
  		collapsible : true,
   		//pagination:false, 
@@ -41,10 +41,8 @@ $(function(){
 	});
 });
 </script>
-<table id="sysOrderFlowInfoTable"></table>
-<!-- 
+<table id="sysOrderInfoTable"></table>
 <div id="order_info_bar">
-	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit', plain:true" 
+	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add', plain:true" 
 		onclick="resourcePackageOperation.editPackage()">编辑</a>
 </div>
- -->
