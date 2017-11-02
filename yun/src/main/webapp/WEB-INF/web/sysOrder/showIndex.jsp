@@ -209,39 +209,48 @@
 	
 	function initForm(){
 		var relValues = $("#saveOrUpdate_order #relationPackage").combobox("getValues");
-		$("#saveOrUpdate_order #orderPackages").val(relValues.join(","))
+		$("#saveOrUpdate_order #orderPackages").val(relValues.join(","));
 	}
 	
 	function validateForm(){
 		if(!$("#saveOrUpdate_order #edit_name").validatebox("isValid")){
     		$("#saveOrUpdate_order #edit_name").focus();
+    		$show("请输入订单名称!");
     		return false;
     	}else
     	if(!$("#saveOrUpdate_order #edit_totalAmount").numberbox("isValid")){
+    		$show("请输入订单总价!");
     		return false;
     	}else
-    	if(!!$("#saveOrUpdate_order #edit_totalArea").numberbox("isValid")){
+    	if(!$("#saveOrUpdate_order #edit_totalArea").numberbox("isValid")){
+    		$show("请输入订单面积!");
     		return false;
     	}else
     	if(!$("#saveOrUpdate_order #edit_contact").validatebox("isValid")){
+    		$show("请输入订单联系人!");
     		$("#saveOrUpdate_order #edit_contact").focus();
     		return false;
     	}else
        	if(!$("#saveOrUpdate_order #edit_contactTel").validatebox("isValid")){
+       		$show("请输入订单联系电话!");
        		$("#saveOrUpdate_order #edit_contactTel").focus();
        		return false;
        	}else
         if(!$("#saveOrUpdate_order #edit_address").validatebox("isValid")){
+        	$show("请输入订单地址!");
         	$("#saveOrUpdate_order #edit_address").focus();
       		return false;
       	}else
         if(!$("#saveOrUpdate_order #edit_startTime").datetimebox("isValid")){
+        	$show("请输入订单预期开始时间!");
        		return false;
        	}else
         if(!$("#saveOrUpdate_order #edit_endTime").datetimebox("isValid")){
+        	$show("请输入订单预期结束时间!");
        		return false;
        	}else
-       	if($("#saveOrUpdate_order #orderPackages").combobox("isValid")){
+       	if(!$("#saveOrUpdate_order #relationPackage").combobox("isValid")){
+       		$show("请输入订单关联产品套餐!");
        		return false;
        	}
     	return true;

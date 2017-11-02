@@ -20,16 +20,11 @@
     
     <div>   
         <label for="edit_totalRooms">房间数量:</label>   
-   	室:<input class="easyui-numberbox" id="edit_roomNum" type="text" name="sysOrder.roomNum" 
-        style="width:30px;" data-options="required:false,min:0,precision:0,max:9999999" value="${sysOrder.roomNum}"/>
-            厅:<input class="easyui-numberbox" id="edit_hallNum" type="text" name="sysOrder.hallNum" 
-        style="width:30px;" data-options="required:false,min:0,precision:0,max:9999999" value="${sysOrder.hallNum}"/>   
-            厨房:<input class="easyui-numberbox" id="edit_kitchenNum" type="text" name="sysOrder.kitchenNum" 
-        style="width:30px;" data-options="required:false,min:0,precision:0,max:9999999" value="${sysOrder.kitchenNum}"/>   
-            卫生间:<input class="easyui-numberbox" id="edit_toiletNum" type="text" name="sysOrder.toiletNum" 
-        style="width:30px;" data-options="required:false,min:0,precision:0,max:9999999" value="${sysOrder.toiletNum}"/>   
-            阳台:<input class="easyui-numberbox" id="edit_balconyNum" type="text" name="sysOrder.balconyNum" 
-        style="width:30px;" data-options="required:false,min:0,precision:0,max:9999999" value="${sysOrder.balconyNum}"/>   
+   	室:<input id="edit_roomNum" name="sysOrder.roomNum" style="width:50px;" value="${sysOrder.roomNum}"/>
+            厅:<input id="edit_hallNum" name="sysOrder.hallNum" style="width:50px;" value="${sysOrder.hallNum}"/>   
+            厨房:<input id="edit_kitchenNum" name="sysOrder.kitchenNum" style="width:50px;" value="${sysOrder.kitchenNum}"/>   
+            卫生间:<input id="edit_toiletNum" name="sysOrder.toiletNum" style="width:50px;" value="${sysOrder.toiletNum}"/>   
+            阳台:<input id="edit_balconyNum" name="sysOrder.balconyNum" style="width:50px;" value="${sysOrder.balconyNum}"/>   
     </div>
     
     <div>   
@@ -55,7 +50,7 @@
     <div>   
        	<label for="edit_contactTel">联系方式:</label>   
         <input class="easyui-validatebox" id="edit_contactTel" type="text" name="sysOrder.contactTel" 
-        style="width:200px;" data-options="required:false,validType:['length[1,40]','illegal']" value="${sysOrder.contactTel}"/> 
+        style="width:200px;" data-options="required:true,validType:['length[1,40]','illegal']" value="${sysOrder.contactTel}"/> 
     </div>
     
     <!-- 
@@ -108,6 +103,41 @@ $(function(){
 	    	//$('#relationPackage').setValues();
 	    }
 	}); 
+	
+	$('#edit_roomNum').numberspinner({    
+	    required:false,    
+	    increment:1,
+	    min:0,
+	    max:100
+	});
+	
+	$('#edit_hallNum').numberspinner({    
+	    required:false,    
+	    increment:1,
+	    min:0,
+	    max:100
+	});
+	
+	$('#edit_kitchenNum').numberspinner({    
+	    required:false,    
+	    increment:1,
+	    min:0,
+	    max:100
+	});
+	
+	$('#edit_toiletNum').numberspinner({    
+	    required:false,    
+	    increment:1,
+	    min:0,
+	    max:100
+	});
+	
+	$('#edit_balconyNum').numberspinner({    
+	    required:false,    
+	    increment:1,
+	    min:0,
+	    max:100
+	});
 });
 /* 
 $(function(){

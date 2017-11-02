@@ -260,6 +260,9 @@ public class SysOrder extends AbstractRowVersionModel{
 	}
 
 	public void setRoomNum(Integer roomNum) {
+		if(null == roomNum){
+			this.roomNum = 0;
+		}
 		this.roomNum = roomNum;
 	}
 
@@ -268,6 +271,9 @@ public class SysOrder extends AbstractRowVersionModel{
 	}
 
 	public void setHallNum(Integer hallNum) {
+		if(null == hallNum){
+			this.hallNum = 0;
+		}
 		this.hallNum = hallNum;
 	}
 
@@ -276,6 +282,9 @@ public class SysOrder extends AbstractRowVersionModel{
 	}
 
 	public void setKitchenNum(Integer kitchenNum) {
+		if(null == kitchenNum){
+			this.kitchenNum = 0;
+		}
 		this.kitchenNum = kitchenNum;
 	}
 
@@ -284,6 +293,9 @@ public class SysOrder extends AbstractRowVersionModel{
 	}
 
 	public void setToiletNum(Integer toiletNum) {
+		if(null == toiletNum){
+			this.toiletNum = 0;
+		}
 		this.toiletNum = toiletNum;
 	}
 
@@ -292,6 +304,9 @@ public class SysOrder extends AbstractRowVersionModel{
 	}
 
 	public void setBalconyNum(Integer balconyNum) {
+		if(null == balconyNum){
+			this.balconyNum = 0;
+		}
 		this.balconyNum = balconyNum;
 	}
 
