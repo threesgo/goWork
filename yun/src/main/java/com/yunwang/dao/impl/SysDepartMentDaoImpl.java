@@ -21,7 +21,19 @@ public class SysDepartMentDaoImpl extends BaseDaoImpl<SysDepartMent> implements 
 		String hql ="SELECT model FROM SysDepartMent model ORDER BY model.strOrderNo ";
 		return find(hql);
 	}
-	
-	
 
+	/**
+	 * @Description: 是否有和本身的code相同的数据
+	 * @param   
+	 * @return  
+	 * @throws
+	 * @author KXL
+	 * @date 2017-11-2
+	 */
+	@Override
+	public List<SysDepartMent> findByCodeAndId(String code, Integer id) {
+		String hql = "SELECT model FROM SysDepartMent model WHERE model.id!=? AND model.code='"+code+"' ";
+		return find(hql, id);
+	}
+	
 }

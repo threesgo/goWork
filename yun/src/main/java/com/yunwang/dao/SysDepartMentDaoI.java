@@ -10,4 +10,6 @@ public interface SysDepartMentDaoI extends BaseDaoI<SysDepartMent>{
 	
 	List<SysDepartMent> findAllDepartMent();
 	
+	List<SysDepartMent> findByCodeAndId(String code,Integer id);
+	
 }

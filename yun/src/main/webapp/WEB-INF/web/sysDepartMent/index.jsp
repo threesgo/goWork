@@ -21,7 +21,7 @@
 		</div>
 		<div id="departMent" class="easyui-menu" style="width:120px;">
 			<div onclick="append()" data-options="iconCls:'icon-add'">添加</div>
-			<div onclick="del(this)" data-options="iconCls:'icon-remove'">删除</div>
+			<div onclick="del()" data-options="iconCls:'icon-remove'">删除</div>
 		</div>
  		<script type="text/javascript" > 
  		var departMentTree;
@@ -36,27 +36,27 @@
  					animate:true,
  					onSelect:function(node){//onSelect是选择节点时触发
  						closeAllTab(layoutTab);//此函数在public中定义，关闭中间布局的选项卡
- 						if(node.attributes.id < 0){//判断是否为叶子节点
- 							 layoutTab.tabs('add',
- 								{
- 									title :"部门列表",
- 									href :"sysDepartMentAction!preDepartMent.act"
- 								} 
- 							); 
- 						}else{
-							layoutTab.tabs('add',
-								{
-									title :"职位列表 ",
- 									href :"sysDepartMentAction!prePosition.act?departMentId="+node.id
-	 							}
-							);
- 						}  
+ 						 layoutTab.tabs('add',
+  								{
+  									title :"部门子集列表",
+  									href :"sysDepartMentAction!preDepartMent.act?parentId="+node.id,
+  									//selected:0
+  								} 
+  							); 
+ 						if(node.id != 0){//判断是否为根目录
+ 							layoutTab.tabs('add',
+							{
+								title :"职位列表 ",
+								href :"sysDepartMentAction!prePosition.act?departMentId="+node.id,
+								index: 0
+ 							});
+ 						}
  					},
  					//右键菜单
  					onContextMenu:function(e,node){
  						id=node.id;
- 						parentId = node.attributes.id;
- 						if(node.attributes.id < 0){
+ 						//parentId = node.attributes.id;
+ 						if(node.id == 0){
 	 						e.preventDefault();
 							// 查找节点
 							$('#departMentTree').tree('select', node.target);
@@ -94,9 +94,10 @@
 				width:400,
 				top:160,
 				height:"auto",
+				modal:true,
 				resizable:true,
 				href:"sysDepartMentAction!preAddOrEdit.act",
-				queryParams:{"sysDepartMent.parentId":parentId},
+				queryParams:{"sysDepartMent.parentId":id},
 				method:"post", 
 				buttons:[{
 					text:"确定",
@@ -108,6 +109,7 @@
 									$show(rs.message);
 									var departMent = departMentTree.tree("getRoot");
 									departMentTree.tree('reload',departMent.target);
+									$sysDepartMentTable.datagrid("reload");
 									addDepartMentDilog.dialog("close");
 								},function(rs){
 									$alert(rs.message);
@@ -129,20 +131,19 @@
 			});
 	 	};
 	 	//删除部门
-	 	function del(node){
-	 		if(parentId == -1){
-	 			$alert("根目录无法删除");
-	 			return false;
-	 		}
-	 		$.messager.confirm('确认','您确认想要删除所选角色吗？',function(r){
+	 	function del(){
+	 		$.messager.confirm('确认','您确认想要删除所选部门及其子子部门吗？',function(r){
 			    if (r){
 			    	$.post("sysDepartMentAction!deleteDepartMent.act",
-			    		   {"sysDepartMent.id":id},//id是节点的id属性名
+			    		   {"ids":id},//id是节点的id属性名
 			    		   function(data){
 								handlerResult(data,function(rs){
 									$show(rs.message);
 									var departMent = departMentTree.tree("getRoot");
+									//departMentTree.tree("select",departMent);
+									//alert(Some.util.jsonToStr(departMent))
 									departMentTree.tree('reload',departMent.target);
+									$sysDepartMentTable.datagrid("reload");
 								},function(rs){
 									$alert(rs.message);
 								});

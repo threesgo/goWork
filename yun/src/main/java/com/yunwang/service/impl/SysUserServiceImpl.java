@@ -303,6 +303,14 @@ public class SysUserServiceImpl implements SysUserService{
 		return true;
 	}
 
+	public boolean isExistDepartMentWithoutSelf(String code,Integer id) {
+		List<SysDepartMent> list = sysDepartMentDao.findByCodeAndId(code,id);
+		if(list.size()>0){
+			return false;
+		}
+		return true;
+	}
+	
 	/**
 	 * @Description: 新建部门信息
 	 * @param   
@@ -312,33 +320,35 @@ public class SysUserServiceImpl implements SysUserService{
 	 * @date 2017-10-23
 	 */
 	@Override
-	public void saveSysDepartMent(SysDepartMent sysDepartMent) {
-		SysDepartMent departMent = new SysDepartMent();
+	public void saveOrUpadateSysDepartMent(SysDepartMent sysDepartMent) {
+		SysDepartMent departMent = null;
+		if(sysDepartMent.getId() != null){
+			departMent = sysDepartMentDao.get(SysDepartMent.class, sysDepartMent.getId());
+		}else{
+			departMent = new SysDepartMent();
+			departMent.setParentId(sysDepartMent.getParentId());
+			Integer maxOrderNo = sysDepartMentDao.findMaxSeqByPfield("orderNo", "parentId", departMent.getParentId());
+			departMent.setOrderNo(maxOrderNo+1);
+			//组合顺序号
+			String maxStrOrderNo = sysDepartMentDao.findMaxStrSeqByPfield("strOrderNo", "parentId",departMent.getParentId());
+			if(StringUtils.isBlank(maxStrOrderNo)){
+				if(0 == departMent.getParentId()){
+					maxStrOrderNo = "000";
+				}else{
+					SysDepartMent parentDep = sysDepartMentDao.get(SysDepartMent.class,sysDepartMent.getParentId());
+					maxStrOrderNo = parentDep.getStrOrderNo()+"000";
+				}
+			}
+			String format = "%0"+maxStrOrderNo.length()+"d";
+			Integer num = Integer.parseInt(maxStrOrderNo)+1;
+			
+			String strOrderNo = String.format(format, num);
+			departMent.setStrOrderNo(strOrderNo);
+		}
+		
 		departMent.setCode(sysDepartMent.getCode());
 		departMent.setName(sysDepartMent.getName());
-		if(-1 == sysDepartMent.getParentId()){
-			departMent.setParentId(0);
-		}else{
-			departMent.setParentId(sysDepartMent.getParentId());
-		}
 		
-		Integer maxOrderNo = sysDepartMentDao.findMaxSeqByPfield("orderNo", "parentId", departMent.getParentId());
-		departMent.setOrderNo(maxOrderNo+1);
-		//组合顺序号
-		String maxStrOrderNo = sysDepartMentDao.findMaxStrSeqByPfield("strOrderNo", "parentId",departMent.getParentId());
-		if(StringUtils.isBlank(maxStrOrderNo)){
-			if(0 == departMent.getParentId()){
-				maxStrOrderNo = "000";
-			}else{
-				SysDepartMent parentDep = sysDepartMentDao.get(SysDepartMent.class,sysDepartMent.getParentId());
-				maxStrOrderNo = parentDep.getStrOrderNo()+"000";
-			}
-		}
-		String format = "%0"+maxStrOrderNo.length()+"d";
-		Integer num = Integer.parseInt(maxStrOrderNo)+1;
-		
-		String strOrderNo = String.format(format, num);
-		departMent.setStrOrderNo(strOrderNo);
 		sysDepartMentDao.save(departMent);
 	}
 
@@ -449,5 +459,11 @@ public class SysUserServiceImpl implements SysUserService{
 			sysDepartMentDao.saveOrUpdate(sysDepartMent);
 		}
 		
+	}
+
+
+	@Override
+	public SysDepartMent findDepartMentById(Integer id) {
+		return sysDepartMentDao.get(SysDepartMent.class, id);
 	}
 }

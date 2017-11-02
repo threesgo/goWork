@@ -92,14 +92,14 @@ public class SysDepartMentAction extends AbstractLoginAction{
 		JSONObject json=null;
 		if(null==id){
 			json=new JSONObject();
-			json.put("id","root");
+			json.put("id",0);
 			json.put("text","部门列表");
 			json.put("state", "closed");
-			JSONObject obj = new JSONObject();
+			/*JSONObject obj = new JSONObject();
 			obj.put("id",-1);
-			json.put("attributes",obj);
+			json.put("attributes",obj);*/
 			jsoArr.add(json);
-		}else if(id.startsWith("root")){
+		}else if("0".equals(id)){
 			List<SysDepartMent> listSysDepartMent = sysUserService.findDepartMentByParentId(0);
 			JSONObject jso=null;
 			for(SysDepartMent departMent:listSysDepartMent){
@@ -157,8 +157,8 @@ public class SysDepartMentAction extends AbstractLoginAction{
 	 * root-所有部门列表
 	 * </p>
 	 */
-	public String listDepartMent(){
-		List<SysDepartMent> list = sysUserService.findAllDepartMent();
+	public String listChildrenDepartMent(){
+		List<SysDepartMent> list = sysUserService.findDepartMentByParentId(Integer.valueOf(parentId));
 		return ajaxJSONArr(list);
 	}
 	
@@ -229,6 +229,9 @@ public class SysDepartMentAction extends AbstractLoginAction{
 	 * </p>
 	 */
 	public String preAddOrEdit(){
+		if(null != sysDepartMent.getId()){
+			sysDepartMent = sysUserService.findDepartMentById(sysDepartMent.getId());
+		}
 		return "preAddOrEdit";
 	}
 	
@@ -256,18 +259,23 @@ public class SysDepartMentAction extends AbstractLoginAction{
 	}*/
 	
 	/**
-	 * <p>部门列表-保部门信息</p>
+	 * <p>部门列表-保存部门信息</p>
 	 */
 	public String saveOrUpdate(){
 		if(sysDepartMent.getId() == null){
 			if(sysUserService.isExistDepartMent(sysDepartMent.getCode())){
-				sysUserService.saveSysDepartMent(sysDepartMent);
+				sysUserService.saveOrUpadateSysDepartMent(sysDepartMent);
 				return success(getText("添加成功"),JSONObject.fromObject(sysDepartMent));
 			}else{
 				return error(getText("该部门已存在"));
 			}
 		}else{
-			return null;
+			if(sysUserService.isExistDepartMentWithoutSelf(sysDepartMent.getCode(), sysDepartMent.getId())){
+				sysUserService.saveOrUpadateSysDepartMent(sysDepartMent);
+				return success(getText("编辑成功"),JSONObject.fromObject(sysDepartMent));
+			}else{
+				return error(getText("该部门已存在"));
+			}
 		}
 	}
 	
@@ -276,10 +284,6 @@ public class SysDepartMentAction extends AbstractLoginAction{
 	 */
 	public String deleteDepartMent(){
 		try{
-			/*List<SysDepartMent> list = sysUserService.findDepartMentByParentId(sysDepartMent.getId());
-			if(list.size()>0){
-				return error("请先删除该部门下的子部门");
-			}*/
 			sysUserService.deleteDepartMentById(ids);							
 			return success("删除成功");
 		}catch(Exception e){

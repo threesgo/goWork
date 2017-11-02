@@ -69,7 +69,7 @@ public interface SysUserService {
 	
 	public List<SysDepartMent> findDepartMentByParentId(Integer parentId);
 	
-	public void saveSysDepartMent(SysDepartMent sysDepartMent);
+	public void saveOrUpadateSysDepartMent(SysDepartMent sysDepartMent);
 	
 	public List<SysDepartMent> findAllDepartMent();
 
@@ -82,4 +82,8 @@ public interface SysUserService {
 	public void deletePositionByIds(String ids);
 	
 	public void deleteDepartMentById(String ids);
+	
+	public SysDepartMent findDepartMentById(Integer id);
+	
+	public boolean isExistDepartMentWithoutSelf(String code,Integer id);
 }
