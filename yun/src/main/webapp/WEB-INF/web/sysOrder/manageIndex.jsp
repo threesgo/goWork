@@ -135,8 +135,8 @@
 	 			var node = sysOrderTree.tree("getSelected");
 	 			var dialog = $('<div id="addOrderFlow"></div>').dialog({    
 					href : "sysOrderAction!saveOrUpdateOrderFlowPage.act",
-					width:350,
-					height:250,
+					width:600,
+					height:380,
 					title:"新增订单步骤",
 					method:'post',
 					queryParams:{"sysOrderFlow.orderId":node.attributes.id},
@@ -191,8 +191,8 @@
 	 			var node = sysOrderTree.tree("getSelected");
 	 			var dialog = $('<div id="addOrderFlow"></div>').dialog({    
 					href : "sysOrderAction!saveOrUpdateOrderFlowPage.act",
-					width:350,
-					height:250,
+					width:600,
+					height:380,
 					title:"编辑订单步骤",
 					method:'post',
 					queryParams:{"sysOrderFlow.id":node.attributes.id},

@@ -4,18 +4,13 @@
 	<input type="hidden" name="sysOrderFlow.id" value="${sysOrderFlow.id}"/>
 	<input type="hidden" name="sysOrderFlow.orderId" value="${sysOrderFlow.orderId}"/>  
     <div>   
-        <label for="edit_name">名称:</label>   
-        <input class="easyui-validatebox" id="edit_name" name="sysOrderFlow.name" 
-        style="width:200px;" data-options="required:true,validType:['length[1,40]','illegal']" value="${sysOrderFlow.name}"/>   
-    </div>
-    
-    <div>   
-        <label for="edit_name">名称:</label>   
+        <label for="edit_name">步骤名称:</label>   
         <input class="easyui-validatebox" id="edit_name" name="sysOrderFlow.name" 
         style="width:200px;" data-options="required:true,validType:['length[1,40]','illegal']" value="${sysOrderFlow.name}"/>   
     </div>
     
     <div>
+    	<label for="edit_name">工程类别:</label>   
     	<s:select id="type" 
        		list="flowList" style="width:200px;height:22px"
 	       	listKey="value"   
