@@ -44,5 +44,5 @@ $(function(){
 <table id="sysOrderInfoTable"></table>
 <div id="order_info_bar">
 	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add', plain:true" 
-		onclick="sysOrderOperation.addOrderFlow()">新增步骤</a>
+		onclick="sysOrderFlowOperation.addOrderFlow()">新增步骤</a>
 </div>
