@@ -11,7 +11,7 @@
 		var sysOrderTree;
  		var sysOrderTab;
  		var $sysOrderInfoTable;
- 		var sysOrderOperation = {};
+ 		var sysOrderFlowOperation = {};
 		$(function(){
 			//添加树结构
 	 		sysOrderTree=$('#sysOrderTree').tree(
@@ -126,17 +126,16 @@
 	 		}); 
 		});
 	 		
-	 	sysOrderOperation = {
+	 	sysOrderFlowOperation = {
 	 		reload:function(){
 	 			sysOrderTree.tree("reload");
 	 		},
-	 		
 	 		addOrderFlow:function(){
 	 			var node = sysOrderTree.tree("getSelected");
 	 			var dialog = $('<div id="addOrderFlow"></div>').dialog({    
 					href : "sysOrderAction!saveOrUpdateOrderFlowPage.act",
-					width:350,
-					height:250,
+					width:600,
+					height:380,
 					title:"新增订单步骤",
 					method:'post',
 					queryParams:{"sysOrderFlow.orderId":node.attributes.id},
@@ -186,13 +185,12 @@
 					}
 	 			});
 	 		},
-	 		
 	 		updateOrderFlow:function(){
 	 			var node = sysOrderTree.tree("getSelected");
 	 			var dialog = $('<div id="addOrderFlow"></div>').dialog({    
 					href : "sysOrderAction!saveOrUpdateOrderFlowPage.act",
-					width:350,
-					height:250,
+					width:600,
+					height:380,
 					title:"编辑订单步骤",
 					method:'post',
 					queryParams:{"sysOrderFlow.id":node.attributes.id},
@@ -250,10 +248,10 @@
 			<ul id="sysOrderTree"></ul>
 			<div  id="order_bar">
 				<!-- 
-				<a href="#" class="bullet_arrow_down" id="expandAll" onclick="sysOrderOperation.expand()">展开子集分类</a>
-				<a href="#" class="bullet_arrow_up" id="collapseAll" style="display: none;" onclick="sysOrderOperation.collapse()">折叠子集分类</a>
+				<a href="#" class="bullet_arrow_down" id="expandAll" onclick="sysOrderFlowOperation.expand()">展开子集分类</a>
+				<a href="#" class="bullet_arrow_up" id="collapseAll" style="display: none;" onclick="sysOrderFlowOperation.collapse()">折叠子集分类</a>
 		       	 -->
-		       	<a href="#" class="icon-reflesh" onclick="sysOrderOperation.reload()">刷新</a>
+		       	<a href="#" class="icon-reflesh" onclick="sysOrderFlowOperation.reload()">刷新</a>
 		     </div>
 		</div>
 		<div data-options="region:'center',split:true,title:''" border="false">
