@@ -46,7 +46,6 @@ public class ResourcePackageAction extends AbstractLoginAction{
 	
 	@Autowired
 	private SysRsRcPackageService sysRsRcPackageService;
-	
 	@Autowired
 	private SysSupplierService sysSupplierService;
 	

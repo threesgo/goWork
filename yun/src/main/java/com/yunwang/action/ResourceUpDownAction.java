@@ -29,13 +29,16 @@ import org.apache.struts2.convention.annotation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.yunwang.model.pojo.SysResource;
+import com.yunwang.model.pojo.SysResourceRel;
 import com.yunwang.model.pojo.SysRsRcAttrib;
 import com.yunwang.model.pojo.SysRsRcAttribCatalog;
 import com.yunwang.model.pojo.SysRsRcBaseData;
 import com.yunwang.model.pojo.SysRsRcCatalog;
+import com.yunwang.model.pojo.SysRsRcPackage;
 import com.yunwang.model.pojo.SysSupplier;
 import com.yunwang.service.SysResourceService;
 import com.yunwang.service.SysResourceTypeService;
+import com.yunwang.service.SysRsRcPackageService;
 import com.yunwang.service.SysSupplierService;
 import com.yunwang.util.PoiUtil;
 import com.yunwang.util.SysRcBaseDataTypeUtil;
@@ -69,13 +72,16 @@ public class ResourceUpDownAction extends AbstractUpDownAction{
 	
 	private SysRsRcCatalog sysRsRcCatalog;
 	
+	private SysRsRcPackage sysRsRcPackage;
+	
 	@Autowired
 	private SysResourceService sysResourceService;
 	@Autowired
 	private SysResourceTypeService sysResourceTypeService;
 	@Autowired
 	private SysSupplierService sysSupplierService;
-	
+	@Autowired
+	private SysRsRcPackageService sysRsRcPackageService;
 	
 	/** 
 	  * importResourcePage() method
@@ -181,7 +187,7 @@ public class ResourceUpDownAction extends AbstractUpDownAction{
 			List<SysRsRcAttribCatalog> attrList,
 			Map<Integer,SysSupplier> supplierMap)  {
 	    Workbook wb = new HSSFWorkbook();
-		Sheet sheet = wb.createSheet("exportResource");
+		Sheet sheet = wb.createSheet("产品列表");
 		int nCol = 0;  //列编号
 		int nRow = 0;  //行编号
 		List<String> results = new ArrayList<String>();
@@ -507,6 +513,100 @@ public class ResourceUpDownAction extends AbstractUpDownAction{
 		return null;
 	}
 	
+	
+
+	public String exportPackageRelResource(){
+		sysRsRcPackage = sysRsRcPackageService.get(sysRsRcPackage.getId());
+		exportResourceFileName = sysRsRcPackage.getName()+".xls";
+		List<SysResourceRel> resourceRels = sysRsRcPackageService.findPackageResourceData(sysRsRcPackage.getId());
+		Workbook workbook=null;
+        try {
+            workbook = exportPackageResourceExcel(resourceRels);
+        } catch (Exception e) {
+            LOG.error(e.getMessage());
+        }
+		ByteArrayOutputStream output = new ByteArrayOutputStream();
+		try{
+		    workbook.write(output);
+	        byte[] ba = output.toByteArray();
+	        exportResourceStream = new ByteArrayInputStream(ba);
+		}catch(Exception e){
+		    LOG.error(e.getMessage());
+		}finally{
+		    try {
+                output.flush();
+                output.close();
+            } catch (IOException e) {
+                LOG.error(e.getMessage());
+            }
+		}
+		return "exportResource";
+	}
+	
+	
+	
+	private Workbook exportPackageResourceExcel(
+			List<SysResourceRel> resourceRels) {
+
+	    Workbook wb = new HSSFWorkbook();
+		Sheet sheet = wb.createSheet("套餐产品");
+		int nCol = 0;  //列编号
+		int nRow = 0;  //行编号
+		List<String> results = new ArrayList<String>();
+		//results.add(getText("工种"));
+		results.add(getText("产品描述"));
+		results.add(getText("产品名称"));
+		results.add(getText("产品价格"));
+		results.add(getText("品牌"));
+		
+		// 创建单元格样式
+		CellStyle style = wb.createCellStyle();
+		style.setAlignment(HSSFCellStyle.ALIGN_LEFT);
+		style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+		// 创建Excel的sheet的一行
+		Row row = sheet.createRow(nRow++);
+	    Cell cell =null;
+		row.setHeightInPoints(15);// 设定行的高度
+		nCol = 0;
+		for (String s : results) {
+			if("产品描述".equals(s)){
+				sheet.setColumnWidth(nCol, 10000);
+			}else{
+				sheet.setColumnWidth(nCol, 4000);
+			}
+			cell = row.createCell(nCol++);
+			cell.setCellStyle(style);
+			cell.setCellValue(s);
+		}
+		
+		for(SysResourceRel resourceRel:resourceRels){
+			//打包表格数据
+			row = sheet.createRow(nRow++);
+			nCol=0;
+			
+//			cell = row.createCell(nCol++);
+//			cell.setCellStyle(style);
+//			cell.setCellValue(BaseDataDictionaryUtil.valueMap.get(4).get(obj.getString("workType")).getName());
+			
+			cell = row.createCell(nCol++);
+			cell.setCellStyle(style);
+			cell.setCellValue(resourceRel.getKeyWord());
+			
+			cell = row.createCell(nCol++);
+			cell.setCellStyle(style);
+			cell.setCellValue(resourceRel.getAbbreviaName());
+			
+			cell = row.createCell(nCol++);
+			cell.setCellStyle(style);
+			cell.setCellValue(resourceRel.getSalePrice().toString());
+			
+			cell = row.createCell(nCol++);
+			cell.setCellStyle(style);
+			cell.setCellValue(resourceRel.getBrand());
+		}
+		return wb;
+	}
+
 	/**
 	 * @author 方宜斌
 	 * <b>验证数据类型</b>
@@ -642,4 +742,13 @@ public class ResourceUpDownAction extends AbstractUpDownAction{
 	public void setSysRsRcCatalog(SysRsRcCatalog sysRsRcCatalog) {
 		this.sysRsRcCatalog = sysRsRcCatalog;
 	}
+
+	public SysRsRcPackage getSysRsRcPackage() {
+		return sysRsRcPackage;
+	}
+
+	public void setSysRsRcPackage(SysRsRcPackage sysRsRcPackage) {
+		this.sysRsRcPackage = sysRsRcPackage;
+	}
+	
 }

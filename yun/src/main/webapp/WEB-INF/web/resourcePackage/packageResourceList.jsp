@@ -214,6 +214,14 @@ packageResourceOperation = {
 		});
 	},
 	
+	downResource:function(){
+		Some.util.newDownLoad({
+			url:"resourceUpDownAction!exportPackageRelResource.act?sysRsRcPackage.id=${sysRsRcPackage.id}",
+			handler:function(){
+			}
+		});	
+	},
+	
 	search:function(){
 		var searchData = {};
 		searchData["keyWord"] = $("#searchForm #keyWord").val();
@@ -304,4 +312,5 @@ packageResourceOperation = {
 <div  id="package_resource_operation_bar">
     <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add', plain:true" onclick="packageResourceOperation.addResource()">新增</a>
 	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove', plain:true" onclick="packageResourceOperation.deleteResource()">删除</a>
+	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-upload', plain:true" onclick="packageResourceOperation.downResource()">导出</a>
 </div> 

@@ -43,9 +43,9 @@
 	          	onSelect: function(index,row){
 	          		
 	   	  	  	},
-	   	  	  	
-	   	  		frozenColumns:[[
- 	        		{field:'ck',checkbox:true},
+	   	  		//frozenColumns:[[]],
+ 	 			columns:[[
+ 	 				{field:'ck',checkbox:true},
  	        		{field:'workTime',title:"工时(天)",width:80,sortable:true
 		   	  		    ,editor:{
 			   	  		   type:"numberbox",
@@ -72,9 +72,7 @@
  	 							return value;
  	 						}
  	 					} 
- 	 		        }
- 	            ]],
- 	 			columns:[[
+ 	 		        },
  	 				{field:'phoneNum',title: "手机号码",width:100,sortable:true
  	 					
  	 				},
