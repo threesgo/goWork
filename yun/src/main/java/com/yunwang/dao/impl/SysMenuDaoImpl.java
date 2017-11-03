@@ -20,4 +20,16 @@ public class SysMenuDaoImpl extends BaseDaoImpl<SysMenu> implements SysMenuDaoI{
 				+"WHERE model.id = roleMenu.menuId AND roleMenu.roleId=:roleId "
 				+"ORDER BY model.id",map);
 	}
+
+	@Override
+	public List<SysMenu> findMenuByRoleIdAndViewType(Integer roleId,
+			Integer viewType) {
+		Map<String, Object> map = new HashMap<String,Object>();
+		map.put("roleId",roleId);
+		map.put("viewType",viewType);
+		return find("SELECT model FROM SysMenu model,SysRoleMenu roleMenu " 
+				+"WHERE model.id = roleMenu.menuId AND roleMenu.roleId=:roleId " +
+				"AND model.viewType=:viewType"
+				+"ORDER BY model.id",map);
+	}
 }

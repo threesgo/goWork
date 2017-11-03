@@ -26,24 +26,24 @@
 				<span style="color: red;font-size:14;margin-right: 5px;">*</span>
 				<label >原密码：</label>
 				<input name="oldPassword" id="oldPassword" type="password" class="easyui-validatebox" 
-     					    data-options="required:true,validType:['length[6,32]','illegal'],invalidMessage:'请输入原密码'" style="margin-left: 12px"/>
+     					    data-options="required:true,validType:['length[5,32]','illegal'],missingMessage:'请输入原密码'" style="margin-left: 12px"/>
 			</div>
 			
 			<div class="ji">
 				<span style="color: red;font-size:14;margin-right: 5px;">*</span>
 				<label>新密码：</label>
 				<input  name="sysUser.passWord" id="password" type="password" class="easyui-validatebox" 
-     					    data-options="required:true,validType:['length[6,32]','illegal'],
-     					    			  invalidMessage:'请输入新密码'" style="margin-left: 12px"/>
+     					    data-options="required:true,validType:['length[5,32]','illegal'],
+     					    			  missingMessage:'请输入新密码'" style="margin-left: 12px"/>
    			    
 			</div>
 			
 			<div class="ji">
 				<span style="color: red;font-size:14;margin-right: 5px;">*</span>
 				<label>确认密码：</label>
-				<input  type="password" class="easyui-validatebox" 
+				<input  type="password" class="easyui-validatebox" id="cfmPassword"
      					    data-options="required:true,validType:['equals[\'#password\']','illegal'],
-     					    			  invalidMessage:'两次密码不一致'"/>
+     					    			  missingMessage:'两次密码不一致'"/>
 			</div>
 		</form>
 	</body> 

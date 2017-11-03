@@ -43,7 +43,6 @@ public class MethodInterceptor extends MethodFilterInterceptor{
 		}finally{
 			releaseDownloadLock(ServletActionContext.getRequest().getSession(),methodValue);
 		}
-		
 //		ctx.getSession()
 //		UsrSmUser adm = (UsrSmUser) ctx.getSession().get(SessionConstant.SESSION_ADMIN);
 //		System.out.println(adm.getUserName());

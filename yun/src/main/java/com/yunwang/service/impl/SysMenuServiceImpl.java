@@ -130,5 +130,18 @@ public class SysMenuServiceImpl implements SysMenuService{
 		return map;
 	}
 
+	/**
+	 * @Description:根据角色id查找菜单
+	 * @param   
+	 * @return  
+	 * @throws
+	 * @author KXL
+	 * @date 2017-11-3
+	 */
+	@Override
+	public List<SysMenu> findRelMenuByRoleIdAndViewType(Integer roleId,Integer viewType) {
+		return sysMenuDao.findMenuByRoleIdAndViewType(roleId,viewType);
+	}
+
 
 }

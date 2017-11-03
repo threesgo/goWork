@@ -7,13 +7,17 @@ import net.sf.json.JSONObject;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.convention.annotation.Action;
+import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.yunwang.model.page.Pager;
+import com.yunwang.model.pojo.SysMenu;
 import com.yunwang.model.pojo.SysUser;
+import com.yunwang.service.SysMenuService;
 import com.yunwang.service.SysUserService;
 import com.yunwang.util.action.AbstractLoginAction;
+import com.yunwang.util.string.SecurityUtil;
 
 @Action(value = "sysUserAction", results = {
 		@Result(name="index",location="/WEB-INF/web/sysUser/index.jsp")//用户管理主页面
@@ -23,6 +27,7 @@ import com.yunwang.util.action.AbstractLoginAction;
 		
 	}
 )
+@ParentPackage("AuthorityInterceptor")
 public class SysUserAction extends AbstractLoginAction{
 
 	private final static Logger LOG =Logger.getLogger(SysUserAction.class);
@@ -35,12 +40,15 @@ public class SysUserAction extends AbstractLoginAction{
 	
 	@Autowired
 	private SysUserService sysUserService;
+	@Autowired
+	private SysMenuService sysMenuService;
 	
 	private SysUser sysUser;
 	private Integer roleId;
 	private String filterJsons;
 	private String roleIds;
 	private String userId;
+	private String oldPassword;
 	
 	/*
 	 * @date 2017-9-29
@@ -149,6 +157,9 @@ public class SysUserAction extends AbstractLoginAction{
 	public String updateUserRoleDefault(){
 		try{
 			sysUserService.updateUserRoleDefault(sessionAdm.getId(),roleId);
+			//获取默认角色所关联的菜单
+			List<SysMenu> listMenu = sysMenuService.findRelMenuByRoleIdAndViewType(roleId, 2);
+			sessionMap.put("defaultMenu",listMenu);
 			return success("更新默认角色成功!");
 		}catch(Exception e){
 			LOG.error(e.getMessage());
@@ -158,21 +169,16 @@ public class SysUserAction extends AbstractLoginAction{
 
 	public String updatePassword(){
 		SysUser updateUser = sysUserService.get(sysUser.getId());
-		/*try{
+		try{
 			if(!SecurityUtil.getMD5(oldPassword).equals(updateUser.getPassWord())){
-			    throw new AmeException(getText("the_original_password_input_error_please_check"));
+			   return error("原始密码不正确,请重新填写");
 			}
-			//判断是否为安全密码
-			if(!MyStringUtil.isSafePwd(usrSmUser.getPassword())){
-				throw new AmeException(getText("password_security_level_is_low"));
-			}
-			updateUser.setPassword(SecurityUtil.getMD5(usrSmUser.getPassword()));
-			usrSmUserService.update(updateUser);
-			return success(getText("password_modification_success"));
+			updateUser.setPassWord(SecurityUtil.getMD5(sysUser.getPassWord()));
+			sysUserService.update(updateUser);
+			return success("密码修改成功");
 		}catch(Exception e){
-		    return error(handlerException(e,getText("password_modification_failed")));
-		}*/
-		return null;
+		    return error("密码修改失败");
+		}
 	}
 
 	public Integer getRoleId() {
@@ -214,4 +220,15 @@ public class SysUserAction extends AbstractLoginAction{
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
+
+
+	public String getOldPassword() {
+		return oldPassword;
+	}
+
+
+	public void setOldPassword(String oldPassword) {
+		this.oldPassword = oldPassword;
+	}
+	
 }

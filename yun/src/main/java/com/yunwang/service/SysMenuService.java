@@ -18,5 +18,7 @@ public interface SysMenuService {
 	public List<SysMenu> findAll();
 	
 	public List<Object> findMenuByRoleId(Integer roleId);
+	
+	public List<SysMenu> findRelMenuByRoleIdAndViewType(Integer roleId,Integer viewType);
 		
 }

@@ -103,19 +103,23 @@
 				    	text: '确认',
 				    	iconCls: 'icon-ok',
 				    	handler: function () {
-				    		var $update_form=$("#modify_password_form");
+				    		//var $update_form=$("#modify_password_form");
 				    		new Some.form({
 									render:"#modify_password_form",
 									success:function(data){
 										handlerResult(data,function(rs){
 											$show(rs.message);
-											$update_form[0].reset();
+											modifyPwdDialog.dialog("destroy");
+											//$update_form[0].reset();
 										},function(rs){
 											$show(rs.message);
 										});
-									}
+									},
+									onSubmit: function(){    
+								       
+								    }
 								}).submit();  
-				    		modifyPassWord(modifyPwdDialog);
+				    		//modifyPassWord(modifyPwdDialog);
 				    	}
 				   },
 				    	{
@@ -124,7 +128,7 @@
 				        handler: function () {
 				        	modifyPwdDialog.dialog("destroy");
 				        }
-			    	}]
+			     }]
 				});
 			}
 		);

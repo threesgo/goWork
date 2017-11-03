@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.yunwang.model.pojo.SysMenu;
 import com.yunwang.model.pojo.SysRole;
+import com.yunwang.service.SysMenuService;
 import com.yunwang.service.SysUserService;
 import com.yunwang.util.action.AbstractLoginAction;
 
@@ -33,6 +34,8 @@ public class MainAction extends AbstractLoginAction{
 	
 	@Autowired
 	private SysUserService sysUserService;
+	@Autowired
+	private SysMenuService sysMenuService;
 	
 	private Integer roleId;
 	
@@ -46,6 +49,11 @@ public class MainAction extends AbstractLoginAction{
 	public String execute() throws Exception {
 		//获取用户的默认角色
 		defaultRole = sysUserService.getDefaultRoleByUserId(sessionAdm.getId());
+		//获取默认角色所关联的菜单
+		if(null != defaultRole){
+			List<SysMenu> listMenu = sysMenuService.findRelMenuByRoleIdAndViewType(defaultRole.getId(),2);
+			sessionMap.put("defaultMenu",listMenu);
+		}
 		return "index";
 	}
 	

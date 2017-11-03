@@ -34,6 +34,7 @@
 			
 			<interceptor name="itcp_method" class="com.yunwang.interceptor.MethodInterceptor"/>
 			
+			<interceptor name="itcp_authority" class="com.yunwang.interceptor.AuthorityInterceptor"/>
 			
 			<interceptor-stack name="loginInterceptor">
 				<interceptor-ref name="defaultStack"/>
@@ -44,6 +45,11 @@
 				<interceptor-ref name="defaultStack"/>
 				<interceptor-ref name="itcp_login"/>
 				<interceptor-ref name="itcp_method"/>
+			</interceptor-stack>
+			
+			<interceptor-stack name="authorityInterceptor">
+				<interceptor-ref name="defaultStack"/>
+				<interceptor-ref name="itcp_authority"/>
 			</interceptor-stack>
 		</interceptors>
 		
@@ -60,5 +66,9 @@
 	
 	<package name="MethodInterceptor" extends="base">
 		<default-interceptor-ref name="methodInterceptor"/>
+	</package>
+	
+	<package name="AuthorityInterceptor" extends="base">
+		<default-interceptor-ref name="authorityInterceptor"/>
 	</package>
 </struts>    
