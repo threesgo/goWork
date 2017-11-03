@@ -33,7 +33,7 @@
     
     <div>   
         <label for="edit_info">步骤备注:</label>   
-        <input class="easyui-textbox" id="edit_info" type="text" name="ysOrderFlow.info"
+        <input class="easyui-textbox" id="edit_info" type="text" name="sysOrderFlow.info"
         style="width:460px;height: 80px" data-options="multiline:true,required:false,validType:['length[1,600]','illegal']" value="${sysOrderFlow.info}"/>   
     </div>
 </form>
