@@ -28,8 +28,8 @@ public class SysMenuDaoImpl extends BaseDaoImpl<SysMenu> implements SysMenuDaoI{
 		map.put("roleId",roleId);
 		map.put("viewType",viewType);
 		return find("SELECT model FROM SysMenu model,SysRoleMenu roleMenu " 
-				+"WHERE model.id = roleMenu.menuId AND roleMenu.roleId=:roleId " +
-				"AND model.viewType=:viewType"
-				+"ORDER BY model.id",map);
+				+" WHERE model.id = roleMenu.menuId AND roleMenu.roleId=:roleId " 
+				+" AND model.viewType=:viewType"
+				+" ORDER BY model.id",map);
 	}
 }
