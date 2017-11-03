@@ -91,8 +91,8 @@ public class SysResourceTypeServiceImpl implements SysResourceTypeService{
 
 	@Override
 	public List<SysRsRcAttribCatalog> findExtendsAttr(
-			SysRsRcCatalog sysRsRcCatalog) {
-		SysRsRcCatalog dbSysRsRcCatalog = sysRsRcCatalogDao.get(SysRsRcCatalog.class,sysRsRcCatalog.getId());
+			Integer sysRsRcCatalogId) {
+		SysRsRcCatalog dbSysRsRcCatalog = sysRsRcCatalogDao.get(SysRsRcCatalog.class,sysRsRcCatalogId);
 		List<Integer> parentIds = new ArrayList<Integer>();
 		if(null!=dbSysRsRcCatalog){
 			getParents(parentIds,dbSysRsRcCatalog);
@@ -112,8 +112,8 @@ public class SysResourceTypeServiceImpl implements SysResourceTypeService{
 	}
 
 	@Override
-	public List<SysRsRcAttribCatalog> findAttr(SysRsRcCatalog sysRsRcCatalog) {
-		return sysRsRcAttribCatalogDao.findByCatalogIds(sysRsRcCatalog.getId().toString());
+	public List<SysRsRcAttribCatalog> findAttr(Integer sysRsRcCatalogId) {
+		return sysRsRcAttribCatalogDao.findByCatalogIds(sysRsRcCatalogId.toString());
 	}
 
 	@Override
@@ -140,10 +140,10 @@ public class SysResourceTypeServiceImpl implements SysResourceTypeService{
 	}
 
 	@Override
-	public List<SysRsRcAttribCatalog> findAllAttr(SysRsRcCatalog sysRsRcCatalog) {
+	public List<SysRsRcAttribCatalog> findAllAttr(Integer sysRsRcCatalogId) {
 		List<SysRsRcAttribCatalog> attrs = new ArrayList<SysRsRcAttribCatalog>();
-		attrs.addAll(findExtendsAttr(sysRsRcCatalog));
-		attrs.addAll(findAttr(sysRsRcCatalog));
+		attrs.addAll(findExtendsAttr(sysRsRcCatalogId));
+		attrs.addAll(findAttr(sysRsRcCatalogId));
 		return attrs;
 	}
 
@@ -159,8 +159,8 @@ public class SysResourceTypeServiceImpl implements SysResourceTypeService{
 		SysRsRcCatalog sourceCatalog = sysRsRcCatalogDao.get(SysRsRcCatalog.class,sourceId);
 		SysRsRcCatalog targetCatalog = sysRsRcCatalogDao.get(SysRsRcCatalog.class,targetId);
 		if(point == 0){
-			List<SysRsRcAttribCatalog> sourceAttribCatalog = findExtendsAttr(sourceCatalog);
-			List<SysRsRcAttribCatalog> targetAttribCatalog = findExtendsAttr(targetCatalog);
+			List<SysRsRcAttribCatalog> sourceAttribCatalog = findExtendsAttr(sourceCatalog.getId());
+			List<SysRsRcAttribCatalog> targetAttribCatalog = findExtendsAttr(sourceCatalog.getId());
 			Map<Integer,SysRsRcAttribCatalog> map = CollectionUtil.listToMap(targetAttribCatalog, "id");
 			
 			for(SysRsRcAttribCatalog catalog : sourceAttribCatalog){

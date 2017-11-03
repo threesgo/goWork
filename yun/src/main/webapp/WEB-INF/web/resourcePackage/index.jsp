@@ -169,7 +169,7 @@
 		</script>
 	</head>
 	<body class="easyui-layout">
-		<div data-options="region:'west',split:true,tools:'#resource_package_bar'" title=" " style="width:200px;" border="false">
+		<div data-options="region:'west',split:true,tools:'#resource_package_bar'" title="套餐结构树" style="width:200px;" border="false">
 			<ul id="resourcePackageTree"></ul>
 			<div  id="resource_package_bar">
 		       <a href="#" class="icon-reflesh" onclick="resourcePackageOperation.reload()">刷新</a>

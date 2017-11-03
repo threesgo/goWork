@@ -2,12 +2,14 @@ package com.yunwang.service;
 
 import java.util.List;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import com.yunwang.model.page.Pager;
 import com.yunwang.model.pojo.SysResource;
 import com.yunwang.model.pojo.SysResourceRel;
 import com.yunwang.model.pojo.SysRsRcAttrib;
+import com.yunwang.model.pojo.SysRsRcAttribCatalog;
 import com.yunwang.model.pojo.SysRsRcCatalog;
 import com.yunwang.model.pojo.SysRsRcPackage;
 
@@ -42,4 +44,8 @@ public interface SysResourceService {
 			JSONObject seachObj);
 
 	void addRelResourceToPackage(Integer packageId,String ids);
+
+	SysResourceRel getRelResource(Integer relResourceId);
+
+	JSONArray getRelResourceInfo(Integer relResourceId, List<SysRsRcAttribCatalog> attrList);
 }

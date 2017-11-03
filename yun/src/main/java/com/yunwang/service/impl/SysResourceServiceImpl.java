@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -357,6 +358,7 @@ public class SysResourceServiceImpl implements SysResourceService{
 						sysRsRcAttribRel.setRsrcAttribCatalogId(attrib.getRsrcAttribCatalogId());
 						sysRsRcAttribRel.setRsrcCatalogId(attrib.getRsrcCatalogId());
 						sysRsRcAttribRel.setRsrcAttribValue(attrib.getRsrcAttribValue());
+						sysRsRcAttribRelDao.save(sysRsRcAttribRel);
 						attribCatalogIdList.add(attrib.getRsrcAttribCatalogId());
 					}
 				}
@@ -410,5 +412,56 @@ public class SysResourceServiceImpl implements SysResourceService{
 				sysRsRcPcResourceDao.save(sysRsRcPcResource);
 			}
 		}
+	}
+
+	@Override
+	public SysResourceRel getRelResource(Integer relResourceId) {
+		return sysResourceRelDao.get(SysResourceRel.class,relResourceId);
+	}
+
+	@Override
+	public JSONArray getRelResourceInfo(Integer relResourceId,List<SysRsRcAttribCatalog> attrList) {
+		SysResourceRel relResource = sysResourceRelDao.get(SysResourceRel.class,relResourceId);
+		List<SysRsRcAttribRel> attribRels = sysRsRcAttribRelDao.findByProperty("rsrcRelId",relResource.getId());
+		JSONArray arr = new JSONArray();
+		Map<Integer,SysRsRcAttribRel> map = CollectionUtil.listToMap(attribRels,"rsrcAttribCatalogId");
+		
+		JSONObject keyWord = new JSONObject();
+		keyWord.put("attrName", "产品关键字");
+		keyWord.put("value", relResource.getKeyWord());
+		arr.add(keyWord);
+		
+		JSONObject rsrcName = new JSONObject();
+		rsrcName.put("attrName", "产品名称");
+		rsrcName.put("value", relResource.getRsrcName());
+		arr.add(rsrcName);
+		
+		JSONObject abbreviaName = new JSONObject();
+		abbreviaName.put("attrName", "产品简称");
+		abbreviaName.put("value", relResource.getAbbreviaName());
+		arr.add(abbreviaName);
+		
+		JSONObject salePrice = new JSONObject();
+		salePrice.put("attrName", "产品价格");
+		salePrice.put("value", relResource.getSalePrice());
+		arr.add(salePrice);
+		
+		JSONObject brand = new JSONObject();
+		brand.put("attrName", "产品品牌");
+		brand.put("value", relResource.getBrand());
+		arr.add(brand);
+		
+		JSONObject releaseDate = new JSONObject();
+		releaseDate.put("attrName", "发布时间");
+		releaseDate.put("value", relResource.getReleaseDateStr());
+		arr.add(releaseDate);
+		
+		for(SysRsRcAttribCatalog attribCatalog:attrList){
+			JSONObject attr = new JSONObject();
+			attr.put("attrName", attribCatalog.getRsrcAttribName());
+			attr.put("value",map.get(attribCatalog.getId())!=null?map.get(attribCatalog.getId()).getRsrcAttribValue():"");
+			arr.add(attr);
+		}
+		return arr;
 	}
 }

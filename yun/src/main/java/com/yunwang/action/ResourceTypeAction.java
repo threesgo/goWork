@@ -143,14 +143,14 @@ public class ResourceTypeAction extends AbstractLoginAction{
 	 * @return 查找继承属性
 	 */
 	public String findExtendsAttr(){
-		return ajaxJSONArr(sysResourceTypeService.findExtendsAttr(sysRsRcCatalog));
+		return ajaxJSONArr(sysResourceTypeService.findExtendsAttr(sysRsRcCatalog.getId()));
 	}
 	
 	/**
 	 * @return 查找本身属性
 	 */
 	public String findAttr(){
-		return ajaxJSONArr(sysResourceTypeService.findAttr(sysRsRcCatalog));
+		return ajaxJSONArr(sysResourceTypeService.findAttr(sysRsRcCatalog.getId()));
 	}
 	
 	/**

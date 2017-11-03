@@ -92,6 +92,7 @@
 						    	title:'工人材料', 
 						    	href:"sysOrderAction!workerAndResourceByOrder.act?sysOrder.id="+node.attributes.id
 							});
+ 							/*
  							sysOrderTab.tabs('add',{    
 						    	title:'甘特图', 
 						    	href:"sysOrderAction!gtChart.act?sysOrder.id="+node.attributes.id
@@ -100,6 +101,7 @@
 						    	title:'费用分配图', 
 						    	href:"sysOrderAction!barChart.act?sysOrder.id="+node.attributes.id
 							});
+ 							*/
  						}else if("s" == idStart){
  							sysOrderTab.tabs('add',{    
 						    	title:'步骤信息', 
@@ -261,7 +263,7 @@
 		</script>
 	</head>
 	<body class="easyui-layout">
-		<div data-options="region:'west',split:true,tools:'#order_bar'" title=" " style="width:200px;" border="false">
+		<div data-options="region:'west',split:true,tools:'#order_bar'" title="订单结构树" style="width:200px;" border="false">
 			<ul id="sysOrderTree"></ul>
 			<div  id="order_bar">
 				<!-- 

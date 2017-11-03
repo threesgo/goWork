@@ -15,9 +15,9 @@ public interface SysResourceTypeService {
 
 	SysRsRcCatalog getRsRcCatalogInfo(Integer catalogId);
 
-	List<SysRsRcAttribCatalog> findExtendsAttr(SysRsRcCatalog sysRsRcCatalog);
+	List<SysRsRcAttribCatalog> findExtendsAttr(Integer sysRsRcCatalogId);
 
-	List<SysRsRcAttribCatalog> findAttr(SysRsRcCatalog sysRsRcCatalog);
+	List<SysRsRcAttribCatalog> findAttr(Integer sysRsRcCatalogId);
 
 	List<SysRsRcBaseData> findSysRcBaseDataTypeByGroup(String groupStr);
 
@@ -27,7 +27,7 @@ public interface SysResourceTypeService {
 
 	void deleteSysRsRcAttribCatalogs(String ids);
 
-	List<SysRsRcAttribCatalog> findAllAttr(SysRsRcCatalog sysRsRcCatalog);
+	List<SysRsRcAttribCatalog> findAllAttr(Integer sysRsRcCatalogId);
 
 	SysRsRcAttribCatalog getRsrcAttribName(SysRsRcAttribCatalog sysRsRcAttribCatalog);
 

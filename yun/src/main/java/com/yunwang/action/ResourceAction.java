@@ -42,9 +42,8 @@ import com.yunwang.util.string.StringBufferByCollectionUtil;
 		@Result(name="importResourcePage",location="/WEB-INF/web/resource/importResourcePage.jsp"),
 		@Result(name="resourceSelect",location="/WEB-INF/web/resource/resourceSelect.jsp"),
 		@Result(name="selectResourceList",location="/WEB-INF/web/resource/selectResourceList.jsp"),
-		@Result(name="relResourceSelect",location="/WEB-INF/web/releaseResource/relResourceSelect.jsp")
-		
-		
+		@Result(name="relResourceSelect",location="/WEB-INF/web/releaseResource/relResourceSelect.jsp"),
+		@Result(name="relResourceInfo",location="/WEB-INF/web/releaseResource/relResourceInfo.jsp")
 	}
 )
 public class ResourceAction extends AbstractLoginAction{
@@ -74,6 +73,7 @@ public class ResourceAction extends AbstractLoginAction{
 	private String resourceJsonStr;
 	private List<SysSupplier> sysSuppliers;
 	private SysRsRcPackage sysRsRcPackage;
+	private SysResourceRel sysResourceRel;
 	
 	@Override
 	public String execute() throws Exception {
@@ -88,8 +88,8 @@ public class ResourceAction extends AbstractLoginAction{
 	private void initResourceListData() {
 		//sysRsRcCatalog = sysResourceTypeService.getRsRcCatalogInfo(sysRsRcCatalog.getId());
 		attribCatalogs = new ArrayList<SysRsRcAttribCatalog>();
-		attribCatalogs.addAll(sysResourceTypeService.findExtendsAttr(sysRsRcCatalog));
-		attribCatalogs.addAll(sysResourceTypeService.findAttr(sysRsRcCatalog));
+		attribCatalogs.addAll(sysResourceTypeService.findExtendsAttr(sysRsRcCatalog.getId()));
+		attribCatalogs.addAll(sysResourceTypeService.findAttr(sysRsRcCatalog.getId()));
 		
 		hashMap = new HashMap<String,Object>();
 		
@@ -135,8 +135,8 @@ public class ResourceAction extends AbstractLoginAction{
 		if(null!=pager && null!=pager.getData()){
 			List<SysResource> sysResources = (List<SysResource>) pager.getData();
   			attribCatalogs = new ArrayList<SysRsRcAttribCatalog>();
-  			attribCatalogs.addAll(sysResourceTypeService.findExtendsAttr(sysRsRcCatalog));
-  			attribCatalogs.addAll(sysResourceTypeService.findAttr(sysRsRcCatalog));
+  			attribCatalogs.addAll(sysResourceTypeService.findExtendsAttr(sysRsRcCatalog.getId()));
+  			attribCatalogs.addAll(sysResourceTypeService.findAttr(sysRsRcCatalog.getId()));
   			
   			List<SysRsRcAttrib> sysRsRcAttribs = sysResourceService.findSysRsRcAttribByResourceIds(
   					StringBufferByCollectionUtil.convertCollection(sysResources,"id"));
@@ -205,6 +205,32 @@ public class ResourceAction extends AbstractLoginAction{
 	}
 	
 	
+	
+	/**
+	 * @date 2017-11-3
+	 * @author YBF
+	 * @return
+	 * <p>基本信息页面</p>
+	 */
+	public String relResourceInfo(){
+		return "relResourceInfo";
+	}
+	
+	
+	/**
+	 * @date 2017-11-3
+	 * @author YBF
+	 * @return
+	 * <p>产品基本信息数据</p>
+	 */
+	public String relResourceInfoData(){
+		sysResourceRel = sysResourceService.getRelResource(sysResourceRel.getId());
+		List<SysRsRcAttribCatalog> attrList =  sysResourceTypeService.findAllAttr(sysResourceRel.getRsrcCatalogId());
+		JSONArray arr = sysResourceService.getRelResourceInfo(sysResourceRel.getId(),attrList);
+		return ajaxText(arr);
+	}
+	
+	
 	/**
 	 * @return 资源选择页面
 	 */
@@ -215,8 +241,8 @@ public class ResourceAction extends AbstractLoginAction{
 	
 	public String addPage(){
 		attribCatalogs = new ArrayList<SysRsRcAttribCatalog>();
-		attribCatalogs.addAll(sysResourceTypeService.findExtendsAttr(sysRsRcCatalog));
-		attribCatalogs.addAll(sysResourceTypeService.findAttr(sysRsRcCatalog));
+		attribCatalogs.addAll(sysResourceTypeService.findExtendsAttr(sysRsRcCatalog.getId()));
+		attribCatalogs.addAll(sysResourceTypeService.findAttr(sysRsRcCatalog.getId()));
 		flowList = BaseDataDictionaryUtil.baseDataMap.get(4);
 		return "addPage";
 	}
@@ -430,5 +456,13 @@ public class ResourceAction extends AbstractLoginAction{
 
 	public void setSysRsRcPackage(SysRsRcPackage sysRsRcPackage) {
 		this.sysRsRcPackage = sysRsRcPackage;
+	}
+
+	public SysResourceRel getSysResourceRel() {
+		return sysResourceRel;
+	}
+
+	public void setSysResourceRel(SysResourceRel sysResourceRel) {
+		this.sysResourceRel = sysResourceRel;
 	}
 }

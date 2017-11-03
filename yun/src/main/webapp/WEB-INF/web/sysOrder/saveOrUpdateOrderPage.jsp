@@ -86,7 +86,7 @@
     <div>   
         <label for="edit_info">订单备注:</label>   
         <input class="easyui-textbox" id="edit_info" type="text" name="sysOrder.info"
-        style="width:460px;height: 80px" data-options="required:false,validType:['length[1,600]','illegal']" value="${sysOrder.info}"/>   
+        style="width:460px;height: 80px" data-options="multiline:true,required:false,validType:['length[1,600]','illegal']" value="${sysOrder.info}"/>   
     </div>
 </form>
 

@@ -8,29 +8,6 @@ var flowObj = new Function("return " + '${hashMap.flowObj}')();
 var supplierObj = new Function("return " + '${hashMap.supplierObj}')();
 
 $(function(){
- 	columns=[];
-	columns.push(
-		{field:'supplierId',title:"供应商名称",width:100,sortable:true,
-			formatter:function(value, rowData) {
-				if(value == 0 ){
-					return "";
-				}
-				return supplierObj[value];
-			} 
-        },
-        {field:'supplier',title:"供应商联系人",width:100,sortable:true
-        	
-        },
-        {field:'supplierPhone',title:"联系人手机",width:100,sortable:true
-        
-        },
-        {field:'supplierTel',title:"供应商电话",width:100,sortable:true
-        	
-        }
-        ,{field:'supplierAddress',title:"供应商地址",width:450,sortable:true
-        	
-        }
-	);
  	$packageResourceGrid=$("#packageResourceGrid").datagrid({
         fitColumns:false,
         striped:true,
@@ -53,36 +30,80 @@ $(function(){
         },
         onLoadSuccess:function(data){
         },
-        frozenColumns:[[
-	        {field:'ck',checkbox:true},
-			{field:'keyWord',title:"产品关键词",width:200,sortable:true
-	        	
-	        },
-	        {field:'workType',title:"工种",width:80,sortable:true,
-				formatter : function(value, rowData) {
-					return flowObj[value];
-				} 
-	 		},
-	        {field:'rsrcName',title:"产品名称",width:80,sortable:true
-	        	
-	        },
-	        {field:'abbreviaName',title:"产品简称",width:80,sortable:true
-	        	
-	        },
-	        {field:'salePrice',title:"销售价格",width:80,sortable:true,align:'right'
-	        	,formatter:function(value, rowData) {
-					if(value == 0){
-						return 0;
-					}else{
-						return value;
+        //frozenColumns:[[]],
+	    columns:[[
+            {field:'ck',checkbox:true},
+ 			{field:'keyWord',title:"产品关键词",width:200,sortable:true
+ 	        	
+ 	        },
+ 	        {field:'workType',title:"工种",width:80,sortable:true,
+ 				formatter : function(value, rowData) {
+ 					return flowObj[value];
+ 				} 
+ 	 		},
+ 	        {field:'rsrcName',title:"产品名称",width:80,sortable:true
+ 	        	
+ 	        },
+ 	        {field:'abbreviaName',title:"产品简称",width:80,sortable:true
+ 	        	
+ 	        },
+ 	        {field:'salePrice',title:"销售价格",width:80,sortable:true,align:'right'
+ 	        	,formatter:function(value, rowData) {
+ 					if(value == 0){
+ 						return 0;
+ 					}else{
+ 						return value;
+ 					}
+ 				} 
+ 	       	},
+ 	       	{field:'brand',title:"品牌",width:80,sortable:true
+ 	        	
+ 	       	},
+			{field:'supplierId',title:"供应商名称",width:100,sortable:true,
+				formatter:function(value, rowData) {
+					if(value == 0 ){
+						return "";
 					}
+					return supplierObj[value];
 				} 
-	       	},
-	       	{field:'brand',title:"品牌",width:80,sortable:true
-	        	
-	       	}
-        ]],
-	    columns:[columns],
+			},
+			{field:'supplier',title:"供应商联系人",width:100,sortable:true
+				
+			},
+			{field:'supplierPhone',title:"联系人手机",width:100,sortable:true
+			
+			},
+			{field:'supplierTel',title:"供应商电话",width:100,sortable:true
+				
+			}
+			,{field:'supplierAddress',title:"供应商地址",width:450,sortable:true
+				
+			}     
+	   	]],
+	   	onDblClickRow:function(index, row){
+        	var relResourceInfoDialog = $('<div id="relResourceInfo"></div>').dialog({    
+				href : "resourceAction!relResourceInfo.act",
+				width:600,
+				height:380,
+				title:"产品信息",
+				method:'post',
+				queryParams:{"sysResourceRel.id":row.id},
+				modal:true,
+				resizable:true,
+				buttons:[
+					{
+						text:"取消",
+						iconCls:'icon-cancel',
+						handler:function(){
+							relResourceInfoDialog.dialog("destroy");
+						}
+					}
+				],
+				onClose:function(){
+					$(this).dialog("destroy");
+				}
+ 			});
+        },
 	    onDblClickCell:function(index, field, value) {
         },
 	    onAfterEdit:function(rowIndex,rowData,changes){

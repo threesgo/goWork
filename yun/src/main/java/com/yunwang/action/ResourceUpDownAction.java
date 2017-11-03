@@ -116,7 +116,7 @@ public class ResourceUpDownAction extends AbstractUpDownAction{
     	}else{
     		exportResourceFileName = "ALL_PRODUCT.xls";
     	}
-		List<SysRsRcAttribCatalog> attrList =  sysResourceTypeService.findAllAttr(sysRsRcCatalog);
+		List<SysRsRcAttribCatalog> attrList =  sysResourceTypeService.findAllAttr(sysRsRcCatalog.getId());
 		List<SysResource> sysResources = sysResourceService.findParentByRsRcCatalogId(sysRsRcCatalog.getId());
 		List<SysRsRcAttrib> sysRsRcAttribs = sysResourceService.findSysRsRcAttribByResourceIds(
 					StringBufferByCollectionUtil.convertCollection(sysResources,"id"));
@@ -312,7 +312,7 @@ public class ResourceUpDownAction extends AbstractUpDownAction{
 			throw new MineException("请选择具体的子集大类进行导入,确认产品属于具体的工程类别!");
 		}
 		
-		List<SysRsRcAttribCatalog> attrList =  sysResourceTypeService.findAllAttr(sysRsRcCatalog);
+		List<SysRsRcAttribCatalog> attrList =  sysResourceTypeService.findAllAttr(sysRsRcCatalog.getId());
 		
 		Map<String,SysRsRcAttribCatalog> attrMap = CollectionUtil.listToMap(attrList,"rsrcAttribName");
 		
