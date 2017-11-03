@@ -43,7 +43,9 @@ import com.yunwang.util.string.StringBufferByCollectionUtil;
 		@Result(name="resourceSelect",location="/WEB-INF/web/resource/resourceSelect.jsp"),
 		@Result(name="selectResourceList",location="/WEB-INF/web/resource/selectResourceList.jsp"),
 		@Result(name="relResourceSelect",location="/WEB-INF/web/releaseResource/relResourceSelect.jsp"),
-		@Result(name="relResourceInfo",location="/WEB-INF/web/releaseResource/relResourceInfo.jsp")
+		@Result(name="relResourceInfo",location="/WEB-INF/web/releaseResource/relResourceInfo.jsp"),
+		@Result(name="relResourceTreeIndex",location="/WEB-INF/web/releaseResource/relResourceTreeIndex.jsp"),
+		@Result(name="relResourceTreeSelect",location="/WEB-INF/web/releaseResource/relResourceTreeSelect.jsp")
 	}
 )
 public class ResourceAction extends AbstractLoginAction{
@@ -384,6 +386,16 @@ public class ResourceAction extends AbstractLoginAction{
 			LOG.error(e.getMessage());
 			return error("操作失败!");
 		}
+	}
+	
+	public String relResourceTreeIndex(){
+		return "relResourceTreeIndex";
+	}
+	
+	public String relResourceTreeSelect(){
+		flowList = BaseDataDictionaryUtil.baseDataMap.get(4);
+		sysSuppliers =sysSupplierService.findByWorkType(null);
+		return "relResourceTreeSelect";
 	}
 	
 	public SysResource getSysResource() {

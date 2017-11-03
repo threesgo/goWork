@@ -65,6 +65,10 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 				buf.append(" AND model.SUPPLIER_ID =:supplierId");
 				parmeMap.put("supplierId",seachJson.getInt("supplierId"));
 			}
+			if(seachJson.containsKey("sysRsRcCatalogId")&&0!=seachJson.getInt("sysRsRcCatalogId")){
+				buf.append(" AND model.RSRC_CATALOG_ID =:sysRsRcCatalogId");
+				parmeMap.put("sysRsRcCatalogId",seachJson.getInt("sysRsRcCatalogId"));
+			}
 			if(seachJson.containsKey("workType")&&0!=seachJson.getInt("workType")){
 				buf.append(" AND rsCatalog.CATALOG_TYPE =:workType");
 				parmeMap.put("workType",seachJson.getInt("workType"));

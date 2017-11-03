@@ -158,7 +158,8 @@ packageResourceOperation = {
 	addResource:function(){
 		//添加页面
 		var dialog =$('<div id="resourceSelect"></div>').dialog({    
-			href : "resourceAction!relResourceSelect.act",
+			//href : "resourceAction!relResourceSelect.act",
+			href : "resourceAction!relResourceTreeIndex.act",
 			width:880,
 			height:500,
 			title:"新增产品",
