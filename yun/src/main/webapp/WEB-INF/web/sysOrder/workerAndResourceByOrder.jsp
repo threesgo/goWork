@@ -4,6 +4,9 @@
   		var workerDataGrid;
   		var resourceDataGrid;
   		
+  		var sexObj = new Function("return " + '${hashMap.sexObj}')();
+  		var supplierObj = new Function("return " + '${hashMap.supplierObj}')();
+  		
 	  	$(function(){
 	  		workerDataGrid=$("#workerGrid").datagrid({
 				resizable:false,
@@ -24,8 +27,8 @@
           	 	//pagination:false, 
 	          	//pageSize:20,  
 	          	//pageList:[20,50,100,150,200],
-	          	url:"",
-				queryParams:{},
+	          	url:"sysOrderAction!workerDataByOrder.act",
+				queryParams:{"sysOrder.id":'${sysOrder.id}'},
 				onDblClickRow: function(index,row){
  	      		  	
 			    },
@@ -108,8 +111,8 @@
           	 	//pagination:false, 
 	          	//pageSize:20,  
 	          	//pageList:[20,50,100,150,200],
-	          	url:"",
-				queryParams:{},
+	          	url:"sysOrderAction!resourceDataByOrder.act",
+				queryParams:{"sysOrder.id":'${sysOrder.id}'},
 				onLoadSuccess:function(){
 				},
 				onDblClickRow: function(row){
@@ -118,14 +121,14 @@
 			    onSelect: function(row){
 	  			
 	   	  	  	},
-	   	  		frozenColumns:[[
-   	  		        {field:'ck',checkbox:true},
+   	  		    columns:[[
+   	  		    	{field:'ck',checkbox:true},
+   	  		    	{field:'quantity',title:"数量",width:80,sortable:true
+		   	  		   
+   	  		 		},
    	  				{field:'keyWord',title:"产品关键词",width:200,sortable:true
    	  		        	
    	  		        },
-   	  		        {field:'quantity',title:"数量",width:80,sortable:true
-		   	  		   
-   	  		 		},
    	  		        {field:'rsrcName',title:"产品名称",width:80,sortable:true
    	  		        	
    	  		        },
@@ -143,9 +146,7 @@
    	  		       	},
    	  		       	{field:'brand',title:"品牌",width:80,sortable:true
    	  		        	
-   	  		       	}
-   	  	        ]],
-   	  		    columns:[[
+   	  		       	},
 					{field:'supplierId',title:"供应商名称",width:100,sortable:true,
 						formatter:function(value, rowData) {
 							if(value == 0 ){

@@ -37,7 +37,7 @@ $(function(){
 		{
 			field : 'code',
 			title : "部门编号",
-			width : '49%',
+			width : '47%',
 			sortable : true,
 			sorter : function(a, b) {
 				return a > b ? 1 : -1;
@@ -51,7 +51,7 @@ $(function(){
 		{
 			field : 'name',
 			title : "部门名称",
-			width : '49%',
+			width : '47%',
 			sortable : true,
 			sorter : function(a, b) {
 				return a > b ? 1 : -1;

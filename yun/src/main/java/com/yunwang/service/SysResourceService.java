@@ -48,4 +48,10 @@ public interface SysResourceService {
 	SysResourceRel getRelResource(Integer relResourceId);
 
 	JSONArray getRelResourceInfo(Integer relResourceId, List<SysRsRcAttribCatalog> attrList);
+
+	List<SysResourceRel> findByFlowId(Integer flowId);
+
+	List<SysResourceRel> findByOrderId(Integer orderId);
+
+	Pager<SysResourceRel> selectResourceData(Integer flowId,int page, int rows, JSONObject seachJson);
 }

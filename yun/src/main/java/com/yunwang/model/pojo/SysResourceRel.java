@@ -84,7 +84,29 @@ public class SysResourceRel extends AbstractRowVersionModel{
 	@Transient
 	private Integer workType;
 	
+	@Transient
+	private BigDecimal quantity = BigDecimal.ONE;
 	
+	@Transient
+	private Integer orderResourceId;
+	
+	
+	public BigDecimal getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(BigDecimal quantity) {
+		this.quantity = quantity;
+	}
+	
+	public Integer getOrderResourceId() {
+		return orderResourceId;
+	}
+
+	public void setOrderResourceId(Integer orderResourceId) {
+		this.orderResourceId = orderResourceId;
+	}
+
 	public SysResourceRel(){
 		
 	}

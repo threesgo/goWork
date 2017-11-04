@@ -1,5 +1,6 @@
 package com.yunwang.service.impl;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -18,6 +19,8 @@ import com.yunwang.model.pojo.SysDataDictionary;
 import com.yunwang.model.pojo.SysOrder;
 import com.yunwang.model.pojo.SysOrderFlow;
 import com.yunwang.model.pojo.SysOrderPackage;
+import com.yunwang.model.pojo.SysOrderResource;
+import com.yunwang.model.pojo.SysOrderWorker;
 import com.yunwang.service.SysOrderService;
 import com.yunwang.util.BaseDataDictionaryUtil;
 import com.yunwang.util.date.MyDateUtils;
@@ -198,5 +201,65 @@ public class SysOrderServiceImpl implements SysOrderService {
 		//删除步骤与工人
 		sysOrderResourceDao.deleteByProperty("orderFlowId", sysOrderFlow.getId());
 		sysOrderFlowDao.deleteByProperty("id", sysOrderFlow.getId());
+	}
+
+	@Override
+	public void addWorkerToFlow(String jsonStr, SysOrderFlow sysOrderFlow) {
+		SysOrderFlow dbOrderFlow = sysOrderFlowDao.get(SysOrderFlow.class,sysOrderFlow.getId());
+		if(MyStringUtil.isNotBlank(jsonStr)){
+			String[] ids = jsonStr.split("\\,");
+			for(String id : ids){
+				SysOrderWorker orderWorker = new SysOrderWorker();
+				orderWorker.setOrderFlowId(dbOrderFlow.getId());
+				orderWorker.setOrderId(dbOrderFlow.getOrderId());
+				orderWorker.setWorkerId(Integer.parseInt(id));
+				orderWorker.setWorkTime(BigDecimal.ONE);
+				sysOrderWorkerDao.save(orderWorker);
+			}
+		}
+	}
+
+	@Override
+	public void addResourceToFlow(String jsonStr, SysOrderFlow sysOrderFlow) {
+		SysOrderFlow dbOrderFlow = sysOrderFlowDao.get(SysOrderFlow.class,sysOrderFlow.getId());
+		if(MyStringUtil.isNotBlank(jsonStr)){
+			String[] ids = jsonStr.split("\\,");
+			for(String id : ids){
+				SysOrderResource orderResource = new SysOrderResource();
+				orderResource.setOrderFlowId(dbOrderFlow.getId());
+				orderResource.setOrderId(dbOrderFlow.getOrderId());
+				orderResource.setResourceId(Integer.parseInt(id));
+				orderResource.setQuantity(BigDecimal.ONE);
+				sysOrderResourceDao.save(orderResource);
+			}
+		}
+	}
+
+	@Override
+	public void updateOrderWorkerTime(SysOrderWorker sysOrderWorker) {
+		// TODO Auto-generated method stub
+		SysOrderWorker db = sysOrderWorkerDao.get(SysOrderWorker.class,sysOrderWorker.getId());
+		db.setWorkTime(sysOrderWorker.getWorkTime());
+		sysOrderWorkerDao.update(db);
+	}
+
+	@Override
+	public void updateOrderResourceQuantity(SysOrderResource sysOrderResource) {
+		// TODO Auto-generated method stub
+		SysOrderResource db = sysOrderResourceDao.get(SysOrderResource.class,sysOrderResource.getId());
+		db.setQuantity(sysOrderResource.getQuantity());
+		sysOrderResourceDao.update(db);
+	}
+
+	@Override
+	public void deleteOrderWorker(String ids) {
+		// TODO Auto-generated method stub
+		sysOrderWorkerDao.deleteByProperty("id", ids);
+	}
+
+	@Override
+	public void deleteOrderResource(String ids) {
+		// TODO Auto-generated method stub
+		sysOrderResourceDao.deleteByProperty("id", ids);
 	}
 }

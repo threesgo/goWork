@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 
 /**
@@ -66,6 +67,19 @@ public class SysWorker extends AbstractRowVersionModel{
 	
 	@Column(name = "COMPANY",length = 256)
 	private String company;
+	
+	@Transient
+	private BigDecimal workTime = BigDecimal.ONE;
+	@Transient
+	private Integer orderWorkerId;
+	
+	public BigDecimal getWorkTime() {
+		return workTime;
+	}
+
+	public void setWorkTime(BigDecimal workTime) {
+		this.workTime = workTime;
+	}
 
 	public SysWorker(){
 		
@@ -189,5 +203,13 @@ public class SysWorker extends AbstractRowVersionModel{
 
 	public void setCompany(String company) {
 		this.company = company;
+	}
+
+	public Integer getOrderWorkerId() {
+		return orderWorkerId;
+	}
+
+	public void setOrderWorkerId(Integer orderWorkerId) {
+		this.orderWorkerId = orderWorkerId;
 	}
 }

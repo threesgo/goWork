@@ -17,11 +17,17 @@ import com.yunwang.model.pojo.SysDataDictionary;
 import com.yunwang.model.pojo.SysOrder;
 import com.yunwang.model.pojo.SysOrderFlow;
 import com.yunwang.model.pojo.SysOrderPackage;
+import com.yunwang.model.pojo.SysOrderResource;
+import com.yunwang.model.pojo.SysOrderWorker;
+import com.yunwang.model.pojo.SysResourceRel;
 import com.yunwang.model.pojo.SysRsRcPackage;
 import com.yunwang.model.pojo.SysSupplier;
+import com.yunwang.model.pojo.SysWorker;
 import com.yunwang.service.SysOrderService;
+import com.yunwang.service.SysResourceService;
 import com.yunwang.service.SysRsRcPackageService;
 import com.yunwang.service.SysSupplierService;
+import com.yunwang.service.SysWorkerService;
 import com.yunwang.util.BaseDataDictionaryUtil;
 import com.yunwang.util.action.AbstractLoginAction;
 import com.yunwang.util.collection.CollectionUtil;
@@ -38,6 +44,8 @@ import com.yunwang.util.string.MyStringUtil;
 		@Result(name = "orderInfo",location="/WEB-INF/web/sysOrder/orderInfo.jsp"),
 		@Result(name = "flowInfo",location="/WEB-INF/web/sysOrder/flowInfo.jsp"),
 		@Result(name = "saveOrUpdateOrderFlowPage",location="/WEB-INF/web/sysOrder/saveOrUpdateOrderFlowPage.jsp"),
+		@Result(name = "selectWorker",location="/WEB-INF/web/sysOrder/selectWorker.jsp"),
+		@Result(name = "selectResource",location="/WEB-INF/web/sysOrder/selectResource.jsp"),
 	}
 )
 public class SysOrderAction  extends AbstractLoginAction{
@@ -56,6 +64,11 @@ public class SysOrderAction  extends AbstractLoginAction{
 	private SysSupplierService sysSupplierService;
 	@Autowired
 	private SysRsRcPackageService sysRsRcPackageService;
+	@Autowired
+	private SysWorkerService sysWorkerService;
+	@Autowired
+	private SysResourceService sysResourceService;
+	
 	
 	private Map<String,Object> hashMap;
 	private SysOrder sysOrder;
@@ -66,6 +79,10 @@ public class SysOrderAction  extends AbstractLoginAction{
 	private List<SysDataDictionary> typeList;
 	private String dateStr;
 	private List<SysDataDictionary> flowList;
+	private List<SysSupplier> sysSuppliers;
+	private List<SysDataDictionary> sexList;
+	private SysOrderWorker sysOrderWorker;
+	private SysOrderResource sysOrderResource;
 	
 	private Integer point;
 	private Integer targetId;
@@ -244,6 +261,148 @@ public class SysOrderAction  extends AbstractLoginAction{
 			sexObj.put(dictionary.getValue(), dictionary.getName());
 		}
 		hashMap.put("sexObj",sexObj);
+	}
+	
+	
+	public String workerDataByFlow(){
+		List<SysWorker> sysWorkers = sysWorkerService.findByFlowId(sysOrderFlow.getId());
+		return ajaxJSONArr(sysWorkers);
+	}
+	
+	public String workerDataByOrder(){
+		List<SysWorker> sysWorkers = sysWorkerService.findByOrderId(sysOrder.getId());
+		return ajaxJSONArr(sysWorkers);
+	}
+	
+	public String resourceDataByFlow(){
+		List<SysResourceRel> resources = sysResourceService.findByFlowId(sysOrderFlow.getId());
+		return ajaxJSONArr(resources);
+	}
+	
+	public String resourceDataByOrder(){
+		List<SysResourceRel> resources = sysResourceService.findByOrderId(sysOrder.getId());
+		return ajaxJSONArr(resources);
+	}
+	
+	public String selectWorker(){
+		hashMap = new HashMap<String,Object>();
+		sexList = BaseDataDictionaryUtil.baseDataMap.get(6);
+		JSONObject sexObj = new JSONObject();
+		for(SysDataDictionary dictionary:sexList){
+			sexObj.put(dictionary.getValue(), dictionary.getName());
+		}
+		hashMap.put("sexObj",sexObj);
+		return "selectWorker";
+	}
+	
+	public String selectResource(){
+		hashMap = new HashMap<String,Object>();
+		flowList = BaseDataDictionaryUtil.baseDataMap.get(4);
+		sysSuppliers =sysSupplierService.findByWorkType(null);
+		hashMap = new HashMap<String,Object>();
+		JSONObject obj = new JSONObject();
+		for(SysDataDictionary dictionary:flowList){
+			obj.put(dictionary.getValue(), dictionary.getName());
+		}
+		JSONObject supplierObj = new JSONObject();
+		for(SysSupplier sysSupplier:sysSuppliers){
+			supplierObj.put(sysSupplier.getId(),sysSupplier.getName());
+		}
+		hashMap.put("flowObj",obj);
+		hashMap.put("supplierObj",supplierObj);
+		return "selectResource";
+	}
+	
+	
+	public String selectWorkerData(){
+		JSONObject obj=new JSONObject();
+		Pager<SysWorker> pager = sysWorkerService.selectWorkerData(
+				sysOrderFlow.getId(),page,rows,JSONObject.fromObject(jsonStr));
+		JSONArray arr = new JSONArray();
+		if(null!=pager && null!=pager.getData()){
+  			obj.put("total", pager.getTotalRows());
+  			arr = JSONArray.fromObject(pager.getData());
+  	    }else{
+  	        obj.put("total",0); 
+  	    }
+		obj.put("rows", arr);
+  		return ajaxText(JSONObject.fromObject(obj).toString());
+	}
+	
+	public String selectResourceData(){
+		JSONObject obj=new JSONObject();
+		Pager<SysResourceRel> pager = sysResourceService.selectResourceData(
+				sysOrderFlow.getId(),page,rows,JSONObject.fromObject(jsonStr));
+		JSONArray arr = new JSONArray();
+		if(null!=pager && null!=pager.getData()){
+  			obj.put("total", pager.getTotalRows());
+  			arr = JSONArray.fromObject(pager.getData());
+  	    }else{
+  	        obj.put("total",0); 
+  	    }
+		obj.put("rows", arr);
+  		return ajaxText(JSONObject.fromObject(obj).toString());
+	}
+	
+	
+	public String addWorkerToFlow(){
+		try{
+			sysOrderService.addWorkerToFlow(jsonStr,sysOrderFlow);
+			return success("操作成功!");
+		}catch(Exception e){
+			LOG.error(e.getMessage());
+			return error("操作失败!");
+		}
+	}
+	
+	public String addResourceToFlow(){
+		try{
+			sysOrderService.addResourceToFlow(jsonStr,sysOrderFlow);
+			return success("操作成功!");
+		}catch(Exception e){
+			LOG.error(e.getMessage());
+			return error("操作失败!");
+		}
+	}
+	
+	public String updateOrderWorkerTime(){
+		try{
+			sysOrderService.updateOrderWorkerTime(sysOrderWorker);
+			return success("操作成功!");
+		}catch(Exception e){
+			LOG.error(e.getMessage());
+			return error("操作失败!");
+		}
+	}
+	
+	public String updateOrderResourceQuantity(){
+		try{
+			sysOrderService.updateOrderResourceQuantity(sysOrderResource);
+			return success("操作成功!");
+		}catch(Exception e){
+			LOG.error(e.getMessage());
+			return error("操作失败!");
+		}
+	}
+	
+	public String deleteOrderWorker(){
+		try{
+			sysOrderService.deleteOrderWorker(ids);
+			return success("操作成功!");
+		}catch(Exception e){
+			LOG.error(e.getMessage());
+			return error("操作失败!");
+		}
+	}
+	
+	public String deleteOrderResource(){
+		try{
+			sysOrderService.deleteOrderResource(ids);
+			return success("操作成功!");
+		}catch(Exception e){
+			LOG.error(e.getMessage());
+			return error("操作失败!");
+		}
 	}
 	
 	/**
@@ -536,5 +695,37 @@ public class SysOrderAction  extends AbstractLoginAction{
 
 	public void setFlowList(List<SysDataDictionary> flowList) {
 		this.flowList = flowList;
+	}
+
+	public List<SysSupplier> getSysSuppliers() {
+		return sysSuppliers;
+	}
+
+	public void setSysSuppliers(List<SysSupplier> sysSuppliers) {
+		this.sysSuppliers = sysSuppliers;
+	}
+
+	public List<SysDataDictionary> getSexList() {
+		return sexList;
+	}
+
+	public void setSexList(List<SysDataDictionary> sexList) {
+		this.sexList = sexList;
+	}
+
+	public SysOrderWorker getSysOrderWorker() {
+		return sysOrderWorker;
+	}
+
+	public void setSysOrderWorker(SysOrderWorker sysOrderWorker) {
+		this.sysOrderWorker = sysOrderWorker;
+	}
+
+	public SysOrderResource getSysOrderResource() {
+		return sysOrderResource;
+	}
+
+	public void setSysOrderResource(SysOrderResource sysOrderResource) {
+		this.sysOrderResource = sysOrderResource;
 	}
 }

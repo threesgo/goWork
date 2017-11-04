@@ -14,6 +14,8 @@ import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.yunwang.dao.SysOrderFlowDaoI;
+import com.yunwang.dao.SysOrderPackageDaoI;
 import com.yunwang.dao.SysResourceDaoI;
 import com.yunwang.dao.SysResourceRelDaoI;
 import com.yunwang.dao.SysRsRcAttribCatalogDaoI;
@@ -23,6 +25,8 @@ import com.yunwang.dao.SysRsRcCatalogDaoI;
 import com.yunwang.dao.SysRsRcPcResourceDaoI;
 import com.yunwang.dao.SysSupplierDaoI;
 import com.yunwang.model.page.Pager;
+import com.yunwang.model.pojo.SysOrderFlow;
+import com.yunwang.model.pojo.SysOrderPackage;
 import com.yunwang.model.pojo.SysResource;
 import com.yunwang.model.pojo.SysResourceRel;
 import com.yunwang.model.pojo.SysRsRcAttrib;
@@ -58,6 +62,10 @@ public class SysResourceServiceImpl implements SysResourceService{
 	private SysRsRcAttribCatalogDaoI sysRsRcAttribCatalogDao;
 	@Autowired
 	private SysRsRcPcResourceDaoI sysRsRcPcResourceDao;
+	@Autowired
+	private SysOrderFlowDaoI sysOrderFlowDao;
+	@Autowired
+	private SysOrderPackageDaoI sysOrderPackageDao;
 
 
 	@Override
@@ -463,5 +471,26 @@ public class SysResourceServiceImpl implements SysResourceService{
 			arr.add(attr);
 		}
 		return arr;
+	}
+
+	@Override
+	public List<SysResourceRel> findByFlowId(Integer id) {
+		// TODO Auto-generated method stub
+		return sysResourceRelDao.findByFlowId(id);
+	}
+
+	@Override
+	public List<SysResourceRel> findByOrderId(Integer id) {
+		// TODO Auto-generated method stub
+		return sysResourceRelDao.findByOrderId(id);
+	}
+
+	@Override
+	public Pager<SysResourceRel> selectResourceData(Integer flowId,int page, int rows, JSONObject seachJson) {
+		// TODO Auto-generated method stub
+		SysOrderFlow sysOrderFlow = sysOrderFlowDao.get(SysOrderFlow.class,flowId);
+		List<SysOrderPackage> sysOrderPackages = sysOrderPackageDao.findByOrderId(sysOrderFlow.getOrderId());
+		return sysResourceRelDao.findByPackageIdsAndNotInFlow(
+				StringBufferByCollectionUtil.convertCollection(sysOrderPackages, "rsrcPackageId"),flowId,page,rows,seachJson);
 	}
 }

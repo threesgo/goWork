@@ -21,4 +21,11 @@ public interface SysResourceRelDaoI extends BaseDaoI<SysResourceRel>{
 
 	void deletePackageResource(String ids);
 
+	List<SysResourceRel> findByFlowId(Integer id);
+
+	List<SysResourceRel> findByOrderId(Integer id);
+
+	Pager<SysResourceRel> findByPackageIdsAndNotInFlow(String packageIds,
+			Integer flowId,int page, int rows, JSONObject seachJson);
+
 }

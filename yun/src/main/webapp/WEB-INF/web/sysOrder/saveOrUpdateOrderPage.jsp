@@ -96,7 +96,7 @@ $(function(){
 	    data:${hashMap.packageArr},    
 	    valueField:'id',    
 	    textField:'text',
-	    multiple:true,
+	    //multiple:true,
 	    editable:false,
 	    required:true,
 	    onLoadSuccess:function(){

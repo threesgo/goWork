@@ -1,5 +1,7 @@
 package com.yunwang.service;
 
+import java.util.List;
+
 import net.sf.json.JSONObject;
 
 import com.yunwang.model.page.Pager;
@@ -12,5 +14,11 @@ public interface SysWorkerService {
 	void saveOrUpdateWorkerGrid(JSONObject obj);
 
 	void deleteWorker(String ids);
+
+	List<SysWorker> findByFlowId(Integer flowId);
+
+	List<SysWorker> findByOrderId(Integer orderId);
+
+	Pager<SysWorker> selectWorkerData(Integer flowId, int page, int rows, JSONObject jsonObject);
 
 }

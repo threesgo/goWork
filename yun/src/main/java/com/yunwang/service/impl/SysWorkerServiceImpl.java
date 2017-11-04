@@ -1,14 +1,17 @@
 package com.yunwang.service.impl;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import net.sf.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.yunwang.dao.SysOrderFlowDaoI;
 import com.yunwang.dao.SysWorkerDaoI;
 import com.yunwang.model.page.Pager;
+import com.yunwang.model.pojo.SysOrderFlow;
 import com.yunwang.model.pojo.SysWorker;
 import com.yunwang.service.SysWorkerService;
 import com.yunwang.util.string.MyStringUtil;
@@ -17,6 +20,8 @@ import com.yunwang.util.string.MyStringUtil;
 public class SysWorkerServiceImpl implements SysWorkerService{
 	@Autowired
 	private SysWorkerDaoI sysWorkerDao;
+	@Autowired
+	private SysOrderFlowDaoI sysOrderFlowDao;
 	
 	@Override
 	public void saveOrUpdateWorkerGrid(JSONObject rowData) {
@@ -76,6 +81,26 @@ public class SysWorkerServiceImpl implements SysWorkerService{
 	public void deleteWorker(String ids) {
 		// TODO Auto-generated method stub
 		sysWorkerDao.deleteWorker(ids);
+	}
+
+	@Override
+	public List<SysWorker> findByFlowId(Integer id) {
+		// TODO Auto-generated method stub
+		return sysWorkerDao.findByFlowId(id);
+	}
+
+	@Override
+	public List<SysWorker> findByOrderId(Integer id) {
+		// TODO Auto-generated method stub
+		return sysWorkerDao.findByOrderId(id);
+	}
+
+	@Override
+	public Pager<SysWorker> selectWorkerData(Integer flowId,int page, int rows, JSONObject jsonObject) {
+		// TODO Auto-generated method stub
+		SysOrderFlow sysOrderFlow = sysOrderFlowDao.get(SysOrderFlow.class,flowId);
+		return sysWorkerDao.findByWorkTypeAndNotInFlow(
+				sysOrderFlow.getFlowType(),flowId,page,rows,jsonObject);
 	}
 
 }
