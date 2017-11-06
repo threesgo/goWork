@@ -235,7 +235,7 @@ public class SysResourceServiceImpl implements SysResourceService{
 		int orderNo = sysResourceDao.findMaxSeqByPfield("orderNo", "rsrcCatalogId", sysRsRcCatalog.getId());
 		
 		
-		List<SysSupplier> sysSuppliers = sysSupplierDao.findByWorkType(sysRsRcCatalog.getCatalogType());
+		List<SysSupplier> sysSuppliers = sysSupplierDao.findAll();
 		Map<String,SysSupplier> supplierMap = CollectionUtil.listToMap(sysSuppliers,"name");
 		
 		for(SysResource resource:resourceList){
@@ -256,7 +256,6 @@ public class SysResourceServiceImpl implements SysResourceService{
 					sysSupplier.setPhoneNum(resource.getSupplierPhone());
 					sysSupplier.setTelNum(resource.getSupplierTel());
 					sysSupplier.setAddress(resource.getSupplierTel());
-					sysSupplier.setWorkType(sysRsRcCatalog.getCatalogType());
 					sysSupplierDao.saveOrUpdate(sysSupplier);
 				}
 			}

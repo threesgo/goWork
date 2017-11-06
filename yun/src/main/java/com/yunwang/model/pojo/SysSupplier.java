@@ -40,9 +40,6 @@ public class SysSupplier extends AbstractRowVersionModel{
 	@Column(name = "ADDRESS",length = 2048)
 	private String address;  //地址
 	
-	@Column(name = "WORK_TYPE",nullable = false)
-	private Integer workType;  //工种
-	
 	@Column(name = "STATUS",columnDefinition = "number default 1")
 	private Integer status; 
 	
@@ -104,14 +101,6 @@ public class SysSupplier extends AbstractRowVersionModel{
 
 	public void setContact(String contact) {
 		this.contact = contact;
-	}
-
-	public Integer getWorkType() {
-		return workType;
-	}
-
-	public void setWorkType(Integer workType) {
-		this.workType = workType;
 	}
 
 	public Integer getStatus() {

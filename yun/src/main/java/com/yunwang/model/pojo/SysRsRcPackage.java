@@ -1,7 +1,5 @@
 package com.yunwang.model.pojo;
 
-import java.math.BigDecimal;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -32,11 +30,11 @@ public class SysRsRcPackage extends AbstractRowVersionModel{
 	@Column(name="ORDER_NO", nullable = false)
 	private Integer orderNo;//顺序号
 	
-	@Column(name="MIN_PRICE")
-	private BigDecimal minPrice;//最小价格
-	
-	@Column(name="MAX_PRICE")
-	private BigDecimal maxPrice;//最大价格
+//	@Column(name="MIN_PRICE")
+//	private BigDecimal minPrice;//最小价格
+//	
+//	@Column(name="MAX_PRICE")
+//	private BigDecimal maxPrice;//最大价格
 	
 	public SysRsRcPackage(){
 		
@@ -74,19 +72,19 @@ public class SysRsRcPackage extends AbstractRowVersionModel{
 		this.orderNo = orderNo;
 	}
 
-	public BigDecimal getMinPrice() {
-		return minPrice;
-	}
-
-	public void setMinPrice(BigDecimal minPrice) {
-		this.minPrice = minPrice;
-	}
-
-	public BigDecimal getMaxPrice() {
-		return maxPrice;
-	}
-
-	public void setMaxPrice(BigDecimal maxPrice) {
-		this.maxPrice = maxPrice;
-	}
+//	public BigDecimal getMinPrice() {
+//		return minPrice;
+//	}
+//
+//	public void setMinPrice(BigDecimal minPrice) {
+//		this.minPrice = minPrice;
+//	}
+//
+//	public BigDecimal getMaxPrice() {
+//		return maxPrice;
+//	}
+//
+//	public void setMaxPrice(BigDecimal maxPrice) {
+//		this.maxPrice = maxPrice;
+//	}
 }

@@ -31,6 +31,7 @@
             url:"sysSupplierAction!listData.act",
             frozenColumns:[[
        			{field:'ck',checkbox:true},
+       			/*
        			{field:'workType',title: "供应商工种",width:100,sortable:true
 					,editor:{
                     	type:'combobox',
@@ -49,6 +50,7 @@
 						return flowObj[value];
 					} 
 				},
+				*/
        			{field:'name',title: "供应商名称",width:200,sortable:true
 					,editor:{
 		        		type:"textbox",
@@ -162,7 +164,6 @@
 				index: addIndex,	// 索引从0开始
 				row: {
 					id:addId--,
-					workType:1
 				}
 			});
 			$sysSupplierDatagrid.datagrid("beginEdit",addIndex);
@@ -229,7 +230,7 @@
 			searchData["name"]=$("#name").val();
 			searchData["contact"]=$("#contact").val();
 			searchData["address"]=$("#address").val();
-			searchData["workType"]=$("#workType").val();
+			//searchData["workType"]=$("#workType").val();
 			searchData["phoneNum"]=$("#phoneNum").val();
 			searchData["telNum"]=$("#telNum").val();
 			$sysSupplierDatagrid.datagrid("reload",
@@ -240,7 +241,7 @@
 		},
 		
 		reset:function(){
-			$("#workType").val(0);
+			//$("#workType").val(0);
 			$("#name").val('');
 			$("#contact").val('');
 			$("#phoneNum").val('');
@@ -254,6 +255,7 @@
 	
 <div class="easyui-layout" data-options="fit:true,border : false">
 	<div id="syssupplier_tabel_search" class = "table_seach_div" data-options="region:'north',title:'查询条件',border:false,split:false" style="overflow: hidden;background-color: #F8F8F8" >
+		<%-- 
 		<div class="search-div">
 			<label>供应商类型</label>
 	       	<s:select id="workType" style="height:22px"
@@ -263,6 +265,7 @@
 		       	headerKey="0"
 		       	headerValue="--请选择--"/>
 		</div>
+		--%>
 		
 		<div class="search-div">
 			<label>供应商名称</label>

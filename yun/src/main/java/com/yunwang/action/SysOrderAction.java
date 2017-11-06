@@ -249,7 +249,7 @@ public class SysOrderAction  extends AbstractLoginAction{
 	
 	private void initData(){
 		hashMap = new HashMap<String,Object>();
-		List<SysSupplier> sysSuppliers = sysSupplierService.findByWorkType(null);
+		List<SysSupplier> sysSuppliers = sysSupplierService.findAll();
 		JSONObject supplierObj = new JSONObject();
 		for(SysSupplier sysSupplier:sysSuppliers){
 			supplierObj.put(sysSupplier.getId(),sysSupplier.getName());
@@ -298,7 +298,7 @@ public class SysOrderAction  extends AbstractLoginAction{
 	public String selectResource(){
 		hashMap = new HashMap<String,Object>();
 		flowList = BaseDataDictionaryUtil.baseDataMap.get(4);
-		sysSuppliers =sysSupplierService.findByWorkType(null);
+		sysSuppliers =sysSupplierService.findAll();
 		hashMap = new HashMap<String,Object>();
 		JSONObject obj = new JSONObject();
 		for(SysDataDictionary dictionary:flowList){

@@ -8,7 +8,7 @@
         <input class="easyui-validatebox" id="edit_packageName" type="text" name="sysRsRcPackage.name" 
         style="width:200px;" data-options="required:true,validType:['length[1,40]','illegal']" value="${sysRsRcPackage.name}"/>   
     </div>
-    
+    <%--
    	<div>   
         <label for="name">最小价格:</label>   
         <input class="easyui-numberbox" id="edit_package_minPrice" type="text" name="sysRsRcPackage.minPrice" 
@@ -20,4 +20,5 @@
         <input class="easyui-numberbox" id="edit_package_maxPrice" type="text" name="sysRsRcPackage.maxPrice" 
         style="width:200px;" data-options="required:true,min:1,precision:2,max:9999999.99" value="${sysRsRcPackage.maxPrice}"/>   
     </div>
+    --%>
 </form>

@@ -106,9 +106,9 @@ public class ResourceAction extends AbstractLoginAction{
 		
 		if(0 != sysRsRcCatalog.getId()){
 			sysRsRcCatalog = sysResourceTypeService.getRsRcCatalogInfo(sysRsRcCatalog.getId());
-			sysSuppliers = sysSupplierService.findByWorkType(sysRsRcCatalog.getCatalogType());
+			sysSuppliers = sysSupplierService.findByCatalogId(sysRsRcCatalog.getId());
 		}else{
-			sysSuppliers =sysSupplierService.findByWorkType(null);
+			sysSuppliers =sysSupplierService.findAll();
 		}
 		
 		JSONObject supplierObj = new JSONObject();
@@ -148,9 +148,9 @@ public class ResourceAction extends AbstractLoginAction{
   			List<SysSupplier> sysSuppliers;
   			if(0 != sysRsRcCatalog.getId()){
   				sysRsRcCatalog = sysResourceTypeService.getRsRcCatalogInfo(sysRsRcCatalog.getId());
-  				sysSuppliers = sysSupplierService.findByWorkType(sysRsRcCatalog.getCatalogType());
+  				sysSuppliers = sysSupplierService.findByCatalogId(sysRsRcCatalog.getId());
   			}else{
-  				sysSuppliers =sysSupplierService.findByWorkType(null);
+  				sysSuppliers =sysSupplierService.findAll();
   			}
   			Map<Integer,SysSupplier> supplierMap = CollectionUtil.listToMap(sysSuppliers,"id");
   			 
@@ -330,7 +330,7 @@ public class ResourceAction extends AbstractLoginAction{
 	public String relResourceSelect(){
 		//流程数据
 		flowList = BaseDataDictionaryUtil.baseDataMap.get(4);
-		sysSuppliers =sysSupplierService.findByWorkType(null);
+		sysSuppliers =sysSupplierService.findAll();
 //		hashMap = new HashMap<String,Object>();
 //		JSONObject obj = new JSONObject();
 //		for(SysDataDictionary dictionary:flowList){
@@ -348,7 +348,7 @@ public class ResourceAction extends AbstractLoginAction{
 		if(null!=pager && null!=pager.getData()){
 			@SuppressWarnings("unchecked")
 			List<SysResourceRel> sysResources = (List<SysResourceRel>) pager.getData();
-			sysSuppliers =sysSupplierService.findByWorkType(null);
+			sysSuppliers =sysSupplierService.findAll();
   			Map<Integer,SysSupplier> supplierMap = CollectionUtil.listToMap(sysSuppliers,"id");
   			for(SysResourceRel resource:sysResources){
   				if(null != resource.getSupplierId()&&0!=resource.getSupplierId()){
@@ -394,7 +394,7 @@ public class ResourceAction extends AbstractLoginAction{
 	
 	public String relResourceTreeSelect(){
 		flowList = BaseDataDictionaryUtil.baseDataMap.get(4);
-		sysSuppliers =sysSupplierService.findByWorkType(null);
+		sysSuppliers =sysSupplierService.findAll();
 		return "relResourceTreeSelect";
 	}
 	

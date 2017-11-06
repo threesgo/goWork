@@ -15,6 +15,7 @@ public interface SysSupplierService {
 
 	void deleteSupplier(String ids);
 
-	List<SysSupplier> findByWorkType(Integer catalogType);
+	List<SysSupplier> findAll();
 
+	List<SysSupplier> findByCatalogId(Integer catalogId);
 }

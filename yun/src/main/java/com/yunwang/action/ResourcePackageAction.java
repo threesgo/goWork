@@ -127,7 +127,7 @@ public class ResourcePackageAction extends AbstractLoginAction{
 	public String packageResourceList(){
 		//流程数据
 		flowList = BaseDataDictionaryUtil.baseDataMap.get(4);
-		sysSuppliers =sysSupplierService.findByWorkType(null);
+		sysSuppliers =sysSupplierService.findAll();
 		hashMap = new HashMap<String,Object>();
 		JSONObject obj = new JSONObject();
 		for(SysDataDictionary dictionary:flowList){
@@ -155,8 +155,8 @@ public class ResourcePackageAction extends AbstractLoginAction{
 		if(null!=pager && null!=pager.getData()){
 			@SuppressWarnings("unchecked")
 			List<SysResourceRel> sysResources = (List<SysResourceRel>) pager.getData();
-			sysSuppliers =sysSupplierService.findByWorkType(null);
-  			Map<Integer,SysSupplier> supplierMap = CollectionUtil.listToMap(sysSuppliers,"id");
+			sysSuppliers =sysSupplierService.findAll();  			
+			Map<Integer,SysSupplier> supplierMap = CollectionUtil.listToMap(sysSuppliers,"id");
   			for(SysResourceRel resource:sysResources){
   				if(null != resource.getSupplierId()&&0!=resource.getSupplierId()){
   					SysSupplier supplier = supplierMap.get(resource.getSupplierId());
@@ -204,15 +204,15 @@ public class ResourcePackageAction extends AbstractLoginAction{
 		json_code.put("value", sysRsRcPackage.getCode());
 		jsonArr.add(json_code);
 		
-		JSONObject minPrice=new JSONObject();
-		minPrice.put("attrName","价格最小值");
-		minPrice.put("value", sysRsRcPackage.getMinPrice());
-		jsonArr.add(minPrice);
-		
-		JSONObject maxPrice=new JSONObject();
-		maxPrice.put("attrName","价格最大值");
-		maxPrice.put("value", sysRsRcPackage.getMaxPrice());
-		jsonArr.add(maxPrice);
+//		JSONObject minPrice=new JSONObject();
+//		minPrice.put("attrName","价格最小值");
+//		minPrice.put("value", sysRsRcPackage.getMinPrice());
+//		jsonArr.add(minPrice);
+//		
+//		JSONObject maxPrice=new JSONObject();
+//		maxPrice.put("attrName","价格最大值");
+//		maxPrice.put("value", sysRsRcPackage.getMaxPrice());
+//		jsonArr.add(maxPrice);
 		return ajaxText(jsonArr);
 	}
 	
@@ -240,8 +240,8 @@ public class ResourcePackageAction extends AbstractLoginAction{
 			if(null!=sysRsRcPackage.getId()){
 				SysRsRcPackage updateSysRsRcPackage = sysRsRcPackageService.get(sysRsRcPackage.getId());
 				updateSysRsRcPackage.setName(sysRsRcPackage.getName());
-				updateSysRsRcPackage.setMinPrice(sysRsRcPackage.getMinPrice());
-				updateSysRsRcPackage.setMaxPrice(sysRsRcPackage.getMaxPrice());
+				//updateSysRsRcPackage.setMinPrice(sysRsRcPackage.getMinPrice());
+				//updateSysRsRcPackage.setMaxPrice(sysRsRcPackage.getMaxPrice());
 				sysRsRcPackageService.saveOrUpdateRsRcPackage(updateSysRsRcPackage);
 			}else{
 				sysRsRcPackageService.saveOrUpdateRsRcPackage(sysRsRcPackage);

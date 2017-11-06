@@ -41,8 +41,6 @@ public class SysSupplierServiceImpl implements SysSupplierService {
 		sysSupplier.setTelNum(telNum);
 		String address = rowData.getString("address");
 		sysSupplier.setAddress(address);
-		Integer workType = rowData.getInt("workType");
-		sysSupplier.setWorkType(workType);
 		sysSupplierDao.saveOrUpdate(sysSupplier);
 	}
 
@@ -59,7 +57,14 @@ public class SysSupplierServiceImpl implements SysSupplierService {
 	}
 
 	@Override
-	public List<SysSupplier> findByWorkType(Integer catalogType) {
-		return sysSupplierDao.findByWorkType(catalogType);
+	public List<SysSupplier> findAll() {
+		// TODO Auto-generated method stub
+		return sysSupplierDao.findAll();
+	}
+
+	@Override
+	public List<SysSupplier> findByCatalogId(Integer catalogId) {
+		// TODO Auto-generated method stub
+		return sysSupplierDao.findByCatalogId(catalogId);
 	}
 }

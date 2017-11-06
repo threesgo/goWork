@@ -127,7 +127,7 @@ public class ResourceUpDownAction extends AbstractUpDownAction{
 		List<SysRsRcAttrib> sysRsRcAttribs = sysResourceService.findSysRsRcAttribByResourceIds(
 					StringBufferByCollectionUtil.convertCollection(sysResources,"id"));
 		
-		List<SysSupplier> sysSuppliers = sysSupplierService.findByWorkType(sysRsRcCatalog.getCatalogType());
+		List<SysSupplier> sysSuppliers = sysSupplierService.findByCatalogId(sysRsRcCatalog.getId());
 		Map<Integer,SysSupplier> supplierMap = CollectionUtil.listToMap(sysSuppliers,"id");
 		
 		JSONArray arr = packageRsources(attrList, sysResources, sysRsRcAttribs);
