@@ -19,6 +19,7 @@
 		<script type="text/javascript">
 		var $userList;	
 		$(function(){
+			//alert('${sessionScope.defaultMenu}');
 			$userList=$('#userList').datagrid({
 	            fitColumns:true,
 	            striped:true,
