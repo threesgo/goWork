@@ -17,13 +17,13 @@ insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type)
 values(3,'用户管理','sysUserAction.act','status_online',1,2,1,1);
 
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
-values(18,'查看','sysUserAction!listUser','status_online',3,1,2,1);
+values(18,'查看','sysUserActionlistUser','status_online',3,1,2,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
-values(19,'新增','sysUserAction!preAdd','status_online',3,2,2,1);
+values(19,'新增','sysUserActionpreAdd','status_online',3,2,2,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
-values(20,'编辑','sysUserAction!preEdit','status_online',3,3,2,1);
+values(20,'编辑','sysUserActionpreEdit','status_online',3,3,2,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
-values(21,'删除','sysUserAction!delete','status_online',3,4,2,1);
+values(21,'删除','sysUserActiondelete','status_online',3,4,2,1);
 
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
 values(4,'部门管理','sysDepartMentAction.act','status_online',1,3,1,1);
@@ -89,4 +89,8 @@ insert into sys_role_menu (id,row_version,role_id,menu_id)
 values (16, 0, 1 ,16);
 insert into sys_role_menu (id,row_version,role_id,menu_id)
 values (17, 0, 1 ,17);
+insert into sys_role_menu (id,row_version,role_id,menu_id)
+values (18, 0, 1 ,18);
+insert into sys_role_menu (id,row_version,role_id,menu_id)
+values (19, 0, 1 ,19);
 END;

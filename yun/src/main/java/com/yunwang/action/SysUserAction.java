@@ -27,7 +27,7 @@ import com.yunwang.util.string.SecurityUtil;
 		
 	}
 )
-@ParentPackage("AuthorityInterceptor")
+//@ParentPackage("AuthorityInterceptor")
 public class SysUserAction extends AbstractLoginAction{
 
 	private final static Logger LOG =Logger.getLogger(SysUserAction.class);

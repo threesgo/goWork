@@ -214,6 +214,14 @@ public class SysRoleAction extends AbstractLoginAction{
 	public String saveRoleRelMenu(){
 		try{
 			sysRoleMenuService.saveRoleRelMenu(sysRole,menus);
+			List<SysMenu> listMenu = sysMenuService.findRelMenuByRoleIdAndViewType(sysRole.getId(),2);
+			Map<String,Integer> map = new HashMap<String, Integer>();
+			for(SysMenu sysMenu:listMenu){
+				if(null == map.get(sysMenu.getUrl())){
+					map.put(sysMenu.getUrl(),1);
+				}
+			}
+			sessionMap.put("defaultMenu",map);
 			return success("保存成功");
 		}catch (Exception e) {
 			e.printStackTrace();

@@ -19,7 +19,6 @@
 		<script type="text/javascript">
 		var $userList;	
 		$(function(){
-			//alert('${sessionScope.defaultMenu}');
 			$userList=$('#userList').datagrid({
 	            fitColumns:true,
 	            striped:true,
@@ -292,7 +291,10 @@
 			</div>
 			
 			<div id="tool_bar">
-				<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-add', plain:true" onclick="user.addUser()">新增</a>
+				<s:if test='#session.defaultMenu.sysUserActionpreAdd==1'>
+					<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add', plain:true" onclick="user.addUser()">新增</a>
+				</s:if>
+								
 				<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-edit', plain:true" onclick="user.editUser()">编辑</a>
 				<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-remove', plain:true" onclick="user.deleteUser()">删除</a>
 			</div>

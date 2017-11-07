@@ -22,13 +22,11 @@ public class AuthorityInterceptor extends AbstractInterceptor {
 	
 	private static final long serialVersionUID = 1L;
 
-	@Autowired
-	SysMenuDaoI sysMenuDao;
 	
 	@SuppressWarnings("unchecked")
 	@Override
 	public String intercept(ActionInvocation invocation) throws Exception {
-		ActionContext ctx = invocation.getInvocationContext();
+		/*ActionContext ctx = invocation.getInvocationContext();
 		Object action = invocation.getAction();
 		SysUser adm = (SysUser) ctx.getSession().get(Constant.SESSION_ADMIN);
 		List<SysMenu> listMenu = (List<SysMenu>)ctx.getSession().get("defaultMenu");
@@ -54,6 +52,8 @@ public class AuthorityInterceptor extends AbstractInterceptor {
 			
 		} else {
 			return null;
-		}
+		}*/
+		return invocation.invoke();
 	}
+		
 }

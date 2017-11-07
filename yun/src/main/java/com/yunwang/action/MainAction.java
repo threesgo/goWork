@@ -52,10 +52,10 @@ public class MainAction extends AbstractLoginAction{
 		//获取默认角色所关联的菜单
 		if(null != defaultRole){
 			List<SysMenu> listMenu = sysMenuService.findRelMenuByRoleIdAndViewType(defaultRole.getId(),2);
-			Map<String,SysMenu> map = new HashMap<String, SysMenu>();
+			Map<String,Integer> map = new HashMap<String, Integer>();
 			for(SysMenu sysMenu:listMenu){
 				if(null == map.get(sysMenu.getUrl())){
-					map.put(sysMenu.getUrl(), sysMenu);
+					map.put(sysMenu.getUrl(), 1);
 				}
 			}
 			sessionMap.put("defaultMenu",map);
