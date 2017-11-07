@@ -16,12 +16,18 @@
 		<div data-options="region:'center',split:true,title:''" border="false">
 			<div  id="roleTab" ></div>
 		</div>
-		<div id="addRole" class="easyui-menu" style="width:120px;">
-			<div onclick="append()" data-options="iconCls:'icon-add'">添加</div>
-		</div>
-		<div id="delRole" class="easyui-menu" style="width:120px;">
-			<div onclick="del(this)" data-options="iconCls:'icon-remove'">删除</div>
-		</div>
+		<s:if test='#session.defaultMenu.sysRoleActionAdd==1'>
+			<div id="addRole" class="easyui-menu" style="width:120px;">
+				<div onclick="append()" data-options="iconCls:'icon-add'">添加</div>
+			</div>
+		</s:if>
+		
+		<s:if test='#session.defaultMenu.sysRoleActionDelete==1'>
+			<div id="delRole" class="easyui-menu" style="width:120px;">
+				<div onclick="del(this)" data-options="iconCls:'icon-remove'">删除</div>
+			</div>
+		</s:if>
+		
  		<script type="text/javascript" > 
  		var roleTree;
  		var layoutTab;

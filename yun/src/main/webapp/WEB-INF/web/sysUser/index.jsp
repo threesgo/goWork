@@ -291,12 +291,17 @@
 			</div>
 			
 			<div id="tool_bar">
-				<s:if test='#session.defaultMenu.sysUserActionpreAdd==1'>
+				<s:if test='#session.defaultMenu.sysUserActionAdd==1'>
 					<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add', plain:true" onclick="user.addUser()">新增</a>
 				</s:if>
-								
-				<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-edit', plain:true" onclick="user.editUser()">编辑</a>
-				<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-remove', plain:true" onclick="user.deleteUser()">删除</a>
+				
+				<s:if test='#session.defaultMenu.sysUserActionEdit==1'>
+					<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-edit', plain:true" onclick="user.editUser()">编辑</a>
+				</s:if>
+				
+				<s:if test='#session.defaultMenu.sysUserActionDelete==1'>
+					<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-remove', plain:true" onclick="user.deleteUser()">删除</a>
+				</s:if>
 			</div>
 		</div>
 	</body>

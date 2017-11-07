@@ -5,7 +5,22 @@
 	$(function(){
 		menuTree=$('#menuTree').tree({
 				checkbox:true,
-				data:eval('${jsonInfo}')
+				data:eval('${jsonInfo}'),
+				onCheck:function(node, checked){
+					if("list"==node.attributes.url){
+						if(!checked){
+							//取消勾选了查看功能
+							var parentNode = menuTree.tree("getParent",node.target);
+							var childrenNodes = menuTree.tree("getChildren",parentNode.target);
+							$.each(childrenNodes,function(index,n){
+								menuTree.tree("uncheck",n.target);
+							});
+							menuTree.tree("uncheck",parentNode.target);
+						}
+						
+					}
+				}
+				
 			}
  		);
 	});
@@ -107,9 +122,16 @@
 </style>
 <div id="roleMenuEdit" class="easyui-layout" data-options="fit:true">   
 	<div id="tool_bar">
-		<a href="#" class="icon-edit" onclick="editRole()">编辑</a>
-		<a href="#" class="icon-save" onclick="saveMenuRel()">保存</a>
-		<a href="#" class="icon-remove" onclick="delRole()">删除</a>
+		<s:if test='#session.defaultMenu.sysRoleActionEdit==1'>
+			<a href="#" class="icon-edit" onclick="editRole()">编辑角色</a>
+		</s:if>
+		<s:if test='#session.defaultMenu.sysRoleActionSave==1'>
+			<a href="#" class="icon-save" onclick="saveMenuRel()">保存菜单</a>
+		</s:if>
+		<s:if test='#session.defaultMenu.sysRoleActionDelete==1'>
+			<a href="#" class="icon-remove" onclick="delRole()">删除</a>
+		</s:if>
+		
 	</div>
 	<div data-options="region:'center',split:true,title:' ',tools:'#tool_bar'" border="false">
 		<ul id="menuTree"></ul> 

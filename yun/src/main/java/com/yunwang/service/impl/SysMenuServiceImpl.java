@@ -106,6 +106,7 @@ public class SysMenuServiceImpl implements SysMenuService{
 		map.put("text",menu.getName());
 		cmap.put("parentid", menu.getParentId());
 		cmap.put("value",menuId);
+		cmap.put("url", menu.getUrl());
 		cmap.put("moduleType",menu.getViewType());
 		map.put("attributes", cmap);
 		/*if(relRoleModuleMap!=null && relRoleModuleMap.containsKey(module.getId())){
