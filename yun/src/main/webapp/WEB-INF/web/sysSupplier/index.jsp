@@ -144,32 +144,32 @@
 				return false;
 			}
 			var dialog = $('<div id="relationSysSupplier"></div>').dialog({    
-				href : "sysSupplierAction!relationCatalog.act",
-				width:600,
+				href : "sysSupplierAction!relationCatalog.act?sysSupplier.id="+selected.id,
+				width:400,
 				height:380,
 				title:"编辑关联关系",
 				method:'post',
-				queryParams:{"sysSupplier.id":selected.id},
 				modal:true,
 				resizable:true,
 				buttons:[{
 					text:"确定",
 					iconCls:'icon-ok',
 					handler:function(){
-						var nodes=resourceTypeTree.tree("getChecked",["checked","indeterminate"]);
+						var nodes=supplierResourceTypeTree.tree("getChecked",["checked","indeterminate"]);
 						var ids=[];
 						$.each(nodes,function(index,node){
 							ids.push(node.id);
 						});
 						$.post("sysSupplierAction!updateRelationCatalog.act",
-				    			{"ids":ids.join(","),"sysSupplier.id":${sysSupplier.id}},
+				    			{"ids":ids.join(","),"sysSupplier.id":selected.id},
 			       			 function(data){
 			      			 	handlerResult(data,
 			      			 		function(json){
 										$show(json.message);
+										dialog.dialog("destroy");
 									},
 									function(json){
-										$show(json.message);
+										$alert(json.message);
 									}
 								);
 			       			}
@@ -353,7 +353,7 @@
 	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-save', plain:true" onclick="sysSupplierOperation.updateSysSupplier()">保存</a>
 	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-quxiao', plain:true" onclick="sysSupplierOperation.cancelEdit()">取消编辑</a>
 	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-remove', plain:true" onclick="sysSupplierOperation.deleteSysSupplier()">删除</a>
-	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-remove', plain:true" onclick="sysSupplierOperation.relationSysSupplier()">关联类别</a>
+	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'building_link', plain:true" onclick="sysSupplierOperation.relationSysSupplier()">关联类别</a>
 </div>
 
 

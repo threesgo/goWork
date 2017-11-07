@@ -109,7 +109,7 @@ public class SysBrandAction extends AbstractLoginAction{
 	 * @return
 	 * <p>查询供应商关联的类别</p>
 	 */
-	public String supplierResourceTypeTree(){
+	public String brandResourceTypeTree(){
 		List<SysBrandCatalog> sysSuppliers = sysBrandService.findAllRelCatalogBrand(sysBrand.getId());
 		Map<Integer,SysBrandCatalog> map = CollectionUtil.listToMap(sysSuppliers,"catalogId");
 		return ajaxText(getChildren(0,map));

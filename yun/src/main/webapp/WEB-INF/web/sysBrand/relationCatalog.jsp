@@ -1,14 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags"%>
 <script type="text/javascript">
-var resourceTypeTree;
-
+var brandResourceTypeTree;
 $(function(){
-	resourceTypeTree=$('#layoutTree').tree({    
+	brandResourceTypeTree=$('#brandResourceTypeTree').tree({    
 		checkbox:true,
-		url:"sysSupplierAction!supplierResourceTypeTree.act"
+		animate:true,
+		url:"sysSupplierAction!supplierResourceTypeTree.act?sysSupplier.id=${sysSupplier.id}"
 	});
 });
 </script>
-
-<ul id="resourceTypeTree"></ul>
+<ul id="brandResourceTypeTree"></ul>
