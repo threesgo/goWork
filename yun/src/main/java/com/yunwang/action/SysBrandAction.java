@@ -1,6 +1,5 @@
 package com.yunwang.action;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,60 +12,52 @@ import org.apache.struts2.convention.annotation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.yunwang.model.page.Pager;
-import com.yunwang.model.pojo.SysDataDictionary;
+import com.yunwang.model.pojo.SysBrand;
+import com.yunwang.model.pojo.SysBrandCatalog;
 import com.yunwang.model.pojo.SysRsRcCatalog;
-import com.yunwang.model.pojo.SysSupplier;
-import com.yunwang.model.pojo.SysSupplierCatalog;
+import com.yunwang.service.SysBrandService;
 import com.yunwang.service.SysResourceTypeService;
-import com.yunwang.service.SysSupplierService;
-import com.yunwang.util.BaseDataDictionaryUtil;
 import com.yunwang.util.action.AbstractLoginAction;
 import com.yunwang.util.collection.CollectionUtil;
+
 @Action(
-	value = "sysSupplierAction", 
+	value = "sysBrandAction", 
 	results = {
-		@Result(name = "index",location="/WEB-INF/web/sysSupplier/index.jsp"),
-		@Result(name = "relationCatalog",location="/WEB-INF/web/sysSupplier/relationCatalog.jsp"),
+		@Result(name = "index",location="/WEB-INF/web/sysBrand/index.jsp"),
+		@Result(name = "relationCatalog",location="/WEB-INF/web/sysBrand/relationCatalog.jsp"),
 	}
 )
-public class SysSupplierAction extends AbstractLoginAction{
+public class SysBrandAction extends AbstractLoginAction{
 
-	private final static Logger LOG =Logger.getLogger(SysSupplierAction.class);
+	private final static Logger LOG =Logger.getLogger(SysBrandAction.class);
+
+	
 	/*
-	 * @date 2017-10-17
+	 * @date 2017-11-7
 	 * @author YBF
 	 * TODO
 	 */
 	private static final long serialVersionUID = 1L;
 	
 	@Autowired
-	private SysSupplierService sysSupplierService;
+	private SysBrandService sysBrandService;
 	@Autowired
 	private SysResourceTypeService sysResourceTypeService;
 	
 	private Map<String,Object> hashMap;
-	private SysSupplier sysSupplier;
+	private SysBrand sysBrand;
 	private String ids;
 	private String jsonStr;
-	private List<SysDataDictionary> flowList;
+	
 	
 	@Override
 	public String execute(){
-		flowList = BaseDataDictionaryUtil.baseDataMap.get(4);
-		hashMap = new HashMap<String,Object>();
-		hashMap.put("flowArr", JSONArray.fromObject(BaseDataDictionaryUtil.baseDataMap.get(4)));
-		JSONObject obj = new JSONObject();
-		for(SysDataDictionary dictionary:flowList){
-			obj.put(dictionary.getValue(), dictionary.getName());
-		}
-		hashMap.put("flowObj",obj);
 		return "index";
 	} 
 	
-	
 	public String listData(){
 		JSONObject obj=new JSONObject();
-		Pager<SysSupplier> pager = sysSupplierService.findAll(page,rows,
+		Pager<SysBrand> pager = sysBrandService.findList(page,rows,
 				JSONObject.fromObject(jsonStr));
 		JSONArray arr = new JSONArray();
 		if(null!=pager && null!=pager.getData()){
@@ -79,16 +70,17 @@ public class SysSupplierAction extends AbstractLoginAction{
   		return ajaxText(JSONObject.fromObject(obj).toString());
 	}
 	
+	
 	/**
 	 * @date 2017-10-10
 	 * @author YBF
 	 * @return
 	 * <p>保存表格行数据</p>
 	 */
-	public String saveOrUpdateSupplierGrid(){
+	public String saveOrUpdateBrandGrid(){
 		try{
 			JSONObject obj = JSONObject.fromObject(jsonStr);
-			sysSupplierService.saveOrUpdateSupplierGrid(obj);
+			sysBrandService.saveOrUpdateBrandGrid(obj);
 			return success("行数据保存成功!",obj);
 		}catch(Exception e){
 			LOG.error(e.getMessage());
@@ -96,9 +88,9 @@ public class SysSupplierAction extends AbstractLoginAction{
 		}
 	}
 	
-	public String deleteSupplier(){
+	public String deleteBrand(){
 		try{
-			sysSupplierService.deleteSupplier(ids);
+			sysBrandService.deleteBrand(ids);
 			return success("操作成功!");
 		}catch(Exception e){
 			LOG.error(e.getMessage());
@@ -106,10 +98,10 @@ public class SysSupplierAction extends AbstractLoginAction{
 		}
 	}
 	
-	
 	public String relationCatalog(){
 		return "relationCatalog";
 	}
+	
 	
 	/**
 	 * @date 2017-11-7
@@ -118,12 +110,12 @@ public class SysSupplierAction extends AbstractLoginAction{
 	 * <p>查询供应商关联的类别</p>
 	 */
 	public String supplierResourceTypeTree(){
-		List<SysSupplierCatalog> sysSuppliers = sysSupplierService.findAllRelCatalogSupplier(sysSupplier.getId());
-		Map<Integer,SysSupplierCatalog> map = CollectionUtil.listToMap(sysSuppliers,"catalogId");
+		List<SysBrandCatalog> sysSuppliers = sysBrandService.findAllRelCatalogBrand(sysBrand.getId());
+		Map<Integer,SysBrandCatalog> map = CollectionUtil.listToMap(sysSuppliers,"catalogId");
 		return ajaxText(getChildren(0,map));
 	}
 	
-	private JSONArray getChildren(Integer parentId,Map<Integer,SysSupplierCatalog> map){
+	private JSONArray getChildren(Integer parentId,Map<Integer,SysBrandCatalog> map){
 		List<SysRsRcCatalog> sysRcRsrcOrgList = sysResourceTypeService.findRsRcCatalogByParentId(parentId);
 		JSONArray arr = new JSONArray();
 		for(SysRsRcCatalog child:sysRcRsrcOrgList){
@@ -132,7 +124,7 @@ public class SysSupplierAction extends AbstractLoginAction{
 		return arr;
 	}
 	
-	private JSONObject getJson(SysRsRcCatalog sysRcRsrcOrg,Map<Integer,SysSupplierCatalog> map){
+	private JSONObject getJson(SysRsRcCatalog sysRcRsrcOrg,Map<Integer,SysBrandCatalog> map){
 		JSONObject json=new JSONObject();
 		json.put("id",sysRcRsrcOrg.getId());
 		json.put("text",sysRcRsrcOrg.getCatalogName());//sysRcRsrcOrg.getCatalogCode()+","+sysRcRsrcOrg.getCatalogName());
@@ -148,34 +140,35 @@ public class SysSupplierAction extends AbstractLoginAction{
 	
 	public String updateRelationCatalog(){
 		try{
-			sysSupplierService.updateRelationCatalog(ids,sysSupplier.getId());
+			sysBrandService.updateRelationCatalog(ids,sysBrand.getId());
 			return success("操作成功!");
 		}catch(Exception e){
 			LOG.error(e.getMessage());
 			return error("操作失败!");
 		}
 	}
-
+	
+	
 	public Map<String, Object> getHashMap() {
 		return hashMap;
 	}
-
+	
 	public void setHashMap(Map<String, Object> hashMap) {
 		this.hashMap = hashMap;
 	}
-
-	public SysSupplier getSysSupplier() {
-		return sysSupplier;
+	
+	public SysBrand getSysBrand() {
+		return sysBrand;
 	}
 
-	public void setSysSupplier(SysSupplier sysSupplier) {
-		this.sysSupplier = sysSupplier;
+	public void setSysBrand(SysBrand sysBrand) {
+		this.sysBrand = sysBrand;
 	}
 
 	public String getIds() {
 		return ids;
 	}
-
+	
 	public void setIds(String ids) {
 		this.ids = ids;
 	}
@@ -186,14 +179,5 @@ public class SysSupplierAction extends AbstractLoginAction{
 
 	public void setJsonStr(String jsonStr) {
 		this.jsonStr = jsonStr;
-	}
-
-
-	public List<SysDataDictionary> getFlowList() {
-		return flowList;
-	}
-
-	public void setFlowList(List<SysDataDictionary> flowList) {
-		this.flowList = flowList;
 	}
 }

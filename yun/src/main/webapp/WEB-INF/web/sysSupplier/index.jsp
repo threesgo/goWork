@@ -137,6 +137,56 @@
 	});
 	
 	sysSupplierOperation={
+		relationSysSupplier:function(){
+			var selected = $sysSupplierDatagrid.datagrid("getSelected");
+			if(null == selected){
+				$alert("请单选供应商行，设置关联关系!");
+				return false;
+			}
+			var dialog = $('<div id="relationSysSupplier"></div>').dialog({    
+				href : "sysSupplierAction!relationCatalog.act",
+				width:600,
+				height:380,
+				title:"编辑关联关系",
+				method:'post',
+				queryParams:{"sysSupplier.id":selected.id},
+				modal:true,
+				resizable:true,
+				buttons:[{
+					text:"确定",
+					iconCls:'icon-ok',
+					handler:function(){
+						var nodes=resourceTypeTree.tree("getChecked",["checked","indeterminate"]);
+						var ids=[];
+						$.each(nodes,function(index,node){
+							ids.push(node.id);
+						});
+						$.post("sysSupplierAction!updateRelationCatalog.act",
+				    			{"ids":ids.join(","),"sysSupplier.id":${sysSupplier.id}},
+			       			 function(data){
+			      			 	handlerResult(data,
+			      			 		function(json){
+										$show(json.message);
+									},
+									function(json){
+										$show(json.message);
+									}
+								);
+			       			}
+				    	);
+					}
+				},{
+					text:"取消",
+					iconCls:'icon-cancel',
+					handler:function(){
+						dialog.dialog("destroy");
+					}
+				}],
+				onClose:function(){
+					$(this).dialog("destroy");
+				}
+ 			});
+		},
 		updateSysSupplier:function(){
 			if(sysSupplierEdit!=undefined){
 				if($sysSupplierDatagrid.datagrid("validateRow",sysSupplierEdit)){
@@ -163,7 +213,7 @@
 			$sysSupplierDatagrid.datagrid('insertRow',{
 				index: addIndex,	// 索引从0开始
 				row: {
-					id:addId--,
+					id:addId--
 				}
 			});
 			$sysSupplierDatagrid.datagrid("beginEdit",addIndex);
@@ -303,6 +353,7 @@
 	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-save', plain:true" onclick="sysSupplierOperation.updateSysSupplier()">保存</a>
 	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-quxiao', plain:true" onclick="sysSupplierOperation.cancelEdit()">取消编辑</a>
 	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-remove', plain:true" onclick="sysSupplierOperation.deleteSysSupplier()">删除</a>
+	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-remove', plain:true" onclick="sysSupplierOperation.relationSysSupplier()">关联类别</a>
 </div>
 
 

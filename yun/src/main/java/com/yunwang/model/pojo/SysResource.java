@@ -65,6 +65,9 @@ public class SysResource extends AbstractRowVersionModel{
 	@Column(name = "UPDATE_DATE")
 	private Date updateDate; // 更新时间
 	
+	@Column(name = "BRAND_ID")
+	private Integer brandId;
+	
 	@Column(name = "BRAND",length=128)
 	private String brand;  //品牌
 	
@@ -254,4 +257,12 @@ public class SysResource extends AbstractRowVersionModel{
 	public void setIsRelease(Integer isRelease) {
 		this.isRelease = isRelease;
 	}
-}
+
+	public Integer getBrandId() {
+		return brandId;
+	}
+
+	public void setBrandId(Integer brandId) {
+		this.brandId = brandId;
+	}
+	}

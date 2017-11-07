@@ -23,6 +23,7 @@ import com.yunwang.dao.SysRsRcAttribDaoI;
 import com.yunwang.dao.SysRsRcAttribRelDaoI;
 import com.yunwang.dao.SysRsRcCatalogDaoI;
 import com.yunwang.dao.SysRsRcPcResourceDaoI;
+import com.yunwang.dao.SysSupplierCatalogDaoI;
 import com.yunwang.dao.SysSupplierDaoI;
 import com.yunwang.model.page.Pager;
 import com.yunwang.model.pojo.SysOrderFlow;
@@ -36,6 +37,7 @@ import com.yunwang.model.pojo.SysRsRcCatalog;
 import com.yunwang.model.pojo.SysRsRcPackage;
 import com.yunwang.model.pojo.SysRsRcPcResource;
 import com.yunwang.model.pojo.SysSupplier;
+import com.yunwang.model.pojo.SysSupplierCatalog;
 import com.yunwang.service.SysResourceService;
 import com.yunwang.util.collection.CollectionUtil;
 import com.yunwang.util.exception.MineException;
@@ -66,6 +68,8 @@ public class SysResourceServiceImpl implements SysResourceService{
 	private SysOrderFlowDaoI sysOrderFlowDao;
 	@Autowired
 	private SysOrderPackageDaoI sysOrderPackageDao;
+	@Autowired
+	private SysSupplierCatalogDaoI SysSupplierCatalogDao;
 
 
 	@Override
@@ -256,7 +260,16 @@ public class SysResourceServiceImpl implements SysResourceService{
 					sysSupplier.setPhoneNum(resource.getSupplierPhone());
 					sysSupplier.setTelNum(resource.getSupplierTel());
 					sysSupplier.setAddress(resource.getSupplierTel());
-					sysSupplierDao.saveOrUpdate(sysSupplier);
+					sysSupplierDao.save(sysSupplier);
+				}
+				
+				//增加供应商与类别的关联关系
+				SysSupplierCatalog sysSupplierCatalog = SysSupplierCatalogDao.getBySupperIdAndCatalogId(sysSupplier.getId(),sysRsRcCatalog.getId());
+				if(null == sysSupplierCatalog){
+					SysSupplierCatalog addSysSupplierCatalog = new SysSupplierCatalog();
+					addSysSupplierCatalog.setCatalogId(sysRsRcCatalog.getId());
+					addSysSupplierCatalog.setSupplierId(sysSupplier.getId());
+					SysSupplierCatalogDao.save(addSysSupplierCatalog);
 				}
 			}
 			

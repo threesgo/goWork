@@ -7,16 +7,21 @@ import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.yunwang.dao.SysSupplierCatalogDaoI;
 import com.yunwang.dao.SysSupplierDaoI;
 import com.yunwang.model.page.Pager;
 import com.yunwang.model.pojo.SysSupplier;
+import com.yunwang.model.pojo.SysSupplierCatalog;
 import com.yunwang.service.SysSupplierService;
+import com.yunwang.util.string.MyStringUtil;
 
 @Service
 public class SysSupplierServiceImpl implements SysSupplierService {
 
 	@Autowired
 	private SysSupplierDaoI sysSupplierDao;
+	@Autowired
+	private SysSupplierCatalogDaoI sysSupplierCatalogDao;
 
 	@Override
 	public void saveOrUpdateSupplierGrid(JSONObject rowData) {
@@ -66,5 +71,25 @@ public class SysSupplierServiceImpl implements SysSupplierService {
 	public List<SysSupplier> findByCatalogId(Integer catalogId) {
 		// TODO Auto-generated method stub
 		return sysSupplierDao.findByCatalogId(catalogId);
+	}
+
+	@Override
+	public void updateRelationCatalog(String ids,Integer supplierId) {
+		sysSupplierCatalogDao.deleteByProperty("supplierId", supplierId);
+		if(MyStringUtil.isNotBlank(ids)){
+			String[] idArr = ids.split("\\,");
+			for(String id : idArr){
+				SysSupplierCatalog sysSupplierCatalog = new SysSupplierCatalog();
+				sysSupplierCatalog.setCatalogId(Integer.parseInt(id));
+				sysSupplierCatalog.setSupplierId(supplierId);
+				sysSupplierCatalogDao.save(sysSupplierCatalog);
+			}
+		}
+	}
+
+	@Override
+	public List<SysSupplierCatalog> findAllRelCatalogSupplier(Integer supplierId) {
+		// TODO Auto-generated method stub
+		return sysSupplierCatalogDao.findByProperty("supplierId", supplierId);
 	}
 }
