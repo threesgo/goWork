@@ -138,7 +138,13 @@ sysDepartMenttHandle={
 </script>
 <table id="sysDepartMentTable"></table>
 <div id="sys_DepartMent_tool_bar">
-	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add', plain:true" onclick="append()">新增</a>
-	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-edit', plain:true" onclick="sysDepartMenttHandle.editDepartMent()">编辑</a>
-	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-remove', plain:true" onclick="sysDepartMenttHandle.deleteDepartMent()">删除</a>
+	<s:if test='#session.defaultMenu.sysDepartMentActionAddDepart==1'>
+		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add', plain:true" onclick="append()">新增</a>
+	</s:if>
+	<s:if test='#session.defaultMenu.sysDepartMentActionEditDepart==1'>
+		<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-edit', plain:true" onclick="sysDepartMenttHandle.editDepartMent()">编辑</a>
+	</s:if>
+	<s:if test='#session.defaultMenu.sysDepartMentActionDeleteDepart==1'>
+		<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-remove', plain:true" onclick="sysDepartMenttHandle.deleteDepartMent()">删除</a>
+	</s:if>
 </div>
