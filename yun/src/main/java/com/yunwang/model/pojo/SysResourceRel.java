@@ -32,7 +32,7 @@ public class SysResourceRel extends AbstractRowVersionModel{
 	@Column(name="RESOURCE_ID")
 	private Integer resourceId;
 	
-	@Column(name="KEY_WORD",length=2048, nullable = false)
+	@Column(name="KEY_WORD",length=2048)
 	private String keyWord;  //自动生成，可修改（产品显示字段）
 	
 	@Column(name="RSRC_CODE", length=128)
