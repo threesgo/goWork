@@ -45,7 +45,7 @@ public class SysOrderFlow extends AbstractRowVersionModel{
 	@Column(name = "END_TIME")
 	private Date endTime;  //报警提示
 	
-	@Column(name = "INFO",length=4096)
+	@Column(name = "INFO",length=2048)
 	private String info;
 	
 	@Column(name="ORDER_NO", nullable = false)

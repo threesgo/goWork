@@ -63,7 +63,7 @@ public class SysSupplierDaoImpl extends BaseDaoImpl<SysSupplier> implements SysS
 	public List<SysSupplier> findByCatalogId(Integer catalogId) {
 		StringBuffer buf = new StringBuffer(
 				"SELECT DISTINCT model FROM SysSupplier model,SysSupplierCatalog supCatalog " 
-			+"WHERE supCatalog.supplierId = model.id AND supCatalog.catalogId=:catalogId AND model.status!=0 ");
+			+"WHERE supCatalog.supplierId = model.id AND supCatalog.catalogId=:catalogId AND model.status!=0 ORDER BY model.id");
 		Map<String, Object> map = new HashMap<String,Object>();
 		map.put("catalogId",catalogId);
 		return find(buf.toString(),map);

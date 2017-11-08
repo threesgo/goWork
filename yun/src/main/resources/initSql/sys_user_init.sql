@@ -58,10 +58,12 @@ insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type)
 values(7,'产品管理','resourceAction.act','cog_edit',5,2,1,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
 values(8,'供应商管理','sysSupplierAction.act','cog_edit',5,3,1,1);
+insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type)
+values(31,'品牌管理','sysBrandAction.act','cog_edit',5,4,1,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
-values(9,'工人管理','sysWorkerAction.act','cog_edit',5,4,1,1);
+values(9,'工人管理','sysWorkerAction.act','cog_edit',5,5,1,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
-values(10,'套餐管理','resourcePackageAction.act','cog_edit',5,5,1,1);
+values(10,'套餐管理','resourcePackageAction.act','cog_edit',5,6,1,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
 values(11,'订单管理','','book_edit',0,4,1,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
@@ -118,4 +120,6 @@ insert into sys_role_menu (id,row_version,role_id,menu_id)
 values (19, 0, 1 ,28);
 insert into sys_role_menu (id,row_version,role_id,menu_id)
 values (20, 0, 1 ,29);
+insert into sys_role_menu (id,row_version,role_id,menu_id)
+values (21, 0, 1 ,31);
 END;

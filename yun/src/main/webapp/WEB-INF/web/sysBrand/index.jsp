@@ -29,16 +29,16 @@
             url:"sysBrandAction!listData.act",
 			columns:[[
 				{field:'ck',checkbox:true},
-				{field:'contact',title: "品牌名称",width:120,sortable:true
+				{field:'name',title: "品牌名称",width:200,sortable:true
 					,editor:{
 		        		type:"textbox",
 		        		options:{required:true,validType:['length[1,80]','illegal']}
 		        	}
 				},
-				{field:'phoneNum',title: "品牌描述",width:400,sortable:true
+				{field:'info',title: "品牌描述",width:600,sortable:true
 					,editor:{
 		        		type:"textbox",
-		        		options:{required:false,validType:['length[1,600]','mobile']}
+		        		options:{required:false,validType:['length[1,300]','illegal']}
 		        	}
 				}
 			]],
@@ -55,7 +55,7 @@
 	            sysBrandEdit = index;
 	        },
 	        onAfterEdit:function(rowIndex,rowData,changes){
-		    	$.post("sysBrandAction!saveOrUpdateBrandrGrid.act",
+		    	$.post("sysBrandAction!saveOrUpdateBrandGrid.act",
 		    			{"jsonStr":Some.util.jsonToStr(rowData)},
 	       			 function(data){
 	      			 	handlerResult(data,

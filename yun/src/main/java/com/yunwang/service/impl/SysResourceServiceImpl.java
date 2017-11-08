@@ -14,6 +14,8 @@ import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.yunwang.dao.SysBrandCatalogDaoI;
+import com.yunwang.dao.SysBrandDaoI;
 import com.yunwang.dao.SysOrderFlowDaoI;
 import com.yunwang.dao.SysOrderPackageDaoI;
 import com.yunwang.dao.SysResourceDaoI;
@@ -26,6 +28,8 @@ import com.yunwang.dao.SysRsRcPcResourceDaoI;
 import com.yunwang.dao.SysSupplierCatalogDaoI;
 import com.yunwang.dao.SysSupplierDaoI;
 import com.yunwang.model.page.Pager;
+import com.yunwang.model.pojo.SysBrand;
+import com.yunwang.model.pojo.SysBrandCatalog;
 import com.yunwang.model.pojo.SysOrderFlow;
 import com.yunwang.model.pojo.SysOrderPackage;
 import com.yunwang.model.pojo.SysResource;
@@ -57,6 +61,8 @@ public class SysResourceServiceImpl implements SysResourceService{
 	@Autowired
 	private SysSupplierDaoI sysSupplierDao;
 	@Autowired
+	private SysBrandDaoI sysBrandDao;
+	@Autowired
 	private SysResourceRelDaoI sysResourceRelDao;
 	@Autowired
 	private SysRsRcAttribRelDaoI sysRsRcAttribRelDao;
@@ -70,8 +76,10 @@ public class SysResourceServiceImpl implements SysResourceService{
 	private SysOrderPackageDaoI sysOrderPackageDao;
 	@Autowired
 	private SysSupplierCatalogDaoI SysSupplierCatalogDao;
+	@Autowired
+	private SysBrandCatalogDaoI sysBrandCatalogDao;
 
-
+ 
 	@Override
 	public List<SysResource> findByRsRcCatalogId(Integer catalogId) {
 		return sysResourceDao.findByRsRcCatalogId(catalogId);
@@ -113,7 +121,6 @@ public class SysResourceServiceImpl implements SysResourceService{
     		 sysResource.setOrderNo(sysResourceDao.findMaxSeqByPfield("orderNo","rsrcCatalogId",sysRsRcCatalog.getId())+1);			
              sysResource.setRsrcCode(MyStringUtil.getCombineSeqStr(sysResource.getOrderNo(),sysRsRcCatalog.getCatalogCode()));
         }
-        //String rsrcCode = rowData.getString("rsrcCode");
          
 	     String rsrcName = rowData.getString("rsrcName");
 	     sysResource.setRsrcName(rsrcName);
@@ -123,24 +130,12 @@ public class SysResourceServiceImpl implements SysResourceService{
 	     sysResource.setPurchasePrice(new BigDecimal(purchasePrice));
 	     String salePrice = rowData.getString("salePrice");
 	     sysResource.setSalePrice(new BigDecimal(salePrice));
-	    //Integer workType = rowData.getInt("workType");
-	    //sysResource.setWorkType(workType);
-	     
-	     String brand = rowData.getString("brand");
-	     sysResource.setBrand(brand);
-	    
+	
+	     Integer brandId = rowData.getInt("brandId");
+	     sysResource.setBrandId(brandId);
 	     
 	     Integer supplierId = rowData.getInt("supplierId");
 	     sysResource.setSupplierId(supplierId);
-	     
-//         String supplierName = rowData.getString("supplierName");
-//         sysResource.setSupplierName(supplierName);
-//         String supplier = rowData.getString("supplier");
-//         sysResource.setSupplier(supplier);
-//         String supplierAddress = rowData.getString("supplierAddress");
-//         sysResource.setSupplierAddress(supplierAddress);
-//         String supplierPhone = rowData.getString("supplierPhone");
-//         sysResource.setSupplierPhone(supplierPhone);
 	     
 	     sysResourceDao.saveOrUpdate(sysResource);
 	     
@@ -155,22 +150,19 @@ public class SysResourceServiceImpl implements SysResourceService{
 	         String value = rowData.getString(key);
 	         if(MyNumberUtil.isNumber(key))
 	         {
-	        	 //如果属性值为空，不做处理
-	        	 //if(MyStringUtil.isNotBlank(value)){
-	        		 //更新的资源
-	        		 SysRsRcAttrib sysRsRcAttrib = null;
-	        		 sysRsRcAttrib = sysRsRcAttribDao.getByResourceAndAttr(sysResource.getId(),Integer.parseInt(key));
-	        		 if(null!=sysRsRcAttrib){
-	        			 sysRsRcAttrib.setRsrcAttribValue(value);
-	        		 }else{
-	        			 sysRsRcAttrib = new SysRsRcAttrib();
-	        			 sysRsRcAttrib.setRsrcAttribCatalogId(Integer.parseInt(key));
-	        			 sysRsRcAttrib.setRsrcCatalogId(sysRsRcCatalog.getId());
-	        			 sysRsRcAttrib.setRsrcId(sysResource.getId());
-	        			 sysRsRcAttrib.setRsrcAttribValue(value);
-	        		 }
-	            	 sysRsRcAttribDao.saveOrUpdate(sysRsRcAttrib);
-	        	 //}
+        		 //更新的资源
+        		 SysRsRcAttrib sysRsRcAttrib = null;
+        		 sysRsRcAttrib = sysRsRcAttribDao.getByResourceAndAttr(sysResource.getId(),Integer.parseInt(key));
+        		 if(null!=sysRsRcAttrib){
+        			 sysRsRcAttrib.setRsrcAttribValue(value);
+        		 }else{
+        			 sysRsRcAttrib = new SysRsRcAttrib();
+        			 sysRsRcAttrib.setRsrcAttribCatalogId(Integer.parseInt(key));
+        			 sysRsRcAttrib.setRsrcCatalogId(sysRsRcCatalog.getId());
+        			 sysRsRcAttrib.setRsrcId(sysResource.getId());
+        			 sysRsRcAttrib.setRsrcAttribValue(value);
+        		 }
+            	 sysRsRcAttribDao.saveOrUpdate(sysRsRcAttrib);
 	         }
 	     } 
 	}
@@ -184,7 +176,6 @@ public class SysResourceServiceImpl implements SysResourceService{
 		getChildrens(ids,children);
 		return sysResourceDao.findByRsRcCatalogIds(
 				StringBufferByCollectionUtil.convertCollection(ids),page,rows,seachJson);
-		//return sysResourceDao.findByRsRcCatalogId(rsRcCatalogId,page,rows,seachJson);
 	}
 	
 	private void getChildrens(List<Integer> childrenIds,List<SysRsRcCatalog> children){
@@ -242,6 +233,9 @@ public class SysResourceServiceImpl implements SysResourceService{
 		List<SysSupplier> sysSuppliers = sysSupplierDao.findAll();
 		Map<String,SysSupplier> supplierMap = CollectionUtil.listToMap(sysSuppliers,"name");
 		
+		List<SysBrand> sysBrands = sysBrandDao.findAll();
+		Map<Integer,SysBrand> sysBrandMap = CollectionUtil.listToMap(sysBrands,"name");
+		
 		for(SysResource resource:resourceList){
 			//遍历资源库资源
 			SysResource dbResource = null;
@@ -273,15 +267,37 @@ public class SysResourceServiceImpl implements SysResourceService{
 				}
 			}
 			
+			SysBrand sysBrand = null;
+			if(MyStringUtil.isNotBlank(resource.getBrand())){
+				sysBrand = sysBrandMap.get(resource.getBrand().trim());
+				if(null == sysBrand){
+					sysBrand = new SysBrand();
+					sysBrand.setCode((sysBrandDao.findMaxSeq("code")+1));			
+					sysBrand.setStatus(1);
+					sysBrand.setName(resource.getBrand().trim());
+					sysBrandDao.save(sysBrand);
+				}
+				//增加供应商与类别的关联关系
+				SysBrandCatalog sysBrandCatalog = sysBrandCatalogDao.getByBrandIdAndCatalogId(sysBrand.getId(),sysRsRcCatalog.getId());
+				if(null == sysBrandCatalog){
+					SysBrandCatalog addSysBrandCatalog = new SysBrandCatalog();
+					addSysBrandCatalog.setCatalogId(sysRsRcCatalog.getId());
+					addSysBrandCatalog.setBrandId(sysBrand.getId());
+					sysBrandCatalogDao.save(addSysBrandCatalog);
+				}
+			}
+			
+			
 			if(null != dbResource){
 				//更新
 				dbResource.setRsrcName(resource.getRsrcName());
 				dbResource.setUpdateDate(new Date());
 				dbResource.setPurchasePrice(resource.getPurchasePrice());
 				dbResource.setSalePrice(resource.getSalePrice());
-				//dbResource.setWorkType(resource.getWorkType());
 				dbResource.setAbbreviaName(resource.getAbbreviaName());
-				dbResource.setBrand(resource.getBrand());
+				if(null != sysBrand){
+					dbResource.setBrandId(sysBrand.getId());
+				}
 				if(null != sysSupplier){
 					dbResource.setSupplierId(sysSupplier.getId());
 				}
@@ -303,11 +319,15 @@ public class SysResourceServiceImpl implements SysResourceService{
 				//新增
 				resource.setRsrcCatalogId(sysRsRcCatalog.getId());
 				resource.setRsrcStatus(1);
+				resource.setIsRelease(0);
 				resource.setOrderNo(++orderNo);
 				resource.setCreateDate(new Date());
 				resource.setRsrcCode(MyStringUtil.getCombineSeqStr(resource.getOrderNo(),sysRsRcCatalog.getCatalogCode()));
 				if(null != sysSupplier){
 					resource.setSupplierId(sysSupplier.getId());
+				}
+				if(null != sysBrand){
+					resource.setBrandId(sysBrand.getId());
 				}
 				sysResourceDao.save(resource);
 				resourceMap.put(resource.getRsrcCode(), resource);
@@ -338,6 +358,8 @@ public class SysResourceServiceImpl implements SysResourceService{
 				StringBufferByCollectionUtil.convertCollection(sysResources,"id"));
 		Map<Integer,Map<Integer,SysRsRcAttrib>> attribMap = conAttribToMap(sysRsRcAttribs);
 		
+		List<SysBrand> sysBrands = sysBrandDao.findAll();
+		Map<Integer,SysBrand> brandMap = CollectionUtil.listToMap(sysBrands,"id");
 		
 		for(SysResource sysResource:sysResources){
 			//发布数据移动到发布区
@@ -355,17 +377,17 @@ public class SysResourceServiceImpl implements SysResourceService{
 				sysResourceDao.update(sysResource);
 				
 				if(null != sysResourceRel){
-					setDataToSysResource(sysResource, sysResourceRel);
+					setDataToSysResource(sysResource, sysResourceRel,brandMap);
 					sysResourceRelDao.update(sysResourceRel);
 					sysRsRcAttribRelDao.deleteByProperty("rsrcRelId", sysResourceRel.getId());
 				}else{
 					sysResourceRel = new SysResourceRel();
-					setDataToSysResource(sysResource, sysResourceRel);
+					setDataToSysResource(sysResource, sysResourceRel,brandMap);
 					sysResourceRelDao.save(sysResourceRel);
 				}
 				
 				StringBuffer buf = new StringBuffer();
-				buf.append((MyStringUtil.isNotBlank(sysResource.getBrand())?sysResource.getBrand():"")
+				buf.append((null!=brandMap.get(sysResource.getBrandId())?brandMap.get(sysResource.getBrandId()).getName():"")
 						+(MyStringUtil.isNotBlank(sysResource.getRsrcName())?sysResource.getRsrcName():""));
 				
 				Map<Integer,SysRsRcAttrib> rattribMap = attribMap.get(sysResource.getId());
@@ -386,7 +408,13 @@ public class SysResourceServiceImpl implements SysResourceService{
 					buf.append("(");
 					List<SysRsRcAttribCatalog> attribCatalogs = sysRsRcAttribCatalogDao.findByIds(StringBufferByCollectionUtil.convertCollection(attribCatalogIdList));
 					for(SysRsRcAttribCatalog attribCatalog : attribCatalogs){
-						buf.append(attribCatalog.getRsrcAttribName()+":"+rattribMap.get(attribCatalog.getId()).getRsrcAttribValue()+" ");
+						if(null!=rattribMap.get(attribCatalog.getId())){
+							if(MyStringUtil.isNotBlank(rattribMap.get(attribCatalog.getId()).getRsrcAttribValue())){
+								buf.append(attribCatalog.getRsrcAttribName()+":"+rattribMap.get(attribCatalog.getId()).getRsrcAttribValue()+" ");
+							}else{
+								buf.append(attribCatalog.getRsrcAttribName()+": ");
+							}
+						}
 					}
 					buf.append(")");
 				}
@@ -397,9 +425,9 @@ public class SysResourceServiceImpl implements SysResourceService{
 	}
 
 	private void setDataToSysResource(SysResource sysResource,
-			SysResourceRel sysResourceRel) {
+			SysResourceRel sysResourceRel,Map<Integer,SysBrand> brandMap) {
 		sysResourceRel.setResourceId(sysResource.getId());
-		sysResourceRel.setKeyWord((MyStringUtil.isNotBlank(sysResource.getBrand())?sysResource.getBrand():"")
+		sysResourceRel.setKeyWord((null!=brandMap.get(sysResource.getBrandId())?brandMap.get(sysResource.getBrandId()).getName():"")
 							+(MyStringUtil.isNotBlank(sysResource.getRsrcName())?sysResource.getRsrcName():""));
 		sysResourceRel.setRsrcCode(sysResource.getRsrcCode());
 		sysResourceRel.setRsrcName(sysResource.getRsrcName());
@@ -407,7 +435,7 @@ public class SysResourceServiceImpl implements SysResourceService{
 		sysResourceRel.setOrderNo(sysResource.getOrderNo());
 		sysResourceRel.setRsrcCatalogId(sysResource.getRsrcCatalogId());
 		sysResourceRel.setSalePrice(sysResource.getSalePrice());	
-		sysResourceRel.setBrand(sysResource.getBrand());
+		sysResourceRel.setBrandId(sysResource.getBrandId());
 		sysResourceRel.setSupplierId(sysResource.getSupplierId());
 		sysResourceRel.setReleaseDate(new Date());
 		sysResourceRel.setRsrcStatus(1);

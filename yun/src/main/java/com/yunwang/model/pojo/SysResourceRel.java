@@ -32,7 +32,7 @@ public class SysResourceRel extends AbstractRowVersionModel{
 	@Column(name="RESOURCE_ID")
 	private Integer resourceId;
 	
-	@Column(name="KEY_WORD",length=128, nullable = false)
+	@Column(name="KEY_WORD",length=2048, nullable = false)
 	private String keyWord;  //自动生成，可修改（产品显示字段）
 	
 	@Column(name="RSRC_CODE", length=128)
@@ -53,8 +53,8 @@ public class SysResourceRel extends AbstractRowVersionModel{
 	@Column(name="SALE_PRICE",precision=9, scale=2, nullable = false)
 	private BigDecimal salePrice;  //销售价格
 	
-	@Column(name = "BRAND",length=128)
-	private String brand;  //品牌
+	@Column(name = "BRAND_ID")
+	private Integer brandId;  //品牌
 	
 	@Column(name = "SUPPLIER_ID")
 	private Integer supplierId;  //供应商名称 //后期改成id
@@ -65,6 +65,8 @@ public class SysResourceRel extends AbstractRowVersionModel{
 	@Column(name="RSRC_STUTAS",nullable = false)
 	private Integer rsrcStatus;//状态  0 失效  1，正常
 	
+	@Transient
+	private String brand;  //供应商名称
 	
 	@Transient
 	private String supplierName;  //供应商名称
@@ -265,5 +267,13 @@ public class SysResourceRel extends AbstractRowVersionModel{
 	
 	public String getReleaseDateStr(){
 		return MyDateUtils.getStringByDateTime (releaseDate) ;
+	}
+
+	public Integer getBrandId() {
+		return brandId;
+	}
+
+	public void setBrandId(Integer brandId) {
+		this.brandId = brandId;
 	}
 }

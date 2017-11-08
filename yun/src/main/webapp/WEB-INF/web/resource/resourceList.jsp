@@ -8,6 +8,7 @@ var resourceEdit = undefined;
 var resourceOperation = {};
 var addId = 0;
 var supplierObj = new Function("return " + '${hashMap.supplierObj}')();
+var brandObj = new Function("return " + '${hashMap.brandObj}')();
 
 $(function(){
  	columns=[];
@@ -299,11 +300,29 @@ $(function(){
 	        		}
 				}
 	       	},
-	       	{field:'brand',title:"品牌",width:80,sortable:true,
+	       	{field:'brandId',title:"品牌",width:80,sortable:true,
 	        	editor:{
-	        		type:"textbox",
-	        		options:{validType:['length[1,30]','illegal']}
-	        	}
+	            	type:'combobox',
+	             	options:{
+	               	  	valueField:'id', 
+	                   	textField:'name',
+	                   	editable:false,
+	                  	data:${hashMap.brandArr},
+	                	panelHeight:'auto',
+	                   	onLoadSuccess:function(){
+	                    	 
+	                   	},
+	               		onSelect:function(record){
+	               			
+	                    }
+	         	 	}
+				},
+				formatter:function(value, rowData) {
+					if(value == 0 ){
+						return "";
+					}
+					return brandObj[value];
+				} 
 	       	}
         ]],
 	    columns:[columns],
@@ -533,7 +552,7 @@ resourceOperation = {
 		searchData["rsrcCode"] = $("#rsrcCode").val();
 		searchData["rsrcName"] = $("#rsrcName").val();
 		searchData["abbreviaName"] = $("#abbreviaName").val();
-		searchData["brand"] = $("#brand").val();
+		searchData["brandId"] = $("#brandId").val();
 		searchData["supplierId"] = $("#supplierId").val();
 		
 		var $attrs = $("input[id^='attrib_']");
@@ -556,7 +575,7 @@ resourceOperation = {
 		$("#rsrcCode").val('');
 		$("#rsrcName").val('');
 		$("#abbreviaName").val('');
-		$("#brand").val('');
+		$("#brandId").val(0);
 		$("#supplierId").val(0);
 		var $attrs = $("input[id^='attrib_']");
 		$.each($attrs,function(i,n){
@@ -686,21 +705,17 @@ resourceOperation = {
 				<input  type="text"  id="abbreviaName"/>
 			</div>
 		</div>
-		<div class="search-div">
-			<lable for="">品牌</lable>
-			<div class="select">
-				<input  type="text"  id="brand"/>
-			</div>
-		</div>
 		
-		<!-- 
+		
 		<div class="search-div">
-			<lable for="">供应商名称</lable>
-			<div class="select">
-				<input  type="text"  id="supplierName"/>
-			</div>
+			<label>品牌</label>
+	       	<s:select id="brandId" style="height:22px"
+	       		list="sysBrands"
+		       	listKey="id"   
+		       	listValue="name" 
+		       	headerKey="0"
+		       	headerValue="--请选择--"/>
 		</div>
-		 -->
 		
 		<div class="search-div">
 			<label>供应商</label>

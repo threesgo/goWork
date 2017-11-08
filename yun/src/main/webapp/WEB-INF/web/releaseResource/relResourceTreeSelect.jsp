@@ -76,8 +76,13 @@ $(function(){
 					}
 				} 
 			},
-			{field:'brand',title:"品牌",width:80,sortable:true
-			
+			{field:'brandId',title:"品牌",width:80,sortable:true,
+				formatter:function(value, rowData) {
+					if(value == 0 ){
+						return "";
+					}
+					return brandObj[value];
+				}
 			},
 			{field:'releaseDateStr',title:"发布时间",width:100,sortable:true
 				
@@ -140,7 +145,7 @@ selectResourceOperation = {
 		searchData["keyWord"] = $("#selectSearchForm #keyWord").val();
 		searchData["rsrcName"] = $("#selectSearchForm #rsrcName").val();
 		searchData["abbreviaName"] = $("#selectSearchForm #abbreviaName").val();
-		searchData["brand"] = $("#selectSearchForm #brand").val();
+		searchData["brandId"] = $("#selectSearchForm #brandId").val();
 		searchData["supplierId"] = $("#selectSearchForm #supplierId").val();
 		$selectResourceGrid.datagrid("reload",
 			{
@@ -153,7 +158,7 @@ selectResourceOperation = {
 		$("#selectSearchForm #keyWord").val('');
 		$("#selectSearchForm #rsrcName").val('');
 		$("#selectSearchForm #abbreviaName").val('');
-		$("#selectSearchForm #brand").val('');
+		$("#selectSearchForm #brandId").val(0);
 		$("#selectSearchForm #supplierId").val(0);
 		selectResourceOperation.search();
 	}
@@ -180,10 +185,13 @@ selectResourceOperation = {
 			</div>
 		</div>
 		<div class="search-div">
-			<lable for="">品牌</lable>
-			<div class="select">
-				<input  type="text"  id="brand"/>
-			</div>
+			<label>品牌</label>
+	       	<s:select id="brandId" style="height:22px"
+	       		list="sysBrands"
+		       	listKey="id"   
+		       	listValue="name" 
+		       	headerKey="0"
+		       	headerValue="--请选择--"/>
 		</div>
 		
 		<div class="search-div">

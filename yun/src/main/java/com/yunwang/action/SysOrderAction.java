@@ -13,6 +13,7 @@ import org.apache.struts2.convention.annotation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.yunwang.model.page.Pager;
+import com.yunwang.model.pojo.SysBrand;
 import com.yunwang.model.pojo.SysDataDictionary;
 import com.yunwang.model.pojo.SysOrder;
 import com.yunwang.model.pojo.SysOrderFlow;
@@ -23,6 +24,7 @@ import com.yunwang.model.pojo.SysResourceRel;
 import com.yunwang.model.pojo.SysRsRcPackage;
 import com.yunwang.model.pojo.SysSupplier;
 import com.yunwang.model.pojo.SysWorker;
+import com.yunwang.service.SysBrandService;
 import com.yunwang.service.SysOrderService;
 import com.yunwang.service.SysResourceService;
 import com.yunwang.service.SysRsRcPackageService;
@@ -63,6 +65,8 @@ public class SysOrderAction  extends AbstractLoginAction{
 	@Autowired
 	private SysSupplierService sysSupplierService;
 	@Autowired
+	private SysBrandService sysBrandService;
+	@Autowired
 	private SysRsRcPackageService sysRsRcPackageService;
 	@Autowired
 	private SysWorkerService sysWorkerService;
@@ -80,6 +84,7 @@ public class SysOrderAction  extends AbstractLoginAction{
 	private String dateStr;
 	private List<SysDataDictionary> flowList;
 	private List<SysSupplier> sysSuppliers;
+	private List<SysBrand> sysBrands;
 	private List<SysDataDictionary> sexList;
 	private SysOrderWorker sysOrderWorker;
 	private SysOrderResource sysOrderResource;
@@ -249,12 +254,20 @@ public class SysOrderAction  extends AbstractLoginAction{
 	
 	private void initData(){
 		hashMap = new HashMap<String,Object>();
-		List<SysSupplier> sysSuppliers = sysSupplierService.findAll();
+		sysSuppliers = sysSupplierService.findAll();
 		JSONObject supplierObj = new JSONObject();
 		for(SysSupplier sysSupplier:sysSuppliers){
 			supplierObj.put(sysSupplier.getId(),sysSupplier.getName());
 		}
 		hashMap.put("supplierObj",supplierObj);
+		
+		sysBrands = sysBrandService.findAll();
+		JSONObject brandObj = new JSONObject();
+		for(SysBrand sysBrand:sysBrands){
+			brandObj.put(sysBrand.getId(),sysBrand.getName());
+		}
+		hashMap.put("brandObj",brandObj);
+		
 		List<SysDataDictionary> sexList = BaseDataDictionaryUtil.baseDataMap.get(6);
 		JSONObject sexObj = new JSONObject();
 		for(SysDataDictionary dictionary:sexList){
@@ -298,7 +311,8 @@ public class SysOrderAction  extends AbstractLoginAction{
 	public String selectResource(){
 		hashMap = new HashMap<String,Object>();
 		flowList = BaseDataDictionaryUtil.baseDataMap.get(4);
-		sysSuppliers =sysSupplierService.findAll();
+		sysSuppliers = sysSupplierService.findAll();
+		sysBrands = sysBrandService.findAll();
 		hashMap = new HashMap<String,Object>();
 		JSONObject obj = new JSONObject();
 		for(SysDataDictionary dictionary:flowList){
@@ -308,6 +322,11 @@ public class SysOrderAction  extends AbstractLoginAction{
 		for(SysSupplier sysSupplier:sysSuppliers){
 			supplierObj.put(sysSupplier.getId(),sysSupplier.getName());
 		}
+		JSONObject brandObj = new JSONObject();
+		for(SysBrand sysBrand:sysBrands){
+			brandObj.put(sysBrand.getId(),sysBrand.getName());
+		}
+		hashMap.put("brandObj",brandObj);
 		hashMap.put("flowObj",obj);
 		hashMap.put("supplierObj",supplierObj);
 		return "selectResource";
@@ -727,5 +746,13 @@ public class SysOrderAction  extends AbstractLoginAction{
 
 	public void setSysOrderResource(SysOrderResource sysOrderResource) {
 		this.sysOrderResource = sysOrderResource;
+	}
+
+	public List<SysBrand> getSysBrands() {
+		return sysBrands;
+	}
+
+	public void setSysBrands(List<SysBrand> sysBrands) {
+		this.sysBrands = sysBrands;
 	}
 }

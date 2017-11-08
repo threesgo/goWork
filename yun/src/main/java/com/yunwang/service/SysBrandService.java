@@ -20,4 +20,8 @@ public interface SysBrandService {
 
 	void updateRelationCatalog(String ids, Integer id);
 
+	List<SysBrand> findAll();
+
+	List<SysBrand> findByCatalogId(Integer id);
+
 }

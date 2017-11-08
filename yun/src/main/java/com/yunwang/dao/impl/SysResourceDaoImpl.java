@@ -23,7 +23,7 @@ public class SysResourceDaoImpl extends BaseDaoImpl<SysResource> implements SysR
 		Map<String, Object> map = new HashMap<String,Object>();
 		map.put("rsrcCatalogId",catalogId);
 		return find("SELECT model FROM SysResource model " 
-				+"WHERE model.rsrcCatalogId=:rsrcCatalogId ORDER BY model.orderNo ",map);
+				+"WHERE model.rsrcCatalogId=:rsrcCatalogId ORDER BY model.rsrcCode ",map);
 	}
 
 	@Override
@@ -61,7 +61,7 @@ public class SysResourceDaoImpl extends BaseDaoImpl<SysResource> implements SysR
 	             }
 			}
 		}
-		buf.append(" ORDER BY model.orderNo");
+		buf.append(" ORDER BY model.rsrcCode");
 		return pagedQuery(buf.toString(), page, rows, map);
 	}
 
@@ -86,9 +86,9 @@ public class SysResourceDaoImpl extends BaseDaoImpl<SysResource> implements SysR
 				buf.append(" AND upper(model.abbreviaName) like:abbreviaName");
 				map.put("abbreviaName","%"+ seachJson.getString("abbreviaName").toUpperCase()+ "%");
 			}
-			if(seachJson.containsKey("brand")&&MyStringUtil.isNotBlank(seachJson.getString("brand"))){
-				buf.append(" AND upper(model.brand) like:brand");
-				map.put("brand","%"+ seachJson.getString("brand").toUpperCase()+ "%");
+			if(seachJson.containsKey("brandId")&&0!=seachJson.getInt("brandId")){
+				buf.append(" AND model.brandId =:brandId");
+				map.put("brandId",seachJson.getInt("brandId"));
 			}
 			
 //			if(seachJson.containsKey("supplierName")&&MyStringUtil.isNotBlank(seachJson.getString("supplierName"))){
@@ -139,7 +139,7 @@ public class SysResourceDaoImpl extends BaseDaoImpl<SysResource> implements SysR
 	@Override
 	public List<SysResource> findByRsRcCatalogIds(String rsRcCatalogIds) {
 		StringBuffer buf = new StringBuffer("SELECT model FROM SysResource model WHERE model.rsrcCatalogId in("+rsRcCatalogIds+") ");
-		buf.append(" ORDER BY model.rsrcCatalogId,model.orderNo");
+		buf.append(" ORDER BY model.rsrcCode");
 		return find(buf.toString());
 	}
 }

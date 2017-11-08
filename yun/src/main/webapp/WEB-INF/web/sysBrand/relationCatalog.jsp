@@ -6,7 +6,7 @@ $(function(){
 	brandResourceTypeTree=$('#brandResourceTypeTree').tree({    
 		checkbox:true,
 		animate:true,
-		url:"sysSupplierAction!supplierResourceTypeTree.act?sysSupplier.id=${sysSupplier.id}"
+		url:"sysBrandAction!brandResourceTypeTree.act?sysBrand.id=${sysBrand.id}"
 	});
 });
 </script>
