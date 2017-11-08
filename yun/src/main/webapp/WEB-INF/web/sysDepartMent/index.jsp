@@ -16,13 +16,30 @@
 		<div data-options="region:'center',split:true,title:''" border="false">
 			<div  id="departMentTab" ></div>
 		</div>
-		<div id="add_DepartMent" class="easyui-menu" style="width:120px;">
-			<div onclick="append()" data-options="iconCls:'icon-add'">添加</div>
-		</div>
-		<div id="departMent" class="easyui-menu" style="width:120px;">
-			<div onclick="append()" data-options="iconCls:'icon-add'">添加</div>
-			<div onclick="del()" data-options="iconCls:'icon-remove'">删除</div>
-		</div>
+		
+		<s:if test='#session.defaultMenu.sysDepartMentActionAdd==1'>
+			<div id="add_DepartMent" class="easyui-menu" style="width:120px;">
+				<div onclick="append()" data-options="iconCls:'icon-add'">添加</div>
+			</div>
+		</s:if>
+		
+		<s:if test='#session.defaultMenu.sysDepartMentActionAddDepart==1'>
+			<div id="add_DepartMent" class="easyui-menu" style="width:120px;">
+				<div onclick="append()" data-options="iconCls:'icon-add'">添加</div>
+			</div>
+		</s:if>
+		
+		<s:if test='#session.defaultMenu.sysDepartMentActionAddDepart==1||#session.defaultMenu.sysDepartMentActionDeleteDepart==1'>
+			<div id="departMent" class="easyui-menu" style="width:120px;">
+				<s:if test='#session.defaultMenu.sysDepartMentActionAddDepart==1'>
+					<div onclick="append()" data-options="iconCls:'icon-add'">添加</div>
+				</s:if>
+				<s:if test='#session.defaultMenu.sysDepartMentActionDeleteDepart==1'>
+					<div onclick="del()" data-options="iconCls:'icon-remove'">删除</div>
+				</s:if>
+			</div>
+		</s:if>
+		
  		<script type="text/javascript" > 
  		var departMentTree;
  		var layoutTab;

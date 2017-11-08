@@ -21,7 +21,7 @@ values(18,'新增角色','sysRoleActionAdd','status_online',2,1,2,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
 values(19,'编辑角色','sysRoleActionEdit','status_online',2,2,2,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
-values(20,'删除','sysRoleActionDelete','status_online',2,3,2,1);
+values(20,'删除角色','sysRoleActionDelete','status_online',2,3,2,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
 values(30,'保存菜单','sysRoleActionSave','status_online',2,5,2,1);
 
@@ -30,25 +30,32 @@ insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type)
 values(3,'用户管理','sysUserAction.act','status_online',1,2,1,1);
 
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
-values(28,'查看','list','status_online',3,4,2,1);
+values(28,'查看','list','status_online',3,1,2,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
-values(21,'新增','sysUserActionAdd','status_online',3,1,2,1);
+values(21,'新增','sysUserActionAdd','status_online',3,2,2,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
-values(22,'编辑','sysUserActionEdit','status_online',3,2,2,1);
+values(22,'编辑','sysUserActionEdit','status_online',3,3,2,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
-values(23,'删除','sysUserActionDelete','status_online',3,4,3,1);
+values(23,'删除','sysUserActionDelete','status_online',3,4,2,1);
+
 
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
 values(4,'部门管理','sysDepartMentAction.act','status_online',1,3,1,1);
 
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
-values(29,'查看','list','status_online',4,4,2,1);
+values(29,'查看','list','status_online',4,1,2,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
-values(24,'新增','sysDepartMentActionAdd','status_online',4,1,2,1);
+values(24,'新增部门','sysDepartMentActionAddDepart','status_online',4,2,2,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
-values(25,'编辑','sysDepartMentActionEdit','status_online',4,2,2,1);
+values(25,'编辑部门','sysDepartMentActionEditDepart','status_online',4,3,2,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
-values(26,'删除','sysDepartMentActionDelete','status_online',4,4,3,1);
+values(26,'删除部门','sysDepartMentActionDeleteDepart','status_online',4,4,2,1);
+insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
+values(31,'新增职位','sysDepartMentActionAddPos','status_online',4,5,2,1);
+insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
+values(32,'编辑职位','sysDepartMentActionEditPos','status_online',4,6,2,1);
+insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
+values(33,'删除职位','sysDepartMentActionDeletePos','status_online',4,7,2,1);
 
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
 values(5,'产品管理','','cog_edit',0,2,1,1);
@@ -121,5 +128,9 @@ values (19, 0, 1 ,28);
 insert into sys_role_menu (id,row_version,role_id,menu_id)
 values (20, 0, 1 ,29);
 insert into sys_role_menu (id,row_version,role_id,menu_id)
+<<<<<<< HEAD
 values (21, 0, 1 ,31);
+=======
+values (21, 0, 1 ,30);
+>>>>>>> branch 'master' of https://github.com/threesgo/goWork.git
 END;

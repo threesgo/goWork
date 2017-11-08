@@ -1,17 +1,7 @@
 package com.yunwang.interceptor;
 
-import java.lang.reflect.Method;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
-import com.yunwang.dao.SysMenuDaoI;
-import com.yunwang.model.pojo.SysMenu;
-import com.yunwang.model.pojo.SysUser;
-import com.yunwang.util.Constant;
 
 /*
  * @date 2016-9-22
@@ -23,7 +13,6 @@ public class AuthorityInterceptor extends AbstractInterceptor {
 	private static final long serialVersionUID = 1L;
 
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public String intercept(ActionInvocation invocation) throws Exception {
 		/*ActionContext ctx = invocation.getInvocationContext();

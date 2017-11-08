@@ -53,7 +53,7 @@ public interface SysUserService {
 	
 	public List<SysUser> findBySysUserNameExceptUserId(String userName,Integer userId);
 	
-	public void delete(Integer userId);
+	public void delete(String userIds);
 	
 	public boolean isExist(String name);
 	

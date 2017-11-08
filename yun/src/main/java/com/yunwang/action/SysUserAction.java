@@ -7,7 +7,6 @@ import net.sf.json.JSONObject;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.convention.annotation.Action;
-import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -49,6 +48,7 @@ public class SysUserAction extends AbstractLoginAction{
 	private String roleIds;
 	private String userId;
 	private String oldPassword;
+	private String userIds;
 	
 	/*
 	 * @date 2017-9-29
@@ -138,7 +138,7 @@ public class SysUserAction extends AbstractLoginAction{
 	
 	public String delete(){
 		try{
-			sysUserService.delete(sysUser.getId());
+			sysUserService.delete(userIds);
 			return success("删除成功");
 		}catch(Exception e){
 			e.printStackTrace();
@@ -221,14 +221,19 @@ public class SysUserAction extends AbstractLoginAction{
 		this.userId = userId;
 	}
 
-
 	public String getOldPassword() {
 		return oldPassword;
 	}
 
-
 	public void setOldPassword(String oldPassword) {
 		this.oldPassword = oldPassword;
 	}
-	
+
+	public String getUserIds() {
+		return userIds;
+	}
+
+	public void setUserIds(String userIds) {
+		this.userIds = userIds;
+	}
 }
