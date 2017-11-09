@@ -44,6 +44,8 @@ $(function(){
 </script>
 <table id="resourcePackageChildrenTable"></table>
 <div id="resource_package_tool_bar">
-	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add', plain:true" 
+	<s:if test="#session.defaultMenu.resourcePackageActionAdd==1">
+		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add', plain:true" 
 		onclick="resourcePackageOperation.addPackage()">新增</a>
+	</s:if>
 </div>

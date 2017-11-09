@@ -13,7 +13,6 @@ insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type)
 values(1,'用户管理','','status_online',0,1,1,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
 values(2,'角色管理','sysRoleAction.act','status_online',1,1,1,1);
-
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
 values(27,'查看','list','status_online',2,4,2,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
@@ -28,7 +27,6 @@ values(30,'保存菜单','sysRoleActionSave','status_online',2,5,2,1);
 
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
 values(3,'用户管理','sysUserAction.act','status_online',1,2,1,1);
-
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
 values(28,'查看','list','status_online',3,1,2,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
@@ -41,7 +39,6 @@ values(23,'删除','sysUserActionDelete','status_online',3,4,2,1);
 
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
 values(4,'部门管理','sysDepartMentAction.act','status_online',1,3,1,1);
-
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
 values(29,'查看','list','status_online',4,1,2,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
@@ -62,15 +59,96 @@ values(5,'产品管理','','cog_edit',0,2,1,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
 values(6,'类别管理','resourceTypeAction.act','cog_edit',5,1,1,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
+values(35,'查看','list','status_online',6,1,2,1);
+insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
+values(36,'新增','resourceTypeActionAdd','status_online',6,2,2,1);
+insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
+values(37,'编辑','resourceTypeActionEdit','status_online',6,3,2,1);
+insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
+values(38,'删除','resourceTypeActionDelete','status_online',6,4,2,1);
+insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
+values(39,'新增属性','resourceTypeActionAddAttr','status_online',6,5,2,1);
+insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
+values(40,'编辑属性','resourceTypeActionEditAttr','status_online',6,6,2,1);
+insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
+values(41,'删除属性','resourceTypeActionDeleteAttr','status_online',6,7,2,1);
+
+insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
 values(7,'产品管理','resourceAction.act','cog_edit',5,2,1,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
+values(42,'查看','list','status_online',7,1,2,1);
+insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
+values(43,'新增','resourceActionAdd','status_online',7,2,2,1);
+insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
+values(44,'编辑','resourceActionEdit','status_online',7,3,2,1);
+insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
+values(45,'删除','resourceActionDelete','status_online',7,4,2,1);
+insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
+values(46,'导入','resourceActionImport','status_online',7,5,2,1);
+insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
+values(47,'导出','resourceActionExport','status_online',7,6,2,1);
+insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
+values(48,'发布','resourceActionRelease','status_online',7,7,2,1);
+
+insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
 values(8,'供应商管理','sysSupplierAction.act','cog_edit',5,3,1,1);
+insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
+values(49,'查看','list','status_online',8,1,2,1);
+insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
+values(50,'新增','sysSupplierActionAdd','status_online',8,2,2,1);
+insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
+values(51,'编辑','sysSupplierActionEdit','status_online',8,3,2,1);
+insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
+values(52,'删除','sysSupplierActionDelete','status_online',8,4,2,1);
+insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
+values(53,'关联类别','sysSupplierActionRelation','status_online',8,5,2,1);
+
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type)
 values(34,'品牌管理','sysBrandAction.act','cog_edit',5,4,1,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
+values(54,'查看','list','status_online',34,1,2,1);
+insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
+values(55,'新增','sysBrandActionAdd','status_online',34,2,2,1);
+insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
+values(56,'编辑','sysBrandActionEdit','status_online',34,3,2,1);
+insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
+values(57,'删除','sysBrandActionDelete','status_online',34,4,2,1);
+insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
+values(58,'关联类别','sysBrandActionRelation','status_online',34,5,2,1);
+
+insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
 values(9,'工人管理','sysWorkerAction.act','cog_edit',5,5,1,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
+values(59,'查看','list','status_online',9,1,2,1);
+insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
+values(60,'新增','sysWorkerActionAdd','status_online',9,2,2,1);
+insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
+values(61,'编辑','sysWorkerActionEdit','status_online',9,3,2,1);
+insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
+values(62,'删除','sysWorkerActionDelete','status_online',9,4,2,1);
+
+
+
+
+
+
+insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
 values(10,'套餐管理','resourcePackageAction.act','cog_edit',5,6,1,1);
+
+insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
+values(63,'查看','list','status_online',10,1,2,1);
+insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
+values(64,'新增','resourcePackageActionAdd','status_online',10,2,2,1);
+insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
+values(65,'编辑','resourcePackageActionEdit','status_online',10,3,2,1);
+insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
+values(66,'删除','resourcePackageActionDelete','status_online',10,4,2,1);
+
+
+
+
+
+
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
 values(11,'订单管理','','book_edit',0,4,1,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
@@ -129,4 +207,18 @@ insert into sys_role_menu (id,row_version,role_id,menu_id)
 values (20, 0, 1 ,29);
 insert into sys_role_menu (id,row_version,role_id,menu_id)
 values (21, 0, 1 ,34);
+insert into sys_role_menu (id,row_version,role_id,menu_id)
+values (22, 0, 1 ,35);
+insert into sys_role_menu (id,row_version,role_id,menu_id)
+values (23, 0, 1 ,30);
+insert into sys_role_menu (id,row_version,role_id,menu_id)
+values (24, 0, 1 ,42);
+insert into sys_role_menu (id,row_version,role_id,menu_id)
+values (25, 0, 1 ,49);
+insert into sys_role_menu (id,row_version,role_id,menu_id)
+values (26, 0, 1 ,54);
+insert into sys_role_menu (id,row_version,role_id,menu_id)
+values (27, 0, 1 ,59);
+insert into sys_role_menu (id,row_version,role_id,menu_id)
+values (28, 0, 1 ,63);
 END;

@@ -410,11 +410,17 @@
 	</div>
 </div>
 <div id="sysWorker_tool_bar">
-	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-add', plain:true" onclick="sysWorkerOperation.addSysWorker()">新增</a>
-	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-edit', plain:true" onclick="sysWorkerOperation.editSysWorker()">编辑</a>
-	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-save', plain:true" onclick="sysWorkerOperation.updateSysWorker()">保存</a>
-	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-quxiao', plain:true" onclick="sysWorkerOperation.cancelEdit()">取消编辑</a>
-	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-remove', plain:true" onclick="sysWorkerOperation.deleteSysWorker()">删除</a>
+	<s:if test="#session.defaultMenu.sysWorkerActionAdd==1">
+		<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-add', plain:true" onclick="sysWorkerOperation.addSysWorker()">新增</a>
+	</s:if>
+	<s:if test="#session.defaultMenu.sysWorkerActionEdit==1">
+		<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-edit', plain:true" onclick="sysWorkerOperation.editSysWorker()">编辑</a>
+		<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-save', plain:true" onclick="sysWorkerOperation.updateSysWorker()">保存</a>
+		<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-quxiao', plain:true" onclick="sysWorkerOperation.cancelEdit()">取消编辑</a>
+	</s:if>
+	<s:if test="#session.defaultMenu.sysWorkerActionDelete==1">
+		<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-remove', plain:true" onclick="sysWorkerOperation.deleteSysWorker()">删除</a>
+	</s:if>
 </div>
 
 

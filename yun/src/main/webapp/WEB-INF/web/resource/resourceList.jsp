@@ -781,14 +781,26 @@ resourceOperation = {
 </div>
 
 <div  id="resource_operation_bar">
-    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add', plain:true" onclick="resourceOperation.addResource()">新增</a>
-	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit', plain:true" onclick="resourceOperation.editResource();">编辑</a>
-	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-quxiao', plain:true" onclick="resourceOperation.cancelEdit()">取消</a>
-	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-save', plain:true" onclick="resourceOperation.updateResource()">保存</a>
-	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove', plain:true" onclick="resourceOperation.deleteResource()">删除</a>
-	<s:if test="sysRsRcCatalog.id!=0">
-		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-download', plain:true" onclick="resourceOperation.importResource()">导入</a>
+	<s:if test="#session.defaultMenu.resourceActionAdd==1">
+		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add', plain:true" onclick="resourceOperation.addResource()">新增</a>
 	</s:if>
-	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-upload', plain:true" onclick="resourceOperation.exportResource()">导出</a>
-	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-release', plain:true" onclick="resourceOperation.releaseResource()">发布</a>
+	<s:if test="#session.defaultMenu.resourceActionEdit==1">
+		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit', plain:true" onclick="resourceOperation.editResource();">编辑</a>
+		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-quxiao', plain:true" onclick="resourceOperation.cancelEdit()">取消</a>
+		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-save', plain:true" onclick="resourceOperation.updateResource()">保存</a>
+	</s:if>
+	<s:if test="#session.defaultMenu.resourceActionDelete==1">
+		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove', plain:true" onclick="resourceOperation.deleteResource()">删除</a>
+	</s:if>
+	<s:if test="#session.defaultMenu.resourceActionImport==1">
+		<s:if test="sysRsRcCatalog.id!=0">
+			<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-download', plain:true" onclick="resourceOperation.importResource()">导入</a>
+		</s:if>
+	</s:if>
+	<s:if test="#session.defaultMenu.resourceActionExport==1">
+		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-upload', plain:true" onclick="resourceOperation.exportResource()">导出</a>
+	</s:if>
+	<s:if test="#session.defaultMenu.resourceActionRelease==1">
+		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-release', plain:true" onclick="resourceOperation.releaseResource()">发布</a>
+	</s:if>
 </div> 

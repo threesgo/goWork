@@ -43,8 +43,12 @@ $(function(){
 </script>
 <table id="resourcePackageInfoTable"></table>
 <div id="resource_package_info_bar">
-	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit', plain:true" 
+	<s:if test="#session.defaultMenu.resourcePackageActionEdit==1">
+		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit', plain:true" 
 		onclick="resourcePackageOperation.editPackage()">编辑</a>
-	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove', plain:true" 
+	</s:if>
+	<s:if test="#session.defaultMenu.resourcePackageActionDelete==1">
+		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove', plain:true" 
 		onclick="resourcePackageOperation.deletePackage()">删除</a>
+	</s:if>
 </div>

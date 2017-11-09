@@ -348,12 +348,21 @@
 	</div>
 </div>
 <div id="syssupplier_tool_bar">
-	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-add', plain:true" onclick="sysSupplierOperation.addSysSupplier()">新增</a>
-	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-edit', plain:true" onclick="sysSupplierOperation.editSysSupplier()">编辑</a>
-	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-save', plain:true" onclick="sysSupplierOperation.updateSysSupplier()">保存</a>
-	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-quxiao', plain:true" onclick="sysSupplierOperation.cancelEdit()">取消编辑</a>
-	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-remove', plain:true" onclick="sysSupplierOperation.deleteSysSupplier()">删除</a>
-	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'building_link', plain:true" onclick="sysSupplierOperation.relationSysSupplier()">关联类别</a>
+	<s:if test="#session.defaultMenu.sysSupplierActionAdd==1">
+		<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-add', plain:true" onclick="sysSupplierOperation.addSysSupplier()">新增</a>
+	</s:if>
+	<s:if test="#session.defaultMenu.sysSupplierActionEdit==1">
+		<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-edit', plain:true" onclick="sysSupplierOperation.editSysSupplier()">编辑</a>
+		<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-save', plain:true" onclick="sysSupplierOperation.updateSysSupplier()">保存</a>
+		<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-quxiao', plain:true" onclick="sysSupplierOperation.cancelEdit()">取消编辑</a>
+	</s:if>
+	<s:if test="#session.defaultMenu.sysSupplierActionDelete==1">
+		<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-remove', plain:true" onclick="sysSupplierOperation.deleteSysSupplier()">删除</a>
+	</s:if>
+	<s:if test="#session.defaultMenu.sysSupplierActionRelation==1">
+		<a href="#"  class="easyui-linkbutton" data-options="iconCls:'building_link', plain:true" onclick="sysSupplierOperation.relationSysSupplier()">关联类别</a>
+	</s:if>
+	
 </div>
 
 
