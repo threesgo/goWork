@@ -128,9 +128,5 @@ values (19, 0, 1 ,28);
 insert into sys_role_menu (id,row_version,role_id,menu_id)
 values (20, 0, 1 ,29);
 insert into sys_role_menu (id,row_version,role_id,menu_id)
-<<<<<<< HEAD
 values (21, 0, 1 ,31);
-=======
-values (21, 0, 1 ,30);
->>>>>>> branch 'master' of https://github.com/threesgo/goWork.git
 END;
