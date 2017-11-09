@@ -342,7 +342,7 @@ public class ResourceTypeAction extends AbstractLoginAction{
 			return error("操作失败!");
 		}
 	}
-
+	
 	public String getId() {
 		return id;
 	}

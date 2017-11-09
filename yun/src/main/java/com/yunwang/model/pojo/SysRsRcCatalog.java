@@ -47,6 +47,9 @@ public class SysRsRcCatalog extends AbstractRowVersionModel{
 	@Transient
 	private String catalogTypeName;
 	
+	@Transient
+	private String combineName;
+	
 	public SysRsRcCatalog(){
 		
 	}
@@ -121,5 +124,13 @@ public class SysRsRcCatalog extends AbstractRowVersionModel{
 
 	public void setCatalogTypeName(String catalogTypeName) {
 		this.catalogTypeName = catalogTypeName;
+	}
+
+	public String getCombineName() {
+		return combineName;
+	}
+
+	public void setCombineName(String combineName) {
+		this.combineName = combineName;
 	}
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import net.sf.json.JSONObject;
 
 import com.yunwang.model.page.Pager;
+import com.yunwang.model.pojo.SysPcBrandCatalog;
 import com.yunwang.model.pojo.SysResourceRel;
 import com.yunwang.model.pojo.SysRsRcPackage;
 
@@ -26,5 +27,7 @@ public interface SysRsRcPackageService {
 	void deletePackageResource(String ids);
 
 	void deleteResourcePackage(Integer packageId);
+
+	List<SysPcBrandCatalog> findAllPcBrandCatalog(Integer packageId);
 
 }

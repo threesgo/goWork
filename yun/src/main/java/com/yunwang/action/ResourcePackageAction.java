@@ -15,10 +15,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.yunwang.model.page.Pager;
 import com.yunwang.model.pojo.SysBrand;
 import com.yunwang.model.pojo.SysDataDictionary;
+import com.yunwang.model.pojo.SysPcBrandCatalog;
 import com.yunwang.model.pojo.SysResourceRel;
+import com.yunwang.model.pojo.SysRsRcCatalog;
 import com.yunwang.model.pojo.SysRsRcPackage;
 import com.yunwang.model.pojo.SysSupplier;
 import com.yunwang.service.SysBrandService;
+import com.yunwang.service.SysResourceTypeService;
 import com.yunwang.service.SysRsRcPackageService;
 import com.yunwang.service.SysSupplierService;
 import com.yunwang.util.BaseDataDictionaryUtil;
@@ -32,7 +35,8 @@ import com.yunwang.util.collection.CollectionUtil;
 		@Result(name = "info",location="/WEB-INF/web/resourcePackage/info.jsp"),
 		@Result(name = "childrenPage",location="/WEB-INF/web/resourcePackage/childrenPage.jsp"),
 		@Result(name = "saveOrUpdatePackagePage",location="/WEB-INF/web/resourcePackage/saveOrUpdatePackage.jsp"),
-		@Result(name = "packageResourceList",location="/WEB-INF/web/resourcePackage/packageResourceList.jsp")
+		@Result(name = "packageResourceList",location="/WEB-INF/web/resourcePackage/packageResourceList.jsp"),
+		@Result(name = "packageBrand",location="/WEB-INF/web/resourcePackage/packageBrand.jsp")
 	}
 )
 public class ResourcePackageAction extends AbstractLoginAction{
@@ -46,6 +50,8 @@ public class ResourcePackageAction extends AbstractLoginAction{
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	@Autowired
+	private SysResourceTypeService sysResourceTypeService;
 	@Autowired
 	private SysRsRcPackageService sysRsRcPackageService;
 	@Autowired
@@ -303,6 +309,75 @@ public class ResourcePackageAction extends AbstractLoginAction{
 			LOG.error(e.getMessage());
 			return error("操作失败!");
 		}
+	}
+	
+	/**
+	 * @date 2017-11-9
+	 * @author YBF
+	 * @return
+	 * <p>组合配置页面</p>
+	 */
+	public String packageBrand(){
+		return "packageBrand";
+	}
+	
+	/**
+	 * @date 2017-11-9
+	 * @author YBF
+	 * @return
+	 * <p>获取所有最底级类别列表</p>
+	 */
+	public String allLastChildrenListData(){
+		List<SysPcBrandCatalog> sysPcBrandCatalogs = sysRsRcPackageService.findAllPcBrandCatalog(sysRsRcPackage.getId());
+		Map<Integer,SysPcBrandCatalog> pcBrandCatalogMap = CollectionUtil.listToMap(sysPcBrandCatalogs,"id");
+		
+		List<SysRsRcCatalog> sysRcRsrcOrgList = sysResourceTypeService.findRsRcCatalogByParentId(0);
+		JSONArray arr = new JSONArray();
+		for(SysRsRcCatalog sysRsRcCatalog:sysRcRsrcOrgList){
+			JSONObject obj = new JSONObject();
+			sysRsRcCatalog.setCombineName(sysRsRcCatalog.getCatalogName());
+			List<SysRsRcCatalog> childrenList = sysResourceTypeService.findRsRcCatalogByParentId(sysRsRcCatalog.getId());
+			if(childrenList.size()>0){
+				combineCatalog(arr,sysRsRcCatalog,childrenList,pcBrandCatalogMap);
+			}else{
+				putBrandData(pcBrandCatalogMap, arr, sysRsRcCatalog, obj);
+			}
+		}
+		return ajaxText(arr.toString());
+	}
+
+	private void combineCatalog(JSONArray arr,SysRsRcCatalog pSysRsRcCatalog,
+			List<SysRsRcCatalog> sysRcRsrcOrgList,Map<Integer,SysPcBrandCatalog> pcBrandCatalogMap){
+		for(SysRsRcCatalog sysRsRcCatalog:sysRcRsrcOrgList){
+			JSONObject obj = new JSONObject();
+			sysRsRcCatalog.setCombineName(pSysRsRcCatalog.getCombineName()+">"+sysRsRcCatalog.getCatalogName());
+			List<SysRsRcCatalog> childrenList = sysResourceTypeService.findRsRcCatalogByParentId(sysRsRcCatalog.getId());
+			if(childrenList.size()>0){
+				combineCatalog(arr,sysRsRcCatalog,sysRcRsrcOrgList,pcBrandCatalogMap);
+			}else{
+				putBrandData(pcBrandCatalogMap, arr, sysRsRcCatalog, obj);
+			}
+		}
+	}
+	
+	private void putBrandData(
+			Map<Integer, SysPcBrandCatalog> pcBrandCatalogMap, JSONArray arr,
+			SysRsRcCatalog sysRsRcCatalog, JSONObject obj) {
+		obj.put("id", sysRsRcCatalog.getId());
+		obj.put("name", sysRsRcCatalog.getCombineName());
+		List<SysBrand> sysBrands = sysBrandService.findByCatalogId(sysRsRcCatalog.getId());
+		JSONArray brandArr = new JSONArray();
+		for(SysBrand sysBrand:sysBrands){
+			JSONObject brandObj = JSONObject.fromObject(sysBrand);
+			if(null != pcBrandCatalogMap.get(sysBrand.getBrandCatalogId())){
+				brandObj.put("isCheck",1);
+			}else{
+				brandObj.put("isCheck",0);
+			}
+			brandArr.add(brandObj);
+		}
+		obj.put("brandArr",brandArr);
+		arr.add(obj);
 	}
 	
 	public String getId() {

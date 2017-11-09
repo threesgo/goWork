@@ -25,9 +25,15 @@
 						    	title:'基本信息', 
 						    	href:"resourcePackageAction!info.act?sysRsRcPackage.id="+ node.attributes.id
 							});
+							/*
 							resourcePackageTab.tabs('add',{
 	 							title:'产品列表', 
 							    href:"resourcePackageAction!packageResourceList.act?sysRsRcPackage.id="+ node.attributes.id
+							});
+							*/
+							resourcePackageTab.tabs('add',{
+	 							title:'组合配置', 
+							    href:"resourcePackageAction!packageBrand.act?sysRsRcPackage.id="+ node.attributes.id
 							});
  						}else{
  							resourcePackageTab.tabs('add',{

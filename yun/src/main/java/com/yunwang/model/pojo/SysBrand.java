@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * @author YBF
@@ -32,6 +33,24 @@ public class SysBrand extends AbstractRowVersionModel{
 	
 	@Column(name = "STATUS",columnDefinition = "number default 1")
 	private Integer status; 
+	
+	@Transient
+	private Integer brandCatalogId;
+	
+	public SysBrand(){
+		
+	}
+
+	public SysBrand(Integer id, Integer code, String name, String info,
+			Integer status, Integer brandCatalogId) {
+		super();
+		this.id = id;
+		this.code = code;
+		this.name = name;
+		this.info = info;
+		this.status = status;
+		this.brandCatalogId = brandCatalogId;
+	}
 
 	public Integer getId() {
 		return id;
@@ -71,5 +90,13 @@ public class SysBrand extends AbstractRowVersionModel{
 
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+
+	public Integer getBrandCatalogId() {
+		return brandCatalogId;
+	}
+
+	public void setBrandCatalogId(Integer brandCatalogId) {
+		this.brandCatalogId = brandCatalogId;
 	}
 }

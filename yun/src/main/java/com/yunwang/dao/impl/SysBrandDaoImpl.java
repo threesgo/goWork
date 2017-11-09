@@ -6,6 +6,9 @@ import java.util.Map;
 
 import net.sf.json.JSONObject;
 
+import org.hibernate.type.IntegerType;
+import org.hibernate.type.StringType;
+import org.hibernate.type.Type;
 import org.springframework.stereotype.Repository;
 
 import com.yunwang.dao.SysBrandDaoI;
@@ -40,11 +43,31 @@ public class SysBrandDaoImpl extends BaseDaoImpl<SysBrand> implements SysBrandDa
 
 	@Override
 	public List<SysBrand> findByCatalogId(Integer catalogId) {
+//		StringBuffer buf = new StringBuffer(
+//				"SELECT DISTINCT model FROM SysBrand model,SysBrandCatalog supCatalog " 
+//			+"WHERE supCatalog.brandId = model.id AND supCatalog.catalogId=:catalogId AND model.status!=0 ORDER BY model.id");
+//		Map<String, Object> map = new HashMap<String,Object>();
+//		map.put("catalogId",catalogId);
+//		return find(buf.toString(),map);
+		
 		StringBuffer buf = new StringBuffer(
-				"SELECT DISTINCT model FROM SysBrand model,SysBrandCatalog supCatalog " 
-			+"WHERE supCatalog.brandId = model.id AND supCatalog.catalogId=:catalogId AND model.status!=0 ORDER BY model.id");
-		Map<String, Object> map = new HashMap<String,Object>();
-		map.put("catalogId",catalogId);
-		return find(buf.toString(),map);
+				" SELECT model.ID id,model.CODE code, " +
+				" model.NAME name,model.INFO info,model.STATUS status,brandCatalog.ID brandCatalogId" +
+				" FROM SYS_BRAND_CATALOG brandCatalog" +
+				" LEFT JOIN SYS_BRAND model ON model.ID = brandCatalog.BRAND_ID " +
+				" WHERE brandCatalog.CATALOG_ID=:catalogId ");
+		
+		Map<String, Object> parmeMap = new HashMap<String,Object>();
+		parmeMap.put("catalogId", catalogId);
+		
+		buf.append("  ORDER BY model.ID");
+		Map<String, Type> scalarMap = new HashMap<String, Type>();
+		scalarMap.put("id", new IntegerType());
+		scalarMap.put("code", new IntegerType());
+		scalarMap.put("name", new StringType());
+		scalarMap.put("info", new StringType());
+		scalarMap.put("status", new IntegerType());
+		scalarMap.put("brandCatalogId", new IntegerType());
+		return findBySQLQuery(buf.toString(),parmeMap,scalarMap);
 	}
 }

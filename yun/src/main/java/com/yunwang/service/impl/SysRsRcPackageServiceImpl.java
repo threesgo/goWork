@@ -8,10 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.yunwang.dao.SysOrderPackageDaoI;
+import com.yunwang.dao.SysPcBrandCatalogDaoI;
 import com.yunwang.dao.SysResourceRelDaoI;
 import com.yunwang.dao.SysRsRcPackageDaoI;
 import com.yunwang.dao.SysRsRcPcResourceDaoI;
 import com.yunwang.model.page.Pager;
+import com.yunwang.model.pojo.SysPcBrandCatalog;
 import com.yunwang.model.pojo.SysResourceRel;
 import com.yunwang.model.pojo.SysRsRcPackage;
 import com.yunwang.service.SysRsRcPackageService;
@@ -36,6 +38,9 @@ public class SysRsRcPackageServiceImpl implements SysRsRcPackageService{
 	
 	@Autowired
 	private SysOrderPackageDaoI sysOrderPackageDao;
+	
+	@Autowired
+	private SysPcBrandCatalogDaoI sysPcBrandCatalogDao;
 
 	@Override
 	public List<SysRsRcPackage> findAll(String order) {
@@ -87,5 +92,11 @@ public class SysRsRcPackageServiceImpl implements SysRsRcPackageService{
 		sysRsRcPcResourceDao.deleteByProperty("packageId", packageId);
 		//套餐本身
 		sysRsRcPackageDao.deleteByProperty("id", packageId);
+	}
+
+	@Override
+	public List<SysPcBrandCatalog> findAllPcBrandCatalog(Integer packageId) {
+		// TODO Auto-generated method stub
+		return sysPcBrandCatalogDao.findByProperty("packageId", packageId);
 	}
 }
