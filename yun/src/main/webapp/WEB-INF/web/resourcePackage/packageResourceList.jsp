@@ -6,6 +6,7 @@ var packageResourceOperation = {};
 
 var flowObj = new Function("return " + '${hashMap.flowObj}')();
 var supplierObj = new Function("return " + '${hashMap.supplierObj}')();
+var brandObj = new Function("return " + '${hashMap.brandObj}')();
 
 $(function(){
  	$packageResourceGrid=$("#packageResourceGrid").datagrid({
@@ -56,8 +57,13 @@ $(function(){
  					}
  				} 
  	       	},
- 	       	{field:'brand',title:"品牌",width:80,sortable:true
- 	        	
+ 	       	{field:'brandId',title:"品牌",width:80,sortable:true,
+ 	       		formatter:function(value, rowData) {
+					if(value == 0 ){
+						return "";
+					}
+					return brandObj[value];
+				} 
  	       	},
 			{field:'supplierId',title:"供应商名称",width:100,sortable:true,
 				formatter:function(value, rowData) {
@@ -227,7 +233,7 @@ packageResourceOperation = {
 		searchData["keyWord"] = $("#searchForm #keyWord").val();
 		searchData["rsrcName"] = $("#searchForm #rsrcName").val();
 		searchData["abbreviaName"] = $("#searchForm #abbreviaName").val();
-		searchData["brand"] = $("#searchForm #brand").val();
+		searchData["brandId"] = $("#searchForm #brandId").val();
 		searchData["supplierId"] = $("#searchForm #supplierId").val();
 		searchData["workType"] = $("#searchForm #workType").val();
 		
@@ -243,7 +249,7 @@ packageResourceOperation = {
 		$("#searchForm #rsrcCode").val('');
 		$("#searchForm #rsrcName").val('');
 		$("#searchForm #abbreviaName").val('');
-		$("#searchForm #brand").val('');
+		$("#searchForm #brandId").val(0);
 		$("#searchForm #supplierId").val(0);
 		$("#searchForm #workType").val(0);
 		resourceOperation.search();
@@ -272,18 +278,22 @@ packageResourceOperation = {
 				<input  type="text"  id="abbreviaName"/>
 			</div>
 		</div>
-		<div class="search-div">
-			<lable for="">品牌</lable>
-			<div class="select">
-				<input  type="text"  id="brand"/>
-			</div>
-		</div>
 		
 		<div class="search-div">
 			<label>工种</label>
 	       	<s:select id="workType" style="height:22px"
 	       		list="flowList"
 		       	listKey="value"   
+		       	listValue="name" 
+		       	headerKey="0"
+		       	headerValue="--请选择--"/>
+		</div>
+		
+		<div class="search-div">
+			<label>品牌</label>
+	       	<s:select id="brandId" style="height:22px"
+	       		list="sysBrands"
+		       	listKey="id"   
 		       	listValue="name" 
 		       	headerKey="0"
 		       	headerValue="--请选择--"/>

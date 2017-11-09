@@ -36,7 +36,7 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 				" SELECT model.ID id,model.RESOURCE_ID resourceId, " +
 				" model.KEY_WORD keyWord,model.RSRC_CODE rsrcCode,model.RSRC_NAME rsrcName," +
 				" model.ABBREVIA_NAME abbreviaName,model.ORDER_NO orderNo,model.RSRC_CATALOG_ID rsrcCatalogId," +
-				" model.SALE_PRICE salePrice,model.BRAND brand,model.SUPPLIER_ID supplierId,model.RELEASE_DATE releaseDate," +
+				" model.SALE_PRICE salePrice,model.BRAND_ID brandId,model.SUPPLIER_ID supplierId,model.RELEASE_DATE releaseDate," +
 				" model.RSRC_STUTAS rsrcStatus,rsCatalog.CATALOG_TYPE workType" +
 				" FROM SYS_RESOURCE_REL model" +
 				" LEFT JOIN SYS_RSRC_CATALOG rsCatalog ON model.RSRC_CATALOG_ID = rsCatalog.ID " +
@@ -57,9 +57,9 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 				buf.append(" AND upper(model.ABBREVIA_NAME) like:abbreviaName");
 				parmeMap.put("abbreviaName","%"+ seachJson.getString("abbreviaName").toUpperCase()+ "%");
 			}
-			if(seachJson.containsKey("brand")&&MyStringUtil.isNotBlank(seachJson.getString("brand"))){
-				buf.append(" AND upper(model.BRAND) like:brand");
-				parmeMap.put("brand","%"+ seachJson.getString("brand").toUpperCase()+ "%");
+			if(seachJson.containsKey("brandId")&&0!=seachJson.getInt("brandId")){
+				buf.append(" AND model.BRAND_ID=:brandId");
+				parmeMap.put("brandId",seachJson.getInt("brandId"));
 			}
 			if(seachJson.containsKey("supplierId")&&0!=seachJson.getInt("supplierId")){
 				buf.append(" AND model.SUPPLIER_ID =:supplierId");
@@ -91,7 +91,7 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 		scalarMap.put("salePrice", new BigDecimalType());
 		scalarMap.put("rsrcCatalogId", new IntegerType());
 		scalarMap.put("supplierId", new IntegerType());
-		scalarMap.put("brand", new StringType());
+		scalarMap.put("brandId", new IntegerType());
 		scalarMap.put("releaseDate", new TimestampType());
 		scalarMap.put("workType", new IntegerType());
 		
@@ -116,7 +116,7 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 				" SELECT model.ID id,model.RESOURCE_ID resourceId, " +
 				" model.KEY_WORD keyWord,model.RSRC_CODE rsrcCode,model.RSRC_NAME rsrcName," +
 				" model.ABBREVIA_NAME abbreviaName,model.ORDER_NO orderNo,model.RSRC_CATALOG_ID rsrcCatalogId," +
-				" model.SALE_PRICE salePrice,model.BRAND brand,model.SUPPLIER_ID supplierId,model.RELEASE_DATE releaseDate," +
+				" model.SALE_PRICE salePrice,model.BRAND_ID brandId,model.SUPPLIER_ID supplierId,model.RELEASE_DATE releaseDate," +
 				" model.RSRC_STUTAS rsrcStatus,rsCatalog.CATALOG_TYPE workType" +
 				" FROM SYS_RSRC_PC_RESOURCE pcResource" +
 				" LEFT JOIN SYS_RESOURCE_REL model ON model.ID = pcResource.RESOURCE_ID " +
@@ -139,9 +139,9 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 				buf.append(" AND upper(model.ABBREVIA_NAME) like:abbreviaName");
 				parmeMap.put("abbreviaName","%"+ seachJson.getString("abbreviaName").toUpperCase()+ "%");
 			}
-			if(seachJson.containsKey("brand")&&MyStringUtil.isNotBlank(seachJson.getString("brand"))){
-				buf.append(" AND upper(model.BRAND) like:brand");
-				parmeMap.put("brand","%"+ seachJson.getString("brand").toUpperCase()+ "%");
+			if(seachJson.containsKey("brandId")&&0!=seachJson.getInt("brandId")){
+				buf.append(" AND model.BRAND_ID=:brandId");
+				parmeMap.put("brandId",seachJson.getInt("brandId"));
 			}
 			if(seachJson.containsKey("supplierId")&&0!=seachJson.getInt("supplierId")){
 				buf.append(" AND model.SUPPLIER_ID =:supplierId");
@@ -166,7 +166,7 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 		scalarMap.put("salePrice", new BigDecimalType());
 		scalarMap.put("rsrcCatalogId", new IntegerType());
 		scalarMap.put("supplierId", new IntegerType());
-		scalarMap.put("brand", new StringType());
+		scalarMap.put("brandId", new IntegerType());
 		scalarMap.put("releaseDate", new TimestampType());
 		scalarMap.put("workType", new IntegerType());
 		
@@ -185,7 +185,7 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 				" SELECT model.ID id,model.RESOURCE_ID resourceId, " +
 				" model.KEY_WORD keyWord,model.RSRC_CODE rsrcCode,model.RSRC_NAME rsrcName," +
 				" model.ABBREVIA_NAME abbreviaName,model.ORDER_NO orderNo,model.RSRC_CATALOG_ID rsrcCatalogId," +
-				" model.SALE_PRICE salePrice,model.BRAND brand,model.SUPPLIER_ID supplierId,model.RELEASE_DATE releaseDate," +
+				" model.SALE_PRICE salePrice,model.BRAND_ID brandId,model.SUPPLIER_ID supplierId,model.RELEASE_DATE releaseDate," +
 				" model.RSRC_STUTAS rsrcStatus,rsCatalog.CATALOG_TYPE workType,orderResource.QUANTITY quantity,orderResource.ID orderResourceId " +
 				" FROM SYS_ORDER_RESOURCE orderResource" +
 				" LEFT JOIN SYS_RESOURCE_REL model ON model.ID = orderResource.RESOURCE_ID " +
@@ -208,7 +208,7 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 		scalarMap.put("salePrice", new BigDecimalType());
 		scalarMap.put("rsrcCatalogId", new IntegerType());
 		scalarMap.put("supplierId", new IntegerType());
-		scalarMap.put("brand", new StringType());
+		scalarMap.put("brandId", new IntegerType());
 		scalarMap.put("releaseDate", new TimestampType());
 		scalarMap.put("workType", new IntegerType());
 		scalarMap.put("quantity", new BigDecimalType());
@@ -222,7 +222,7 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 				" SELECT model.ID id,model.RESOURCE_ID resourceId, " +
 				" model.KEY_WORD keyWord,model.RSRC_CODE rsrcCode,model.RSRC_NAME rsrcName," +
 				" model.ABBREVIA_NAME abbreviaName,model.ORDER_NO orderNo,model.RSRC_CATALOG_ID rsrcCatalogId," +
-				" model.SALE_PRICE salePrice,model.BRAND brand,model.SUPPLIER_ID supplierId,model.RELEASE_DATE releaseDate," +
+				" model.SALE_PRICE salePrice,model.BRAND_ID brandId,model.SUPPLIER_ID supplierId,model.RELEASE_DATE releaseDate," +
 				" model.RSRC_STUTAS rsrcStatus,rsCatalog.CATALOG_TYPE workType,orderResource.QUANTITY quantity,orderResource.ID orderResourceId " +
 				" FROM SYS_ORDER_RESOURCE orderResource" +
 				" LEFT JOIN SYS_RESOURCE_REL model ON model.ID = orderResource.RESOURCE_ID " +
@@ -245,7 +245,7 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 		scalarMap.put("salePrice", new BigDecimalType());
 		scalarMap.put("rsrcCatalogId", new IntegerType());
 		scalarMap.put("supplierId", new IntegerType());
-		scalarMap.put("brand", new StringType());
+		scalarMap.put("brandId", new IntegerType());
 		scalarMap.put("releaseDate", new TimestampType());
 		scalarMap.put("workType", new IntegerType());
 		scalarMap.put("quantity", new BigDecimalType());
@@ -260,7 +260,7 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 				" SELECT model.ID id,model.RESOURCE_ID resourceId, " +
 				" model.KEY_WORD keyWord,model.RSRC_CODE rsrcCode,model.RSRC_NAME rsrcName," +
 				" model.ABBREVIA_NAME abbreviaName,model.ORDER_NO orderNo,model.RSRC_CATALOG_ID rsrcCatalogId," +
-				" model.SALE_PRICE salePrice,model.BRAND brand,model.SUPPLIER_ID supplierId,model.RELEASE_DATE releaseDate," +
+				" model.SALE_PRICE salePrice,model.BRAND_ID brandId,model.SUPPLIER_ID supplierId,model.RELEASE_DATE releaseDate," +
 				" model.RSRC_STUTAS rsrcStatus,rsCatalog.CATALOG_TYPE workType" +
 				" FROM SYS_RSRC_PC_RESOURCE pcResource" +
 				" LEFT JOIN SYS_RESOURCE_REL model ON model.ID = pcResource.RESOURCE_ID " +
@@ -288,9 +288,9 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 				buf.append(" AND upper(model.ABBREVIA_NAME) like:abbreviaName");
 				parmeMap.put("abbreviaName","%"+ seachJson.getString("abbreviaName").toUpperCase()+ "%");
 			}
-			if(seachJson.containsKey("brand")&&MyStringUtil.isNotBlank(seachJson.getString("brand"))){
-				buf.append(" AND upper(model.BRAND) like:brand");
-				parmeMap.put("brand","%"+ seachJson.getString("brand").toUpperCase()+ "%");
+			if(seachJson.containsKey("brandId")&&0!=seachJson.getInt("brandId")){
+				buf.append(" AND model.BRAND_ID =:brandId");
+				parmeMap.put("brandId",seachJson.getInt("brandId"));
 			}
 			if(seachJson.containsKey("supplierId")&&0!=seachJson.getInt("supplierId")){
 				buf.append(" AND model.SUPPLIER_ID =:supplierId");
@@ -315,7 +315,7 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 		scalarMap.put("salePrice", new BigDecimalType());
 		scalarMap.put("rsrcCatalogId", new IntegerType());
 		scalarMap.put("supplierId", new IntegerType());
-		scalarMap.put("brand", new StringType());
+		scalarMap.put("brandId", new IntegerType());
 		scalarMap.put("releaseDate", new TimestampType());
 		scalarMap.put("workType", new IntegerType());
 		

@@ -64,7 +64,7 @@ public class SysSupplierServiceImpl implements SysSupplierService {
 	@Override
 	public List<SysSupplier> findAll() {
 		// TODO Auto-generated method stub
-		return sysSupplierDao.findAll();
+		return sysSupplierDao.findAll("id");
 	}
 
 	@Override

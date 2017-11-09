@@ -49,6 +49,7 @@ public class SysBrandServiceImpl implements SysBrandService{
 		String info = rowData.getString("info");
 		sysBrand.setInfo(info);
 		sysBrandDao.saveOrUpdate(sysBrand);
+		rowData.put("id", sysBrand.getId());
 	}
 
 	@Override
@@ -77,5 +78,16 @@ public class SysBrandServiceImpl implements SysBrandService{
 				sysBrandCatalogDao.save(sysBrandCatalog);
 			}
 		}
+	}
+
+	@Override
+	public List<SysBrand> findAll() {
+		return sysBrandDao.findAll("id");
+	}
+
+	@Override
+	public List<SysBrand> findByCatalogId(Integer id) {
+		// TODO Auto-generated method stub
+		return sysBrandDao.findByCatalogId(id);
 	}
 }

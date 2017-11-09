@@ -13,10 +13,12 @@ import org.apache.struts2.convention.annotation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.yunwang.model.page.Pager;
+import com.yunwang.model.pojo.SysBrand;
 import com.yunwang.model.pojo.SysDataDictionary;
 import com.yunwang.model.pojo.SysResourceRel;
 import com.yunwang.model.pojo.SysRsRcPackage;
 import com.yunwang.model.pojo.SysSupplier;
+import com.yunwang.service.SysBrandService;
 import com.yunwang.service.SysRsRcPackageService;
 import com.yunwang.service.SysSupplierService;
 import com.yunwang.util.BaseDataDictionaryUtil;
@@ -48,6 +50,8 @@ public class ResourcePackageAction extends AbstractLoginAction{
 	private SysRsRcPackageService sysRsRcPackageService;
 	@Autowired
 	private SysSupplierService sysSupplierService;
+	@Autowired
+	private SysBrandService sysBrandService;
 	
 	private SysRsRcPackage sysRsRcPackage;
 	private String id;
@@ -55,7 +59,9 @@ public class ResourcePackageAction extends AbstractLoginAction{
 	private List<SysDataDictionary> flowList;
 	private Map<String,Object> hashMap;
 	private List<SysSupplier> sysSuppliers;
+	private List<SysBrand> sysBrands;
 	private String ids;
+	
 	
 	@Override
 	public String execute() throws Exception {
@@ -128,6 +134,7 @@ public class ResourcePackageAction extends AbstractLoginAction{
 		//流程数据
 		flowList = BaseDataDictionaryUtil.baseDataMap.get(4);
 		sysSuppliers =sysSupplierService.findAll();
+		sysBrands = sysBrandService.findAll();
 		hashMap = new HashMap<String,Object>();
 		JSONObject obj = new JSONObject();
 		for(SysDataDictionary dictionary:flowList){
@@ -137,6 +144,11 @@ public class ResourcePackageAction extends AbstractLoginAction{
 		for(SysSupplier sysSupplier:sysSuppliers){
 			supplierObj.put(sysSupplier.getId(),sysSupplier.getName());
 		}
+		JSONObject brandObj = new JSONObject();
+		for(SysBrand sysBrand:sysBrands){
+			brandObj.put(sysBrand.getId(),sysBrand.getName());
+		}
+		hashMap.put("brandObj",brandObj);
 		hashMap.put("flowObj",obj);
 		hashMap.put("supplierObj",supplierObj);
 		return "packageResourceList";
@@ -155,9 +167,11 @@ public class ResourcePackageAction extends AbstractLoginAction{
 		if(null!=pager && null!=pager.getData()){
 			@SuppressWarnings("unchecked")
 			List<SysResourceRel> sysResources = (List<SysResourceRel>) pager.getData();
-			sysSuppliers =sysSupplierService.findAll();  			
+			sysSuppliers =sysSupplierService.findAll(); 
+			sysBrands = sysBrandService.findAll();
 			Map<Integer,SysSupplier> supplierMap = CollectionUtil.listToMap(sysSuppliers,"id");
-  			for(SysResourceRel resource:sysResources){
+  			Map<Integer,SysBrand> sysBrandMap = CollectionUtil.listToMap(sysBrands,"id");
+			for(SysResourceRel resource:sysResources){
   				if(null != resource.getSupplierId()&&0!=resource.getSupplierId()){
   					SysSupplier supplier = supplierMap.get(resource.getSupplierId());
   	  				if(null != supplier){
@@ -166,6 +180,12 @@ public class ResourcePackageAction extends AbstractLoginAction{
   	  					resource.setSupplierPhone(supplier.getPhoneNum());
   	  					resource.setSupplierTel(supplier.getTelNum());
   	  					resource.setSupplierAddress(supplier.getAddress());
+  	  				}
+  				}
+  				if(null != resource.getBrandId()&&0!=resource.getBrandId()){
+  					SysBrand sysBrand = sysBrandMap.get(resource.getBrandId());
+  	  				if(null != sysBrand){
+  	  					resource.setBrand(sysBrand.getName());
   	  				}
   				}
   				JSONObject newObj = JSONObject.fromObject(resource);
@@ -339,5 +359,13 @@ public class ResourcePackageAction extends AbstractLoginAction{
 
 	public void setIds(String ids) {
 		this.ids = ids;
+	}
+	
+	public List<SysBrand> getSysBrands() {
+		return sysBrands;
+	}
+
+	public void setSysBrands(List<SysBrand> sysBrands) {
+		this.sysBrands = sysBrands;
 	}
 }

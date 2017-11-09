@@ -23,6 +23,8 @@
 	            fitColumns:true,
 	            striped:true,
 	            singleSelect:true,
+	            checkOnSelect:false,
+	            selectOnCheck:false,
 	            nowrap:false,
 	            fit:true,
 	            remoteSort:false,
@@ -33,6 +35,7 @@
 	            height: 'auto',
 	            url:"sysUserAction!listUser.act",
 				columns:[[
+				    {field:'',checkbox:true},
 					{field:'userName',title: "用户名",width:190,align:"center",sortable:true, //sortable是排序
 						sorter:function(a,b){ 
 								return a>b? 1:-1; 
@@ -226,19 +229,29 @@
 			},*/
 				
 			deleteUser:function(id,index){
-				var select = $userList.datagrid("getSelected");
-				if(!select){
+				//var select = $userList.datagrid("getSelected");
+				var userIds=[];
+				var flag = false;
+				var checked = $userList.datagrid("getChecked");
+				if(checked.length==0){
 					$alert("请选择用户进行删除");
 					return false;
 				}
-				if(select.id == '${_ADM.id}'){
-					$alert("无法删除自身登陆用户");
+				$.each(checked,function(index,n){
+					if(n.id == '${_ADM.id}'){
+						$alert("无法删除自身登陆用户");
+						flag = true;
+					}
+					userIds.push(n.id);
+				});
+				if(flag){
 					return false;
 				}
+				
 				$confirm("确定删除所选用户吗?",function(){
 					var loading=new Some.loading();
 					loading.show();
-					$.post("sysUserAction!delete.act",{"sysUser.id":select.id},function(text){
+					$.post("sysUserAction!delete.act",{"userIds":userIds.join(",")},function(text){
 						loading.close();
 						handlerResult(text,function(data){
 							$userList.datagrid("reload");
@@ -256,7 +269,6 @@
 	</head>
 	<body id="body" >
 		<div class="easyui-layout" title="" data-options="border:false,fit:true" style="background-color: #fcfdfe;" >
-			
 			<div class = "table_seach_div" data-options="region:'north',title:'查询条件',border:false,split:false" style="overflow: hidden;background-color: #F8F8F8" >
 				<%--<div id="selectDiv" style="height:auto !important;padding:10px;float:left !important;width: 100%;">
 					--%><div class="search-div">

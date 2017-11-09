@@ -1,6 +1,7 @@
 package com.yunwang.dao.impl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import net.sf.json.JSONObject;
@@ -35,5 +36,15 @@ public class SysBrandDaoImpl extends BaseDaoImpl<SysBrand> implements SysBrandDa
 		}
 		buf.append(" ORDER BY model.id");
 		return pagedQuery(buf.toString(), page, rows, map);
+	}
+
+	@Override
+	public List<SysBrand> findByCatalogId(Integer catalogId) {
+		StringBuffer buf = new StringBuffer(
+				"SELECT DISTINCT model FROM SysBrand model,SysBrandCatalog supCatalog " 
+			+"WHERE supCatalog.brandId = model.id AND supCatalog.catalogId=:catalogId AND model.status!=0 ORDER BY model.id");
+		Map<String, Object> map = new HashMap<String,Object>();
+		map.put("catalogId",catalogId);
+		return find(buf.toString(),map);
 	}
 }

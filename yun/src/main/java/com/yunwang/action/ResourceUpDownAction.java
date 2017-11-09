@@ -28,6 +28,7 @@ import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.yunwang.model.pojo.SysBrand;
 import com.yunwang.model.pojo.SysResource;
 import com.yunwang.model.pojo.SysResourceRel;
 import com.yunwang.model.pojo.SysRsRcAttrib;
@@ -36,6 +37,7 @@ import com.yunwang.model.pojo.SysRsRcBaseData;
 import com.yunwang.model.pojo.SysRsRcCatalog;
 import com.yunwang.model.pojo.SysRsRcPackage;
 import com.yunwang.model.pojo.SysSupplier;
+import com.yunwang.service.SysBrandService;
 import com.yunwang.service.SysResourceService;
 import com.yunwang.service.SysResourceTypeService;
 import com.yunwang.service.SysRsRcPackageService;
@@ -80,6 +82,8 @@ public class ResourceUpDownAction extends AbstractUpDownAction{
 	private SysResourceTypeService sysResourceTypeService;
 	@Autowired
 	private SysSupplierService sysSupplierService;
+	@Autowired
+	private SysBrandService sysBrandService;
 	@Autowired
 	private SysRsRcPackageService sysRsRcPackageService;
 	
@@ -127,13 +131,17 @@ public class ResourceUpDownAction extends AbstractUpDownAction{
 		List<SysRsRcAttrib> sysRsRcAttribs = sysResourceService.findSysRsRcAttribByResourceIds(
 					StringBufferByCollectionUtil.convertCollection(sysResources,"id"));
 		
-		List<SysSupplier> sysSuppliers = sysSupplierService.findByCatalogId(sysRsRcCatalog.getId());
+		List<SysSupplier> sysSuppliers = sysSupplierService.findAll();
 		Map<Integer,SysSupplier> supplierMap = CollectionUtil.listToMap(sysSuppliers,"id");
+		
+		List<SysBrand> sysBrands = sysBrandService.findAll();
+		Map<Integer,SysBrand> sysBrandMap = CollectionUtil.listToMap(sysBrands,"id");
+		
 		
 		JSONArray arr = packageRsources(attrList, sysResources, sysRsRcAttribs);
 		Workbook workbook=null;
         try {
-            workbook = exportExcel(arr,attrList,supplierMap);
+            workbook = exportExcel(arr,attrList,supplierMap,sysBrandMap);
         } catch (Exception e) {
             LOG.error(e.getMessage());
         }
@@ -185,7 +193,8 @@ public class ResourceUpDownAction extends AbstractUpDownAction{
 	*/ 
 	public Workbook exportExcel(JSONArray resourceList,
 			List<SysRsRcAttribCatalog> attrList,
-			Map<Integer,SysSupplier> supplierMap)  {
+			Map<Integer,SysSupplier> supplierMap,
+			Map<Integer,SysBrand> sysBrandMap)  {
 	    Workbook wb = new HSSFWorkbook();
 		Sheet sheet = wb.createSheet("产品列表");
 		int nCol = 0;  //列编号
@@ -261,7 +270,8 @@ public class ResourceUpDownAction extends AbstractUpDownAction{
 			
 			cell = row.createCell(nCol++);
 			cell.setCellStyle(style);
-			cell.setCellValue(obj.getString("brand"));
+			cell.setCellValue(null!=sysBrandMap.get(obj.getInt("brandId"))?
+					sysBrandMap.get(obj.getInt("brandId")).getName():"");
 			
 			//根据本身属性和继承属性的查询资源属性值
 			for(SysRsRcAttribCatalog attr:attrList){

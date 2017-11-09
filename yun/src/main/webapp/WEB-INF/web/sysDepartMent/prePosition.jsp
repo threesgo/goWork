@@ -10,6 +10,8 @@ $(function(){
         remoteSort:false,
         striped:true,
         singleSelect:true,
+        checkOnSelect:false,
+        selectOnCheck:false,
         nowrap:false,
         fit:true,
         toolbar:"#sys_position_tool_bar",
@@ -234,9 +236,17 @@ sysPositionHandle={
 </script>
 <table id="sysPositionTable"></table>
 <div id="sys_position_tool_bar">
-	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add', plain:true" onclick="sysPositionHandle.addPosition()">新增</a>
-	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-edit', plain:true" onclick="sysPositionHandle.editPosition()">编辑</a>
-	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-save', plain:true" onclick="sysPositionHandle.updatePosition()">保存</a>
-	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-quxiao', plain:true" onclick="sysPositionHandle.cancelEdit()">取消编辑</a>
-	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-remove', plain:true" onclick="sysPositionHandle.deletePosition()">删除</a>
+	<s:if test='#session.defaultMenu.sysDepartMentActionAddPos==1'>
+		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add', plain:true" onclick="sysPositionHandle.addPosition()">新增</a>
+	</s:if>
+	<s:if test='#session.defaultMenu.sysDepartMentActionEditPos==1||#session.defaultMenu.sysDepartMentActionAddPos==1'>
+		<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-save', plain:true" onclick="sysPositionHandle.updatePosition()">保存</a>
+	</s:if>
+	<s:if test='#session.defaultMenu.sysDepartMentActionEditPos==1'>
+		<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-edit', plain:true" onclick="sysPositionHandle.editPosition()">编辑</a>
+		<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-quxiao', plain:true" onclick="sysPositionHandle.cancelEdit()">取消编辑</a>
+	</s:if>
+	<s:if test='#session.defaultMenu.sysDepartMentActionDeletePos==1'>
+		<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-remove', plain:true" onclick="sysPositionHandle.deletePosition()">删除</a>
+	</s:if>
 </div>

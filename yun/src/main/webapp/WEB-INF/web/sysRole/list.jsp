@@ -75,7 +75,7 @@
 <div id="roleTable"></div>
 
 <div  id="operation_bar">
-	<s:if test='#session.defaultMenu.sysRoleActionAdd1==1'>
+	<s:if test='#session.defaultMenu.sysRoleActionAdd==1'>
 		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add', plain:true" onclick="append()">新增</a>
 	</s:if>
     

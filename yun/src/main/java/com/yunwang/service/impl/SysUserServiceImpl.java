@@ -232,9 +232,9 @@ public class SysUserServiceImpl implements SysUserService{
 	}
 
 	@Override
-	public void delete(Integer userId) {
-		sysUserDao.deleteByProperty("id", userId);
-		sysUserRoleDao.deleteByProperty("userId", userId);
+	public void delete(String userIds) {
+		sysUserDao.deleteByPropertys("id", userIds);
+		sysUserRoleDao.deleteByPropertys("userId", userIds);
 	}
 
 	@Override

@@ -14,11 +14,11 @@ import javax.persistence.Table;
  * <p>品牌管理</p>
  */
 @Entity
-@Table(name = "SYS_SUPPLIER")
+@Table(name = "SYS_BRAND")
 public class SysBrand extends AbstractRowVersionModel{
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO, generator="my_entity_seq_gen")
-	@SequenceGenerator(name="my_entity_seq_gen", sequenceName="SEQ_SYS_SUPPLIER")
+	@SequenceGenerator(name="my_entity_seq_gen", sequenceName="SEQ_SYS_BRAND")
 	private Integer id;
 	
 	@Column(name = "CODE",nullable = false)
@@ -27,7 +27,7 @@ public class SysBrand extends AbstractRowVersionModel{
 	@Column(name = "NAME",length = 256,nullable = false)
 	private String name;
 	
-	@Column(name = "INFO",length = 4096)
+	@Column(name = "INFO",length = 2048)
 	private String info;
 	
 	@Column(name = "STATUS",columnDefinition = "number default 1")

@@ -6,7 +6,7 @@
   		
   		var sexObj = new Function("return " + '${hashMap.sexObj}')();
   		var supplierObj = new Function("return " + '${hashMap.supplierObj}')();
-  		
+  		var brandObj = new Function("return " + '${hashMap.brandObj}')();
 	  	$(function(){
 	  		workerDataGrid=$("#workerGrid").datagrid({
 				resizable:false,
@@ -144,8 +144,13 @@
    	  						}
    	  					} 
    	  		       	},
-   	  		       	{field:'brand',title:"品牌",width:80,sortable:true
-   	  		        	
+   	  		       	{field:'brandId',title:"品牌",width:80,sortable:true,
+   	  		       		formatter:function(value, rowData) {
+							if(value == 0 ){
+								return "";
+							}
+							return brandObj[value];
+						}
    	  		       	},
 					{field:'supplierId',title:"供应商名称",width:100,sortable:true,
 						formatter:function(value, rowData) {

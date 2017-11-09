@@ -14,6 +14,7 @@ import org.apache.struts2.convention.annotation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.yunwang.model.page.Pager;
+import com.yunwang.model.pojo.SysBrand;
 import com.yunwang.model.pojo.SysDataDictionary;
 import com.yunwang.model.pojo.SysResource;
 import com.yunwang.model.pojo.SysResourceRel;
@@ -22,6 +23,7 @@ import com.yunwang.model.pojo.SysRsRcAttribCatalog;
 import com.yunwang.model.pojo.SysRsRcCatalog;
 import com.yunwang.model.pojo.SysRsRcPackage;
 import com.yunwang.model.pojo.SysSupplier;
+import com.yunwang.service.SysBrandService;
 import com.yunwang.service.SysResourceService;
 import com.yunwang.service.SysResourceTypeService;
 import com.yunwang.service.SysSupplierService;
@@ -66,6 +68,8 @@ public class ResourceAction extends AbstractLoginAction{
 	private SysResourceTypeService sysResourceTypeService;
 	@Autowired
 	private SysSupplierService sysSupplierService;
+	@Autowired
+	private SysBrandService sysBrandService;
 	
 	private List<SysRsRcAttribCatalog> attribCatalogs;
 	private String ids;
@@ -74,6 +78,7 @@ public class ResourceAction extends AbstractLoginAction{
 	private Map<String,Object> hashMap;
 	private String resourceJsonStr;
 	private List<SysSupplier> sysSuppliers;
+	private List<SysBrand> sysBrands;
 	private SysRsRcPackage sysRsRcPackage;
 	private SysResourceRel sysResourceRel;
 	
@@ -107,21 +112,36 @@ public class ResourceAction extends AbstractLoginAction{
 		if(0 != sysRsRcCatalog.getId()){
 			sysRsRcCatalog = sysResourceTypeService.getRsRcCatalogInfo(sysRsRcCatalog.getId());
 			sysSuppliers = sysSupplierService.findByCatalogId(sysRsRcCatalog.getId());
+			sysBrands = sysBrandService.findByCatalogId(sysRsRcCatalog.getId());
 		}else{
 			sysSuppliers =sysSupplierService.findAll();
+			sysBrands = sysBrandService.findAll();
 		}
 		
 		JSONObject supplierObj = new JSONObject();
 		for(SysSupplier sysSupplier:sysSuppliers){
 			supplierObj.put(sysSupplier.getId(),sysSupplier.getName());
 		}
-		JSONArray arr = JSONArray.fromObject(sysSuppliers);
-		JSONObject firstSelect = new JSONObject();
-		firstSelect.put("id","0");
-		firstSelect.put("name","请选择");
-		arr.add(0,firstSelect);
+		JSONArray sysSupplierArr = JSONArray.fromObject(sysSuppliers);
+		JSONObject sysSupplierFirstSelect = new JSONObject();
+		sysSupplierFirstSelect.put("id","0");
+		sysSupplierFirstSelect.put("name","请选择");
+		sysSupplierArr.add(0,sysSupplierFirstSelect);
 		hashMap.put("supplierObj",supplierObj);
-		hashMap.put("supplierArr",arr);
+		hashMap.put("supplierArr",sysSupplierArr);
+		
+		
+		JSONObject brandObj = new JSONObject();
+		for(SysBrand sysBrand:sysBrands){
+			brandObj.put(sysBrand.getId(),sysBrand.getName());
+		}
+		JSONArray brandArr = JSONArray.fromObject(sysBrands);
+		JSONObject brandFirstSelect = new JSONObject();
+		brandFirstSelect.put("id","0");
+		brandFirstSelect.put("name","请选择");
+		brandArr.add(0,brandFirstSelect);
+		hashMap.put("brandObj",brandObj);
+		hashMap.put("brandArr",brandArr);
 	}
 	
 	/**
@@ -144,16 +164,17 @@ public class ResourceAction extends AbstractLoginAction{
   					StringBufferByCollectionUtil.convertCollection(sysResources,"id"));
   			Map<Integer,Map<Integer,SysRsRcAttrib>> map = conToMap(sysRsRcAttribs);
   			
-  			
-  			List<SysSupplier> sysSuppliers;
   			if(0 != sysRsRcCatalog.getId()){
   				sysRsRcCatalog = sysResourceTypeService.getRsRcCatalogInfo(sysRsRcCatalog.getId());
   				sysSuppliers = sysSupplierService.findByCatalogId(sysRsRcCatalog.getId());
+  				sysBrands = sysBrandService.findByCatalogId(sysRsRcCatalog.getId());
   			}else{
   				sysSuppliers =sysSupplierService.findAll();
+  				sysBrands = sysBrandService.findAll();
   			}
   			Map<Integer,SysSupplier> supplierMap = CollectionUtil.listToMap(sysSuppliers,"id");
-  			 
+  			Map<Integer,SysBrand> sysBrandMap = CollectionUtil.listToMap(sysBrands,"id");
+  		
   			for(SysResource resource:sysResources){
   				if(null != resource.getSupplierId()&&0!=resource.getSupplierId()){
   					SysSupplier supplier = supplierMap.get(resource.getSupplierId());
@@ -163,6 +184,13 @@ public class ResourceAction extends AbstractLoginAction{
   	  					resource.setSupplierPhone(supplier.getPhoneNum());
   	  					resource.setSupplierTel(supplier.getTelNum());
   	  					resource.setSupplierAddress(supplier.getAddress());
+  	  				}
+  				}
+  				
+  				if(null != resource.getBrandId()&&0!=resource.getBrandId()){
+  					SysBrand sysBrand = sysBrandMap.get(resource.getBrandId());
+  	  				if(null != sysBrand){
+  	  					resource.setBrand(sysBrand.getName());
   	  				}
   				}
   				
@@ -331,12 +359,7 @@ public class ResourceAction extends AbstractLoginAction{
 		//流程数据
 		flowList = BaseDataDictionaryUtil.baseDataMap.get(4);
 		sysSuppliers =sysSupplierService.findAll();
-//		hashMap = new HashMap<String,Object>();
-//		JSONObject obj = new JSONObject();
-//		for(SysDataDictionary dictionary:flowList){
-//			obj.put(dictionary.getValue(), dictionary.getName());
-//		}
-//		hashMap.put("flowObj",obj);
+		sysBrands =sysBrandService.findAll();
 		return "relResourceSelect";
 	}
 	
@@ -349,7 +372,10 @@ public class ResourceAction extends AbstractLoginAction{
 			@SuppressWarnings("unchecked")
 			List<SysResourceRel> sysResources = (List<SysResourceRel>) pager.getData();
 			sysSuppliers =sysSupplierService.findAll();
+			sysBrands =sysBrandService.findAll();
   			Map<Integer,SysSupplier> supplierMap = CollectionUtil.listToMap(sysSuppliers,"id");
+  			Map<Integer,SysBrand> brandMap = CollectionUtil.listToMap(sysBrands,"id");
+  			
   			for(SysResourceRel resource:sysResources){
   				if(null != resource.getSupplierId()&&0!=resource.getSupplierId()){
   					SysSupplier supplier = supplierMap.get(resource.getSupplierId());
@@ -361,6 +387,14 @@ public class ResourceAction extends AbstractLoginAction{
   	  					resource.setSupplierAddress(supplier.getAddress());
   	  				}
   				}
+  				
+  				if(null != resource.getBrandId()&&0!=resource.getBrandId()){
+  					SysBrand brand = brandMap.get(resource.getBrandId());
+  	  				if(null != brand){
+  	  					resource.setBrand(brand.getName());
+  	  				}
+  				}
+  				
   				JSONObject newObj = JSONObject.fromObject(resource);
   				arr.add(newObj);
   			}
@@ -395,6 +429,7 @@ public class ResourceAction extends AbstractLoginAction{
 	public String relResourceTreeSelect(){
 		flowList = BaseDataDictionaryUtil.baseDataMap.get(4);
 		sysSuppliers =sysSupplierService.findAll();
+		sysBrands =sysBrandService.findAll();
 		return "relResourceTreeSelect";
 	}
 	
@@ -476,5 +511,13 @@ public class ResourceAction extends AbstractLoginAction{
 
 	public void setSysResourceRel(SysResourceRel sysResourceRel) {
 		this.sysResourceRel = sysResourceRel;
+	}
+
+	public List<SysBrand> getSysBrands() {
+		return sysBrands;
+	}
+
+	public void setSysBrands(List<SysBrand> sysBrands) {
+		this.sysBrands = sysBrands;
 	}
 }
