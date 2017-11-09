@@ -1,5 +1,8 @@
 package com.yunwang.action;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,6 +11,14 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.apache.log4j.Logger;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +36,8 @@ import com.yunwang.service.SysResourceTypeService;
 import com.yunwang.service.SysRsRcPackageService;
 import com.yunwang.service.SysSupplierService;
 import com.yunwang.util.BaseDataDictionaryUtil;
-import com.yunwang.util.action.AbstractLoginAction;
+import com.yunwang.util.action.AbstractUpDownAction;
+import com.yunwang.util.annotation.DownloadAnnotation;
 import com.yunwang.util.collection.CollectionUtil;
 
 @Action(
@@ -36,10 +48,13 @@ import com.yunwang.util.collection.CollectionUtil;
 		@Result(name = "childrenPage",location="/WEB-INF/web/resourcePackage/childrenPage.jsp"),
 		@Result(name = "saveOrUpdatePackagePage",location="/WEB-INF/web/resourcePackage/saveOrUpdatePackage.jsp"),
 		@Result(name = "packageResourceList",location="/WEB-INF/web/resourcePackage/packageResourceList.jsp"),
-		@Result(name = "packageBrand",location="/WEB-INF/web/resourcePackage/packageBrand.jsp")
+		@Result(name = "packageBrand",location="/WEB-INF/web/resourcePackage/packageBrand.jsp"),
+		@Result(name="exportResource",type="stream",
+		params={"encode","true","contentType","application/vnd.ms-excel;charset=UTF-8",
+		  "inputName","exportResourceStream","contentDisposition","attachment;filename=${exportResourceFileName}"}),
 	}
 )
-public class ResourcePackageAction extends AbstractLoginAction{
+public class ResourcePackageAction extends AbstractUpDownAction{
 	
 	private final static Logger LOG =Logger.getLogger(ResourcePackageAction.class);
 
@@ -329,7 +344,7 @@ public class ResourcePackageAction extends AbstractLoginAction{
 	 */
 	public String allLastChildrenListData(){
 		List<SysPcBrandCatalog> sysPcBrandCatalogs = sysRsRcPackageService.findAllPcBrandCatalog(sysRsRcPackage.getId());
-		Map<Integer,SysPcBrandCatalog> pcBrandCatalogMap = CollectionUtil.listToMap(sysPcBrandCatalogs,"id");
+		Map<Integer,SysPcBrandCatalog> pcBrandCatalogMap = CollectionUtil.listToMap(sysPcBrandCatalogs,"brandCatalogId");
 		
 		List<SysRsRcCatalog> sysRcRsrcOrgList = sysResourceTypeService.findRsRcCatalogByParentId(0);
 		JSONArray arr = new JSONArray();
@@ -353,7 +368,7 @@ public class ResourcePackageAction extends AbstractLoginAction{
 			sysRsRcCatalog.setCombineName(pSysRsRcCatalog.getCombineName()+">"+sysRsRcCatalog.getCatalogName());
 			List<SysRsRcCatalog> childrenList = sysResourceTypeService.findRsRcCatalogByParentId(sysRsRcCatalog.getId());
 			if(childrenList.size()>0){
-				combineCatalog(arr,sysRsRcCatalog,sysRcRsrcOrgList,pcBrandCatalogMap);
+				combineCatalog(arr,sysRsRcCatalog,childrenList,pcBrandCatalogMap);
 			}else{
 				putBrandData(pcBrandCatalogMap, arr, sysRsRcCatalog, obj);
 			}
@@ -380,6 +395,133 @@ public class ResourcePackageAction extends AbstractLoginAction{
 		arr.add(obj);
 	}
 	
+	public String savePackageBrand(){
+		try{
+			sysRsRcPackageService.savePackageBrandCatalog(sysRsRcPackage.getId(),jsonStr);
+			return success("操作成功!");
+		}catch(Exception e){
+			LOG.error(e.getMessage());
+			return error("操作失败!");
+		}
+	}
+	
+	@DownloadAnnotation("resourcePackageAction_exportPackageBrand")
+	public String exportPackageBrand(){
+		sysRsRcPackage = sysRsRcPackageService.get(sysRsRcPackage.getId());
+		exportResourceFileName = sysRsRcPackage.getName()+".xls";
+		ByteArrayOutputStream output = new ByteArrayOutputStream();
+		Workbook workbook=null;
+        try {
+            workbook = exportPackageBrandExcel(sysRsRcPackage);
+		    workbook.write(output);
+	        byte[] ba = output.toByteArray();
+	        exportResourceStream = new ByteArrayInputStream(ba);
+		}catch(Exception e){
+		    LOG.error(e.getMessage());
+		}finally{
+		    try {
+                output.flush();
+                output.close();
+            } catch (IOException e) {
+                LOG.error(e.getMessage());
+            }
+		}
+		return "exportResource";
+	}
+	
+	private Workbook exportPackageBrandExcel(SysRsRcPackage sysRsRcPackage2) {
+		List<SysPcBrandCatalog> sysPcBrandCatalogs = sysRsRcPackageService.findAllPcBrandCatalog(sysRsRcPackage.getId());
+		Map<Integer,SysPcBrandCatalog> pcBrandCatalogMap = CollectionUtil.listToMap(sysPcBrandCatalogs,"brandCatalogId");
+		
+		List<SysRsRcCatalog> sysRcRsrcOrgList = sysResourceTypeService.findRsRcCatalogByParentId(0);
+		JSONArray arr = new JSONArray();
+		for(SysRsRcCatalog sysRsRcCatalog:sysRcRsrcOrgList){
+			JSONObject obj = new JSONObject();
+			sysRsRcCatalog.setCombineName(sysRsRcCatalog.getCatalogName());
+			List<SysRsRcCatalog> childrenList = sysResourceTypeService.findRsRcCatalogByParentId(sysRsRcCatalog.getId());
+			if(childrenList.size()>0){
+				combineCatalog(arr,sysRsRcCatalog,childrenList,pcBrandCatalogMap);
+			}else{
+				putBrandData(pcBrandCatalogMap, arr, sysRsRcCatalog, obj);
+			}
+		}
+		
+	    Workbook wb = new HSSFWorkbook();
+		Sheet sheet = wb.createSheet("套餐品牌关联");
+		int nCol = 0;  //列编号
+		int nRow = 0;  //行编号
+		
+		// 创建单元格样式
+		CellStyle style = wb.createCellStyle();
+		style.setAlignment(HSSFCellStyle.ALIGN_LEFT);
+		style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+		
+		
+		Row row = sheet.createRow(nRow++);
+	    Cell cell =null;
+		row.setHeightInPoints(15);// 设定行的高度
+		nCol = 0;
+		sheet.setColumnWidth(nCol, 10000);
+		cell = row.createCell(nCol++);
+		cell.setCellStyle(style);
+		cell.setCellValue(getText("产品类别"));
+		
+		sheet.setColumnWidth(nCol, 5000);
+		cell = row.createCell(nCol++);
+		cell.setCellStyle(style);
+		cell.setCellValue(getText("品牌名称"));
+		
+		
+		for(int i=0;i<arr.size();i++){
+			
+			//打包表格数据
+			row = sheet.createRow(nRow++);
+			nCol=0;
+			
+			JSONObject obj = arr.getJSONObject(i);
+			
+			CellStyle nameStyle = wb.createCellStyle();
+			nameStyle.setAlignment(HSSFCellStyle.ALIGN_LEFT);
+			nameStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+			cell = row.createCell(nCol++);
+			cell.setCellStyle(nameStyle);
+			cell.setCellValue(obj.getString("name"));
+			
+			JSONArray brandArr = obj.getJSONArray("brandArr");
+			for(int j=0;j<brandArr.size();j++){
+				JSONObject brandObj = brandArr.getJSONObject(j);
+				
+				CellStyle brandStyle = wb.createCellStyle();
+				brandStyle.setAlignment(HSSFCellStyle.ALIGN_LEFT);
+				brandStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+				sheet.setColumnWidth(nCol, 5000);
+				cell = row.createCell(nCol++);
+				cell.setCellStyle(brandStyle);
+				cell.setCellValue(brandObj.getString("name"));
+				
+				if(1==brandObj.getInt("isCheck")){
+					CellStyle relationStyle = wb.createCellStyle();
+					relationStyle.setAlignment(HSSFCellStyle.ALIGN_LEFT);
+					relationStyle.setFillForegroundColor(IndexedColors.RED.getIndex());
+					relationStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+					sheet.setColumnWidth(nCol, 1000);
+					cell = row.createCell(nCol++);
+					cell.setCellStyle(relationStyle);
+					cell.setCellValue("√");
+				}else{
+					sheet.setColumnWidth(nCol, 1000);
+					CellStyle relationStyle = wb.createCellStyle();
+					relationStyle.setAlignment(HSSFCellStyle.ALIGN_LEFT);
+					relationStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+					cell = row.createCell(nCol++);
+					cell.setCellStyle(relationStyle);
+					cell.setCellValue("");
+				}
+			}
+		}
+		return wb;
+	}
+
 	public String getId() {
 		return id;
 	}

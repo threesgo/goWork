@@ -30,4 +30,6 @@ public interface SysRsRcPackageService {
 
 	List<SysPcBrandCatalog> findAllPcBrandCatalog(Integer packageId);
 
+	void savePackageBrandCatalog(Integer packageId, String jsonStr);
+
 }

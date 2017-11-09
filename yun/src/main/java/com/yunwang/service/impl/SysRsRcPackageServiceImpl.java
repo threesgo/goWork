@@ -2,6 +2,7 @@ package com.yunwang.service.impl;
 
 import java.util.List;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,5 +99,28 @@ public class SysRsRcPackageServiceImpl implements SysRsRcPackageService{
 	public List<SysPcBrandCatalog> findAllPcBrandCatalog(Integer packageId) {
 		// TODO Auto-generated method stub
 		return sysPcBrandCatalogDao.findByProperty("packageId", packageId);
+	}
+
+	@Override
+	public void savePackageBrandCatalog(Integer packageId, String jsonStr) {
+		sysPcBrandCatalogDao.deleteByProperty("packageId", packageId);
+		if(MyStringUtil.isNotBlank(jsonStr)){
+			JSONArray arr = JSONArray.fromObject(jsonStr);
+			if(!arr.isEmpty()){
+				for(int i=0;i<arr.size();i++){
+					JSONObject obj = arr.getJSONObject(i);
+					JSONArray brandArr = obj.getJSONArray("brandArr");
+					for(int j=0;j<brandArr.size();j++){
+						JSONObject brandObj = brandArr.getJSONObject(j);
+						if(1==brandObj.getInt("isCheck")){
+							SysPcBrandCatalog sysPcBrandCatalog = new SysPcBrandCatalog();
+							sysPcBrandCatalog.setPackageId(packageId);
+							sysPcBrandCatalog.setBrandCatalogId(brandObj.getInt("brandCatalogId"));
+							sysPcBrandCatalogDao.save(sysPcBrandCatalog);
+						}
+					}
+				}
+			}
+		}
 	}
 }
