@@ -233,10 +233,16 @@
 </div>
 
 <div id="attr_bar" style="height:auto !important;padding:2px;width: 100%;" class="hide">
-	<a href="#" iconCls="icon-add " onclick="attrOperation.addAttr()" 
+	<s:if test="#session.defaultMenu.resourceTypeActionAddAttr==1">
+		<a href="#" iconCls="icon-add " onclick="attrOperation.addAttr()" 
 		class="easyui-linkbutton edit" data-options="plain:true">增加属性</a>
-	<a href="#" iconCls="icon-remove" onclick="attrOperation.deleteAttr()" 
+	</s:if>
+	<s:if test="#session.defaultMenu.resourceTypeActionDeleteAttr==1">
+		<a href="#" iconCls="icon-remove" onclick="attrOperation.deleteAttr()" 
 		class="easyui-linkbutton edit" data-options="plain:true">删除属性</a>
-	<a href="#" iconCls="icon-edit" onclick="attrOperation.updateAttr(1)" 
+	</s:if>
+	<s:if test="#session.defaultMenu.resourceTypeActionEditAttr==1">
+		<a href="#" iconCls="icon-edit" onclick="attrOperation.updateAttr(1)" 
 		class="easyui-linkbutton edit" data-options="plain:true">编辑查看</a>
+	</s:if>
 </div>

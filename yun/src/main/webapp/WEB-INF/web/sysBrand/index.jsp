@@ -275,12 +275,20 @@
 	</div>
 </div>
 <div id="sysBrand_tool_bar">
-	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-add', plain:true" onclick="sysBrandOperation.addSysBrand()">新增</a>
-	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-edit', plain:true" onclick="sysBrandOperation.editSysBrand()">编辑</a>
-	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-save', plain:true" onclick="sysBrandOperation.updateSysBrand()">保存</a>
-	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-quxiao', plain:true" onclick="sysBrandOperation.cancelEdit()">取消编辑</a>
-	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-remove', plain:true" onclick="sysBrandOperation.deleteSysBrand()">删除</a>
-	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'building_link', plain:true" onclick="sysBrandOperation.relationSysBrand()">关联类别</a>
+	<s:if test="#session.defaultMenu.sysBrandActionAdd==1">
+		<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-add', plain:true" onclick="sysBrandOperation.addSysBrand()">新增</a>
+	</s:if>
+	<s:if test="#session.defaultMenu.sysBrandActionEdit==1">
+		<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-edit', plain:true" onclick="sysBrandOperation.editSysBrand()">编辑</a>
+		<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-save', plain:true" onclick="sysBrandOperation.updateSysBrand()">保存</a>
+		<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-quxiao', plain:true" onclick="sysBrandOperation.cancelEdit()">取消编辑</a>
+	</s:if>
+	<s:if test="#session.defaultMenu.sysBrandActionDelete==1">
+		<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-remove', plain:true" onclick="sysBrandOperation.deleteSysBrand()">删除</a>	
+	</s:if>
+	<s:if test="#session.defaultMenu.sysBrandActionRelation==1">
+		<a href="#"  class="easyui-linkbutton" data-options="iconCls:'building_link', plain:true" onclick="sysBrandOperation.relationSysBrand()">关联类别</a>
+	</s:if>
 </div>
 
 

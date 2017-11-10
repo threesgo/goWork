@@ -74,8 +74,12 @@ $(function(){
 </script>
 <table id="resourceTypeInfoTable"></table>
 <div id="resource_type_info_bar">
-	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit', plain:true" 
+	<s:if test="#session.defaultMenu.resourceTypeActionEdit==1">
+		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit', plain:true" 
 		onclick="resourceTypeOperation.editType()">编辑</a>
-	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove', plain:true" 
+	</s:if>
+	<s:if test="#session.defaultMenu.resourceTypeActionDelete==1">
+		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove', plain:true" 
 		onclick="resourceTypeOperation.deleteType()">删除</a>
+	</s:if>
 </div>
