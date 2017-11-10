@@ -323,6 +323,9 @@ $(function(){
 					}
 					return brandObj[value];
 				} 
+	       	},
+	       	{field:'brand',title:"老品牌",width:80,sortable:true,
+	        	
 	       	}
         ]],
 	    columns:[columns],
