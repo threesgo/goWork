@@ -459,7 +459,8 @@ resourceOperation = {
 				rsrcName:'',
 				purchasePrice:0,
 				salePrice:0,
-				supplierId:0
+				supplierId:0,
+				brandId:0
 			}
 		});
 		$resourceGrid.datagrid("beginEdit",addIndex);

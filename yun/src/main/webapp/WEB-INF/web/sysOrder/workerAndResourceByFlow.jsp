@@ -163,7 +163,7 @@
 	   	  	  	},
 	   	  	  	onAfterEdit:function(rowIndex,rowData,changes){
 			    	$.post("sysOrderAction!updateOrderResourceQuantity.act",
-			    			{"sysOrderResource.quantity":rowData.workTime,"sysOrderResource.id":rowData.orderResourceId},
+			    			{"sysOrderResource.quantity":rowData.quantity,"sysOrderResource.id":rowData.orderResourceId},
 		       			 function(data){
 		      			 	handlerResult(data,
 		      			 		function(json){
@@ -195,11 +195,13 @@
    	  		    	{field:'ck',checkbox:true},
    	  		        {field:'quantity',title:"数量",width:80,sortable:true
 		   	  		    ,editor:{
-			   	  		   type:"numberbox",
+			   	  		   type:"numberspinner",
 							options:{
-								min:1,
-								max:9999999.99,
-								precision:2
+								required:true,    
+	    						increment:1,
+	    						min:0.01,
+	    						max:9999999.99,
+	    						precision:2
 					 		}
 		   	        	}
    	  		 		},

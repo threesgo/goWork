@@ -254,12 +254,12 @@ public class SysOrderServiceImpl implements SysOrderService {
 	@Override
 	public void deleteOrderWorker(String ids) {
 		// TODO Auto-generated method stub
-		sysOrderWorkerDao.deleteByProperty("id", ids);
+		sysOrderWorkerDao.deleteByPropertys("id", ids);
 	}
 
 	@Override
 	public void deleteOrderResource(String ids) {
 		// TODO Auto-generated method stub
-		sysOrderResourceDao.deleteByProperty("id", ids);
+		sysOrderResourceDao.deleteByPropertys("id", ids);
 	}
 }
