@@ -6,6 +6,6 @@ import com.yunwang.dao.SysPcBrandCatalogDaoI;
 import com.yunwang.model.pojo.SysPcBrandCatalog;
 
 @Repository
-public class SysPcBrandCatalogImpl extends BaseDaoImpl<SysPcBrandCatalog> implements SysPcBrandCatalogDaoI{
+public class SysPcBrandCatalogDaoImpl extends BaseDaoImpl<SysPcBrandCatalog> implements SysPcBrandCatalogDaoI{
 
 }

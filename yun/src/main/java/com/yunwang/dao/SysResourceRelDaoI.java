@@ -28,4 +28,8 @@ public interface SysResourceRelDaoI extends BaseDaoI<SysResourceRel>{
 	Pager<SysResourceRel> findByPackageIdsAndNotInFlow(String packageIds,
 			Integer flowId,int page, int rows, JSONObject seachJson);
 
+	Pager<SysResourceRel> findByBrandCatalogIdsAndNotInFlow(
+			String brandCatalogIds, Integer flowId,
+			int page, int rows, JSONObject seachJson);
+
 }

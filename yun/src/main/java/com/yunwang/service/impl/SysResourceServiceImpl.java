@@ -18,6 +18,7 @@ import com.yunwang.dao.SysBrandCatalogDaoI;
 import com.yunwang.dao.SysBrandDaoI;
 import com.yunwang.dao.SysOrderFlowDaoI;
 import com.yunwang.dao.SysOrderPackageDaoI;
+import com.yunwang.dao.SysPcBrandCatalogDaoI;
 import com.yunwang.dao.SysResourceDaoI;
 import com.yunwang.dao.SysResourceRelDaoI;
 import com.yunwang.dao.SysRsRcAttribCatalogDaoI;
@@ -32,6 +33,7 @@ import com.yunwang.model.pojo.SysBrand;
 import com.yunwang.model.pojo.SysBrandCatalog;
 import com.yunwang.model.pojo.SysOrderFlow;
 import com.yunwang.model.pojo.SysOrderPackage;
+import com.yunwang.model.pojo.SysPcBrandCatalog;
 import com.yunwang.model.pojo.SysResource;
 import com.yunwang.model.pojo.SysResourceRel;
 import com.yunwang.model.pojo.SysRsRcAttrib;
@@ -78,6 +80,8 @@ public class SysResourceServiceImpl implements SysResourceService{
 	private SysSupplierCatalogDaoI SysSupplierCatalogDao;
 	@Autowired
 	private SysBrandCatalogDaoI sysBrandCatalogDao;
+	@Autowired
+	private SysPcBrandCatalogDaoI sysPcBrandCatalogDao;
 
  
 	@Override
@@ -530,7 +534,10 @@ public class SysResourceServiceImpl implements SysResourceService{
 		// TODO Auto-generated method stub
 		SysOrderFlow sysOrderFlow = sysOrderFlowDao.get(SysOrderFlow.class,flowId);
 		List<SysOrderPackage> sysOrderPackages = sysOrderPackageDao.findByOrderId(sysOrderFlow.getOrderId());
-		return sysResourceRelDao.findByPackageIdsAndNotInFlow(
-				StringBufferByCollectionUtil.convertCollection(sysOrderPackages, "rsrcPackageId"),flowId,page,rows,seachJson);
+		String packageIds = StringBufferByCollectionUtil.convertCollection(sysOrderPackages, "rsrcPackageId");
+		//查询套餐关联的品牌
+		List<SysPcBrandCatalog> sysPcBrandCatalogs = sysPcBrandCatalogDao.findInPropertys("packageId", packageIds);
+		return sysResourceRelDao.findByBrandCatalogIdsAndNotInFlow(
+				StringBufferByCollectionUtil.convertCollection(sysPcBrandCatalogs,"brandCatalogId"),flowId,page,rows,seachJson);
 	}
 }

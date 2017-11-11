@@ -235,10 +235,10 @@ public class SysOrderAction  extends AbstractLoginAction{
 	public String saveOrUpdateOrder(){
 		try{
 			sysOrderService.saveOrUpdateOrder(sysOrder);
-			return success("更新成功!",JSONObject.fromObject(sysOrder));
+			return success("操作成功!",JSONObject.fromObject(sysOrder));
 		}catch(Exception e){
 			LOG.error(e.getMessage());
-			return error("更新失败!",e);
+			return error("操作失败!",e);
 		}
 	}
 	
@@ -541,9 +541,9 @@ public class SysOrderAction  extends AbstractLoginAction{
 		JSONObject time=new JSONObject();
 		time.put("attrName", "预计装修时间");
 		time.put("value", 
-				(MyStringUtil.isNotBlank(sysOrderFlow.getStartTimeStr())?sysOrderFlow.getStartTimeStr():"")
+				(MyStringUtil.isNotBlank(sysOrderFlow.getStartTimeStr())?sysOrderFlow.getStartTimeStr():"?")
 				+"至"+
-				(MyStringUtil.isNotBlank(sysOrderFlow.getEndTimeStr())?sysOrderFlow.getEndTimeStr():""));
+				(MyStringUtil.isNotBlank(sysOrderFlow.getEndTimeStr())?sysOrderFlow.getEndTimeStr():"?"));
 		jsonArr.add(time);
 		
 		JSONObject info=new JSONObject();
@@ -581,7 +581,7 @@ public class SysOrderAction  extends AbstractLoginAction{
 		
 		JSONObject orderType=new JSONObject();
 		orderType.put("attrName", "装修类型");
-		orderType.put("value", sysOrder.getOrderType());
+		orderType.put("value", BaseDataDictionaryUtil.baseDataMap.get(7).get( sysOrder.getOrderType()).getName());
 		jsonArr.add(orderType);
 		
 		JSONObject orderDate=new JSONObject();
