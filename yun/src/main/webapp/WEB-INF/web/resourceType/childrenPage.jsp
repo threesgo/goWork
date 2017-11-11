@@ -43,9 +43,11 @@ $(function(){
 });
 </script>
 <table id="resourceTypeChildrenTable"></table>
-<div id="resource_type_tool_bar">
-	<s:if test="#session.defaultMenu.resourceTypeActionAdd==1">
-		<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add', plain:true" 
-		onclick="resourceTypeOperation.addType()">新增</a>
-	</s:if>
-</div>
+<s:if test="sysRsRcCatalog.id!=0">
+	<div id="resource_type_tool_bar">
+		<s:if test="#session.defaultMenu.resourceTypeActionAdd==1">
+			<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add', plain:true" 
+			onclick="resourceTypeOperation.addType()">新增</a>
+		</s:if>
+	</div>
+</s:if>

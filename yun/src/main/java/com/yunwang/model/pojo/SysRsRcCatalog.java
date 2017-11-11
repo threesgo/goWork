@@ -41,6 +41,9 @@ public class SysRsRcCatalog extends AbstractRowVersionModel{
 	@Column(name="CATALOG_TYPE",nullable = false)
 	private Integer catalogType;//资源类别
 	
+	@Column(name="WORK_TYPE",nullable = false)
+	private Integer workType;  //做工种类  (其他类默认为做工项)  1、材料项 2、做工项 是
+	
 	@Transient
 	private String state = "closed";
 	
@@ -133,4 +136,13 @@ public class SysRsRcCatalog extends AbstractRowVersionModel{
 	public void setCombineName(String combineName) {
 		this.combineName = combineName;
 	}
+
+	public Integer getWorkType() {
+		return workType;
+	}
+
+	public void setWorkType(Integer workType) {
+		this.workType = workType;
+	}
+	
 }
