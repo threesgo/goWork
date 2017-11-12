@@ -157,10 +157,12 @@ public class SysRsRcCatalog extends AbstractRowVersionModel{
 	}
 
 	public Object getWorkTypeStr() {
-		if(workType == 1){
-			return "材料项";
-		}else if(workType == 2){
-			return "做工项";
+		if(null!=workType){
+			if(workType == 1){
+				return "材料项";
+			}else if(workType == 2){
+				return "做工项";
+			}
 		}
 		return "";
 	}

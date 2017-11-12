@@ -245,6 +245,7 @@ public class ResourceTypeAction extends AbstractLoginAction{
 				//updateSysRsRcCatalog.setCatalogCode(sysRsRcCatalog.getCatalogCode());
 				updateSysRsRcCatalog.setCatalogName(sysRsRcCatalog.getCatalogName());
 				//updateSysRsRcCatalog.setCatalogType(sysRsRcCatalog.getCatalogType());
+				updateSysRsRcCatalog.setWorkType(sysRsRcCatalog.getWorkType());
 				sysResourceTypeService.saveOrUpdateRsRcCatalog(updateSysRsRcCatalog);
 			}else{
 				sysRsRcCatalog.setCatalogStatus(1);
