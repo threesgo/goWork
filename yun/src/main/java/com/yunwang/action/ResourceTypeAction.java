@@ -174,6 +174,12 @@ public class ResourceTypeAction extends AbstractLoginAction{
 		json_type.put("attrName","类型类别");
 		json_type.put("value",BaseDataDictionaryUtil.valueMap.get(4).get(sysRsRcCatalog.getCatalogType().toString()).getName());
 		jsonArr.add(json_type);
+		
+		
+		JSONObject work_type=new JSONObject();
+		work_type.put("attrName","做工种类");
+		work_type.put("value",sysRsRcCatalog.getWorkTypeStr());
+		jsonArr.add(work_type);
 		return ajaxText(jsonArr);
 	}
 	
@@ -217,9 +223,13 @@ public class ResourceTypeAction extends AbstractLoginAction{
 		if(null != sysRsRcCatalog.getId()){
 			sysRsRcCatalog = sysResourceTypeService.getRsRcCatalogInfo(sysRsRcCatalog.getId());
 		}
+		//现在的方式，不会parentid是0的时候
 		if(0 != sysRsRcCatalog.getParentId()){
 			SysRsRcCatalog pSysRsRcCatalog = sysResourceTypeService.getRsRcCatalogInfo(sysRsRcCatalog.getParentId());
 			sysRsRcCatalog.setCatalogTypeName(BaseDataDictionaryUtil.valueMap.get(4).get(pSysRsRcCatalog.getCatalogType().toString()).getName());
+			sysRsRcCatalog.setParentWorkType(pSysRsRcCatalog.getWorkType());
+		}else{
+			sysRsRcCatalog.setParentWorkType(1);
 		}
 		catalogTypeList = BaseDataDictionaryUtil.baseDataMap.get(4);
 		return "saveOrUpdateTypePage";

@@ -223,11 +223,16 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 				" model.KEY_WORD keyWord,model.RSRC_CODE rsrcCode,model.RSRC_NAME rsrcName," +
 				" model.ABBREVIA_NAME abbreviaName,model.ORDER_NO orderNo,model.RSRC_CATALOG_ID rsrcCatalogId," +
 				" model.SALE_PRICE salePrice,model.BRAND_ID brandId,model.SUPPLIER_ID supplierId,model.RELEASE_DATE releaseDate," +
-				" model.RSRC_STUTAS rsrcStatus,rsCatalog.CATALOG_TYPE workType,orderResource.QUANTITY quantity,orderResource.ID orderResourceId " +
+				" model.RSRC_STUTAS rsrcStatus,rsCatalog.CATALOG_TYPE workType,SUM(orderResource.QUANTITY) quantity "+
 				" FROM SYS_ORDER_RESOURCE orderResource" +
 				" LEFT JOIN SYS_RESOURCE_REL model ON model.ID = orderResource.RESOURCE_ID " +
 				" LEFT JOIN SYS_RSRC_CATALOG rsCatalog ON model.RSRC_CATALOG_ID = rsCatalog.ID " +
-				" WHERE orderResource.ORDER_ID=:orderId ");
+				" WHERE orderResource.ORDER_ID=:orderId " +
+				" GROUP BY model.ID,model.RESOURCE_ID," +
+				" model.KEY_WORD,model.RSRC_CODE,model.RSRC_NAME," +
+				" model.ABBREVIA_NAME,model.ORDER_NO,model.RSRC_CATALOG_ID," +
+				" model.SALE_PRICE,model.BRAND_ID,model.SUPPLIER_ID,model.RELEASE_DATE," +
+				" model.RSRC_STUTAS,rsCatalog.CATALOG_TYPE ");
 		
 		Map<String, Object> parmeMap = new HashMap<String,Object>();
 		parmeMap.put("orderId", orderId);
@@ -249,7 +254,6 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 		scalarMap.put("releaseDate", new TimestampType());
 		scalarMap.put("workType", new IntegerType());
 		scalarMap.put("quantity", new BigDecimalType());
-		scalarMap.put("orderResourceId", new IntegerType());
 		return findBySQLQuery(buf.toString(),parmeMap,scalarMap);
 	}
 

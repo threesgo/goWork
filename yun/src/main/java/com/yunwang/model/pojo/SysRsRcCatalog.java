@@ -41,7 +41,7 @@ public class SysRsRcCatalog extends AbstractRowVersionModel{
 	@Column(name="CATALOG_TYPE",nullable = false)
 	private Integer catalogType;//资源类别
 	
-	@Column(name="WORK_TYPE",nullable = false)
+	@Column(name="WORK_TYPE")
 	private Integer workType;  //做工种类  (其他类默认为做工项)  1、材料项 2、做工项 是
 	
 	@Transient
@@ -49,6 +49,9 @@ public class SysRsRcCatalog extends AbstractRowVersionModel{
 	
 	@Transient
 	private String catalogTypeName;
+	
+	@Transient
+	private Integer parentWorkType;
 	
 	@Transient
 	private String combineName;
@@ -144,5 +147,21 @@ public class SysRsRcCatalog extends AbstractRowVersionModel{
 	public void setWorkType(Integer workType) {
 		this.workType = workType;
 	}
-	
+
+	public Integer getParentWorkType() {
+		return parentWorkType;
+	}
+
+	public void setParentWorkType(Integer parentWorkType) {
+		this.parentWorkType = parentWorkType;
+	}
+
+	public Object getWorkTypeStr() {
+		if(workType == 1){
+			return "材料项";
+		}else if(workType == 2){
+			return "做工项";
+		}
+		return "";
+	}
 }

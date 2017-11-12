@@ -135,8 +135,6 @@
 	 		});
 	  		
 	  		resourceDataGrid=$("#resourceGrid").datagrid({
-	  			resizable:false,
-				collapsible:true,
 	       		//fitColumns:true, 
 	          	striped:true,
 	         	singleSelect:true, 
@@ -146,7 +144,6 @@
 	           	checkOnSelect:false,
 	           	remoteSort:false,
 	         	rownumbers:true,
-	          	nowrap:false,
 	          	fit:true,
 	          	idField:'id',
 	          	toolbar:'#resourceGridBar',

@@ -36,4 +36,20 @@
        		<input class="easyui-validatebox" style="width:200px;" type="text" value="${sysRsRcCatalog.catalogTypeName}" readonly="readonly"/>   
        	</s:else>
      </div>
+     
+     
+     <div>   
+        <label for="type">做工种类:</label>
+       		<s:if test="sysRsRcCatalog.parentWorkType==1">
+		        <select id="type" class="easyui-combobox" name="sysRsRcCatalog.workType" style="width:200px;">   
+				    <option value="1" <s:if test="sysRsRcCatalog.workType==1"> selected=‘selected’</s:if>>材料项</option>
+					<option value="2" <s:if test="sysRsRcCatalog.workType==2"> selected=‘selected’</s:if>>做工项</option>   
+				</select>
+			</s:if>
+			<s:else>
+				<select id="type" class="easyui-combobox" name="sysRsRcCatalog.workType" style="width:200px;">   
+					<option value="2">做工项</option>   
+				</select>       		
+			</s:else>
+     </div>
 </form>

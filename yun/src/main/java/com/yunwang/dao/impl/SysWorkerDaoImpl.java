@@ -111,10 +111,15 @@ public class SysWorkerDaoImpl extends BaseDaoImpl<SysWorker> implements SysWorke
 				" model.NAME name,model.SEX sex,model.PHONENUM phoneNum," +
 				" model.TELNUM telNum,model.ADDRESS address,model.AGE age," +
 				" model.BIRTHDAY birthday,model.WORK_TYPE workType,model.WAGES wages,model.WORK_AGE workAge," +
-				" model.EDUCATION education,model.STATUS status,model.COMPANY company,orderWorker.WORK_TIME workTime,orderWorker.ID orderWorkerId " +
+				" model.EDUCATION education,model.STATUS status,model.COMPANY company,SUM(orderWorker.WORK_TIME) workTime " +
 				" FROM SYS_ORDER_WORKER orderWorker" +
 				" LEFT JOIN SYS_WORKER model ON model.ID = orderWorker.WORKER_ID " +
-				" WHERE orderWorker.ORDER_ID=:orderId ");
+				" WHERE orderWorker.ORDER_ID=:orderId " +
+				" GROUP BY model.ID,model.CODE, " +
+				" model.NAME,model.SEX,model.PHONENUM," +
+				" model.TELNUM,model.ADDRESS,model.AGE," +
+				" model.BIRTHDAY,model.WORK_TYPE,model.WAGES,model.WORK_AGE," +
+				" model.EDUCATION,model.STATUS,model.COMPANY");
 		
 		Map<String, Object> parmeMap = new HashMap<String,Object>();
 		parmeMap.put("orderId", orderId);
@@ -137,7 +142,6 @@ public class SysWorkerDaoImpl extends BaseDaoImpl<SysWorker> implements SysWorke
 		scalarMap.put("status", new IntegerType());
 		scalarMap.put("company", new IntegerType());
 		scalarMap.put("workTime", new BigDecimalType());
-		scalarMap.put("orderWorkerId", new IntegerType());
 		return findBySQLQuery(buf.toString(),parmeMap,scalarMap);
 	}
 
