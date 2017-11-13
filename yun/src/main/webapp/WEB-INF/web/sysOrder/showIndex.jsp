@@ -306,6 +306,10 @@
 	</div>
 </div>
 <div id="sysOrder_tool_bar">
-	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-add', plain:true" onclick="sysOrderOperation.addSysOrder()">新增</a>
-	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-edit', plain:true" onclick="sysOrderOperation.editSysOrder()">编辑</a>
+	<s:if test="#session.defaultMenu.sysOrderActionAdd==1">
+		<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-add', plain:true" onclick="sysOrderOperation.addSysOrder()">新增</a>
+	</s:if>
+	<s:if test="#session.defaultMenu.sysOrderActionEdit==1">
+		<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-edit', plain:true" onclick="sysOrderOperation.editSysOrder()">编辑</a>
+	</s:if>
 </div>

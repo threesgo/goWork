@@ -145,14 +145,19 @@ insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type)
 values(66,'删除','resourcePackageActionDelete','status_online',10,4,2,1);
 
 
-
-
-
-
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
 values(11,'订单管理','','book_edit',0,4,1,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
 values(12,'订单编辑','sysOrderAction.act','book_edit',11,1,1,1);
+
+insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
+values(67,'查看','list','status_online',12,1,2,1);
+insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
+values(68,'新增','sysOrderActionAdd','status_online',12,2,2,1);
+insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
+values(69,'编辑','sysOrderActionEdit','status_online',12,3,2,1);
+
+
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
 values(13,'订单流程','sysOrderAction!manageIndex.act','book_edit',11,2,1,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
@@ -221,4 +226,6 @@ insert into sys_role_menu (id,row_version,role_id,menu_id)
 values (27, 0, 1 ,59);
 insert into sys_role_menu (id,row_version,role_id,menu_id)
 values (28, 0, 1 ,63);
+insert into sys_role_menu (id,row_version,role_id,menu_id)
+values (29, 0, 1 ,67);
 END;
