@@ -361,6 +361,9 @@ public class ResourcePackageAction extends AbstractUpDownAction{
 		return ajaxText(arr.toString());
 	}
 
+	//1,自己做工项用作参考用，其他做工项用作计算费用。做工项可以直接写到每个大类下面，根据价格区分，无需根据做工类别区分销售价格为0的颜色标识出来
+	
+	
 	private void combineCatalog(JSONArray arr,SysRsRcCatalog pSysRsRcCatalog,
 			List<SysRsRcCatalog> sysRcRsrcOrgList,Map<Integer,SysPcBrandCatalog> pcBrandCatalogMap){
 		for(SysRsRcCatalog sysRsRcCatalog:sysRcRsrcOrgList){

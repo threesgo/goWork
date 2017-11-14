@@ -69,6 +69,8 @@
 								});
 							},
 							function(json){
+								$sysBrandDatagrid.datagrid("beginEdit",rowIndex);
+								$sysBrandDatagrid = rowIndex;
 								$show(json.message);
 							}
 						);

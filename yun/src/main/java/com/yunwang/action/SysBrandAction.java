@@ -84,7 +84,7 @@ public class SysBrandAction extends AbstractLoginAction{
 			return success("行数据保存成功!",obj);
 		}catch(Exception e){
 			LOG.error(e.getMessage());
-			return error("行数据保存失败!");
+			return error("行数据保存失败!",e);
 		}
 	}
 	

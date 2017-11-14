@@ -13,6 +13,7 @@ import com.yunwang.model.page.Pager;
 import com.yunwang.model.pojo.SysBrand;
 import com.yunwang.model.pojo.SysBrandCatalog;
 import com.yunwang.service.SysBrandService;
+import com.yunwang.util.exception.MineException;
 import com.yunwang.util.string.MyStringUtil;
 
 @Service
@@ -45,6 +46,12 @@ public class SysBrandServiceImpl implements SysBrandService{
 			// 正常
 		}
 		String name = rowData.getString("name");
+		
+		List<SysBrand> sysBrands = sysBrandDao.findByName(name,sysBrand.getId());
+		if(sysBrands.size()>0){
+			throw new MineException("该品牌已经创建,根据供应商名称确认唯一性!");
+		}
+		
 		sysBrand.setName(name);
 		String info = rowData.getString("info");
 		sysBrand.setInfo(info);

@@ -14,4 +14,6 @@ public interface SysSupplierDaoI extends BaseDaoI<SysSupplier>{
 	void deleteSupplier(String ids);
 
 	List<SysSupplier> findByCatalogId(Integer catalogId);
+
+	List<SysSupplier> findByName(String name,Integer id);
 }

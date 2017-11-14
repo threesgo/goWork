@@ -112,6 +112,8 @@
 							},
 							function(json){
 								$show(json.message);
+								$sysSupplierDatagrid.datagrid("beginEdit",rowIndex);
+								sysSupplierEdit = rowIndex;
 							}
 						);
 	       			}

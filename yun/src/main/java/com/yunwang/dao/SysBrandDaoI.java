@@ -13,4 +13,6 @@ public interface SysBrandDaoI extends BaseDaoI<SysBrand>{
 
 	List<SysBrand> findByCatalogId(Integer catalogId);
 
+	List<SysBrand> findByName(String name, Integer id);
+
 }

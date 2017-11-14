@@ -13,6 +13,7 @@ import com.yunwang.model.page.Pager;
 import com.yunwang.model.pojo.SysSupplier;
 import com.yunwang.model.pojo.SysSupplierCatalog;
 import com.yunwang.service.SysSupplierService;
+import com.yunwang.util.exception.MineException;
 import com.yunwang.util.string.MyStringUtil;
 
 @Service
@@ -37,6 +38,11 @@ public class SysSupplierServiceImpl implements SysSupplierService {
 			// 正常
 		}
 		String name = rowData.getString("name");
+		
+		List<SysSupplier> sysSuppliers = sysSupplierDao.findByName(name,sysSupplier.getId());
+		if(sysSuppliers.size()>0){
+			throw new MineException("该供应商已经创建,根据供应商名称确认唯一性!");
+		}
 		sysSupplier.setName(name);
 		String contact = rowData.getString("contact");
 		sysSupplier.setContact(contact);

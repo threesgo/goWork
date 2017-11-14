@@ -68,4 +68,17 @@ public class SysSupplierDaoImpl extends BaseDaoImpl<SysSupplier> implements SysS
 		map.put("catalogId",catalogId);
 		return find(buf.toString(),map);
 	}
+
+	@Override
+	public List<SysSupplier> findByName(String name,Integer id) {
+		Map<String, Object> map = new HashMap<String,Object>();
+		StringBuffer buf = new StringBuffer(
+				"SELECT model FROM SysSupplier model WHERE model.status!=0 AND model.name=:name ");
+		if(null!=id){
+			buf.append(" AND model.id!=:id");
+			map.put("id",id);
+		}
+		map.put("name",name);
+		return find(buf.toString(),map);
+	}
 }

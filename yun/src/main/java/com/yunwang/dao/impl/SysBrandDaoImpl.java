@@ -70,4 +70,17 @@ public class SysBrandDaoImpl extends BaseDaoImpl<SysBrand> implements SysBrandDa
 		scalarMap.put("brandCatalogId", new IntegerType());
 		return findBySQLQuery(buf.toString(),parmeMap,scalarMap);
 	}
+
+	@Override
+	public List<SysBrand> findByName(String name, Integer id) {
+		Map<String, Object> map = new HashMap<String,Object>();
+		StringBuffer buf = new StringBuffer(
+				"SELECT model FROM SysBrand model WHERE model.status!=0 AND model.name=:name ");
+		if(null!=id){
+			buf.append(" AND model.id!=:id");
+			map.put("id",id);
+		}
+		map.put("name",name);
+		return find(buf.toString(),map);
+	}
 }
