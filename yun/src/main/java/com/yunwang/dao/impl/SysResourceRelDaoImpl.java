@@ -37,7 +37,7 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 				" model.KEY_WORD keyWord,model.RSRC_CODE rsrcCode,model.RSRC_NAME rsrcName," +
 				" model.ABBREVIA_NAME abbreviaName,model.ORDER_NO orderNo,model.RSRC_CATALOG_ID rsrcCatalogId," +
 				" model.SALE_PRICE salePrice,model.BRAND_ID brandId,model.SUPPLIER_ID supplierId,model.RELEASE_DATE releaseDate," +
-				" model.RSRC_STUTAS rsrcStatus,rsCatalog.CATALOG_TYPE workType" +
+				" model.RSRC_STUTAS rsrcStatus,rsCatalog.CATALOG_TYPE catalogType,rsCatalog.WORK_TYPE workType " +
 				" FROM SYS_RESOURCE_REL model" +
 				" LEFT JOIN SYS_RSRC_CATALOG rsCatalog ON model.RSRC_CATALOG_ID = rsCatalog.ID " +
 				" WHERE model.RSRC_STUTAS!=0 ");
@@ -69,8 +69,12 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 				buf.append(" AND model.RSRC_CATALOG_ID =:sysRsRcCatalogId");
 				parmeMap.put("sysRsRcCatalogId",seachJson.getInt("sysRsRcCatalogId"));
 			}
+			if(seachJson.containsKey("catalogType")&&0!=seachJson.getInt("catalogType")){
+				buf.append(" AND rsCatalog.CATALOG_TYPE =:catalogType");
+				parmeMap.put("catalogType",seachJson.getInt("catalogType"));
+			}
 			if(seachJson.containsKey("workType")&&0!=seachJson.getInt("workType")){
-				buf.append(" AND rsCatalog.CATALOG_TYPE =:workType");
+				buf.append(" AND rsCatalog.WORK_TYPE =:workType");
 				parmeMap.put("workType",seachJson.getInt("workType"));
 			}
 		}
@@ -93,6 +97,7 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 		scalarMap.put("supplierId", new IntegerType());
 		scalarMap.put("brandId", new IntegerType());
 		scalarMap.put("releaseDate", new TimestampType());
+		scalarMap.put("catalogType", new IntegerType());
 		scalarMap.put("workType", new IntegerType());
 		
 		return pagedSqlQuery(buf.toString(),page,rows,parmeMap,scalarMap);
@@ -117,7 +122,7 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 				" model.KEY_WORD keyWord,model.RSRC_CODE rsrcCode,model.RSRC_NAME rsrcName," +
 				" model.ABBREVIA_NAME abbreviaName,model.ORDER_NO orderNo,model.RSRC_CATALOG_ID rsrcCatalogId," +
 				" model.SALE_PRICE salePrice,model.BRAND_ID brandId,model.SUPPLIER_ID supplierId,model.RELEASE_DATE releaseDate," +
-				" model.RSRC_STUTAS rsrcStatus,rsCatalog.CATALOG_TYPE workType" +
+				" model.RSRC_STUTAS rsrcStatus,rsCatalog.CATALOG_TYPE catalogType,rsCatalog.WORK_TYPE workType " +
 				" FROM SYS_RSRC_PC_RESOURCE pcResource" +
 				" LEFT JOIN SYS_RESOURCE_REL model ON model.ID = pcResource.RESOURCE_ID " +
 				" LEFT JOIN SYS_RSRC_CATALOG rsCatalog ON model.RSRC_CATALOG_ID = rsCatalog.ID " +
@@ -147,8 +152,12 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 				buf.append(" AND model.SUPPLIER_ID =:supplierId");
 				parmeMap.put("supplierId",seachJson.getInt("supplierId"));
 			}
+			if(seachJson.containsKey("catalogType")&&0!=seachJson.getInt("catalogType")){
+				buf.append(" AND rsCatalog.CATALOG_TYPE =:catalogType");
+				parmeMap.put("catalogType",seachJson.getInt("catalogType"));
+			}
 			if(seachJson.containsKey("workType")&&0!=seachJson.getInt("workType")){
-				buf.append(" AND rsCatalog.CATALOG_TYPE =:workType");
+				buf.append(" AND rsCatalog.WORK_TYPE =:workType");
 				parmeMap.put("workType",seachJson.getInt("workType"));
 			}
 		}
@@ -168,6 +177,7 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 		scalarMap.put("supplierId", new IntegerType());
 		scalarMap.put("brandId", new IntegerType());
 		scalarMap.put("releaseDate", new TimestampType());
+		scalarMap.put("catalogType", new IntegerType());
 		scalarMap.put("workType", new IntegerType());
 		
 		return pagedSqlQuery(buf.toString(),page,rows,parmeMap,scalarMap);
@@ -186,7 +196,7 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 				" model.KEY_WORD keyWord,model.RSRC_CODE rsrcCode,model.RSRC_NAME rsrcName," +
 				" model.ABBREVIA_NAME abbreviaName,model.ORDER_NO orderNo,model.RSRC_CATALOG_ID rsrcCatalogId," +
 				" model.SALE_PRICE salePrice,model.BRAND_ID brandId,model.SUPPLIER_ID supplierId,model.RELEASE_DATE releaseDate," +
-				" model.RSRC_STUTAS rsrcStatus,rsCatalog.CATALOG_TYPE workType,orderResource.QUANTITY quantity,orderResource.ID orderResourceId " +
+				" model.RSRC_STUTAS rsrcStatus,rsCatalog.CATALOG_TYPE catalogType,rsCatalog.WORK_TYPE workType,orderResource.QUANTITY quantity,orderResource.ID orderResourceId " +
 				" FROM SYS_ORDER_RESOURCE orderResource" +
 				" LEFT JOIN SYS_RESOURCE_REL model ON model.ID = orderResource.RESOURCE_ID " +
 				" LEFT JOIN SYS_RSRC_CATALOG rsCatalog ON model.RSRC_CATALOG_ID = rsCatalog.ID " +
@@ -210,6 +220,7 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 		scalarMap.put("supplierId", new IntegerType());
 		scalarMap.put("brandId", new IntegerType());
 		scalarMap.put("releaseDate", new TimestampType());
+		scalarMap.put("catalogType", new IntegerType());
 		scalarMap.put("workType", new IntegerType());
 		scalarMap.put("quantity", new BigDecimalType());
 		scalarMap.put("orderResourceId", new IntegerType());
@@ -223,7 +234,7 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 				" model.KEY_WORD keyWord,model.RSRC_CODE rsrcCode,model.RSRC_NAME rsrcName," +
 				" model.ABBREVIA_NAME abbreviaName,model.ORDER_NO orderNo,model.RSRC_CATALOG_ID rsrcCatalogId," +
 				" model.SALE_PRICE salePrice,model.BRAND_ID brandId,model.SUPPLIER_ID supplierId,model.RELEASE_DATE releaseDate," +
-				" model.RSRC_STUTAS rsrcStatus,rsCatalog.CATALOG_TYPE workType,SUM(orderResource.QUANTITY) quantity "+
+				" model.RSRC_STUTAS rsrcStatus,rsCatalog.CATALOG_TYPE catalogType,rsCatalog.WORK_TYPE workType,SUM(orderResource.QUANTITY) quantity "+
 				" FROM SYS_ORDER_RESOURCE orderResource" +
 				" LEFT JOIN SYS_RESOURCE_REL model ON model.ID = orderResource.RESOURCE_ID " +
 				" LEFT JOIN SYS_RSRC_CATALOG rsCatalog ON model.RSRC_CATALOG_ID = rsCatalog.ID " +
@@ -252,6 +263,7 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 		scalarMap.put("supplierId", new IntegerType());
 		scalarMap.put("brandId", new IntegerType());
 		scalarMap.put("releaseDate", new TimestampType());
+		scalarMap.put("catalogType", new IntegerType());
 		scalarMap.put("workType", new IntegerType());
 		scalarMap.put("quantity", new BigDecimalType());
 		return findBySQLQuery(buf.toString(),parmeMap,scalarMap);
@@ -265,7 +277,7 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 				" model.KEY_WORD keyWord,model.RSRC_CODE rsrcCode,model.RSRC_NAME rsrcName," +
 				" model.ABBREVIA_NAME abbreviaName,model.ORDER_NO orderNo,model.RSRC_CATALOG_ID rsrcCatalogId," +
 				" model.SALE_PRICE salePrice,model.BRAND_ID brandId,model.SUPPLIER_ID supplierId,model.RELEASE_DATE releaseDate," +
-				" model.RSRC_STUTAS rsrcStatus,rsCatalog.CATALOG_TYPE workType" +
+				" model.RSRC_STUTAS rsrcStatus,rsCatalog.CATALOG_TYPE catalogType,rsCatalog.WORK_TYPE workType " +
 				" FROM SYS_RSRC_PC_RESOURCE pcResource" +
 				" LEFT JOIN SYS_RESOURCE_REL model ON model.ID = pcResource.RESOURCE_ID " +
 				" LEFT JOIN SYS_RSRC_CATALOG rsCatalog ON model.RSRC_CATALOG_ID = rsCatalog.ID " +
@@ -300,8 +312,12 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 				buf.append(" AND model.SUPPLIER_ID =:supplierId");
 				parmeMap.put("supplierId",seachJson.getInt("supplierId"));
 			}
+			if(seachJson.containsKey("catalogType")&&0!=seachJson.getInt("catalogType")){
+				buf.append(" AND rsCatalog.CATALOG_TYPE =:catalogType");
+				parmeMap.put("catalogType",seachJson.getInt("catalogType"));
+			}
 			if(seachJson.containsKey("workType")&&0!=seachJson.getInt("workType")){
-				buf.append(" AND rsCatalog.CATALOG_TYPE =:workType");
+				buf.append(" AND rsCatalog.WORK_TYPE =:workType");
 				parmeMap.put("workType",seachJson.getInt("workType"));
 			}
 		}
@@ -321,6 +337,7 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 		scalarMap.put("supplierId", new IntegerType());
 		scalarMap.put("brandId", new IntegerType());
 		scalarMap.put("releaseDate", new TimestampType());
+		scalarMap.put("catalogType", new IntegerType());
 		scalarMap.put("workType", new IntegerType());
 		
 		return pagedSqlQuery(buf.toString(),page,rows,parmeMap,scalarMap);
@@ -336,7 +353,7 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 				" model.KEY_WORD keyWord,model.RSRC_CODE rsrcCode,model.RSRC_NAME rsrcName," +
 				" model.ABBREVIA_NAME abbreviaName,model.ORDER_NO orderNo,model.RSRC_CATALOG_ID rsrcCatalogId," +
 				" model.SALE_PRICE salePrice,model.BRAND_ID brandId,model.SUPPLIER_ID supplierId,model.RELEASE_DATE releaseDate," +
-				" model.RSRC_STUTAS rsrcStatus,rsCatalog.CATALOG_TYPE workType" +
+				" model.RSRC_STUTAS rsrcStatus,rsCatalog.CATALOG_TYPE catalogType,rsCatalog.WORK_TYPE workType " +
 				" FROM SYS_RESOURCE_REL model" +
 				" LEFT JOIN SYS_RSRC_CATALOG rsCatalog ON (model.RSRC_CATALOG_ID = rsCatalog.ID) " +
 				" ,(SELECT brandCatalog.* FROM SYS_BRAND_CATALOG brandCatalog WHERE brandCatalog.ID IN ("+brandCatalogIds+")) selectBrandCatalog " +
@@ -367,8 +384,12 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 				buf.append(" AND model.SUPPLIER_ID =:supplierId");
 				parmeMap.put("supplierId",seachJson.getInt("supplierId"));
 			}
+			if(seachJson.containsKey("catalogType")&&0!=seachJson.getInt("catalogType")){
+				buf.append(" AND rsCatalog.CATALOG_TYPE =:catalogType");
+				parmeMap.put("catalogType",seachJson.getInt("catalogType"));
+			}
 			if(seachJson.containsKey("workType")&&0!=seachJson.getInt("workType")){
-				buf.append(" AND rsCatalog.CATALOG_TYPE =:workType");
+				buf.append(" AND rsCatalog.WORK_TYPE =:workType");
 				parmeMap.put("workType",seachJson.getInt("workType"));
 			}
 		}
@@ -388,6 +409,7 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 		scalarMap.put("supplierId", new IntegerType());
 		scalarMap.put("brandId", new IntegerType());
 		scalarMap.put("releaseDate", new TimestampType());
+		scalarMap.put("catalogType", new IntegerType());
 		scalarMap.put("workType", new IntegerType());
 		
 		return pagedSqlQuery(buf.toString(),page,rows,parmeMap,scalarMap);

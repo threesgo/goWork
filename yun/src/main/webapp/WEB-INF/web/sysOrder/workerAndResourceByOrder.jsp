@@ -136,7 +136,12 @@
    	  						}else{
    	  							return value;
    	  						}
-   	  					} 
+   	  					},
+			  			styler: function(value,row,index){
+		  	 				if (value == 0 && row.workType ==2){
+		  	 					return 'background-color:rgb(255,192,0)';
+		  	 				}
+		  	 			}
    	  		       	},
    	  		       	{field:'brandId',title:"品牌",width:80,sortable:true,
    	  		       		formatter:function(value, rowData) {

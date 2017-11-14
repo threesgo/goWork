@@ -84,6 +84,9 @@ public class SysResourceRel extends AbstractRowVersionModel{
 	private String supplierAddress;  //供应商地址
 	
 	@Transient
+	private Integer catalogType;
+	
+	@Transient
 	private Integer workType;
 	
 	@Transient
@@ -275,5 +278,13 @@ public class SysResourceRel extends AbstractRowVersionModel{
 
 	public void setBrandId(Integer brandId) {
 		this.brandId = brandId;
+	}
+
+	public Integer getCatalogType() {
+		return catalogType;
+	}
+
+	public void setCatalogType(Integer catalogType) {
+		this.catalogType = catalogType;
 	}
 }
