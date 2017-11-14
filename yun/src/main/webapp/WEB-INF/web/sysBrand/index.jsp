@@ -43,16 +43,18 @@
 				}
 			]],
 			onDblClickCell:function(index, field, value) {
-		    	if(sysBrandEdit!=undefined){
-		    		if($sysBrandDatagrid.datagrid("validateRow",sysBrandEdit)){
-		    			$sysBrandDatagrid.datagrid("endEdit",sysBrandEdit);
-		    		}else{
-						$show("请正确输入编辑行数据!");
-						return false;	    		
-		    		}
-		    	}
-		    	$sysBrandDatagrid.datagrid('editCell',{index:index,field:field});
-	            sysBrandEdit = index;
+				<s:if test="#session.defaultMenu.sysBrandActionEdit==1">
+			    	if(sysBrandEdit!=undefined){
+			    		if($sysBrandDatagrid.datagrid("validateRow",sysBrandEdit)){
+			    			$sysBrandDatagrid.datagrid("endEdit",sysBrandEdit);
+			    		}else{
+							$show("请正确输入编辑行数据!");
+							return false;	    		
+			    		}
+			    	}
+			    	$sysBrandDatagrid.datagrid('editCell',{index:index,field:field});
+		            sysBrandEdit = index;
+	            </s:if>
 	        },
 	        onAfterEdit:function(rowIndex,rowData,changes){
 		    	$.post("sysBrandAction!saveOrUpdateBrandGrid.act",

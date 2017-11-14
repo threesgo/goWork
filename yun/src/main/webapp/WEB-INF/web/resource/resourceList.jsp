@@ -327,18 +327,20 @@ $(function(){
         ]],
 	    columns:[columns],
 	    onDblClickCell:function(index, field, value) {
-	    	if("rsrcCode" != field){
-		    	if(resourceEdit!=undefined){
-		    		if($resourceGrid.datagrid("validateRow",resourceEdit)){
-		    			$resourceGrid.datagrid("endEdit",resourceEdit);
-		    		}else{
-						$show("请正确输入编辑行数据!");
-						return false;	    		
-		    		}
+	    	<s:if test="#session.defaultMenu.resourceActionEdit==1">
+		    	if("rsrcCode" != field){
+			    	if(resourceEdit!=undefined){
+			    		if($resourceGrid.datagrid("validateRow",resourceEdit)){
+			    			$resourceGrid.datagrid("endEdit",resourceEdit);
+			    		}else{
+							$show("请正确输入编辑行数据!");
+							return false;	    		
+			    		}
+			    	}
+			    	$resourceGrid.datagrid('editCell',{index:index,field:field});
+		            resourceEdit = index;
 		    	}
-		    	$resourceGrid.datagrid('editCell',{index:index,field:field});
-	            resourceEdit = index;
-	    	}
+	    	</s:if>
         },
         /*
 	    onDblClickRow: function(index,row){

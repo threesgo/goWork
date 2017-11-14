@@ -85,16 +85,18 @@
 				}
 			]],
 			onDblClickCell:function(index, field, value) {
-		    	if(sysSupplierEdit!=undefined){
-		    		if($sysSupplierDatagrid.datagrid("validateRow",sysSupplierEdit)){
-		    			$sysSupplierDatagrid.datagrid("endEdit",sysSupplierEdit);
-		    		}else{
-						$show("请正确输入编辑行数据!");
-						return false;	    		
-		    		}
-		    	}
-		    	$sysSupplierDatagrid.datagrid('editCell',{index:index,field:field});
-	            sysSupplierEdit = index;
+				<s:if test="#session.defaultMenu.sysSupplierActionEdit==1">
+			    	if(sysSupplierEdit!=undefined){
+			    		if($sysSupplierDatagrid.datagrid("validateRow",sysSupplierEdit)){
+			    			$sysSupplierDatagrid.datagrid("endEdit",sysSupplierEdit);
+			    		}else{
+							$show("请正确输入编辑行数据!");
+							return false;	    		
+			    		}
+			    	}
+			    	$sysSupplierDatagrid.datagrid('editCell',{index:index,field:field});
+		            sysSupplierEdit = index;
+		        </s:if>
 	        },
 	        onAfterEdit:function(rowIndex,rowData,changes){
 		    	$.post("sysSupplierAction!saveOrUpdateSupplierGrid.act",
