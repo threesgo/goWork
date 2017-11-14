@@ -24,7 +24,6 @@ values(20,'删除角色','sysRoleActionDelete','status_online',2,3,2,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
 values(30,'保存菜单','sysRoleActionSave','status_online',2,5,2,1);
 
-
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
 values(3,'用户管理','sysUserAction.act','status_online',1,2,1,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
@@ -35,7 +34,6 @@ insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type)
 values(22,'编辑','sysUserActionEdit','status_online',3,3,2,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
 values(23,'删除','sysUserActionDelete','status_online',3,4,2,1);
-
 
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
 values(4,'部门管理','sysDepartMentAction.act','status_online',1,3,1,1);
@@ -127,11 +125,6 @@ values(61,'编辑','sysWorkerActionEdit','status_online',9,3,2,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
 values(62,'删除','sysWorkerActionDelete','status_online',9,4,2,1);
 
-
-
-
-
-
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
 values(10,'套餐管理','resourcePackageAction.act','cog_edit',5,6,1,1);
 
@@ -144,7 +137,6 @@ values(65,'编辑','resourcePackageActionEdit','status_online',10,3,2,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
 values(66,'删除','resourcePackageActionDelete','status_online',10,4,2,1);
 
-
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
 values(11,'订单管理','','book_edit',0,4,1,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
@@ -156,7 +148,6 @@ insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type)
 values(68,'新增','sysOrderActionAdd','status_online',12,2,2,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
 values(69,'编辑','sysOrderActionEdit','status_online',12,3,2,1);
-
 
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
 values(13,'订单流程','sysOrderAction!manageIndex.act','book_edit',11,2,1,1);
@@ -228,4 +219,88 @@ insert into sys_role_menu (id,row_version,role_id,menu_id)
 values (28, 0, 1 ,63);
 insert into sys_role_menu (id,row_version,role_id,menu_id)
 values (29, 0, 1 ,67);
+
+insert into sys_role_menu (id,row_version,role_id,menu_id)
+values (30, 0, 1 ,18);
+insert into sys_role_menu (id,row_version,role_id,menu_id)
+values (31, 0, 1 ,19);
+insert into sys_role_menu (id,row_version,role_id,menu_id)
+values (32, 0, 1 ,20);
+insert into sys_role_menu (id,row_version,role_id,menu_id)
+values (33, 0, 1 ,21);
+insert into sys_role_menu (id,row_version,role_id,menu_id)
+values (34, 0, 1 ,22);
+insert into sys_role_menu (id,row_version,role_id,menu_id)
+values (35, 0, 1 ,23);
+insert into sys_role_menu (id,row_version,role_id,menu_id)
+values (36, 0, 1 ,24);
+insert into sys_role_menu (id,row_version,role_id,menu_id)
+values (37, 0, 1 ,25);
+insert into sys_role_menu (id,row_version,role_id,menu_id)
+values (38, 0, 1 ,26);
+insert into sys_role_menu (id,row_version,role_id,menu_id)
+values (39, 0, 1 ,31);
+insert into sys_role_menu (id,row_version,role_id,menu_id)
+values (40, 0, 1 ,32);
+insert into sys_role_menu (id,row_version,role_id,menu_id)
+values (41, 0, 1 ,33);
+insert into sys_role_menu (id,row_version,role_id,menu_id)
+values (42, 0, 1 ,36);
+
+insert into sys_role_menu (id,row_version,role_id,menu_id)
+values (43, 0, 1 ,37);
+insert into sys_role_menu (id,row_version,role_id,menu_id)
+values (44, 0, 1 ,38);
+insert into sys_role_menu (id,row_version,role_id,menu_id)
+values (45, 0, 1 ,39);
+insert into sys_role_menu (id,row_version,role_id,menu_id)
+values (46, 0, 1 ,40);
+insert into sys_role_menu (id,row_version,role_id,menu_id)
+values (47, 0, 1 ,41);
+insert into sys_role_menu (id,row_version,role_id,menu_id)
+values (48, 0, 1 ,43);
+insert into sys_role_menu (id,row_version,role_id,menu_id)
+values (49, 0, 1 ,44);
+insert into sys_role_menu (id,row_version,role_id,menu_id)
+values (50, 0, 1 ,45);
+insert into sys_role_menu (id,row_version,role_id,menu_id)
+values (51, 0, 1 ,46);
+insert into sys_role_menu (id,row_version,role_id,menu_id)
+values (52, 0, 1 ,47);
+insert into sys_role_menu (id,row_version,role_id,menu_id)
+values (53, 0, 1 ,48);
+insert into sys_role_menu (id,row_version,role_id,menu_id)
+values (54, 0, 1 ,50);
+insert into sys_role_menu (id,row_version,role_id,menu_id)
+values (55, 0, 1 ,51);
+insert into sys_role_menu (id,row_version,role_id,menu_id)
+values (56, 0, 1 ,52);
+insert into sys_role_menu (id,row_version,role_id,menu_id)
+values (57, 0, 1 ,53);
+
+insert into sys_role_menu (id,row_version,role_id,menu_id)
+values (58, 0, 1 ,55);
+insert into sys_role_menu (id,row_version,role_id,menu_id)
+values (59, 0, 1 ,56);
+insert into sys_role_menu (id,row_version,role_id,menu_id)
+values (60, 0, 1 ,57);
+insert into sys_role_menu (id,row_version,role_id,menu_id)
+values (61, 0, 1 ,58);
+insert into sys_role_menu (id,row_version,role_id,menu_id)
+values (62, 0, 1 ,60);
+insert into sys_role_menu (id,row_version,role_id,menu_id)
+values (63, 0, 1 ,61);
+insert into sys_role_menu (id,row_version,role_id,menu_id)
+values (64, 0, 1 ,62);
+insert into sys_role_menu (id,row_version,role_id,menu_id)
+values (65, 0, 1 ,64);
+insert into sys_role_menu (id,row_version,role_id,menu_id)
+values (66, 0, 1 ,65);
+insert into sys_role_menu (id,row_version,role_id,menu_id)
+values (67, 0, 1 ,66);
+insert into sys_role_menu (id,row_version,role_id,menu_id)
+values (68, 0, 1 ,68);
+insert into sys_role_menu (id,row_version,role_id,menu_id)
+values (69, 0, 1 ,69);
+
 END;
