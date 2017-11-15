@@ -1,5 +1,8 @@
 package com.yunwang.action;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,6 +11,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.apache.log4j.Logger;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +35,8 @@ import com.yunwang.service.SysRsRcPackageService;
 import com.yunwang.service.SysSupplierService;
 import com.yunwang.service.SysWorkerService;
 import com.yunwang.util.BaseDataDictionaryUtil;
-import com.yunwang.util.action.AbstractLoginAction;
+import com.yunwang.util.action.AbstractUpDownAction;
+import com.yunwang.util.annotation.DownloadAnnotation;
 import com.yunwang.util.collection.CollectionUtil;
 import com.yunwang.util.string.MyStringUtil;
 @Action(
@@ -48,9 +53,12 @@ import com.yunwang.util.string.MyStringUtil;
 		@Result(name = "saveOrUpdateOrderFlowPage",location="/WEB-INF/web/sysOrder/saveOrUpdateOrderFlowPage.jsp"),
 		@Result(name = "selectWorker",location="/WEB-INF/web/sysOrder/selectWorker.jsp"),
 		@Result(name = "selectResource",location="/WEB-INF/web/sysOrder/selectResource.jsp"),
+		@Result(name="exportResource",type="stream",
+			params={"encode","true","contentType","application/vnd.ms-excel;charset=UTF-8",
+					"inputName","exportResourceStream","contentDisposition","attachment;filename=${exportResourceFileName}"})
 	}
 )
-public class SysOrderAction  extends AbstractLoginAction{
+public class SysOrderAction extends AbstractUpDownAction{
 
 	private final static Logger LOG =Logger.getLogger(SysOrderAction.class);
 	/*
@@ -619,7 +627,55 @@ public class SysOrderAction  extends AbstractLoginAction{
 		status.put("value", sysOrder.getStatus());
 		jsonArr.add(status);
 	}
+	
+	//采购单
+	@DownloadAnnotation("sysOrderAction_exportSysOrderPurchase")
+	public String exportSysOrderPurchase(){
+		//根据供应商进行区分
+		sysOrder = sysOrderService.get(sysOrder.getId());
+		exportResourceFileName = sysOrder.getCode()+"_TO_供应商.xls";
+		ByteArrayOutputStream output = new ByteArrayOutputStream();
+		Workbook workbook=null;
+        try {
+            workbook = exportOrderToSupplierExcel(sysOrder);
+		    workbook.write(output);
+	        byte[] ba = output.toByteArray();
+	        exportResourceStream = new ByteArrayInputStream(ba);
+		}catch(Exception e){
+		    LOG.error(e.getMessage());
+		}finally{
+		    try {
+                output.flush();
+                output.close();
+            } catch (IOException e) {
+                LOG.error(e.getMessage());
+            }
+		}
+		return "exportResource";
+	}
+	
+	private Workbook exportOrderToSupplierExcel(SysOrder sysOrder) {
+		return null;
+	}
 
+	//施工单
+	@DownloadAnnotation("sysOrderAction_exportSysOrderConstruction")
+	public String exportSysOrderConstruction(){
+		//根据工人进行区分
+		
+		
+		return null;
+	}
+	
+	//报价单
+	@DownloadAnnotation("sysOrderAction_exportSysOrderQuotation")
+	public String exportSysOrderQuotation(){
+		//根据流程区分
+		
+		
+		return null;
+	}
+	
 	public Map<String, Object> getHashMap() {
 		return hashMap;
 	}

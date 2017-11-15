@@ -134,6 +134,10 @@
 		},
 		editSysOrder:function(){
 			var node = $sysOrderDatagrid.datagrid("getSelected");
+			if(null == node){
+				$alert("请单选订单行进行编辑操作!");
+				return false;
+			}
 			var dialog = $('<div id="addSysOrder"></div>').dialog({    
 				href : "sysOrderAction!saveOrUpdateOrderPage.act",
 				queryParams:{"sysOrder.id":node.id},
@@ -203,9 +207,36 @@
 			$("#startTime").datebox("setValue",'');
 			$("#endTime").datebox("setValue",'');
 			sysOrderOperation.search();
+		},
+		
+		//报价单
+		exportSysOrderQuotation:function(){
+			exportExcel("sysOrderAction!exportSysOrderQuotation.act?sysOrder.id="+node.id);
+		},
+		
+		//采购单
+		exportSysOrderPurchase:function(){
+			exportExcel("sysOrderAction!exportSysOrderPurchase.act?sysOrder.id="+node.id);
+		},
+		
+		//施工单
+		exportSysOrderConstruction:function(){
+			exportExcel("sysOrderAction!exportSysOrderConstruction.act?sysOrder.id="+node.id);
 		}
 	};
 	
+	function exportExcel(url){
+		var node = $sysOrderDatagrid.datagrid("getSelected");
+		if(null == node){
+			$alert("请单选订单行进行导出操作!");
+			return false;
+		}
+		Some.util.newDownLoad({
+			url:url,
+			handler:function(){
+			}
+		});
+	}
 	
 	function initForm(){
 		var relValues = $("#saveOrUpdate_order #relationPackage").combobox("getValues");
@@ -312,4 +343,7 @@
 	<s:if test="#session.defaultMenu.sysOrderActionEdit==1">
 		<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-edit', plain:true" onclick="sysOrderOperation.editSysOrder()">编辑</a>
 	</s:if>
+	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-upload', plain:true" onclick="sysOrderOperation.exportSysOrderQuotation()">报价单导出</a>
+	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-upload', plain:true" onclick="sysOrderOperation.exportSysOrderPurchase()">采购单导出</a>
+	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-upload', plain:true" onclick="sysOrderOperation.exportSysOrderConstruction()">采购单导出</a>
 </div>
