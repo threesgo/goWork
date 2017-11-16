@@ -3,6 +3,7 @@ package com.yunwang.action;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -292,7 +293,26 @@ public class SysOrderAction extends AbstractUpDownAction{
 	
 	public String workerDataByOrder(){
 		List<SysWorker> sysWorkers = sysWorkerService.findByOrderId(sysOrder.getId());
-		return ajaxJSONArr(sysWorkers);
+		
+		JSONObject obj = new JSONObject();
+		obj.put("total", sysWorkers.size());
+		obj.put("rows", JSONArray.fromObject(sysWorkers));
+		
+		
+		JSONArray footArr = new JSONArray();
+		BigDecimal totalTime = BigDecimal.ZERO;
+		BigDecimal totalWages = BigDecimal.ZERO;
+		
+		JSONObject footObj = new JSONObject();
+		for(SysWorker worker : sysWorkers){
+			totalTime = totalTime.add(worker.getWorkTime());
+			totalWages = totalWages.add(worker.getWorkTime().multiply(worker.getWages()));
+		}
+		footObj.put("name","总薪资:");
+		footObj.put("wages",totalWages);
+		footArr.add(footObj);
+		obj.put("footer", footArr);
+		return ajaxText(obj);
 	}
 	
 	public String resourceDataByFlow(){
@@ -302,7 +322,27 @@ public class SysOrderAction extends AbstractUpDownAction{
 	
 	public String resourceDataByOrder(){
 		List<SysResourceRel> resources = sysResourceService.findByOrderId(sysOrder.getId());
-		return ajaxJSONArr(resources);
+		
+		JSONObject obj = new JSONObject();
+		obj.put("total", resources.size());
+		obj.put("rows", JSONArray.fromObject(resources));
+		
+		JSONArray footArr = new JSONArray();
+		BigDecimal quantity = BigDecimal.ZERO;
+		BigDecimal totalValue = BigDecimal.ZERO;
+
+		JSONObject footObj = new JSONObject();
+		for(SysResourceRel resourceRel : resources){
+			quantity = quantity.add(resourceRel.getQuantity());
+			totalValue = totalValue.add(resourceRel.getSalePrice().multiply(resourceRel.getQuantity()));
+		}
+		footObj.put("keyWord","总价格:");
+		footObj.put("salePrice",totalValue);
+		footArr.add(footObj);
+		obj.put("footer", footArr);
+		return ajaxText(obj);
+		
+		//return ajaxJSONArr(resources);
 	}
 	
 	public String selectWorker(){

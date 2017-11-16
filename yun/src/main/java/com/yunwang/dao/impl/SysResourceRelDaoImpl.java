@@ -243,7 +243,7 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 				" model.KEY_WORD,model.RSRC_CODE,model.RSRC_NAME," +
 				" model.ABBREVIA_NAME,model.ORDER_NO,model.RSRC_CATALOG_ID," +
 				" model.SALE_PRICE,model.BRAND_ID,model.SUPPLIER_ID,model.RELEASE_DATE," +
-				" model.RSRC_STUTAS,rsCatalog.CATALOG_TYPE ");
+				" model.RSRC_STUTAS,rsCatalog.CATALOG_TYPE,rsCatalog.WORK_TYPE ");
 		
 		Map<String, Object> parmeMap = new HashMap<String,Object>();
 		parmeMap.put("orderId", orderId);

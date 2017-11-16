@@ -235,15 +235,16 @@ public class ResourcePackageAction extends AbstractUpDownAction{
 		JSONArray jsonArr=new JSONArray();
 		
 		sysRsRcPackage = sysRsRcPackageService.get(sysRsRcPackage.getId());
-		JSONObject json_name=new JSONObject();
-		json_name.put("attrName", "组合名称");
-		json_name.put("value", sysRsRcPackage.getName());
-		jsonArr.add(json_name);
 		
 		JSONObject json_code=new JSONObject();
 		json_code.put("attrName","组合代号");
 		json_code.put("value", sysRsRcPackage.getCode());
 		jsonArr.add(json_code);
+		
+		JSONObject json_name=new JSONObject();
+		json_name.put("attrName", "组合名称");
+		json_name.put("value", sysRsRcPackage.getName());
+		jsonArr.add(json_name);
 		
 //		JSONObject minPrice=new JSONObject();
 //		minPrice.put("attrName","价格最小值");
@@ -383,6 +384,9 @@ public class ResourcePackageAction extends AbstractUpDownAction{
 			SysRsRcCatalog sysRsRcCatalog, JSONObject obj) {
 		obj.put("id", sysRsRcCatalog.getId());
 		obj.put("name", sysRsRcCatalog.getCombineName());
+		obj.put("catalogName", sysRsRcCatalog.getCatalogName());
+		obj.put("catalogType", sysRsRcCatalog.getCatalogType());
+		
 		List<SysBrand> sysBrands = sysBrandService.findByCatalogId(sysRsRcCatalog.getId());
 		JSONArray brandArr = new JSONArray();
 		for(SysBrand sysBrand:sysBrands){
@@ -436,6 +440,8 @@ public class ResourcePackageAction extends AbstractUpDownAction{
 		List<SysPcBrandCatalog> sysPcBrandCatalogs = sysRsRcPackageService.findAllPcBrandCatalog(sysRsRcPackage.getId());
 		Map<Integer,SysPcBrandCatalog> pcBrandCatalogMap = CollectionUtil.listToMap(sysPcBrandCatalogs,"brandCatalogId");
 		
+		Map<String, SysDataDictionary> flowMap = BaseDataDictionaryUtil.valueMap.get(4);
+		
 		List<SysRsRcCatalog> sysRcRsrcOrgList = sysResourceTypeService.findRsRcCatalogByParentId(0);
 		JSONArray arr = new JSONArray();
 		for(SysRsRcCatalog sysRsRcCatalog:sysRcRsrcOrgList){
@@ -464,12 +470,18 @@ public class ResourcePackageAction extends AbstractUpDownAction{
 	    Cell cell =null;
 		row.setHeightInPoints(15);// 设定行的高度
 		nCol = 0;
+		
+		sheet.setColumnWidth(nCol, 2500);
+		cell = row.createCell(nCol++);
+		cell.setCellStyle(style);
+		cell.setCellValue(getText("所属流程"));
+		
 		sheet.setColumnWidth(nCol, 10000);
 		cell = row.createCell(nCol++);
 		cell.setCellStyle(style);
 		cell.setCellValue(getText("产品类别"));
 		
-		sheet.setColumnWidth(nCol, 5000);
+		sheet.setColumnWidth(nCol, 2500);
 		cell = row.createCell(nCol++);
 		cell.setCellStyle(style);
 		cell.setCellValue(getText("品牌名称"));
@@ -483,12 +495,20 @@ public class ResourcePackageAction extends AbstractUpDownAction{
 			
 			JSONObject obj = arr.getJSONObject(i);
 			
+			
+			
 			CellStyle nameStyle = wb.createCellStyle();
 			nameStyle.setAlignment(HSSFCellStyle.ALIGN_LEFT);
 			nameStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
 			cell = row.createCell(nCol++);
 			cell.setCellStyle(nameStyle);
-			cell.setCellValue(obj.getString("name"));
+			cell.setCellValue(flowMap.get(obj.getString("catalogType")).getName());
+			
+			nameStyle.setAlignment(HSSFCellStyle.ALIGN_LEFT);
+			nameStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+			cell = row.createCell(nCol++);
+			cell.setCellStyle(nameStyle);
+			cell.setCellValue(obj.getString("catalogName"));
 			
 			JSONArray brandArr = obj.getJSONArray("brandArr");
 			for(int j=0;j<brandArr.size();j++){

@@ -22,6 +22,10 @@ $(function(){
   		pageSize:20,  
         pageList:[10,20,50,100,150,200],
         onSelect:function(index, row){
+        	if(brandTabEdit!=undefined){
+	    		$brandTab.datagrid("endEdit",brandTabEdit);
+	    		brandTabEdit = undefined;
+	    	}
         	$brandTab.datagrid("loadData",row.brandArr);
         },
 		onBeforeLoad:function(){
@@ -114,10 +118,13 @@ packageBrand = {
 	},
 	saveRelation:function(){
 		var rows = $catalogTab.datagrid("getRows");
+		//var loading = new Some.loading();
+		//loading.show();
 		$.post("resourcePackageAction!savePackageBrand.act",
 	   		{"jsonStr":Some.util.jsonToStr(rows),
 	   		"sysRsRcPackage.id":'${sysRsRcPackage.id}'},
 			function(data){
+				//loading.close();
 				handlerResult(data,
 	   			 	function(json){
 						$show(json.message);

@@ -9,7 +9,7 @@
   		var brandObj = new Function("return " + '${hashMap.brandObj}')();
 	  	$(function(){
 	  		workerDataGrid=$("#workerGrid").datagrid({
-	       		//fitColumns:true, 
+	       		fitColumns:true, 
 	          	striped:true,
 	         	singleSelect:true, 
 	         	multiSort:true,
@@ -21,6 +21,7 @@
 	          	fit:true,
 	          	idField:'id',
 	          	toolbar:'#workerGridBar',
+	          	showFooter: true,
           	 	//pagination:false, 
 	          	//pageSize:20,  
 	          	//pageList:[20,50,100,150,200],
@@ -45,11 +46,6 @@
  	        		{field:'name',title: "姓名",width:100,sortable:true
  	 					
  	 				},
- 	 				{field:'sex',title: "性别",width:80,sortable:true
- 	 					,formatter:function(value, rowData) {
- 	 						return sexObj[value];
- 	 					} 
- 	 				},
  	 				{field:'wages',title:"日薪",width:80,sortable:true,align:'right'
  	 					,formatter:function(value, rowData) {
  	 						if(value == 0){
@@ -59,12 +55,19 @@
  	 						}
  	 					} 
  	 		        },
- 	 				{field:'phoneNum',title: "手机号码",width:100,sortable:true
+ 	 				{field:'phoneNum',title: "手机号码",width:140,sortable:true
  	 					
  	 				},
- 	 				{field:'telNum',title: "电话号码",width:100,sortable:true
+ 	 				{field:'telNum',title: "电话号码",width:140,sortable:true
  	 					
  	 				},
+ 	 				{field:'sex',title: "性别",width:80,sortable:true
+ 	 					,formatter:function(value, rowData) {
+ 	 						return sexObj[value];
+ 	 					} 
+ 	 				}
+ 	 				/*
+ 	 				,
  	 				{field:'workAge',title: "工龄",width:100,sortable:true,
  	 		        	formatter:function(value, rowData) {
  	 						if(value==0){
@@ -82,15 +85,18 @@
  	 							return value;
  	 						}
  	 					} 
- 	 				},
+ 	 				}
+ 	 				*/
+ 	 				,
  	 				{field:'company',title: "所在公司",width:450,sortable:true
  	 					
  	 				}
+ 	 				
  	 			]]
 	 		});
 	  		
 	  		resourceDataGrid=$("#resourceGrid").datagrid({
-	       		//fitColumns:true, 
+	       		fitColumns:true, 
 	          	striped:true,
 	         	singleSelect:true, 
 	         	multiSort:true,
@@ -102,6 +108,7 @@
 	          	fit:true,
 	          	idField:'id',
 	          	toolbar:'#resourceGridBar',
+	          	showFooter: true,
           	 	//pagination:false, 
 	          	//pageSize:20,  
 	          	//pageList:[20,50,100,150,200],
@@ -120,15 +127,17 @@
    	  		    	{field:'quantity',title:"数量",width:80,sortable:true
 		   	  		   
    	  		 		},
-   	  				{field:'keyWord',title:"产品关键词",width:200,sortable:true
+   	  				{field:'keyWord',title:"产品说明",width:200,sortable:true
    	  		        	
    	  		        },
+   	  		        /*
    	  		        {field:'rsrcName',title:"产品名称",width:80,sortable:true
    	  		        	
    	  		        },
    	  		        {field:'abbreviaName',title:"产品简称",width:80,sortable:true
    	  		        	
    	  		        },
+   	  		        */
    	  		        {field:'salePrice',title:"销售价格",width:80,sortable:true,align:'right'
    	  		        	,formatter:function(value, rowData) {
    	  						if(value == 0){

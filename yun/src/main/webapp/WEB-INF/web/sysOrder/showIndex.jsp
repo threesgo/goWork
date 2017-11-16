@@ -345,5 +345,5 @@
 	</s:if>
 	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-upload', plain:true" onclick="sysOrderOperation.exportSysOrderQuotation()">报价单导出</a>
 	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-upload', plain:true" onclick="sysOrderOperation.exportSysOrderPurchase()">采购单导出</a>
-	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-upload', plain:true" onclick="sysOrderOperation.exportSysOrderConstruction()">采购单导出</a>
+	<a href="#"  class="easyui-linkbutton" data-options="iconCls:'icon-upload', plain:true" onclick="sysOrderOperation.exportSysOrderConstruction()">施工单导出</a>
 </div>
