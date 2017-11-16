@@ -200,7 +200,7 @@
 	
 	/******************根据默认角色或者自选角色进入系统**********************/
 	function enterSystem(roleId,selectRoleDialog){
-		reloadMenu("mainAction!findUserMenu.act",{roleId:roleId});
+		reloadMenu("mainAction!findUserMenu.act",{roleId:roleId},"mainAction!centerIndex.act");
 		
 		if(selectRoleDialog){
 			selectRoleDialog.dialog("destroy");
