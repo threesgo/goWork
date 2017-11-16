@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.yunwang.model.pojo.SysMenu;
 import com.yunwang.model.pojo.SysRole;
+import com.yunwang.model.pojo.SysUser;
 import com.yunwang.service.SysMenuService;
 import com.yunwang.service.SysUserService;
 import com.yunwang.util.action.AbstractLoginAction;
@@ -22,7 +23,12 @@ import com.yunwang.util.action.AbstractLoginAction;
 	value = "mainAction", 
 	results = {
 		@Result(name="index",location="/WEB-INF/web/main.jsp"),
-		@Result(name="selectRole",location="/WEB-INF/web/selectRole.jsp")
+		@Result(name="selectRole",location="/WEB-INF/web/selectRole.jsp"),
+		@Result(name="center",location="/WEB-INF/web/center.jsp"),
+		@Result(name="todo",location="/WEB-INF/web/portal/todo.jsp"),
+		@Result(name="about",location="/WEB-INF/web/portal/about.jsp"),
+		@Result(name="link",location="/WEB-INF/web/portal/link.jsp"),
+		@Result(name="update",location="/WEB-INF/web/portal/update.jsp")
 	}
 )
 public class MainAction extends AbstractLoginAction{
@@ -99,7 +105,59 @@ public class MainAction extends AbstractLoginAction{
 		}
 		return ajaxText(JSONArray.fromObject(mewMenus).toString());
     }
-
+    
+    /**
+     * @date 2017-11-16
+     * @author YBF
+     * @return
+     * <p>中心面板</p>
+     */
+    public String centerIndex(){
+    	SysUser sysUser = sysUserService.get(sessionAdm.getId());
+    	System.out.println(sysUser.getId());
+    	return "center";
+    }
+    
+    /**
+     * @date 2017-11-16
+     * @author YBF
+     * @return
+     * <p>代办事项</p>
+     */
+    public String todo(){
+    	return "todo";
+    }
+    
+    /**
+     * @date 2017-11-16
+     * @author YBF
+     * @return
+     * <p>关于系统</p>
+     */
+    public String about(){
+    	return "about";
+    }
+    
+    /**
+     * @date 2017-11-16
+     * @author YBF
+     * @return
+     * <p>链接</p>
+     */
+    public String link(){
+    	return "link";
+    }
+    
+    /**
+     * @date 2017-11-16
+     * @author YBF
+     * @return
+     * <p>系统更新</p>
+     */
+    public String update(){
+    	return "update";
+    }
+    
 
 	public Integer getRoleId() {
 		return roleId;

@@ -50,11 +50,18 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/extendScript/util.js"></script> 
 <%-- easyui扩展 --%>
 <script type="text/javascript" src="${pageContext.request.contextPath}/extendScript/extEasyui.js"></script>
+<%-- jquery扩展 --%>
+<script type="text/javascript" src="${pageContext.request.contextPath}/extendScript/extJquery.js"></script>
+
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/extendScript/events.js"></script>
 
 <%-- 数组方法扩展 --%>
 <script type="text/javascript" src="${pageContext.request.contextPath}/extendScript/extArray.js"></script> 
+
+<!-- 引入EasyUI Portal插件 -->
+<link rel="stylesheet" href="${pageContext.request.contextPath}/scriptPlugins/jquery-easyui-portal/portal.css" type="text/css">
+<script type="text/javascript" src="${pageContext.request.contextPath}/scriptPlugins/jquery-easyui-portal/jquery.portal.js" charset="utf-8"></script>
 
 <%-- 新增图标扩展样式 --%>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/style/ext/easyUIExt.css" type="text/css"></link>

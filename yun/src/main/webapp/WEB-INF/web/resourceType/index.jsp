@@ -70,6 +70,10 @@
 					},
  					onSelect:function(node){//onSelect是选择节点时触发
  						closeAllTab(resourceTypeTab);
+ 						resourceTypeTab.tabs('add',{
+ 							title:'子集列表', 
+						    href:"resourceTypeAction!childrenPage.act?sysRsRcCatalog.id="+ node.attributes.id
+						});
  						if("root" != node.id){
 	 						resourceTypeTab.tabs('add',{    
 						    	title:'基本信息', 
@@ -80,13 +84,6 @@
 							    href:"resourceTypeAction!attrsPage.act?sysRsRcCatalog.id="+ node.attributes.id
 							});
  						}
- 						resourceTypeTab.tabs('add',{
- 							title:'子集列表', 
-						    href:"resourceTypeAction!childrenPage.act?sysRsRcCatalog.id="+ node.attributes.id
-						});
-						if("root" != node.id){
-							resourceTypeTab.tabs("select",1);
-						}
  					},
  					onLoadSuccess:function(node,data){
  						var root = resourceTypeTree.tree("getRoot");
