@@ -16,8 +16,6 @@ import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Result;
 import org.springframework.stereotype.Controller;
 
-import com.yunwang.util.action.BaseAction;
-
 @Controller
 @Action(value = "vcodeAction",
 	results=@Result(name="success",type="stream",

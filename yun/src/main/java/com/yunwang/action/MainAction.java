@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.yunwang.model.pojo.SysMenu;
 import com.yunwang.model.pojo.SysRole;
-import com.yunwang.model.pojo.SysUser;
 import com.yunwang.service.SysMenuService;
 import com.yunwang.service.SysUserService;
 import com.yunwang.util.action.AbstractLoginAction;
@@ -113,8 +112,7 @@ public class MainAction extends AbstractLoginAction{
      * <p>中心面板</p>
      */
     public String centerIndex(){
-    	SysUser sysUser = sysUserService.get(sessionAdm.getId());
-    	System.out.println(sysUser.getId());
+    	//SysUser sysUser = sysUserService.get(sessionAdm.getId());
     	return "center";
     }
     
