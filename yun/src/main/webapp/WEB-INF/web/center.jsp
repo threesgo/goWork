@@ -9,7 +9,7 @@
 		panels = [ {
 			id : 'p1',
 			title : '待办事项',
-			height : 500,
+			height : 600,
 			collapsible : true,
 			href : 'mainAction!todo.act'
 		}, 
@@ -34,7 +34,7 @@
 		{
 			id : 'p4',
 			title : '更新日志',
-			height : 500,
+			height : 600,
 			collapsible : true,
 			href : 'mainAction!update.act'
 		}

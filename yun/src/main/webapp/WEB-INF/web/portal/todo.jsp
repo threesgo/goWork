@@ -3,7 +3,7 @@
 <head>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/scriptPlugins/fullcalendar-1.4.4/css/fullcalendar.css">
 <style type="text/css">
-	#calendar{width:600px; margin:20px auto 10px auto}
+	#calendar{width:500px; margin:20px auto 10px auto}
 	body{font-size:12px;}
 	a{color:#666;text-decoration:none;}
 </style>

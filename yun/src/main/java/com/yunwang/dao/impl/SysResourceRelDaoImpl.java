@@ -36,7 +36,7 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 				" SELECT model.ID id,model.RESOURCE_ID resourceId, " +
 				" model.KEY_WORD keyWord,model.RSRC_CODE rsrcCode,model.RSRC_NAME rsrcName," +
 				" model.ABBREVIA_NAME abbreviaName,model.ORDER_NO orderNo,model.RSRC_CATALOG_ID rsrcCatalogId," +
-				" model.SALE_PRICE salePrice,model.BRAND_ID brandId,model.SUPPLIER_ID supplierId,model.RELEASE_DATE releaseDate," +
+				" model.SALE_PRICE salePrice,model.PURCHASE_PRICE purchasePrice,model.PURCHASE_PRICE purchasePrice,model.BRAND_ID brandId,model.SUPPLIER_ID supplierId,model.RELEASE_DATE releaseDate," +
 				" model.RSRC_STUTAS rsrcStatus,rsCatalog.CATALOG_TYPE catalogType,rsCatalog.WORK_TYPE workType " +
 				" FROM SYS_RESOURCE_REL model" +
 				" LEFT JOIN SYS_RSRC_CATALOG rsCatalog ON model.RSRC_CATALOG_ID = rsCatalog.ID " +
@@ -93,6 +93,7 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 		scalarMap.put("abbreviaName", new StringType());
 		scalarMap.put("orderNo", new IntegerType());
 		scalarMap.put("salePrice", new BigDecimalType());
+		scalarMap.put("purchasePrice", new BigDecimalType());
 		scalarMap.put("rsrcCatalogId", new IntegerType());
 		scalarMap.put("supplierId", new IntegerType());
 		scalarMap.put("brandId", new IntegerType());
@@ -121,7 +122,7 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 				" SELECT model.ID id,model.RESOURCE_ID resourceId, " +
 				" model.KEY_WORD keyWord,model.RSRC_CODE rsrcCode,model.RSRC_NAME rsrcName," +
 				" model.ABBREVIA_NAME abbreviaName,model.ORDER_NO orderNo,model.RSRC_CATALOG_ID rsrcCatalogId," +
-				" model.SALE_PRICE salePrice,model.BRAND_ID brandId,model.SUPPLIER_ID supplierId,model.RELEASE_DATE releaseDate," +
+				" model.SALE_PRICE salePrice,model.PURCHASE_PRICE purchasePrice,model.PURCHASE_PRICE purchasePrice,model.BRAND_ID brandId,model.SUPPLIER_ID supplierId,model.RELEASE_DATE releaseDate," +
 				" model.RSRC_STUTAS rsrcStatus,rsCatalog.CATALOG_TYPE catalogType,rsCatalog.WORK_TYPE workType " +
 				" FROM SYS_RSRC_PC_RESOURCE pcResource" +
 				" LEFT JOIN SYS_RESOURCE_REL model ON model.ID = pcResource.RESOURCE_ID " +
@@ -173,6 +174,7 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 		scalarMap.put("abbreviaName", new StringType());
 		scalarMap.put("orderNo", new IntegerType());
 		scalarMap.put("salePrice", new BigDecimalType());
+		scalarMap.put("purchasePrice", new BigDecimalType());
 		scalarMap.put("rsrcCatalogId", new IntegerType());
 		scalarMap.put("supplierId", new IntegerType());
 		scalarMap.put("brandId", new IntegerType());
@@ -195,7 +197,7 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 				" SELECT model.ID id,model.RESOURCE_ID resourceId, " +
 				" model.KEY_WORD keyWord,model.RSRC_CODE rsrcCode,model.RSRC_NAME rsrcName," +
 				" model.ABBREVIA_NAME abbreviaName,model.ORDER_NO orderNo,model.RSRC_CATALOG_ID rsrcCatalogId," +
-				" model.SALE_PRICE salePrice,model.BRAND_ID brandId,model.SUPPLIER_ID supplierId,model.RELEASE_DATE releaseDate," +
+				" model.SALE_PRICE salePrice,model.PURCHASE_PRICE purchasePrice,model.BRAND_ID brandId,model.SUPPLIER_ID supplierId,model.RELEASE_DATE releaseDate," +
 				" model.RSRC_STUTAS rsrcStatus,rsCatalog.CATALOG_TYPE catalogType,rsCatalog.WORK_TYPE workType,orderResource.QUANTITY quantity,orderResource.ID orderResourceId " +
 				" FROM SYS_ORDER_RESOURCE orderResource" +
 				" LEFT JOIN SYS_RESOURCE_REL model ON model.ID = orderResource.RESOURCE_ID " +
@@ -216,6 +218,7 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 		scalarMap.put("abbreviaName", new StringType());
 		scalarMap.put("orderNo", new IntegerType());
 		scalarMap.put("salePrice", new BigDecimalType());
+		scalarMap.put("purchasePrice", new BigDecimalType());
 		scalarMap.put("rsrcCatalogId", new IntegerType());
 		scalarMap.put("supplierId", new IntegerType());
 		scalarMap.put("brandId", new IntegerType());
@@ -233,7 +236,7 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 				" SELECT model.ID id,model.RESOURCE_ID resourceId, " +
 				" model.KEY_WORD keyWord,model.RSRC_CODE rsrcCode,model.RSRC_NAME rsrcName," +
 				" model.ABBREVIA_NAME abbreviaName,model.ORDER_NO orderNo,model.RSRC_CATALOG_ID rsrcCatalogId," +
-				" model.SALE_PRICE salePrice,model.BRAND_ID brandId,model.SUPPLIER_ID supplierId,model.RELEASE_DATE releaseDate," +
+				" model.SALE_PRICE salePrice,model.PURCHASE_PRICE purchasePrice,model.BRAND_ID brandId,model.SUPPLIER_ID supplierId,model.RELEASE_DATE releaseDate," +
 				" model.RSRC_STUTAS rsrcStatus,rsCatalog.CATALOG_TYPE catalogType,rsCatalog.WORK_TYPE workType,SUM(orderResource.QUANTITY) quantity "+
 				" FROM SYS_ORDER_RESOURCE orderResource" +
 				" LEFT JOIN SYS_RESOURCE_REL model ON model.ID = orderResource.RESOURCE_ID " +
@@ -242,7 +245,7 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 				" GROUP BY model.ID,model.RESOURCE_ID," +
 				" model.KEY_WORD,model.RSRC_CODE,model.RSRC_NAME," +
 				" model.ABBREVIA_NAME,model.ORDER_NO,model.RSRC_CATALOG_ID," +
-				" model.SALE_PRICE,model.BRAND_ID,model.SUPPLIER_ID,model.RELEASE_DATE," +
+				" model.SALE_PRICE,model.PURCHASE_PRICE,model.BRAND_ID,model.SUPPLIER_ID,model.RELEASE_DATE," +
 				" model.RSRC_STUTAS,rsCatalog.CATALOG_TYPE,rsCatalog.WORK_TYPE ");
 		
 		Map<String, Object> parmeMap = new HashMap<String,Object>();
@@ -259,6 +262,7 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 		scalarMap.put("abbreviaName", new StringType());
 		scalarMap.put("orderNo", new IntegerType());
 		scalarMap.put("salePrice", new BigDecimalType());
+		scalarMap.put("purchasePrice", new BigDecimalType());
 		scalarMap.put("rsrcCatalogId", new IntegerType());
 		scalarMap.put("supplierId", new IntegerType());
 		scalarMap.put("brandId", new IntegerType());
@@ -276,7 +280,7 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 				" SELECT model.ID id,model.RESOURCE_ID resourceId, " +
 				" model.KEY_WORD keyWord,model.RSRC_CODE rsrcCode,model.RSRC_NAME rsrcName," +
 				" model.ABBREVIA_NAME abbreviaName,model.ORDER_NO orderNo,model.RSRC_CATALOG_ID rsrcCatalogId," +
-				" model.SALE_PRICE salePrice,model.BRAND_ID brandId,model.SUPPLIER_ID supplierId,model.RELEASE_DATE releaseDate," +
+				" model.SALE_PRICE salePrice,model.PURCHASE_PRICE purchasePrice,model.BRAND_ID brandId,model.SUPPLIER_ID supplierId,model.RELEASE_DATE releaseDate," +
 				" model.RSRC_STUTAS rsrcStatus,rsCatalog.CATALOG_TYPE catalogType,rsCatalog.WORK_TYPE workType " +
 				" FROM SYS_RSRC_PC_RESOURCE pcResource" +
 				" LEFT JOIN SYS_RESOURCE_REL model ON model.ID = pcResource.RESOURCE_ID " +
@@ -333,6 +337,7 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 		scalarMap.put("abbreviaName", new StringType());
 		scalarMap.put("orderNo", new IntegerType());
 		scalarMap.put("salePrice", new BigDecimalType());
+		scalarMap.put("purchasePrice", new BigDecimalType());
 		scalarMap.put("rsrcCatalogId", new IntegerType());
 		scalarMap.put("supplierId", new IntegerType());
 		scalarMap.put("brandId", new IntegerType());
@@ -352,7 +357,7 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 				" SELECT model.ID id,model.RESOURCE_ID resourceId, " +
 				" model.KEY_WORD keyWord,model.RSRC_CODE rsrcCode,model.RSRC_NAME rsrcName," +
 				" model.ABBREVIA_NAME abbreviaName,model.ORDER_NO orderNo,model.RSRC_CATALOG_ID rsrcCatalogId," +
-				" model.SALE_PRICE salePrice,model.BRAND_ID brandId,model.SUPPLIER_ID supplierId,model.RELEASE_DATE releaseDate," +
+				" model.SALE_PRICE salePrice,model.PURCHASE_PRICE purchasePrice,model.BRAND_ID brandId,model.SUPPLIER_ID supplierId,model.RELEASE_DATE releaseDate," +
 				" model.RSRC_STUTAS rsrcStatus,rsCatalog.CATALOG_TYPE catalogType,rsCatalog.WORK_TYPE workType " +
 				" FROM SYS_RESOURCE_REL model" +
 				" LEFT JOIN SYS_RSRC_CATALOG rsCatalog ON (model.RSRC_CATALOG_ID = rsCatalog.ID) " +
@@ -405,6 +410,7 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 		scalarMap.put("abbreviaName", new StringType());
 		scalarMap.put("orderNo", new IntegerType());
 		scalarMap.put("salePrice", new BigDecimalType());
+		scalarMap.put("purchasePrice", new BigDecimalType());
 		scalarMap.put("rsrcCatalogId", new IntegerType());
 		scalarMap.put("supplierId", new IntegerType());
 		scalarMap.put("brandId", new IntegerType());

@@ -50,6 +50,9 @@ public class SysResourceRel extends AbstractRowVersionModel{
 	@Column(name="RSRC_CATALOG_ID", nullable = false)
 	private Integer rsrcCatalogId;// 资源类型Id  //发布资源类型表中的ID
 	
+	@Column(name="PURCHASE_PRICE",precision=9, scale=2,nullable = false)
+	private BigDecimal purchasePrice; //采购价格
+	
 	@Column(name="SALE_PRICE",precision=9, scale=2, nullable = false)
 	private BigDecimal salePrice;  //销售价格
 	
@@ -170,6 +173,14 @@ public class SysResourceRel extends AbstractRowVersionModel{
 
 	public void setOrderNo(Integer orderNo) {
 		this.orderNo = orderNo;
+	}
+
+	public BigDecimal getPurchasePrice() {
+		return purchasePrice;
+	}
+
+	public void setPurchasePrice(BigDecimal purchasePrice) {
+		this.purchasePrice = purchasePrice;
 	}
 
 	public BigDecimal getSalePrice() {

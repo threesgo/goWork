@@ -211,17 +211,17 @@
 		
 		//报价单
 		exportSysOrderQuotation:function(){
-			exportExcel("sysOrderAction!exportSysOrderQuotation.act?sysOrder.id="+node.id);
+			exportExcel("sysOrderAction!exportSysOrderQuotation.act?sysOrder.id=");
 		},
 		
 		//采购单
 		exportSysOrderPurchase:function(){
-			exportExcel("sysOrderAction!exportSysOrderPurchase.act?sysOrder.id="+node.id);
+			exportExcel("sysOrderAction!exportSysOrderPurchase.act?sysOrder.id=");
 		},
 		
 		//施工单
 		exportSysOrderConstruction:function(){
-			exportExcel("sysOrderAction!exportSysOrderConstruction.act?sysOrder.id="+node.id);
+			exportExcel("sysOrderAction!exportSysOrderConstruction.act?sysOrder.id=");
 		}
 	};
 	
@@ -231,6 +231,7 @@
 			$alert("请单选订单行进行导出操作!");
 			return false;
 		}
+		url = url+node.id;
 		Some.util.newDownLoad({
 			url:url,
 			handler:function(){

@@ -438,6 +438,7 @@ public class SysResourceServiceImpl implements SysResourceService{
 		sysResourceRel.setAbbreviaName(sysResource.getAbbreviaName());
 		sysResourceRel.setOrderNo(sysResource.getOrderNo());
 		sysResourceRel.setRsrcCatalogId(sysResource.getRsrcCatalogId());
+		sysResourceRel.setPurchasePrice(sysResource.getPurchasePrice());
 		sysResourceRel.setSalePrice(sysResource.getSalePrice());	
 		sysResourceRel.setBrandId(sysResource.getBrandId());
 		sysResourceRel.setSupplierId(sysResource.getSupplierId());
