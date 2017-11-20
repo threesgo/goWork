@@ -47,6 +47,7 @@ import com.yunwang.util.action.AbstractUpDownAction;
 import com.yunwang.util.annotation.DownloadAnnotation;
 import com.yunwang.util.collection.CollectionUtil;
 import com.yunwang.util.string.MyStringUtil;
+import com.yunwang.util.string.StringBufferByCollectionUtil;
 @Action(
 	value = "sysOrderAction", 
 	results = {
@@ -838,18 +839,13 @@ public class SysOrderAction extends AbstractUpDownAction{
 	
 	
 	private Workbook exportOrderToWorkerExcel(SysOrder sysOrder) {
-		List<SysResourceRel> resourceRels = sysResourceService.findByOrderId(sysOrder.getId());
+		
+		List<SysOrderFlow> sysOrderFlows = sysOrderService.findOrderFlow(sysOrder.getId());
+		
 	    //根据流程打包（每个流程需要的材料，开始时间结束时间，已经每个流程的备注，包含哪些工人）
-		Map<Integer,List<SysResourceRel>> resourceMap = packageBySupplier(resourceRels);
-		
-		List<SysSupplier> sysSuppliers = sysSupplierService.findAll();
-		Map<Integer,SysSupplier> supplierMap = CollectionUtil.listToMap(sysSuppliers,"id");
-		
-		List<SysBrand> sysBrands = sysBrandService.findAll();
-		Map<Integer,SysBrand> sysBrandMap = CollectionUtil.listToMap(sysBrands,"id");
 		
 		Workbook wb = new HSSFWorkbook();
-		Sheet sheet = wb.createSheet("采购产品");
+		Sheet sheet = wb.createSheet("施工单");
 		int nCol = 0;  //列编号
 		int nRow = 0;  //行编号
 		List<String> results = new ArrayList<String>();
@@ -858,7 +854,8 @@ public class SysOrderAction extends AbstractUpDownAction{
 		results.add(getText("产品描述"));
 		results.add(getText("数量"));
 		results.add(getText("工人"));
-		results.add(getText("产品描述"));
+		results.add(getText("步骤备注"));
+		results.add(getText("操作时间"));
 		
 		// 创建单元格样式
 		CellStyle style = wb.createCellStyle();
@@ -880,18 +877,19 @@ public class SysOrderAction extends AbstractUpDownAction{
 			cell.setCellValue(s);
 		}
 		
-		for(Integer key:resourceMap.keySet()){
-			List<SysResourceRel> supResourceRels = resourceMap.get(key);
-			BigDecimal totalPrice = BigDecimal.ZERO;
-			for(SysResourceRel resourceRel:supResourceRels){
-				//打包表格数据
+		for(SysOrderFlow orderFlow:sysOrderFlows){
+			//查询orderFlow关联的资源
+			List<SysResourceRel> resourceRels = sysResourceService.findByFlowId(orderFlow.getId());
+			
+			//查询orderFlow关联的工人
+			List<SysWorker> sysWorkers = sysWorkerService.findByFlowId(orderFlow.getId());
+			
+			for(SysResourceRel resourceRel:resourceRels){
 				row = sheet.createRow(nRow++);
 				nCol=0;
-				
 				cell = row.createCell(nCol++);
 				cell.setCellStyle(style);
-				cell.setCellValue(null!=supplierMap.get(resourceRel.getSupplierId())?
-						supplierMap.get(resourceRel.getSupplierId()).getName():"");
+				cell.setCellValue(orderFlow.getName());
 				
 				cell = row.createCell(nCol++);
 				cell.setCellStyle(style);
@@ -899,34 +897,20 @@ public class SysOrderAction extends AbstractUpDownAction{
 				
 				cell = row.createCell(nCol++);
 				cell.setCellStyle(style);
-				cell.setCellValue(resourceRel.getPurchasePrice().toString());
-				
-				cell = row.createCell(nCol++);
-				cell.setCellStyle(style);
 				cell.setCellValue(resourceRel.getQuantity().toString());
 				
 				cell = row.createCell(nCol++);
 				cell.setCellStyle(style);
-				cell.setCellValue(null!=sysBrandMap.get(resourceRel.getBrandId())?
-						sysBrandMap.get(resourceRel.getBrandId()).getName():"");
-			
-				totalPrice = totalPrice.add(resourceRel.getPurchasePrice().multiply(resourceRel.getQuantity()));
+				cell.setCellValue(StringBufferByCollectionUtil.convertCollection(sysWorkers,"name"));
+				
+				cell = row.createCell(nCol++);
+				cell.setCellStyle(style);
+				cell.setCellValue(orderFlow.getInfo());
+				
+				cell = row.createCell(nCol++);
+				cell.setCellStyle(style);
+				cell.setCellValue(orderFlow.getStartTimeStr()+"-"+orderFlow.getEndTimeStr());
 			}
-			
-			row = sheet.createRow(nRow++);
-			nCol=0;
-			nCol++;
-			nCol++;
-			nCol++;
-			cell = row.createCell(nCol++);
-			cell.setCellStyle(style);
-			cell.setCellValue("总价:");
-			
-			cell = row.createCell(nCol++);
-			cell.setCellStyle(style);
-			cell.setCellValue(totalPrice.toString());
-			
-			nRow++;
 		}
 		return wb;
 	}
@@ -959,30 +943,24 @@ public class SysOrderAction extends AbstractUpDownAction{
 	}
 	
 	private Workbook exportOrderToUserExcel(SysOrder sysOrder) {
-		List<SysResourceRel> resourceRels = sysResourceService.findByOrderId(sysOrder.getId());
-	    //根据供应商打包
-		Map<Integer,List<SysResourceRel>> resourceMap = packageBySupplier(resourceRels);
 		
-		List<SysSupplier> sysSuppliers = sysSupplierService.findAll();
-		Map<Integer,SysSupplier> supplierMap = CollectionUtil.listToMap(sysSuppliers,"id");
+		List<SysOrderFlow> sysOrderFlows = sysOrderService.findOrderFlow(sysOrder.getId());
 		
-		List<SysBrand> sysBrands = sysBrandService.findAll();
-		Map<Integer,SysBrand> sysBrandMap = CollectionUtil.listToMap(sysBrands,"id");
+	    //根据流程打包（每个流程需要的材料，和操作的工人，材料的价格和数量以及统计 ，工人的工时，薪资以及统计）
 		
 		Workbook wb = new HSSFWorkbook();
-		Sheet sheet = wb.createSheet("采购产品");
+		Sheet sheet = wb.createSheet("订单工人资源");
 		int nCol = 0;  //列编号
 		int nRow = 0;  //行编号
 		List<String> results = new ArrayList<String>();
 		results.add(getText("操作步骤"));
 		results.add(getText("产品描述"));
-		results.add(getText("产品价格"));
-		results.add(getText("数量"));
 		results.add(getText("品牌"));
+		results.add(getText("数量"));
+		results.add(getText("产品价格"));
 		results.add(getText("工人"));
 		results.add(getText("工时"));
 		results.add(getText("薪酬"));
-		
 		
 		// 创建单元格样式
 		CellStyle style = wb.createCellStyle();
@@ -1004,18 +982,19 @@ public class SysOrderAction extends AbstractUpDownAction{
 			cell.setCellValue(s);
 		}
 		
-		for(Integer key:resourceMap.keySet()){
-			List<SysResourceRel> supResourceRels = resourceMap.get(key);
-			BigDecimal totalPrice = BigDecimal.ZERO;
-			for(SysResourceRel resourceRel:supResourceRels){
-				//打包表格数据
+		for(SysOrderFlow orderFlow:sysOrderFlows){
+			//查询orderFlow关联的资源
+			List<SysResourceRel> resourceRels = sysResourceService.findByFlowId(orderFlow.getId());
+			
+			//查询orderFlow关联的工人
+			List<SysWorker> sysWorkers = sysWorkerService.findByFlowId(orderFlow.getId());
+			
+			for(SysResourceRel resourceRel:resourceRels){
 				row = sheet.createRow(nRow++);
 				nCol=0;
-				
 				cell = row.createCell(nCol++);
 				cell.setCellStyle(style);
-				cell.setCellValue(null!=supplierMap.get(resourceRel.getSupplierId())?
-						supplierMap.get(resourceRel.getSupplierId()).getName():"");
+				cell.setCellValue(orderFlow.getName());
 				
 				cell = row.createCell(nCol++);
 				cell.setCellStyle(style);
@@ -1023,34 +1002,20 @@ public class SysOrderAction extends AbstractUpDownAction{
 				
 				cell = row.createCell(nCol++);
 				cell.setCellStyle(style);
-				cell.setCellValue(resourceRel.getPurchasePrice().toString());
-				
-				cell = row.createCell(nCol++);
-				cell.setCellStyle(style);
 				cell.setCellValue(resourceRel.getQuantity().toString());
 				
 				cell = row.createCell(nCol++);
 				cell.setCellStyle(style);
-				cell.setCellValue(null!=sysBrandMap.get(resourceRel.getBrandId())?
-						sysBrandMap.get(resourceRel.getBrandId()).getName():"");
-			
-				totalPrice = totalPrice.add(resourceRel.getPurchasePrice().multiply(resourceRel.getQuantity()));
+				cell.setCellValue(StringBufferByCollectionUtil.convertCollection(sysWorkers,"name"));
+				
+				cell = row.createCell(nCol++);
+				cell.setCellStyle(style);
+				cell.setCellValue(orderFlow.getInfo());
+				
+				cell = row.createCell(nCol++);
+				cell.setCellStyle(style);
+				cell.setCellValue(orderFlow.getStartTimeStr()+"-"+orderFlow.getEndTimeStr());
 			}
-			
-			row = sheet.createRow(nRow++);
-			nCol=0;
-			nCol++;
-			nCol++;
-			nCol++;
-			cell = row.createCell(nCol++);
-			cell.setCellStyle(style);
-			cell.setCellValue("总价:");
-			
-			cell = row.createCell(nCol++);
-			cell.setCellStyle(style);
-			cell.setCellValue(totalPrice.toString());
-			
-			nRow++;
 		}
 		return wb;
 	}
