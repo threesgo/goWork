@@ -680,7 +680,7 @@ public class SysOrderAction extends AbstractUpDownAction{
 	public String exportSysOrderPurchase(){
 		//根据供应商进行区分
 		sysOrder = sysOrderService.get(sysOrder.getId());
-		exportResourceFileName = sysOrder.getName()+"_TO_供应商.xls";
+		exportResourceFileName = sysOrder.getName()+"_TO_采购单.xls";
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
 		Workbook workbook=null;
         try {
@@ -813,18 +813,246 @@ public class SysOrderAction extends AbstractUpDownAction{
 	//施工单
 	@DownloadAnnotation("sysOrderAction_exportSysOrderConstruction")
 	public String exportSysOrderConstruction(){
-		//根据工人进行区分
+		//根据流程打包
+		sysOrder = sysOrderService.get(sysOrder.getId());
+		exportResourceFileName = sysOrder.getName()+"_TO_施工单.xls";
+		ByteArrayOutputStream output = new ByteArrayOutputStream();
+		Workbook workbook=null;
+        try {
+            workbook = exportOrderToWorkerExcel(sysOrder);
+		    workbook.write(output);
+	        byte[] ba = output.toByteArray();
+	        exportResourceStream = new ByteArrayInputStream(ba);
+		}catch(Exception e){
+		    LOG.error(e.getMessage());
+		}finally{
+		    try {
+                output.flush();
+                output.close();
+            } catch (IOException e) {
+                LOG.error(e.getMessage());
+            }
+		}
+		return "exportResource";
+	}
+	
+	
+	private Workbook exportOrderToWorkerExcel(SysOrder sysOrder) {
+		List<SysResourceRel> resourceRels = sysResourceService.findByOrderId(sysOrder.getId());
+	    //根据流程打包（每个流程需要的材料，开始时间结束时间，已经每个流程的备注，包含哪些工人）
+		Map<Integer,List<SysResourceRel>> resourceMap = packageBySupplier(resourceRels);
 		
-		return null;
+		List<SysSupplier> sysSuppliers = sysSupplierService.findAll();
+		Map<Integer,SysSupplier> supplierMap = CollectionUtil.listToMap(sysSuppliers,"id");
+		
+		List<SysBrand> sysBrands = sysBrandService.findAll();
+		Map<Integer,SysBrand> sysBrandMap = CollectionUtil.listToMap(sysBrands,"id");
+		
+		Workbook wb = new HSSFWorkbook();
+		Sheet sheet = wb.createSheet("采购产品");
+		int nCol = 0;  //列编号
+		int nRow = 0;  //行编号
+		List<String> results = new ArrayList<String>();
+		
+		results.add(getText("操作步骤"));
+		results.add(getText("产品描述"));
+		results.add(getText("数量"));
+		results.add(getText("工人"));
+		results.add(getText("产品描述"));
+		
+		// 创建单元格样式
+		CellStyle style = wb.createCellStyle();
+		style.setAlignment(HSSFCellStyle.ALIGN_LEFT);
+		style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+		// 创建Excel的sheet的一行
+		Row row = sheet.createRow(nRow++);
+	    Cell cell =null;
+		row.setHeightInPoints(15);// 设定行的高度
+		nCol = 0;
+		for (String s : results) {
+			if("产品描述".equals(s)){
+				sheet.setColumnWidth(nCol, 10000);
+			}else{
+				sheet.setColumnWidth(nCol, 4000);
+			}
+			cell = row.createCell(nCol++);
+			cell.setCellStyle(style);
+			cell.setCellValue(s);
+		}
+		
+		for(Integer key:resourceMap.keySet()){
+			List<SysResourceRel> supResourceRels = resourceMap.get(key);
+			BigDecimal totalPrice = BigDecimal.ZERO;
+			for(SysResourceRel resourceRel:supResourceRels){
+				//打包表格数据
+				row = sheet.createRow(nRow++);
+				nCol=0;
+				
+				cell = row.createCell(nCol++);
+				cell.setCellStyle(style);
+				cell.setCellValue(null!=supplierMap.get(resourceRel.getSupplierId())?
+						supplierMap.get(resourceRel.getSupplierId()).getName():"");
+				
+				cell = row.createCell(nCol++);
+				cell.setCellStyle(style);
+				cell.setCellValue(resourceRel.getKeyWord());
+				
+				cell = row.createCell(nCol++);
+				cell.setCellStyle(style);
+				cell.setCellValue(resourceRel.getPurchasePrice().toString());
+				
+				cell = row.createCell(nCol++);
+				cell.setCellStyle(style);
+				cell.setCellValue(resourceRel.getQuantity().toString());
+				
+				cell = row.createCell(nCol++);
+				cell.setCellStyle(style);
+				cell.setCellValue(null!=sysBrandMap.get(resourceRel.getBrandId())?
+						sysBrandMap.get(resourceRel.getBrandId()).getName():"");
+			
+				totalPrice = totalPrice.add(resourceRel.getPurchasePrice().multiply(resourceRel.getQuantity()));
+			}
+			
+			row = sheet.createRow(nRow++);
+			nCol=0;
+			nCol++;
+			nCol++;
+			nCol++;
+			cell = row.createCell(nCol++);
+			cell.setCellStyle(style);
+			cell.setCellValue("总价:");
+			
+			cell = row.createCell(nCol++);
+			cell.setCellStyle(style);
+			cell.setCellValue(totalPrice.toString());
+			
+			nRow++;
+		}
+		return wb;
 	}
 	
 	//报价单
 	@DownloadAnnotation("sysOrderAction_exportSysOrderQuotation")
 	public String exportSysOrderQuotation(){
 		//根据流程区分
+		//根据工人进行区分
+		sysOrder = sysOrderService.get(sysOrder.getId());
+		exportResourceFileName = sysOrder.getName()+"_TO_报价单.xls";
+		ByteArrayOutputStream output = new ByteArrayOutputStream();
+		Workbook workbook=null;
+        try {
+            workbook = exportOrderToUserExcel(sysOrder);
+		    workbook.write(output);
+	        byte[] ba = output.toByteArray();
+	        exportResourceStream = new ByteArrayInputStream(ba);
+		}catch(Exception e){
+		    LOG.error(e.getMessage());
+		}finally{
+		    try {
+                output.flush();
+                output.close();
+            } catch (IOException e) {
+                LOG.error(e.getMessage());
+            }
+		}
+		return "exportResource";
+	}
+	
+	private Workbook exportOrderToUserExcel(SysOrder sysOrder) {
+		List<SysResourceRel> resourceRels = sysResourceService.findByOrderId(sysOrder.getId());
+	    //根据供应商打包
+		Map<Integer,List<SysResourceRel>> resourceMap = packageBySupplier(resourceRels);
+		
+		List<SysSupplier> sysSuppliers = sysSupplierService.findAll();
+		Map<Integer,SysSupplier> supplierMap = CollectionUtil.listToMap(sysSuppliers,"id");
+		
+		List<SysBrand> sysBrands = sysBrandService.findAll();
+		Map<Integer,SysBrand> sysBrandMap = CollectionUtil.listToMap(sysBrands,"id");
+		
+		Workbook wb = new HSSFWorkbook();
+		Sheet sheet = wb.createSheet("采购产品");
+		int nCol = 0;  //列编号
+		int nRow = 0;  //行编号
+		List<String> results = new ArrayList<String>();
+		results.add(getText("操作步骤"));
+		results.add(getText("产品描述"));
+		results.add(getText("产品价格"));
+		results.add(getText("数量"));
+		results.add(getText("品牌"));
+		results.add(getText("工人"));
+		results.add(getText("工时"));
+		results.add(getText("薪酬"));
 		
 		
-		return null;
+		// 创建单元格样式
+		CellStyle style = wb.createCellStyle();
+		style.setAlignment(HSSFCellStyle.ALIGN_LEFT);
+		style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+		// 创建Excel的sheet的一行
+		Row row = sheet.createRow(nRow++);
+	    Cell cell =null;
+		row.setHeightInPoints(15);// 设定行的高度
+		nCol = 0;
+		for (String s : results) {
+			if("产品描述".equals(s)){
+				sheet.setColumnWidth(nCol, 10000);
+			}else{
+				sheet.setColumnWidth(nCol, 4000);
+			}
+			cell = row.createCell(nCol++);
+			cell.setCellStyle(style);
+			cell.setCellValue(s);
+		}
+		
+		for(Integer key:resourceMap.keySet()){
+			List<SysResourceRel> supResourceRels = resourceMap.get(key);
+			BigDecimal totalPrice = BigDecimal.ZERO;
+			for(SysResourceRel resourceRel:supResourceRels){
+				//打包表格数据
+				row = sheet.createRow(nRow++);
+				nCol=0;
+				
+				cell = row.createCell(nCol++);
+				cell.setCellStyle(style);
+				cell.setCellValue(null!=supplierMap.get(resourceRel.getSupplierId())?
+						supplierMap.get(resourceRel.getSupplierId()).getName():"");
+				
+				cell = row.createCell(nCol++);
+				cell.setCellStyle(style);
+				cell.setCellValue(resourceRel.getKeyWord());
+				
+				cell = row.createCell(nCol++);
+				cell.setCellStyle(style);
+				cell.setCellValue(resourceRel.getPurchasePrice().toString());
+				
+				cell = row.createCell(nCol++);
+				cell.setCellStyle(style);
+				cell.setCellValue(resourceRel.getQuantity().toString());
+				
+				cell = row.createCell(nCol++);
+				cell.setCellStyle(style);
+				cell.setCellValue(null!=sysBrandMap.get(resourceRel.getBrandId())?
+						sysBrandMap.get(resourceRel.getBrandId()).getName():"");
+			
+				totalPrice = totalPrice.add(resourceRel.getPurchasePrice().multiply(resourceRel.getQuantity()));
+			}
+			
+			row = sheet.createRow(nRow++);
+			nCol=0;
+			nCol++;
+			nCol++;
+			nCol++;
+			cell = row.createCell(nCol++);
+			cell.setCellStyle(style);
+			cell.setCellValue("总价:");
+			
+			cell = row.createCell(nCol++);
+			cell.setCellStyle(style);
+			cell.setCellValue(totalPrice.toString());
+			
+			nRow++;
+		}
+		return wb;
 	}
 	
 	public Map<String, Object> getHashMap() {
