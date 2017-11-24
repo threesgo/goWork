@@ -64,7 +64,8 @@ import com.yunwang.util.string.StringBufferByCollectionUtil;
 		@Result(name = "selectResource",location="/WEB-INF/web/sysOrder/selectResource.jsp"),
 		@Result(name="exportResource",type="stream",
 			params={"encode","true","contentType","application/vnd.ms-excel;charset=UTF-8",
-					"inputName","exportResourceStream","contentDisposition","attachment;filename=${exportResourceFileName}"})
+					"inputName","exportResourceStream","contentDisposition","attachment;filename=${exportResourceFileName}"}),
+		@Result(name = "gtChart",location="/WEB-INF/web/sysOrder/gtChart.jsp")			
 	}
 )
 public class SysOrderAction extends AbstractUpDownAction{
@@ -1018,6 +1019,16 @@ public class SysOrderAction extends AbstractUpDownAction{
 			}
 		}
 		return wb;
+	}
+	
+	/**
+	 * @date 2017-11-24
+	 * @author YBF
+	 * @return
+	 * <p>工作进度图</p>
+	 */
+	public String gtChart(){
+		return "gtChart";
 	}
 	
 	public Map<String, Object> getHashMap() {

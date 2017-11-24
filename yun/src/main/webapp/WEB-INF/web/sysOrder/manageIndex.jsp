@@ -92,11 +92,12 @@
 						    	title:'工人材料', 
 						    	href:"sysOrderAction!workerAndResourceByOrder.act?sysOrder.id="+node.attributes.id
 							});
- 							/*
+ 							
  							sysOrderTab.tabs('add',{    
-						    	title:'甘特图', 
+						    	title:'进度图', 
 						    	href:"sysOrderAction!gtChart.act?sysOrder.id="+node.attributes.id
 							});
+ 							/*
  							sysOrderTab.tabs('add',{    
 						    	title:'费用分配图', 
 						    	href:"sysOrderAction!barChart.act?sysOrder.id="+node.attributes.id
