@@ -126,7 +126,8 @@
 	                splitNumber: legend.length-1,
 	                max: legend.length-1,
 	                axisLabel:{
-	                 show: true
+	                 show: true,
+	                 rotate:70
 	                },
 	                splitLine:{
 	                 show: true

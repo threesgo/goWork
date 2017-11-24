@@ -28,10 +28,10 @@
             
             onDblClickRow:function(index, row){
             	var dialog = $('<div id="addSysOrder"></div>').dialog({    
-					href : "sysOrderAction!gtChart.act?width=760&height=520&sysOrder.id="+row.id,
-					width:800,
-					height:600,
-					title:"工程进度图",
+					href : "sysOrderAction!gtChart.act?width=670&height=420&sysOrder.id="+row.id,
+					width:700,
+					height:500,
+					title:"工程时间图",
 					method:'post',
 					modal:true,
 					resizable:true,

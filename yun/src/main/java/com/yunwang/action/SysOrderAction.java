@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,6 +47,7 @@ import com.yunwang.util.BaseDataDictionaryUtil;
 import com.yunwang.util.action.AbstractUpDownAction;
 import com.yunwang.util.annotation.DownloadAnnotation;
 import com.yunwang.util.collection.CollectionUtil;
+import com.yunwang.util.date.MyDateUtils;
 import com.yunwang.util.string.MyStringUtil;
 import com.yunwang.util.string.StringBufferByCollectionUtil;
 @Action(
@@ -1035,12 +1037,11 @@ public class SysOrderAction extends AbstractUpDownAction{
 		List<SysOrderFlow> orderFlows = sysOrderService.findOrderFlow(sysOrder.getId());
 		JSONArray arr = new JSONArray();
 		for(SysOrderFlow orderFlow:orderFlows){
-			if(MyStringUtil.isBlank(orderFlow.getStartTimeStr()) || MyStringUtil.isBlank(orderFlow.getEndTimeStr())){
-				continue;
-			}
 			JSONObject orderFlowObj = new JSONObject();
-			orderFlowObj.put("planBeginDate", orderFlow.getStartTimeStr());
-			orderFlowObj.put("planEndDate", orderFlow.getEndTimeStr());
+			orderFlowObj.put("planBeginDate", MyStringUtil.isNotBlank(
+					orderFlow.getStartTimeStr())?orderFlow.getStartTimeStr():MyDateUtils.getStringByDate(new Date()));
+			orderFlowObj.put("planEndDate", MyStringUtil.isNotBlank(
+					orderFlow.getEndTimeStr())?orderFlow.getEndTimeStr():MyDateUtils.getStringByDate(MyDateUtils.getAppointDate(-5,new Date())));
 			orderFlowObj.put("beginDate", orderFlow.getActualStartTimeStr());
 			orderFlowObj.put("endDate", orderFlow.getActualEndTimeStr());
 			orderFlowObj.put("name", orderFlow.getName());
