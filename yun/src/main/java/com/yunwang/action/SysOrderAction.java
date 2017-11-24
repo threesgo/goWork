@@ -111,6 +111,9 @@ public class SysOrderAction extends AbstractUpDownAction{
 	private Integer targetId;
 	private Integer sourceId;
 	
+	private String width;
+	private String height;
+	
 	@Override
 	public String execute() throws Exception {
 		hashMap = new HashMap<String,Object>();
@@ -1028,6 +1031,24 @@ public class SysOrderAction extends AbstractUpDownAction{
 	 * <p>工作进度图</p>
 	 */
 	public String gtChart(){
+		//订单步骤 s开头
+		List<SysOrderFlow> orderFlows = sysOrderService.findOrderFlow(sysOrder.getId());
+		JSONArray arr = new JSONArray();
+		for(SysOrderFlow orderFlow:orderFlows){
+			if(MyStringUtil.isBlank(orderFlow.getStartTimeStr()) || MyStringUtil.isBlank(orderFlow.getEndTimeStr())){
+				continue;
+			}
+			JSONObject orderFlowObj = new JSONObject();
+			orderFlowObj.put("planBeginDate", orderFlow.getStartTimeStr());
+			orderFlowObj.put("planEndDate", orderFlow.getEndTimeStr());
+			orderFlowObj.put("beginDate", orderFlow.getActualStartTimeStr());
+			orderFlowObj.put("endDate", orderFlow.getActualEndTimeStr());
+			orderFlowObj.put("name", orderFlow.getName());
+			arr.add(orderFlowObj);
+		}
+	    JSONObject obj = new JSONObject();
+		obj.put("stageList", arr);
+		dateStr = obj.toString();
 		return "gtChart";
 	}
 	
@@ -1165,5 +1186,21 @@ public class SysOrderAction extends AbstractUpDownAction{
 
 	public void setSysBrands(List<SysBrand> sysBrands) {
 		this.sysBrands = sysBrands;
+	}
+
+	public String getWidth() {
+		return width;
+	}
+
+	public void setWidth(String width) {
+		this.width = width;
+	}
+
+	public String getHeight() {
+		return height;
+	}
+
+	public void setHeight(String height) {
+		this.height = height;
 	}
 }

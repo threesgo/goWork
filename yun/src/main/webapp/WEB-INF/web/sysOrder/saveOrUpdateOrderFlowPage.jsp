@@ -21,13 +21,13 @@
     
     <div>   
         <label for="edit_startTime">开始时间:</label>   
-        <input class= "easyui-datetimebox" id="edit_startTime" name="sysOrderFlow.startTime" 
+        <input class= "easyui-datebox" id="edit_startTime" name="sysOrderFlow.startTime" 
         style="width:200px;" value="${sysOrderFlow.startTimeStr}"/>
     </div>
     
     <div>
     	<label for="edit_endTime">结束时间:</label>   
-        <input class= "easyui-datetimebox" id="edit_endTime" name="sysOrderFlow.endTime" 
+        <input class= "easyui-datebox" id="edit_endTime" name="sysOrderFlow.endTime" 
         style="width:200px;" value="${sysOrderFlow.endTimeStr}"/>  
     </div>
     

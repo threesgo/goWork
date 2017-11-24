@@ -41,7 +41,7 @@ public class SysOrderDaoImpl extends BaseDaoImpl<SysOrder> implements SysOrderDa
 		Map<String, Object> map = new HashMap<String,Object>();
 		map.put("orderDate",orderDate);
 		return find("SELECT model FROM SysOrder model " 
-				+" WHERE model.orderDate=:orderDate AND model.status!=0 ORDER BY model.code ",map);
+				+" WHERE model.orderDate=:orderDate AND model.status!=0 ORDER BY model.orderNo DESC ",map);
 	}
 
 	@Override

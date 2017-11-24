@@ -94,8 +94,8 @@
 							});
  							
  							sysOrderTab.tabs('add',{    
-						    	title:'进度图', 
-						    	href:"sysOrderAction!gtChart.act?sysOrder.id="+node.attributes.id
+						    	title:'工程进度图', 
+						    	href:"sysOrderAction!gtChart.act?width=1000&height=750&sysOrder.id="+node.attributes.id
 							});
  							/*
  							sysOrderTab.tabs('add',{    

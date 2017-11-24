@@ -319,11 +319,11 @@ public class SysOrder extends AbstractRowVersionModel{
 	}
 
 	public String getStartTimeStr(){
-		return MyDateUtils.getStringByDateTime(startTime);
+		return MyDateUtils.getStringByDate(startTime);
 	}
 	
 	public String getEndTimeStr(){
-		return MyDateUtils.getStringByDateTime(endTime);
+		return MyDateUtils.getStringByDate(endTime);
 	}
 	
 	public String getRoomsStr(){

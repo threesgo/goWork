@@ -25,6 +25,29 @@
 	        pagination:true,
             toolbar:"#sysOrder_tool_bar",
             url:"sysOrderAction!listData.act",
+            
+            onDblClickRow:function(index, row){
+            	var dialog = $('<div id="addSysOrder"></div>').dialog({    
+					href : "sysOrderAction!gtChart.act?width=760&height=520&sysOrder.id="+row.id,
+					width:800,
+					height:600,
+					title:"工程进度图",
+					method:'post',
+					modal:true,
+					resizable:true,
+					buttons:[{
+						text:"关闭",
+						iconCls:'icon-cancel',
+						handler:function(){
+							dialog.dialog("destroy");
+						}
+					}],
+					onClose:function(){
+						$(this).dialog("destroy");
+					}
+	 			});
+            },
+            
             frozenColumns:[[
        			{field:'ck',checkbox:true},
        			/*

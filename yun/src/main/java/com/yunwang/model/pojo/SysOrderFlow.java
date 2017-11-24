@@ -40,10 +40,18 @@ public class SysOrderFlow extends AbstractRowVersionModel{
 	
 	
 	@Column(name = "START_TIME")
-	private Date startTime;
+	private Date startTime;  //计划开始时间
 	
 	@Column(name = "END_TIME")
-	private Date endTime;  //报警提示
+	private Date endTime;  //报警提示  //计划结束时间
+	
+	
+	@Column(name = "ACTUAL_START_TIME")
+	private Date actualStartTime;  //实际开始时间
+	
+	@Column(name = "ACTUAL_END_TIME")
+	private Date actualEndTime;  //实际结束时间
+	
 	
 	@Column(name = "INFO",length=2048)
 	private String info;
@@ -129,10 +137,46 @@ public class SysOrderFlow extends AbstractRowVersionModel{
 	}
 
 	public String getStartTimeStr(){
-		return MyDateUtils.getStringByDateTime(startTime);
+		if(null==startTime){
+			return "";
+		}
+		return MyDateUtils.getStringByDate(startTime);
 	}
 	
 	public String getEndTimeStr(){
-		return MyDateUtils.getStringByDateTime(endTime);
+		if(null==endTime){
+			return "";
+		}
+		return MyDateUtils.getStringByDate(endTime);
+	}
+
+	public Date getActualStartTime() {
+		return actualStartTime;
+	}
+
+	public void setActualStartTime(Date actualStartTime) {
+		this.actualStartTime = actualStartTime;
+	}
+
+	public Date getActualEndTime() {
+		return actualEndTime;
+	}
+
+	public void setActualEndTime(Date actualEndTime) {
+		this.actualEndTime = actualEndTime;
+	}
+	
+	public String getActualStartTimeStr(){
+		if(null==actualStartTime){
+			return "";
+		}
+		return MyDateUtils.getStringByDate(actualStartTime);
+	}
+	
+	public String getActualEndTimeStr(){
+		if(null==actualEndTime){
+			return "";
+		}
+		return MyDateUtils.getStringByDate(actualEndTime);
 	}
 }

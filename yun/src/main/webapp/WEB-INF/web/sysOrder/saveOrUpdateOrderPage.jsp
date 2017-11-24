@@ -70,11 +70,11 @@
     
     <div>   
         <label for="edit_startTime">开始时间:</label>   
-        <input class= "easyui-datetimebox" required ="required" id="edit_startTime" name="sysOrder.startTime" 
+        <input class= "easyui-datebox" required ="required" id="edit_startTime" name="sysOrder.startTime" 
         style="width:200px;" value="${sysOrder.startTimeStr}"/>
         
         <label for="edit_endTime">结束时间:</label>   
-        <input class= "easyui-datetimebox" required ="required" id="edit_endTime" name="sysOrder.endTime" 
+        <input class= "easyui-datebox" required ="required" id="edit_endTime" name="sysOrder.endTime" 
         style="width:200px;" value="${sysOrder.endTimeStr}"/>    
     </div>
    

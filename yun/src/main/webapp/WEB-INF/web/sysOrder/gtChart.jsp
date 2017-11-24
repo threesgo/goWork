@@ -7,13 +7,13 @@
          echarts: '${pageContext.request.contextPath}/scriptPlugins/echarts-2.2.7'
      }
  });
-        function dateAfter(dateStr,num){
-   var date1 = new Date(Date.parse(dateStr.replace(/-/g,   "/")));
-   //alert(date1.getFullYear()+"-"+(date1.getMonth()+1)+"-"+date1.getDate());
-   var date2 = new Date(date1);
-   date2.setDate(date1.getDate()+num);
-   var times = date2.getFullYear()+"-"+(date2.getMonth()+1)+"-"+date2.getDate();
-   return times;
+   function dateAfter(dateStr,num){
+	   var date1 = new Date(Date.parse(dateStr.replace(/-/g,   "/")));
+	   //alert(date1.getFullYear()+"-"+(date1.getMonth()+1)+"-"+date1.getDate());
+	   var date2 = new Date(date1);
+	   date2.setDate(date1.getDate()+num);
+	   var times = date2.getFullYear()+"-"+(date2.getMonth()+1)+"-"+date2.getDate();
+	   return times;
   }
   function GetDateDiff(startDate,endDate){  
       var startTime = new Date(Date.parse(startDate.replace(/-/g,   "/"))).getTime();     
@@ -22,101 +22,10 @@
       return  dates;    
   }
   
-        
-  //var url = "${path}/notice/groupFirstCheckNotice!initGantt.action?projectId=${resultjson.projectId}";
+  var json = new Function("return " + '${dateStr}')();
   var totalCategory = 0,category=[],planData=[],planBase=[],actualData=[],actualBase=[],legend=[];
   var globalmin = null;
-  var json = {
-     "currStageIndexList": [
-      8, 
-      9
-     ], 
-     "currStageList": [
-      "初步验收", 
-      "试运行"
-     ], 
-     "stageList": [
-      {
-       "planBeginDate": "2016-08-31", 
-       "name": "设计审查", 
-       "endDate": "2016-04-22", 
-       "beginDate": "2016-04-22", 
-       "planEndDate": "2016-10-05"
-      }, 
-      {
-       "planBeginDate": "2016-10-05", 
-       "name": "设计批复", 
-       "endDate": "2016-04-22", 
-       "beginDate": "2016-04-22", 
-       "planEndDate": "2016-10-12"
-      }, 
-      {
-       "planBeginDate": "2016-10-12", 
-       "name": "工程交接", 
-       "endDate": "2016-04-22", 
-       "beginDate": "2016-04-22", 
-       "planEndDate": "2016-10-26"
-      }, 
-      {
-       "planBeginDate": "2016-10-26", 
-       "name": "设备到货验收", 
-       "endDate": "2016-04-22", 
-       "beginDate": "2016-04-22", 
-       "planEndDate": "2016-11-25"
-      }, 
-      {
-       "planBeginDate": "2016-11-25", 
-       "name": "开工启动", 
-       "endDate": "2016-04-22", 
-       "beginDate": "2016-04-22", 
-       "planEndDate": "2016-12-25"
-      }, 
-      {
-       "planBeginDate": "2016-12-25", 
-       "name": "设备安装", 
-       "endDate": "2016-04-22", 
-       "beginDate": "2016-04-22", 
-       "planEndDate": "2017-01-01"
-      }, 
-      {
-       "planBeginDate": "2017-01-01", 
-       "name": "系统调测", 
-       "endDate": "2016-04-22", 
-       "beginDate": "2016-04-22", 
-       "planEndDate": "2017-01-08"
-      }, 
-      {
-       "planBeginDate": "2017-01-08", 
-       "name": "割接上线", 
-       "endDate": "2016-04-22", 
-       "beginDate": "2016-04-22", 
-       "planEndDate": "2017-01-15"
-      }, 
-      {
-       "planBeginDate": "2017-01-15", 
-       "name": "初步验收", 
-       "endDate": "2017-04-17", 
-       "beginDate": "2017-01-22", 
-       "planEndDate": "2017-04-15"
-      }, 
-      {
-       "planBeginDate": "2017-04-15", 
-       "name": "试运行", 
-       "endDate": "2017-11-17", 
-       "beginDate": "2017-05-12", 
-       "planEndDate": "2017-10-12"
-      },
-      {
-       "planBeginDate": "2017-10-12", 
-       "name": "竣工验收", 
-       "endDate": "", 
-       "beginDate": "", 
-       "planEndDate": "2017-12-11"
-      }
-     ], 
-     "projectId": 8211
-    }
-  //$.getJSON(url,function(json){
+  
   $(function(){
    if(json && json.stageList){
     totalCategory = json.stageList.length;
@@ -144,22 +53,24 @@
       minActual = actualStart;
      }
     }
-    //---------------------------
+    
     var min = null;
     if(GetDateDiff(minPlan,minActual)>=0){
      min = minActual;
     }else{
      min = minPlan;
     }
-    //------------------------------
     globalmin = min;
     for(var i=(totalCategory-1);i>=0;i--){
      var planStart = json.stageList[i].planBeginDate;
      var planEnd = json.stageList[i].planEndDate;
+     var actualStart = json.stageList[i].beginDate;
+     var actualEnd = json.stageList[i].endDate;
      
      category.push(json.stageList[i].name);
      planBase.push(GetDateDiff(planStart,globalmin));
      var pd = {};
+     pd.value = GetDateDiff(actualEnd,actualStart);
      pd.color = '#FF0000';
      var currentStage = json.currStageList;
      var sName = json.stageList[i].name;
@@ -167,96 +78,137 @@
       pd.color = '#FFFF00';
      }
      planData.push(GetDateDiff(planEnd,planStart));
-     
+     actualBase.push(GetDateDiff(actualStart,globalmin));
+     actualData.push(pd);
      
     }
     for(var i=0;i<GetDateDiff(max,min);i++){
-     	var dt = dateAfter(min,i);
-     	legend.push(dt);
+     var dt = dateAfter(min,i);
+     legend.push(dt);
     }
     init();
    }
   });
-  
-  alert(Some.util.toJson(legend));
-  
   function init(){   
-  require(
-             [
-                 'echarts',
-                 'echarts/chart/bar'
-             ],
-             //自建项目饼状图设置
-             function (ec) {
-                 var myChart = ec.init(document.getElementById('charts_div'));
-     var option = {
-         title: {
-             text: '',
-             subtext: ''
-         },
-         xAxis : [
-             {
-                 type : 'value',
-                splitNumber: legend.length-1,
-                max: legend.length-1,
-                axisLabel:{
-                 show: false
-                },
-                splitLine:{
-                 show: false
-                }
-             },
-             {
-                 type : 'category',
-                 boundaryGap : false,
-                 data : legend
-             }
-         ],
-         yAxis : [
-             {
-                 type : 'category',
-                 splitLine: {show:false},
-                 data : category
-             }
-         ],
-         series : [
-             {
-                 name:'计划开始时间',
-                 type:'bar',
-                 stack: '总量',
-                 itemStyle:{
-                     normal:{
-                         barBorderColor:'rgba(0,0,0,0)',
-                         color:'rgba(0,0,0,0)'
-                     },
-                     emphasis:{
-                         barBorderColor:'rgba(0,0,0,0)',
-                         color:'rgba(0,0,0,0)'
-                     }
-                 },
-                 data:planBase
-             },
-             {
-                 name:'计划完成时间',
-                 type:'bar',
-                 stack: '总量',
-                 itemStyle : { 
-                  normal: {
-                   color:'#00AA55',
-                   label : {
-                    show: true, 
-                    position: 'inside'
-                   }
-                  }
-                 },
-                 data:planData
-             }
-         ]
-     };
-           myChart.setOption(option);
-             }
-         );
-         
-         }
-    </script>
-<div id="charts_div" style="height: 1000px;width: 1000px"></div>
+  	require(
+     [
+         'echarts',
+         'echarts/chart/bar'
+     ],
+    //自建项目饼状图设置
+    function (ec) {
+        var myChart = ec.init(document.getElementById('charts_div'));
+	     var option = {
+	         title: {
+	             text: '',
+	             subtext: ''
+	         },
+	         tooltip : {
+	             trigger: 'axis',
+	             axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+	                 type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+	             },
+	             formatter: function (params) {
+	                 var tar0 = params[0];
+	                 var tar1 = params[1];
+	              	 var tar2 = params[2]
+	                 var tar3 = params[3];
+	                 var result = tar2.seriesName + ' : ' + dateAfter(globalmin,tar2.value-0) + '<br/>' + 
+	                 tar3.seriesName + ' : ' + dateAfter(globalmin,tar2.value+tar3.value)+ '<br/>' + 
+	                 tar0.seriesName + ' : ' + dateAfter(globalmin,tar0.value-0) + '<br/>' + 
+	                 tar1.seriesName + ' : ' + dateAfter(globalmin,tar0.value+tar1.value);
+	                 return result;
+	             }
+	         },
+	         xAxis : [
+	             {
+	                 type : 'value',
+	                splitNumber: legend.length-1,
+	                max: legend.length-1,
+	                axisLabel:{
+	                 show: true
+	                },
+	                splitLine:{
+	                 show: true
+	                }
+	             }
+	            /* ,{
+	                 type : 'category',
+	                 boundaryGap : false,
+	                 data : legend
+	             }
+	            */
+	         ],
+	         yAxis : [
+	             {
+	                 type : 'category',
+	                 splitLine: {show:false},
+	                 data : category
+	             }
+	         ],
+	         series : [
+	             {
+	                 name:'实际开始时间',
+	                 type:'bar',
+	                 stack: '总量1',
+	                 itemStyle:{
+	                     normal:{
+	                         barBorderColor:'rgba(0,0,0,0)',
+	                         color:'rgba(0,0,0,0)'
+	                     },
+	                     emphasis:{
+	                         barBorderColor:'rgba(0,0,0,0)',
+	                         color:'rgba(0,0,0,0)'
+	                     }
+	                 },
+	                 data:actualBase
+	             },
+	             {
+	                 name:'实际完成时间',
+	                 type:'bar',
+	                 stack: '总量1',
+	                 itemStyle : { normal: {
+	                   color:function(params) {
+	                    //alert(JSON.stringify(params));
+	                    return params.data.color;
+	                   },label : {show: true, position: 'inside'}}},
+	                 data:actualData
+	             },
+	             {
+	                 name:'计划开始时间',
+	                 type:'bar',
+	                 stack: '总量',
+	                 itemStyle:{
+	                     normal:{
+	                         barBorderColor:'rgba(0,0,0,0)',
+	                         color:'rgba(0,0,0,0)'
+	                     },
+	                     emphasis:{
+	                         barBorderColor:'rgba(0,0,0,0)',
+	                         color:'rgba(0,0,0,0)'
+	                     }
+	                 },
+	                 data:planBase
+	             },
+	             {
+	                 name:'计划完成时间',
+	                 type:'bar',
+	                 stack: '总量',
+	                 itemStyle : { 
+	                  normal: {
+	                   color:'#00AA55',
+	                   label : {
+	                    show: true, 
+	                    position: 'inside'
+	                   }
+	                  }
+	                 },
+	                 data:planData
+	             }
+	         ]
+	     };
+         myChart.setOption(option);
+     });
+  }
+</script>
+<div id="charts_div" style="height: ${height}px;width: ${width}px"></div>
