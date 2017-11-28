@@ -38,20 +38,17 @@ public class SysOrderFlow extends AbstractRowVersionModel{
 	@Column(name = "STATUS",columnDefinition = "number default 1")
 	private Integer status;  //标注每个流程的完成状态，已经流转
 	
-	
 	@Column(name = "START_TIME")
-	private Date startTime;  //计划开始时间
+	private Date startTime;  //计划开始时间    PALNT
 	
 	@Column(name = "END_TIME")
-	private Date endTime;  //报警提示  //计划结束时间
-	
+	private Date endTime;  //报警提示  //计划结束时间  PALNT
 	
 	@Column(name = "ACTUAL_START_TIME")
 	private Date actualStartTime;  //实际开始时间
 	
 	@Column(name = "ACTUAL_END_TIME")
 	private Date actualEndTime;  //实际结束时间
-	
 	
 	@Column(name = "INFO",length=2048)
 	private String info;
