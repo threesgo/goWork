@@ -5,14 +5,12 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 import org.apache.struts2.convention.annotation.Action;
-import org.springframework.stereotype.Controller;
 
 import com.yunwang.util.action.BaseAction;
 import com.yunwang.util.string.MyStringUtil;
 
-@Controller
 @Action(value = "ywzsAction")
-public class ywzsAction extends BaseAction{
+public class YwzsAction extends BaseAction{
 
 	/*
 	 * @date 2017-11-28
