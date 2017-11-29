@@ -33,7 +33,6 @@ public class MethodInterceptor extends MethodFilterInterceptor{
 		}
 		if(!getDownloadLock(ServletActionContext.getRequest().getSession(),methodValue)){
 			//没能占有下载锁  要加提示
-			System.out.println("没能占有下载锁  要加提示");
 			ServletActionContext.getResponse().setHeader("Content-Type","text/html; charset=UTF-8");
 			ServletActionContext.getResponse().getWriter().print("{message:'正在下载中,请勿重复操作'}");
 			return null;
@@ -43,11 +42,6 @@ public class MethodInterceptor extends MethodFilterInterceptor{
 		}finally{
 			releaseDownloadLock(ServletActionContext.getRequest().getSession(),methodValue);
 		}
-//		ctx.getSession()
-//		UsrSmUser adm = (UsrSmUser) ctx.getSession().get(SessionConstant.SESSION_ADMIN);
-//		System.out.println(adm.getUserName());
-//		System.out.println(method.getName());
-//		return null;
 	}
 
 	/**

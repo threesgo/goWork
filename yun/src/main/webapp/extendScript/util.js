@@ -131,17 +131,19 @@ var Some=Some||{};
 				downLoading.show();
 				var interval = setInterval(function(){
 			    	$.post("heartBeatAction!validateKey.act",{"methodKey":key},function(text){
-			    		handlerResult(text,function(data){
-			    			if(data.data == 0){
-			    				downLoading.close();
-			    				clearInterval(interval);
-			    			}
-						},function(data){
-							downLoading.close();
-							clearInterval(interval);
-						});
+			    		handlerResult(text,
+				    		function(data){
+				    			if(data.data == 0){
+				    				downLoading.close();
+				    				clearInterval(interval);
+				    			}
+							},function(data){
+								downLoading.close();
+								clearInterval(interval);
+							}
+						);
 			    	},"json");
-			   	},1000); 
+			   	},500); 
 			},
 			
 			newDownLoadJson:function(json){
@@ -156,13 +158,8 @@ var Some=Some||{};
 							"</form>").appendTo("body");
 				}
 				$frm.form('submit', {    
-				    //url:url,    
 				    success:function(data){
-				    	//var data = eval('(' + data + ')');  
-				    	//$alert(data.message);
-				    	//if(json.handler){
-				    	//	json.handler();
-						//}
+				    	
 				    }     
 				}).remove(); 
 				Some.util.haddleDownLoading(json.url);

@@ -48,6 +48,11 @@ public abstract class BaseAction extends ActionSupport implements SessionAware{
 	 */
 	protected int rows;
 	
+	/**
+	 * 时间戳
+	 */
+	protected long timestamp;
+	
 	
 	public void setSession(Map<String, Object> sessionMap) {
 		this.sessionMap = sessionMap;
@@ -276,5 +281,13 @@ public abstract class BaseAction extends ActionSupport implements SessionAware{
 
 	public void setRows(int rows) {
 		this.rows = rows;
+	}
+
+	public long getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(long timestamp) {
+		this.timestamp = timestamp;
 	}
 }
