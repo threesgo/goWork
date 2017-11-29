@@ -18,8 +18,8 @@ import com.yunwang.util.string.MyStringUtil;
 		@Result(name = "success", location = "mainAction.act", type="redirect"),
 		@Result(name = "next", location = "${returnUrl}", type="redirect")
 	}
-)
-@ParentPackage("base")
+)   
+@ParentPackage("base")  
 public class LoginAction extends BaseAction{
 	
 	private static final long serialVersionUID = 4953763528021024034L;
@@ -27,7 +27,9 @@ public class LoginAction extends BaseAction{
 	@Autowired
 	private SysUserService userService;
 	
+	
 	private String returnUrl;
+	
 	
 	private SysUser sysUser;
 	
