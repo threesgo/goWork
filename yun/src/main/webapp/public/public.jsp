@@ -63,6 +63,10 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/scriptPlugins/jquery-easyui-portal/portal.css" type="text/css">
 <script type="text/javascript" src="${pageContext.request.contextPath}/scriptPlugins/jquery-easyui-portal/jquery.portal.js" charset="utf-8"></script>
 
+<!-- 引入dhtmlxgantt插件 -->
+<link rel="stylesheet" href="${pageContext.request.contextPath}/scriptPlugins/dhtmlxgantt_v5.0.1/dhtmlxgantt.css" type="text/css" media="screen" title="no title" charset="utf-8">
+<script type="text/javascript" src="${pageContext.request.contextPath}/scriptPlugins/dhtmlxgantt_v5.0.1/dhtmlxgantt.js" charset="utf-8"></script>
+
 <%-- 新增图标扩展样式 --%>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/style/ext/easyUIExt.css" type="text/css"></link>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/style/extEasyUIIcon.css" type="text/css"></link>
