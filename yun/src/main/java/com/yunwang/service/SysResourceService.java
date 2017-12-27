@@ -54,4 +54,8 @@ public interface SysResourceService {
 	List<SysResourceRel> findByOrderId(Integer orderId);
 
 	Pager<SysResourceRel> selectResourceData(Integer flowId,int page, int rows, JSONObject seachJson);
+
+	void update(SysResource sysResource);
+
+	SysResource get(Integer id);
 }

@@ -323,7 +323,12 @@ $(function(){
 					}
 					return brandObj[value];
 				} 
-	       	}
+	       	},
+	       	{field:'image',title:"参考图片",width:100,
+           	  	formatter:function(value,rowData,rowIndex){
+					 return "<a onclick='resourceOperation.showImage("+rowData.id+")' style='color: red;'>参考图片</a>";
+				}
+            }
         ]],
 	    columns:[columns],
 	    onDblClickCell:function(index, field, value) {
@@ -684,6 +689,51 @@ resourceOperation = {
 					);  
 				},"json");
 		    }    
+		});
+	},
+	
+	showImage:function(rowId){
+		var editResourceImage = $('<div id="editResourceImage"></div>').dialog({
+			href : "resourceAction!editResourceImage.act",
+			top:160,
+			title:"产品图片",
+			width:530,
+			height:"auto",
+			queryParams:{"sysResource.id":rowId},
+			resizable:true,
+			modal: true,
+			onClose:function(){
+				editResourceImage.dialog("destroy");
+				return true;
+			}, 
+			buttons:[
+			   	{
+					text:"更新",
+					iconCls:'icon-edit',
+					handler:function(){
+						resourceOperation.imgFormSubmit(editResourceImage);
+					}
+				}
+			]
+		});
+	},
+	
+	imgFormSubmit:function(editResourceImage){
+		$confirm("确认更新产品图片?",function(){
+			var loading=new Some.loading();
+			$("#editResourceImgForm").form({    
+				url:"resourceAction!updateResourceImg.act",    
+			    onSubmit: function(){    
+			    },    
+			    success:function(data){
+			    	handlerResult(data,function(rs){
+			    			editResourceImage.dialog("close");
+						},function(rs){
+							$alert(rs.message);
+						}
+					);
+			    }    
+			}).submit(); 
 		});
 	}
 };

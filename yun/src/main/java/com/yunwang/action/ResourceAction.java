@@ -1,5 +1,10 @@
 package com.yunwang.action;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,6 +35,9 @@ import com.yunwang.service.SysSupplierService;
 import com.yunwang.util.BaseDataDictionaryUtil;
 import com.yunwang.util.action.AbstractLoginAction;
 import com.yunwang.util.collection.CollectionUtil;
+import com.yunwang.util.exception.MineException;
+import com.yunwang.util.file.FileSupport;
+import com.yunwang.util.string.MyStringUtil;
 import com.yunwang.util.string.StringBufferByCollectionUtil;
 
 @Action(
@@ -47,7 +55,8 @@ import com.yunwang.util.string.StringBufferByCollectionUtil;
 		@Result(name="relResourceSelect",location="/WEB-INF/web/releaseResource/relResourceSelect.jsp"),
 		@Result(name="relResourceInfo",location="/WEB-INF/web/releaseResource/relResourceInfo.jsp"),
 		@Result(name="relResourceTreeIndex",location="/WEB-INF/web/releaseResource/relResourceTreeIndex.jsp"),
-		@Result(name="relResourceTreeSelect",location="/WEB-INF/web/releaseResource/relResourceTreeSelect.jsp")
+		@Result(name="relResourceTreeSelect",location="/WEB-INF/web/releaseResource/relResourceTreeSelect.jsp"),
+		@Result(name="editResourceImage",location="/WEB-INF/web/resource/editResourceImg.jsp")
 	}
 )
 public class ResourceAction extends AbstractLoginAction{
@@ -81,6 +90,12 @@ public class ResourceAction extends AbstractLoginAction{
 	private List<SysBrand> sysBrands;
 	private SysRsRcPackage sysRsRcPackage;
 	private SysResourceRel sysResourceRel;
+	
+	/** 上传参考图片*/
+	private File imageFile;
+	private String imageFileFileName;
+	private String imageFileContentType;
+	private String msg;
 	
 	@Override
 	public String execute() throws Exception {
@@ -433,6 +448,88 @@ public class ResourceAction extends AbstractLoginAction{
 		return "relResourceTreeSelect";
 	}
 	
+	
+	public String editResourceImage(){
+		sysResource = sysResourceService.get(sysResource.getId());
+		timestamp=System.currentTimeMillis();
+		return "editResourceImage";
+	}
+	
+	
+	public String updateResourceImg(){
+		try { 
+			sysResource = sysResourceService.get(sysResource.getId());
+			upload(sysResource);
+			sysResourceService.update(sysResource);
+			return success("操作成功!");
+		}catch(Exception e){
+			LOG.error(e.getMessage());
+			return error("操作失败!",e);
+		}
+	}
+	
+	/** 
+	  * upload() method
+	  * @author 方宜斌
+	  * @date 2014-1-15 下午1:20:42
+	  * <p>资源上传图片</p> 
+	  * @return
+	  * @throws IOException 
+	  * @return boolean  
+	*/ 
+	private void upload(SysResource sysResource) {
+		InputStream is=null;
+		OutputStream os=null;
+		try {
+		    if(imageFile==null){
+	            if(MyStringUtil.isNotBlank(sysResource.getImagePath())){
+	            	FileSupport.delete(sysResource.getImagePath());
+		        }
+	            sysResource.setImagePath(null);
+			}else{
+			    String[] strs=MyStringUtil.split(imageFileFileName, "\\.");
+			    String fname=strs[strs.length-1].toLowerCase();
+			    String[] types={"jpg","jpeg","gif","png","tga","exif","fpx","bmp"};
+			    boolean flag=true;
+				for(String type:types){
+					if(type.equals(fname)){
+						flag=false;
+						break;
+					}
+				}
+				if(flag){
+					throw new MineException("图片格式错误(例如:jpg,jpeg,gif,png,tga,exif,fpx,bmp)");
+				}
+				if(imageFile.length()>=2097152){
+					throw new MineException("图片超过大小范围(2G)");
+				}
+				is = new FileInputStream(imageFile);
+				FileSupport.mkdir("resourceImage");
+				
+				String fileName=FileSupport.join("resourceImage","resource_"+sysResource.getId()+"."+fname);
+				FileSupport.write(fileName, is);
+				
+				sysResource.setImagePath(fileName);
+			}
+      } catch (Exception e) {
+          LOG.error(e.getMessage());
+          throw new MineException("上传图片失败!");
+      }
+      finally{
+		  try {
+	   	   	if(null!=is){
+	   	   		is.close(); 
+	   	   	}
+	   	   	if(null!=os){
+	   	   		os.close();
+	   	   	}
+		  } catch (IOException e) {
+	          LOG.error(e.getMessage());
+	      }
+       }
+	}
+	
+	
 	public SysResource getSysResource() {
 		return sysResource;
 	}
@@ -519,5 +616,37 @@ public class ResourceAction extends AbstractLoginAction{
 
 	public void setSysBrands(List<SysBrand> sysBrands) {
 		this.sysBrands = sysBrands;
+	}
+
+	public File getImageFile() {
+		return imageFile;
+	}
+
+	public void setImageFile(File imageFile) {
+		this.imageFile = imageFile;
+	}
+
+	public String getImageFileFileName() {
+		return imageFileFileName;
+	}
+
+	public void setImageFileFileName(String imageFileFileName) {
+		this.imageFileFileName = imageFileFileName;
+	}
+
+	public String getImageFileContentType() {
+		return imageFileContentType;
+	}
+
+	public void setImageFileContentType(String imageFileContentType) {
+		this.imageFileContentType = imageFileContentType;
+	}
+
+	public String getMsg() {
+		return msg;
+	}
+
+	public void setMsg(String msg) {
+		this.msg = msg;
 	}
 }

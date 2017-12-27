@@ -541,4 +541,14 @@ public class SysResourceServiceImpl implements SysResourceService{
 		return sysResourceRelDao.findByBrandCatalogIdsAndNotInFlow(
 				StringBufferByCollectionUtil.convertCollection(sysPcBrandCatalogs,"brandCatalogId"),flowId,page,rows,seachJson);
 	}
+
+	@Override
+	public void update(SysResource sysResource) {
+		sysResourceDao.update(sysResource);
+	}
+
+	@Override
+	public SysResource get(Integer id) {
+		return sysResourceDao.get(SysResource.class, id);
+	}
 }

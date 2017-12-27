@@ -74,6 +74,9 @@ public class SysResource extends AbstractRowVersionModel{
 	@Column(name = "SUPPLIER_ID")
 	private Integer supplierId;  //供应商名称 //后期改成id
 	
+	@Column(name="IMAGE_PATH", length=1024)
+	private String imagePath;
+	
 	@Transient
 	private String supplierName;  //供应商名称
 	
@@ -265,4 +268,12 @@ public class SysResource extends AbstractRowVersionModel{
 	public void setBrandId(Integer brandId) {
 		this.brandId = brandId;
 	}
+
+	public String getImagePath() {
+		return imagePath;
 	}
+
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
+	}
+}

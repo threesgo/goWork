@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans 	xmlns="http://www.springframework.org/schema/beans"
+	   	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans 
+							http://www.springframework.org/schema/beans/spring-beans-3.2.xsd"
+		default-autowire="byName">
+		
+	<!-- 文件服务管理 -->
+	<bean class="com.yunwang.util.file.FileSupport">
+		<property name="factory">
+			<!--  samba文件协议  
+			<bean class="com.yunwang.util.file.smb.SmbFileServiceFactory">
+				<property name="root" value="smb://ybfang:ybfang12345@192.168.0.8/ametest/out/"/>
+			</bean>
+			-->
+			
+			<!--  本地文件协议 -->
+			<bean class="com.yunwang.util.file.LocalFileServiceFactory">
+				<property name="root" value="c:/pic/"/>
+			</bean> 
+			
+			
+			<!--  本地文件协议 
+			<bean class="com.yunwang.util.file.LocalFileServiceFactory">
+				<property name="root" value="/var/work/pms_test/"/>
+			</bean> 
+			-->
+						
+			<!-- 测试FTP协议
+			<bean class="com.yunwang.util.file.FTPFileServiceFactory">
+				<property name="host" value="192.168.0.115"/>
+				<property name="port" value="81"/>
+				<property name="username" value="ftptest"/>
+				<property name="password" value="Ftp123456"/>
+				<property name="root" value="/work/"/>
+			</bean> 
+			-->
+			 
+			<!-- FTP文件协议 -->
+			<!--
+			<bean class="com.yunwang.util.file.FTPFileServiceFactory">
+				<property name="host" value="10.68.13.25"/>
+				<property name="port" value="21"/>
+				<property name="username" value="PMSDEV"/>
+				<property name="password" value="Pass1234"/>
+				<property name="root" value="/pms"/>
+			</bean> 
+			--> 
+			
+			<!-- 生产环境FTP文件协议 -->
+			<!-- <bean class="com.yunwang.util.file.FTPFileServiceFactory">
+				<property name="host" value="10.68.8.98"/>
+				<property name="port" value="21"/>
+				<property name="username" value="wxpmsprdftp"/>
+				<property name="password" value="Pass1234"/>
+				<property name="root" value="/pms"/>
+			</bean>  -->
+			
+			<!-- SFTP文件协议 -->
+			<!-- 
+			<bean class="com.yunwang.util.file.SFTPFileServiceFactory">
+				<property name="host" value="10.68.8.98"/>
+				<property name="port" value="22"/>
+				<property name="username" value="wxpmsprd"/>
+				<property name="password" value="Pass1234"/>
+				<property name="root" value="/wxpmsprddata/"/>
+			</bean> 
+			-->
+		</property>
+	</bean>
+</beans>

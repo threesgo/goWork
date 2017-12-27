@@ -12,6 +12,16 @@
     <servlet-class>com.yunwang.init.InitServlet</servlet-class>
     <load-on-startup>0</load-on-startup>
   </servlet>
+  
+  	<servlet>
+		<servlet-name>staticResource</servlet-name>
+		<servlet-class>com.yunwang.servlet.StaticResourceServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>staticResource</servlet-name>
+		<url-pattern>/static/*</url-pattern>
+	</servlet-mapping>
+  
   <session-config>
     <session-timeout>120</session-timeout>
   </session-config>
