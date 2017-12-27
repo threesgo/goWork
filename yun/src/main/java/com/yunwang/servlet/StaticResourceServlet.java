@@ -26,11 +26,9 @@ public class StaticResourceServlet extends HttpServlet{
 
 	private static final Logger LOGGER = Logger.getLogger(StaticResourceServlet.class);
 
-	private static final String PREFIX = "/static/";
-	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse response) throws ServletException, IOException {
-		String uri = MyStringUtil.substringAfter(req.getRequestURI(), PREFIX);
+		String uri = req.getParameter("path");
 		if(MyStringUtil.isBlank(uri)){
 			return ;
 		}
