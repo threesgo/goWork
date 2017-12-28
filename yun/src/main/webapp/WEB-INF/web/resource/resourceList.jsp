@@ -326,7 +326,7 @@ $(function(){
 	       	},
 	       	{field:'image',title:"参考图片",width:100,
            	  	formatter:function(value,rowData,rowIndex){
-					 return "<a onclick='resourceOperation.showImage("+rowData.id+")' style='color: red;'>参考图片</a>";
+					 return "<a onclick='resourceOperation.showImage("+rowData.id+","+rowIndex+")' style='color: red;'>参考图片</a>";
 				}
             }
         ]],
@@ -692,10 +692,10 @@ resourceOperation = {
 		});
 	},
 	
-	showImage:function(rowId){
+	showImage:function(rowId,rowIndex){
 		var editResourceImage = $('<div id="editResourceImage"></div>').dialog({
 			href : "resourceAction!editResourceImage.act",
-			top:160,
+			top:100,
 			title:"产品图片",
 			width:530,
 			height:"auto",
@@ -711,14 +711,14 @@ resourceOperation = {
 					text:"更新",
 					iconCls:'icon-edit',
 					handler:function(){
-						resourceOperation.imgFormSubmit(editResourceImage);
+						resourceOperation.imgFormSubmit(editResourceImage,rowIndex);
 					}
 				}
 			]
 		});
 	},
 	
-	imgFormSubmit:function(editResourceImage){
+	imgFormSubmit:function(editResourceImage,rowIndex){
 		$confirm("确认更新产品图片?",function(){
 			var loading=new Some.loading();
 			$("#editResourceImgForm").form({    
@@ -728,6 +728,13 @@ resourceOperation = {
 			    success:function(data){
 			    	handlerResult(data,function(rs){
 			    			editResourceImage.dialog("close");
+			    			$resourceGrid.datagrid('updateRow',{
+								index: rowIndex,
+								row: {
+									rsrcStatus:2
+								}
+							});
+			    			
 						},function(rs){
 							$alert(rs.message);
 						}

@@ -68,6 +68,9 @@ public class SysResourceRel extends AbstractRowVersionModel{
 	@Column(name="RSRC_STUTAS",nullable = false)
 	private Integer rsrcStatus;//状态  0 失效  1，正常
 	
+	@Column(name="IMAGE_PATH", length=1024)
+	private String imagePath;
+	
 	@Transient
 	private String brand;  //供应商名称
 	
@@ -297,5 +300,13 @@ public class SysResourceRel extends AbstractRowVersionModel{
 
 	public void setCatalogType(Integer catalogType) {
 		this.catalogType = catalogType;
+	}
+
+	public String getImagePath() {
+		return imagePath;
+	}
+
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
 	}
 }

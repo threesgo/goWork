@@ -84,7 +84,7 @@ $(function(){
         	var relResourceInfoDialog = $('<div id="relResourceInfo"></div>').dialog({    
 				href : "resourceAction!relResourceInfo.act",
 				width:600,
-				height:380,
+				height:500,
 				title:"产品信息",
 				method:'post',
 				queryParams:{"sysResourceRel.id":row.id},

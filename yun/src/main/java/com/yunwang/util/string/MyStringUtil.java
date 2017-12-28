@@ -247,4 +247,34 @@ public class MyStringUtil extends StringUtils{
 		String regexAlpha = "[a-zA-Z]+";
 		return !(pwd.matches(regexNum) || pwd.matches(regexAlpha));
 	}
+	
+	/**
+	 * @date 2017-5-31
+	 * @author YBF
+	 * @param fileName 文件名
+	 * @return
+	 * <p>去除文件名后缀</p>
+	 */
+	public static String removeFileNameSuffix(String fileName){
+		if(fileName.indexOf(".")>-1){
+			return fileName.substring(0,fileName.lastIndexOf("."));
+		}else{
+			return fileName;
+		}
+	}
+	
+	/**
+	 * @date 2017-5-31
+	 * @author YBF
+	 * @param fileName 文件名
+	 * @return
+	 * <p>获取文件名后缀</p>
+	 */
+	public static String getileNameSuffix(String fileName){
+		if(fileName.indexOf(".")>-1){
+			return fileName.substring(fileName.lastIndexOf(".")+1,fileName.length());
+		}else{
+			return "";
+		}
+	}
 }

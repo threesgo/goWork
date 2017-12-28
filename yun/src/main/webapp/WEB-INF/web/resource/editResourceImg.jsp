@@ -17,10 +17,10 @@
 <form id="editResourceImgForm" method="post" class="edit-form" enctype="multipart/form-data">
 	<input type="hidden" name="sysResource.id" id="sysResource" value="${sysResource.id}"/>
 	<input type="file" name="imageFile" accept="image/*" id="file" style="opacity: 0;"/>
-	<div align="center">
-		<div style="width: 450px;height: 250px;" id="div_img" onclick="selectFile()">
-			<img id="img" alt="选择图片" src="${pageContext.request.contextPath}/static/${sysResource.imagePath}?timestamp=${timestamp}"
-				 onerror="this.src='${pageContext.request.contextPath}/style/images/upload.png'"  style="max-width: 450px;max-height: 250px;"/>
-		</div>
-	</div>
 </form>
+<div align="center" style="margin-bottom: 40px">
+	<div style="width: 450px;height: 250px;" id="div_img" onclick="selectFile()">
+		<img id="img" alt="选择图片" src="${pageContext.request.contextPath}/static?path=${sysResource.imagePath}&timestamp=${timestamp}"
+			 onerror="this.src='${pageContext.request.contextPath}/style/images/upload.png'"  style="max-width: 450px;max-height: 250px;"/>
+	</div>
+</div>

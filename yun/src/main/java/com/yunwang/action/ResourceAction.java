@@ -460,6 +460,7 @@ public class ResourceAction extends AbstractLoginAction{
 		try { 
 			sysResource = sysResourceService.get(sysResource.getId());
 			upload(sysResource);
+			sysResource.setRsrcStatus(2);
 			sysResourceService.update(sysResource);
 			return success("操作成功!");
 		}catch(Exception e){

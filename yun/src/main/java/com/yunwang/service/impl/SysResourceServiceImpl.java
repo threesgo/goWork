@@ -1,5 +1,10 @@
 package com.yunwang.service.impl;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -45,8 +50,10 @@ import com.yunwang.model.pojo.SysRsRcPcResource;
 import com.yunwang.model.pojo.SysSupplier;
 import com.yunwang.model.pojo.SysSupplierCatalog;
 import com.yunwang.service.SysResourceService;
+import com.yunwang.util.Constant;
 import com.yunwang.util.collection.CollectionUtil;
 import com.yunwang.util.exception.MineException;
+import com.yunwang.util.file.FileSupport;
 import com.yunwang.util.number.MyNumberUtil;
 import com.yunwang.util.string.MyStringUtil;
 import com.yunwang.util.string.StringBufferByCollectionUtil;
@@ -423,6 +430,18 @@ public class SysResourceServiceImpl implements SysResourceService{
 					buf.append(")");
 				}
 				sysResourceRel.setKeyWord(buf.toString());
+				
+				if(MyStringUtil.isNotBlank(sysResource.getImagePath())){
+					try {
+						byte[] bytes = FileSupport.read(sysResource.getImagePath());
+						FileSupport.mkdir("resourceImageRel");
+						String fileName=FileSupport.join("resourceImageRel","resourceRel_"+sysResource.getId()+"."+MyStringUtil.getileNameSuffix(sysResource.getImagePath()));
+						FileSupport.write(fileName, bytes);
+						sysResourceRel.setImagePath(fileName);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
 				sysResourceRelDao.update(sysResourceRel);
 			}
 		}
@@ -509,6 +528,12 @@ public class SysResourceServiceImpl implements SysResourceService{
 		releaseDate.put("value", relResource.getReleaseDateStr());
 		arr.add(releaseDate);
 		
+		JSONObject pic = new JSONObject();
+		pic.put("attrName", "参考图片");
+		pic.put("type",Constant.PIC);
+		pic.put("value", relResource.getImagePath());
+		arr.add(pic);
+		
 		for(SysRsRcAttribCatalog attribCatalog:attrList){
 			JSONObject attr = new JSONObject();
 			attr.put("attrName", attribCatalog.getRsrcAttribName());
@@ -538,14 +563,19 @@ public class SysResourceServiceImpl implements SysResourceService{
 		String packageIds = StringBufferByCollectionUtil.convertCollection(sysOrderPackages, "rsrcPackageId");
 		//查询套餐关联的品牌
 		List<SysPcBrandCatalog> sysPcBrandCatalogs = sysPcBrandCatalogDao.findInPropertys("packageId", packageIds);
-		return sysResourceRelDao.findByBrandCatalogIdsAndNotInFlow(
-				StringBufferByCollectionUtil.convertCollection(sysPcBrandCatalogs,"brandCatalogId"),flowId,page,rows,seachJson);
+		if(sysPcBrandCatalogs.size()-0==0){
+			return sysResourceRelDao.findByBrandCatalogIdsAndNotInFlow("0",flowId,page,rows,seachJson);
+		}else{
+			return sysResourceRelDao.findByBrandCatalogIdsAndNotInFlow(
+					StringBufferByCollectionUtil.convertCollection(sysPcBrandCatalogs,"brandCatalogId"),flowId,page,rows,seachJson);
+		}
 	}
 
 	@Override
 	public void update(SysResource sysResource) {
 		sysResourceDao.update(sysResource);
 	}
+	
 
 	@Override
 	public SysResource get(Integer id) {
