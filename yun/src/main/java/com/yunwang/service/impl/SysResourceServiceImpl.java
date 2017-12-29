@@ -1,10 +1,6 @@
 package com.yunwang.service.impl;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -497,6 +493,7 @@ public class SysResourceServiceImpl implements SysResourceService{
 		List<SysRsRcAttribRel> attribRels = sysRsRcAttribRelDao.findByProperty("rsrcRelId",relResource.getId());
 		JSONArray arr = new JSONArray();
 		Map<Integer,SysRsRcAttribRel> map = CollectionUtil.listToMap(attribRels,"rsrcAttribCatalogId");
+		Map<Integer,SysBrand> brandMap = CollectionUtil.listToMap(sysBrandDao.findAll(),"id");
 		
 		JSONObject keyWord = new JSONObject();
 		keyWord.put("attrName", "产品关键字");
@@ -520,7 +517,7 @@ public class SysResourceServiceImpl implements SysResourceService{
 		
 		JSONObject brand = new JSONObject();
 		brand.put("attrName", "产品品牌");
-		brand.put("value", relResource.getBrand());
+		brand.put("value", brandMap.get(relResource.getBrandId())!=null?brandMap.get(relResource.getBrandId()).getName():"");
 		arr.add(brand);
 		
 		JSONObject releaseDate = new JSONObject();

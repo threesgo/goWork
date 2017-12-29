@@ -27,8 +27,29 @@
 	          	//pageList:[20,50,100,150,200],
 	          	url:"sysOrderAction!workerDataByOrder.act",
 				queryParams:{"sysOrder.id":'${sysOrder.id}'},
-				onDblClickRow: function(index,row){
- 	      		  	
+				onDblClickRow: function(index, row){
+		        	var relResourceInfoDialog = $('<div id="relResourceInfo"></div>').dialog({    
+						href : "resourceAction!relResourceInfo.act",
+						width:600,
+						height:500,
+						title:"产品信息",
+						method:'post',
+						queryParams:{"sysResourceRel.id":row.id},
+						modal:true,
+						resizable:true,
+						buttons:[
+							{
+								text:"取消",
+								iconCls:'icon-cancel',
+								handler:function(){
+									relResourceInfoDialog.dialog("destroy");
+								}
+							}
+						],
+						onClose:function(){
+							$(this).dialog("destroy");
+						}
+		 			});
 			    },
 			    onLoadSuccess:function(){
 			    	

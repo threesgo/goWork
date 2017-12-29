@@ -154,8 +154,29 @@
 				queryParams:{"sysOrderFlow.id":'${sysOrderFlow.id}'},
 				onLoadSuccess:function(){
 				},
-				onDblClickRow: function(row){
-					
+				onDblClickRow: function(index, row){
+		        	var relResourceInfoDialog = $('<div id="relResourceInfo"></div>').dialog({    
+						href : "resourceAction!relResourceInfo.act",
+						width:600,
+						height:500,
+						title:"产品信息",
+						method:'post',
+						queryParams:{"sysResourceRel.id":row.id},
+						modal:true,
+						resizable:true,
+						buttons:[
+							{
+								text:"取消",
+								iconCls:'icon-cancel',
+								handler:function(){
+									relResourceInfoDialog.dialog("destroy");
+								}
+							}
+						],
+						onClose:function(){
+							$(this).dialog("destroy");
+						}
+		 			});
 			    },
 			    onSelect: function(row){
 	  			
