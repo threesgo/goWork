@@ -699,6 +699,10 @@ resourceOperation = {
 			title:"产品图片",
 			width:530,
 			height:"auto",
+			
+			//width:580,
+			//height:350,
+			
 			queryParams:{"sysResource.id":rowId},
 			resizable:true,
 			modal: true,

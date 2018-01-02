@@ -56,7 +56,8 @@ import com.yunwang.util.string.StringBufferByCollectionUtil;
 		@Result(name="relResourceInfo",location="/WEB-INF/web/releaseResource/relResourceInfo.jsp"),
 		@Result(name="relResourceTreeIndex",location="/WEB-INF/web/releaseResource/relResourceTreeIndex.jsp"),
 		@Result(name="relResourceTreeSelect",location="/WEB-INF/web/releaseResource/relResourceTreeSelect.jsp"),
-		@Result(name="editResourceImage",location="/WEB-INF/web/resource/editResourceImg.jsp")
+		@Result(name="editResourceImage",location="/WEB-INF/web/resource/editResourceImg.jsp"),
+		@Result(name="editResourceImages",location="/WEB-INF/web/resource/editResourceImgs.jsp")
 	}
 )
 public class ResourceAction extends AbstractLoginAction{
@@ -92,10 +93,16 @@ public class ResourceAction extends AbstractLoginAction{
 	private SysResourceRel sysResourceRel;
 	
 	/** 上传参考图片*/
+	private File[] file;
+	private String[] fileFileName;
+	private String[] fileContentType;
+	
+	
 	private File imageFile;
 	private String imageFileFileName;
 	private String imageFileContentType;
-	private String msg;
+	
+	private String filelSavePath;
 	
 	@Override
 	public String execute() throws Exception {
@@ -456,6 +463,13 @@ public class ResourceAction extends AbstractLoginAction{
 	}
 	
 	
+	
+	public String editResourceImages(){
+		sysResource = sysResourceService.get(sysResource.getId());
+		return "editResourceImages";
+	}
+	
+	
 	public String updateResourceImg(){
 		try { 
 			sysResource = sysResourceService.get(sysResource.getId());
@@ -468,6 +482,46 @@ public class ResourceAction extends AbstractLoginAction{
 			return error("操作失败!",e);
 		}
 	}
+	
+	
+	public String updateResourceImgs(){
+		try { 
+			sysResource = sysResourceService.get(sysResource.getId());
+			for(int i=0;i<file.length;i++){
+				File imageFile = file[i];
+				String[] strs=MyStringUtil.split(fileFileName[i], "\\.");
+			    String fname=strs[strs.length-1].toLowerCase();
+			    String[] types={"jpg","jpeg","gif","png","tga","exif","fpx","bmp"};
+			    boolean flag=true;
+				for(String type:types){
+					if(type.equals(fname)){
+						flag=false;
+						break;
+					}
+				}
+				if(flag){
+					throw new MineException("图片格式错误(例如:jpg,jpeg,gif,png,tga,exif,fpx,bmp)");
+				}
+				if(imageFile.length()>=2097152){
+					throw new MineException("图片超过大小范围(2G)");
+				}
+				
+				if(imageFile.length()>=2097152){
+					throw new MineException("图片超过大小范围(2G)");
+				}
+				InputStream is = new FileInputStream(imageFile);
+				FileSupport.mkdir("resourceImage");
+				
+				String fileName=FileSupport.join("resourceImage","resource_"+sysResource.getId()+"."+fname);
+				FileSupport.write(fileName, is);
+			}
+			return success("操作成功!");
+		}catch(Exception e){
+			LOG.error(e.getMessage());
+			return error("操作失败!",e);
+		}
+	}
+	
 	
 	/** 
 	  * upload() method
@@ -619,6 +673,38 @@ public class ResourceAction extends AbstractLoginAction{
 		this.sysBrands = sysBrands;
 	}
 
+	public File[] getFile() {
+		return file;
+	}
+
+	public void setFile(File[] file) {
+		this.file = file;
+	}
+
+	public String[] getFileFileName() {
+		return fileFileName;
+	}
+
+	public void setFileFileName(String[] fileFileName) {
+		this.fileFileName = fileFileName;
+	}
+
+	public String[] getFileContentType() {
+		return fileContentType;
+	}
+
+	public void setFileContentType(String[] fileContentType) {
+		this.fileContentType = fileContentType;
+	}
+
+	public String getFilelSavePath() {
+		return filelSavePath;
+	}
+
+	public void setFilelSavePath(String filelSavePath) {
+		this.filelSavePath = filelSavePath;
+	}
+
 	public File getImageFile() {
 		return imageFile;
 	}
@@ -641,13 +727,5 @@ public class ResourceAction extends AbstractLoginAction{
 
 	public void setImageFileContentType(String imageFileContentType) {
 		this.imageFileContentType = imageFileContentType;
-	}
-
-	public String getMsg() {
-		return msg;
-	}
-
-	public void setMsg(String msg) {
-		this.msg = msg;
 	}
 }
