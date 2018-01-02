@@ -25,7 +25,6 @@ public class SysMember extends AbstractRowVersionModel{
 //	PASSWORD	PASSWORD		VARCHAR2(64)					
 //	PHONENUM	PHONENUM		VARCHAR2(24)		*			
 //	EMAIL	EMAIL		VARCHAR2(64)					
-//	WE_ID	WE_ID		VARCHAR2(64)					
 //	WE_CODE	WE_CODE		VARCHAR2(64)					
 //	WE_NAME	WE_NAME		VARCHAR2(64)					
 //	REGTIME	REGTIME		dateTime		*			
@@ -54,14 +53,11 @@ public class SysMember extends AbstractRowVersionModel{
 	@Column(name = "EMAIL",length=64)
 	private String email;
 	
-	@Column(name = "WE_ID",length=256)
-	private String weId;
-	
 	@Column(name = "WE_CODE",length=256)
-	private String weCode;
+	private String weCode; //微信code（唯一key值）
 	
 	@Column(name = "WE_NAME",length=256)
-	private String weName;
+	private String weName; //微信名称
 	
 	@Column(name = "REGTIME")
 	private Date regTime;
@@ -81,12 +77,15 @@ public class SysMember extends AbstractRowVersionModel{
 	@Column(name = "INVITATION_CODE",length=24)
 	private String invitationCode;  //邀请码
 
-	@Column(name = "INTEGRAL")
+	@Column(name = "INTEGRAL",columnDefinition="number default 0")
 	private Integer integral; //积分
 	
-	@Column(name = "TYPE")
-	private Integer type;  //1、普通会员（默认） 2、工人   3、供应商（先维护普通会员）
-
+	@Column(name = "TYPE",columnDefinition="number default 1")
+	private Integer type;  //1、普通会员（默认） 2、工人   3、供应商（先维护普通会员）   //不能更改
+	
+	@Column(name = "IS_AUTHORIZE",columnDefinition="number default 0")
+	private Integer isAuthorize;  //是否授权 ，后台管理员处理
+	
 	public Integer getId() {
 		return id;
 	}
@@ -125,14 +124,6 @@ public class SysMember extends AbstractRowVersionModel{
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	public String getWeId() {
-		return weId;
-	}
-
-	public void setWeId(String weId) {
-		this.weId = weId;
 	}
 
 	public String getWeCode() {
@@ -213,5 +204,13 @@ public class SysMember extends AbstractRowVersionModel{
 
 	public void setType(Integer type) {
 		this.type = type;
+	}
+
+	public Integer getIsAuthorize() {
+		return isAuthorize;
+	}
+
+	public void setIsAuthorize(Integer isAuthorize) {
+		this.isAuthorize = isAuthorize;
 	}
 }

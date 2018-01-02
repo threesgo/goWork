@@ -33,7 +33,7 @@ public class SysWorkerDaoImpl extends BaseDaoImpl<SysWorker> implements SysWorke
 				map.put("name","%"+seachJson.getString("name").toUpperCase()+ "%");
 			}
 			if(seachJson.containsKey("sex")&&0!=seachJson.getInt("sex")){
-				buf.append(" AND model.workType=:sex");
+				buf.append(" AND model.sex=:sex");
 				map.put("sex",seachJson.getInt("sex"));
 			}
 			if(seachJson.containsKey("phoneNum")&&MyStringUtil.isNotBlank(seachJson.getString("phoneNum"))){

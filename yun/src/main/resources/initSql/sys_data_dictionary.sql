@@ -35,4 +35,7 @@ insert into SYS_DATA_DICTIONARY (id,row_version,type,name,value)values(32,0,6,'�
 insert into SYS_DATA_DICTIONARY (id,row_version,type,name,value)values(33,0,7,'简装',1);
 insert into SYS_DATA_DICTIONARY (id,row_version,type,name,value)values(34,0,7,'精装',2);
 insert into SYS_DATA_DICTIONARY (id,row_version,type,name,value)values(35,0,7,'中装',3);
+insert into SYS_DATA_DICTIONARY (id,row_version,type,name,value)values(36,0,8,'普通会员',1);
+insert into SYS_DATA_DICTIONARY (id,row_version,type,name,value)values(37,0,8,'工人',2);
+insert into SYS_DATA_DICTIONARY (id,row_version,type,name,value)values(38,0,8,'供应商',3);
 END;
