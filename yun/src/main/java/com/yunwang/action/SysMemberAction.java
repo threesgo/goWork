@@ -1,7 +1,9 @@
 package com.yunwang.action;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -39,16 +41,23 @@ public class SysMemberAction extends AbstractUpDownAction{
 	
 	private String jsonStr;
 	private SysMember sysMember;
+	private List<SysDataDictionary> memberTypeList;
+	private Map<String,Object> hashMap = new HashMap<String,Object>();
+	
 	
 	@Autowired
 	private SysMemberService sysMemberService;
 	
-	private List<SysDataDictionary> memberTypeList;
 	
-	
-	public String index(){
+	 
+	public String execute(){
 		//流程数据
 		memberTypeList = BaseDataDictionaryUtil.baseDataMap.get(8);
+		JSONObject memberTypeObj = new JSONObject();
+		for(SysDataDictionary dictionary:memberTypeList){
+			memberTypeObj.put(dictionary.getValue(), dictionary.getName());
+		}
+		hashMap.put("memberTypeObj",memberTypeObj);
 		return "index";
 	}
 	
@@ -159,5 +168,13 @@ public class SysMemberAction extends AbstractUpDownAction{
 
 	public void setMemberTypeList(List<SysDataDictionary> memberTypeList) {
 		this.memberTypeList = memberTypeList;
+	}
+
+	public Map<String, Object> getHashMap() {
+		return hashMap;
+	}
+
+	public void setHashMap(Map<String, Object> hashMap) {
+		this.hashMap = hashMap;
 	}
 }

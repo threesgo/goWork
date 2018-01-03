@@ -7,6 +7,8 @@
 	var $sysMemberDatagrid;	
 	var sysMemberOperation = {};
 	
+	var memberTypeObj = new Function("return " + '${hashMap.memberTypeObj}')();
+	
 	$(function(){
 		$sysMemberDatagrid=$('#sysMemberTable').datagrid({
 			fitColumns:false,
@@ -25,8 +27,10 @@
 	        pagination:true,
             url:"sysMemberAction!listData.act",
             frozenColumns:[[
-       			{field:'type',title: "类型",width:100,sortable:true
-					
+       			{field:'type',title: "类型",width:100,sortable:true,
+       				formatter:function(value,rowData,rowIndex){
+       					return memberTypeObj[value];
+					}
 				},
        			{field:'userName',title: "用户名",width:100,sortable:true
 					
@@ -36,11 +40,18 @@
 				},
 				{field:'email',title:"邮箱",width:80,sortable:true
 		        },
-		        {field:'isAuthorize',title:"是否授权",width:80,sortable:true
+		        {field:'isAuthorize',title:"是否授权",width:80,sortable:true,
+		        	formatter:function(value,rowData,rowIndex){
+       					if(value == 0){
+       						return "否";
+       					}else{
+       						return "是";
+       					}
+					}
 		        },
 		        {field:'authorize',title:"授权",width:80,sortable:true,
 		        	formatter:function(value,rowData,rowIndex){
-						 return "<a onclick='sysMemberOperation.authorize("+rowData.id+","+rowIndex+")' style='color: red;'>参考图片</a>";
+						 return "<a onclick='sysMemberOperation.authorize("+rowData.id+","+rowIndex+")' style='color: blue;'>授权编辑</a>";
 					}
 		        }
             ]],
