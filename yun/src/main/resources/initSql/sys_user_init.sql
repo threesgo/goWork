@@ -151,14 +151,23 @@ values(69,'编辑','sysOrderActionEdit','status_online',12,3,2,1);
 
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
 values(13,'订单流程','sysOrderAction!manageIndex.act','book_edit',11,2,1,1);
+
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
 values(14,'流程管理','','door_in',0,3,1,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
 values(15,'流程管理','processFlowAction.act','door_in',14,1,1,1);
+
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
 values(16,'报表管理','','chart_bar',0,5,1,1);
 insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
 values(17,'报表管理','charAction.act','chart_bar',16,1,1,1);
+
+
+insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
+values(70,'会员管理','','status_online',0,6,1,1);
+insert into sys_menu(id,name,url,iconcls,parent_id,order_no,view_type,auth_type) 
+values(71,'会员管理','sysMemberAction.act','status_online',70,1,1,1);
+
 
 delete FROM sys_role_menu t WHERE t.role_id = 1;
 insert into sys_role_menu (id,row_version,role_id,menu_id)
@@ -302,5 +311,9 @@ insert into sys_role_menu (id,row_version,role_id,menu_id)
 values (68, 0, 1 ,68);
 insert into sys_role_menu (id,row_version,role_id,menu_id)
 values (69, 0, 1 ,69);
+insert into sys_role_menu (id,row_version,role_id,menu_id)
+values (70, 0, 1 ,70);
+insert into sys_role_menu (id,row_version,role_id,menu_id)
+values (71, 0, 1 ,71);
 
 END;
