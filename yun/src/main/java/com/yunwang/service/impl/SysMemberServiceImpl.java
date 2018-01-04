@@ -43,4 +43,9 @@ public class SysMemberServiceImpl implements SysMemberService{
 	public SysMember getByWxCode(String wxCode) {
 		return sysMemberDao.getByWxCode(wxCode);
 	}
+
+	@Override
+	public SysMember getByPhoneNumber(String phoneNumber) {
+		return sysMemberDao.getByPhoneNumber(phoneNumber);
+	}
 }

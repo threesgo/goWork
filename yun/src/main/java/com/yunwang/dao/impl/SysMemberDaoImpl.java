@@ -47,4 +47,9 @@ public class SysMemberDaoImpl extends BaseDaoImpl<SysMember> implements SysMembe
 	public SysMember getByWxCode(String wxCode) {
 		return getUniqueResult("SELECT model FROM SysMember model WHERE model.weCode = ? ", wxCode);
 	}
+
+	@Override
+	public SysMember getByPhoneNumber(String phoneNumber) {
+		return getUniqueResult("SELECT model FROM SysMember model WHERE model.phoneNum = ? ", phoneNumber.trim());
+	}
 }

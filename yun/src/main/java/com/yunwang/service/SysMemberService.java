@@ -26,5 +26,7 @@ public interface SysMemberService {
 	public void saveOrUpdate(SysMember sysMember);
 
 	public SysMember getByWxCode(String wxCode);
+
+	public SysMember getByPhoneNumber(String phoneNumber);
 		
 }

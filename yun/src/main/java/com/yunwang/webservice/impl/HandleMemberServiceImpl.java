@@ -27,7 +27,14 @@ public class HandleMemberServiceImpl implements HandleMemberService {
 	}
 	
 	@Override
-	public void saveMember(SysMember sysMember){
+	public SysMember getByPhoneNumber(String phoneNumber) {
+		SysMember sysMember = sysMemberService.getByPhoneNumber(phoneNumber);
+		return sysMember;
+	}
+	
+	@Override
+	public SysMember saveMember(SysMember sysMember){
 		sysMemberService.saveOrUpdate(sysMember);
+		return sysMember;
 	}
 }

@@ -11,4 +11,6 @@ public interface SysMemberDaoI extends BaseDaoI<SysMember>{
 
 	SysMember getByWxCode(String wxCode);
 
+	SysMember getByPhoneNumber(String phoneNumber);
+
 }

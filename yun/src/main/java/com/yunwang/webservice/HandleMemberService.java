@@ -15,5 +15,7 @@ public interface HandleMemberService {
 	
 	public  SysMember getByWxCode(String wxCode);
 
-	void saveMember(SysMember sysMember);
+	SysMember getByPhoneNumber(String phoneNumber);
+	
+	SysMember saveMember(SysMember sysMember);
 }
