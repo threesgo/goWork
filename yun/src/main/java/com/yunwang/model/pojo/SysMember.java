@@ -38,7 +38,7 @@ public class SysMember extends AbstractRowVersionModel{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO, generator="my_entity_seq_gen")
-	@SequenceGenerator(name="my_entity_seq_gen", sequenceName="SEQ_SYS_ORDER_FLOW")
+	@SequenceGenerator(name="my_entity_seq_gen", sequenceName="SEQ_SYS_MEMBER")
 	private Integer id;
 	
 	@Column(name = "USER_NAME",length=256)
