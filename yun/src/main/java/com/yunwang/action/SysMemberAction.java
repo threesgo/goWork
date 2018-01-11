@@ -26,7 +26,8 @@ import com.yunwang.util.action.AbstractUpDownAction;
 		@Result(name = "index",location="/WEB-INF/web/sysMember/index.jsp"),
 		@Result(name = "info",location="/WEB-INF/web/sysMember/info.jsp"),
 		@Result(name = "register",location="/WEB-INF/web/sysMember/register.jsp"),
-		@Result(name = "edit",location="/WEB-INF/web/sysMember/edit.jsp")
+		@Result(name = "edit",location="/WEB-INF/web/sysMember/edit.jsp"),
+		@Result(name = "listPage",location="/WEB-INF/web/sysMember/listPage.jsp")
 	}
 )
 public class SysMemberAction extends AbstractUpDownAction{
@@ -51,13 +52,7 @@ public class SysMemberAction extends AbstractUpDownAction{
 	
 	 
 	public String execute(){
-		//流程数据
-		memberTypeList = BaseDataDictionaryUtil.baseDataMap.get(8);
-		JSONObject memberTypeObj = new JSONObject();
-		for(SysDataDictionary dictionary:memberTypeList){
-			memberTypeObj.put(dictionary.getValue(), dictionary.getName());
-		}
-		hashMap.put("memberTypeObj",memberTypeObj);
+		getMemberTypeData();
 		return "index";
 	}
 	
@@ -124,6 +119,20 @@ public class SysMemberAction extends AbstractUpDownAction{
 			LOG.error(e.getMessage());
 			return error("操作失败!");
 		}
+	}
+	
+	public String listPage(){
+		getMemberTypeData();
+		return "listPage";
+	}
+
+	private void getMemberTypeData() {
+		memberTypeList = BaseDataDictionaryUtil.baseDataMap.get(8);
+		JSONObject memberTypeObj = new JSONObject();
+		for(SysDataDictionary dictionary:memberTypeList){
+			memberTypeObj.put(dictionary.getValue(), dictionary.getName());
+		}
+		hashMap.put("memberTypeObj",memberTypeObj);
 	}
 	
 	/**

@@ -3,6 +3,12 @@
 <form id="saveOrUpdate_order" method="post" action="sysOrderAction!saveOrUpdateOrder.act">
 	<input type="hidden" name="sysOrder.id" value="${sysOrder.id}"/>
 	<input type="hidden" id="orderPackages" name="sysOrder.orderPackages" value=""/>
+	<input id="relationMemberId" name="sysOrder.relationMemberId" value=""/>   
+	
+	<div>   
+        <label for="edit_name">会员:</label>
+        <a href="#" class="easyui-linkbutton " data-options="iconCls:'icon-search', plain:true" onclick="selectSearchMember()"></a>
+    </div>
 	
     <div>   
         <label for="edit_name">订单名称:</label>   
@@ -139,6 +145,35 @@ $(function(){
 	    max:100
 	});
 });
+
+function selectSearchMember(){
+	var dialog = $('<div id="selectSearchMember"></div>').dialog({    
+		href : "sysMemberAction!listPage.act",
+		width:600,
+		height:380,
+		title:"选择关联会员",
+		method:'post',
+		modal:true,
+		resizable:true,
+		buttons:[{
+			text:"确定",
+			iconCls:'icon-ok',
+			handler:function(){
+				   
+			}
+		},{
+			text:"取消",
+			iconCls:'icon-cancel',
+			handler:function(){
+				dialog.dialog("destroy");
+			}
+		}],
+		onClose:function(){
+			$(this).dialog("destroy");
+		}
+	});
+}
+
 /* 
 $(function(){
 	addressInit('cmbProvince', 'cmbCity', 'cmbArea');
