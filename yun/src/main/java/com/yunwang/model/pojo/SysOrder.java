@@ -104,6 +104,9 @@ public class SysOrder extends AbstractRowVersionModel{
 	@Column(name="BALCONY_NUM",columnDefinition = "number default 0")
 	private Integer balconyNum;  //阳台
 	
+	@Column(name="RELATION_MEMBER_ID")
+	private Integer relationMemberId; 
+	
 	@Transient
 	private String orderPackages;
 	
@@ -328,5 +331,13 @@ public class SysOrder extends AbstractRowVersionModel{
 	
 	public String getRoomsStr(){
 		return roomNum+"室"+hallNum+"厅"+kitchenNum+"厨"+toiletNum+"卫"+balconyNum+"阳台";
+	}
+
+	public Integer getRelationMemberId() {
+		return relationMemberId;
+	}
+
+	public void setRelationMemberId(Integer relationMemberId) {
+		this.relationMemberId = relationMemberId;
 	}
 }
