@@ -262,4 +262,16 @@ public class SysOrderServiceImpl implements SysOrderService {
 		// TODO Auto-generated method stub
 		sysOrderResourceDao.deleteByPropertys("id", ids);
 	}
+
+	@Override
+	public List<SysOrder> findOrderByMember(Integer memberId) {
+		// TODO Auto-generated method stub
+		return sysOrderDao.findByProperty("relationMemberId", memberId);
+	}
+
+	@Override
+	public List<SysOrderFlow> findOrderFlowByMember(Integer memberId) {
+		// TODO Auto-generated method stub
+		return sysOrderFlowDao.findByWorkerId(memberId);
+	}
 }

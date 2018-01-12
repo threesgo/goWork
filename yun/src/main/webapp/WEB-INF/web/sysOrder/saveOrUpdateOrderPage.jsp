@@ -159,7 +159,9 @@ function selectSearchMember(){
 			text:"确定",
 			iconCls:'icon-ok',
 			handler:function(){
-				   
+				 var selectNode = $('#sysMemberTable').datagrid("getSelected");
+				 $("#relationMemberId").val(selectNode.id);
+				 dialog.dialog("destroy");
 			}
 		},{
 			text:"取消",

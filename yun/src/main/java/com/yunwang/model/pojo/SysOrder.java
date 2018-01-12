@@ -1,7 +1,9 @@
 package com.yunwang.model.pojo;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -109,6 +111,8 @@ public class SysOrder extends AbstractRowVersionModel{
 	
 	@Transient
 	private String orderPackages;
+	@Transient
+	private List<SysOrderFlow> orderFlows = new ArrayList<SysOrderFlow>();
 	
 	public SysOrder(){
 		
@@ -339,5 +343,13 @@ public class SysOrder extends AbstractRowVersionModel{
 
 	public void setRelationMemberId(Integer relationMemberId) {
 		this.relationMemberId = relationMemberId;
+	}
+
+	public List<SysOrderFlow> getOrderFlows() {
+		return orderFlows;
+	}
+
+	public void setOrderFlows(List<SysOrderFlow> orderFlows) {
+		this.orderFlows = orderFlows;
 	}
 }

@@ -50,4 +50,8 @@ public interface SysOrderService {
 
 	void deleteOrderResource(String ids);
 
+	List<SysOrder> findOrderByMember(Integer memberId);
+
+	List<SysOrderFlow> findOrderFlowByMember(Integer memberId);
+
 }

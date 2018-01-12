@@ -10,5 +10,7 @@ public interface SysOrderFlowDaoI extends BaseDaoI<SysOrderFlow>{
 
 	List<SysOrderFlow> findGreaterOrder(Integer orderId, Integer orderNo);
 
+	List<SysOrderFlow> findByWorkerId(Integer memberId);
+
 
 }
