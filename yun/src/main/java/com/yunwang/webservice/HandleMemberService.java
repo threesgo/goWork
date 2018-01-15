@@ -26,4 +26,6 @@ public interface HandleMemberService {
 	List<SysOrder> findOrderByMember(Integer memberId);
 	
 	List<SysOrderFlow> findOrderFlowByMember(Integer memberId);
+	
+	List<SysOrderFlow> findOrderFlowByOrder(Integer orderId);
 }

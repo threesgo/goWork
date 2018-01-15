@@ -54,4 +54,9 @@ public class HandleMemberServiceImpl implements HandleMemberService {
 	public List<SysOrderFlow> findOrderFlowByMember(Integer memberId) {
 		return sysOrderService.findOrderFlowByMember(memberId);
 	}
+
+	@Override
+	public List<SysOrderFlow> findOrderFlowByOrder(Integer orderId) {
+		return sysOrderService.findOrderFlow(orderId);
+	}
 }
