@@ -28,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.yunwang.model.page.Pager;
 import com.yunwang.model.pojo.SysBrand;
 import com.yunwang.model.pojo.SysDataDictionary;
+import com.yunwang.model.pojo.SysMember;
 import com.yunwang.model.pojo.SysOrder;
 import com.yunwang.model.pojo.SysOrderFlow;
 import com.yunwang.model.pojo.SysOrderPackage;
@@ -38,6 +39,7 @@ import com.yunwang.model.pojo.SysRsRcPackage;
 import com.yunwang.model.pojo.SysSupplier;
 import com.yunwang.model.pojo.SysWorker;
 import com.yunwang.service.SysBrandService;
+import com.yunwang.service.SysMemberService;
 import com.yunwang.service.SysOrderService;
 import com.yunwang.service.SysResourceService;
 import com.yunwang.service.SysRsRcPackageService;
@@ -92,6 +94,8 @@ public class SysOrderAction extends AbstractUpDownAction{
 	private SysWorkerService sysWorkerService;
 	@Autowired
 	private SysResourceService sysResourceService;
+	@Autowired
+	private SysMemberService sysMemberService;
 	
 	
 	private Map<String,Object> hashMap;
@@ -227,6 +231,10 @@ public class SysOrderAction extends AbstractUpDownAction{
 		Map<Integer,SysOrderPackage> orderPackageMap = new HashMap<Integer,SysOrderPackage>();
 		if(null != sysOrder && null != sysOrder.getId()){
 			sysOrder = sysOrderService.get(sysOrder.getId());
+			if(null != sysOrder.getRelationMemberId()){
+				SysMember sysMember = sysMemberService.get(sysOrder.getRelationMemberId());
+				sysOrder.setRelationMemberName(sysMember.getUserName());
+			}
 			List<SysOrderPackage> sysOrderPackages = sysOrderService.findOrderPackage(sysOrder.getId());
 			orderPackageMap = CollectionUtil.listToMap(sysOrderPackages,"rsrcPackageId");
 		}

@@ -79,6 +79,7 @@ public class SysOrderServiceImpl implements SysOrderService {
 			dbOrder.setHallNum(sysOrder.getHallNum());
 			dbOrder.setKitchenNum(sysOrder.getKitchenNum());
 			dbOrder.setToiletNum(sysOrder.getToiletNum());
+			dbOrder.setRelationMemberId(sysOrder.getRelationMemberId());
 			sysOrderDao.update(dbOrder);
 			orderId = dbOrder.getId();
 		}else{

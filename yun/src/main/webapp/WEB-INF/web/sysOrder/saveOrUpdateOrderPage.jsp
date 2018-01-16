@@ -3,10 +3,11 @@
 <form id="saveOrUpdate_order" method="post" action="sysOrderAction!saveOrUpdateOrder.act">
 	<input type="hidden" name="sysOrder.id" value="${sysOrder.id}"/>
 	<input type="hidden" id="orderPackages" name="sysOrder.orderPackages" value=""/>
-	<input id="relationMemberId" name="sysOrder.relationMemberId" value=""/>   
+	<input type="hidden" id="relationMemberId" name="sysOrder.relationMemberId" value="${sysOrder.relationMemberId}"/>   
 	
 	<div>   
-        <label for="edit_name">会员:</label>
+        <label for="edit_name">关联会员:</label>
+        <input id="relationMemberName" value="${sysOrder.relationMemberName}" disabled="disabled"/>   
         <a href="#" class="easyui-linkbutton " data-options="iconCls:'icon-search', plain:true" onclick="selectSearchMember()"></a>
     </div>
 	
@@ -147,10 +148,10 @@ $(function(){
 });
 
 function selectSearchMember(){
-	var dialog = $('<div id="selectSearchMember"></div>').dialog({    
+	var memberDialog = $('<div id="selectSearchMember"></div>').dialog({    
 		href : "sysMemberAction!listPage.act",
-		width:600,
-		height:380,
+		width:700,
+		height:450,
 		title:"选择关联会员",
 		method:'post',
 		modal:true,
@@ -161,13 +162,14 @@ function selectSearchMember(){
 			handler:function(){
 				 var selectNode = $('#sysMemberTable').datagrid("getSelected");
 				 $("#relationMemberId").val(selectNode.id);
-				 dialog.dialog("destroy");
+				  $("#relationMemberName").val(selectNode.userName);
+				 memberDialog.dialog("destroy");
 			}
 		},{
 			text:"取消",
 			iconCls:'icon-cancel',
 			handler:function(){
-				dialog.dialog("destroy");
+				memberDialog.dialog("destroy");
 			}
 		}],
 		onClose:function(){

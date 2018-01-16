@@ -113,6 +113,8 @@ public class SysOrder extends AbstractRowVersionModel{
 	private String orderPackages;
 	@Transient
 	private List<SysOrderFlow> orderFlows = new ArrayList<SysOrderFlow>();
+	@Transient
+	private String relationMemberName;
 	
 	public SysOrder(){
 		
@@ -351,5 +353,13 @@ public class SysOrder extends AbstractRowVersionModel{
 
 	public void setOrderFlows(List<SysOrderFlow> orderFlows) {
 		this.orderFlows = orderFlows;
+	}
+
+	public String getRelationMemberName() {
+		return relationMemberName;
+	}
+
+	public void setRelationMemberName(String relationMemberName) {
+		this.relationMemberName = relationMemberName;
 	}
 }
