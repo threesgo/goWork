@@ -54,4 +54,5 @@ public interface SysOrderService {
 
 	List<SysOrderFlow> findOrderFlowByMember(Integer memberId);
 
+	List<SysOrder> findOrderByMemberAndType(Integer memberId, Integer type,String status);
 }

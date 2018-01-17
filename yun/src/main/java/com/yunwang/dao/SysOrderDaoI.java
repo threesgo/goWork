@@ -16,4 +16,7 @@ public interface SysOrderDaoI extends BaseDaoI<SysOrder>{
 	Pager<SysOrder> findPageOrder(int page, int rows, JSONObject seachJson);
 
 	void updateStatus(String ids, Integer status);
+
+	List<SysOrder> findOrderByMemberAndType(Integer memberId, Integer type,
+			String status);
 }

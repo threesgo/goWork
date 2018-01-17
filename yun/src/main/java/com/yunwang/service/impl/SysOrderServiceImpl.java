@@ -275,4 +275,10 @@ public class SysOrderServiceImpl implements SysOrderService {
 		// TODO Auto-generated method stub
 		return sysOrderFlowDao.findByWorkerId(memberId);
 	}
+
+	@Override
+	public List<SysOrder> findOrderByMemberAndType(Integer memberId,
+			Integer type, String status) {
+		return sysOrderDao.findOrderByMemberAndType(memberId,type,status);
+	}
 }

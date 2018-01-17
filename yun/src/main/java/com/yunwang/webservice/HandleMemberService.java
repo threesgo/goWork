@@ -25,9 +25,7 @@ public interface HandleMemberService {
 	
 	SysMember saveMember(SysMember sysMember);
 	
-	List<SysOrder> findOrderByMember(Integer memberId);
-	
-	List<SysOrderFlow> findOrderFlowByMember(Integer memberId);
+	List<SysOrder> findOrderByMemberAndType(Integer memberId,Integer type,String status);
 	
 	List<SysOrderFlow> findOrderFlowByOrder(Integer orderId);
 	
