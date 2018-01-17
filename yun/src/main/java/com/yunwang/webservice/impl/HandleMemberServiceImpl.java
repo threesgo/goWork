@@ -72,4 +72,9 @@ public class HandleMemberServiceImpl implements HandleMemberService {
 	public List<SysResource> findByCataLogId(Integer catalogId) {
 		return sysResourceService.findByRsRcCatalogId(catalogId);
 	}
+
+	@Override
+	public SysOrder getOrderById(Integer id) {
+		return sysOrderService.get(id);
+	}
 }

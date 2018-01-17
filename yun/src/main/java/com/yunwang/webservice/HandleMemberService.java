@@ -19,11 +19,13 @@ public interface HandleMemberService {
 //	
 //	public @XmlJavaTypeAdapter(FkXmlAdapter.class) Map<String,Cat> getAllCat();
 	
-	public  SysMember getByWxCode(String wxCode);
+	public SysMember getByWxCode(String wxCode);
 
 	SysMember getByPhoneNumber(String phoneNumber);
 	
 	SysMember saveMember(SysMember sysMember);
+	
+	SysOrder getOrderById(Integer id);
 	
 	List<SysOrder> findOrderByMemberAndType(Integer memberId,Integer type,String status);
 	
