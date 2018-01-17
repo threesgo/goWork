@@ -9,8 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.yunwang.model.pojo.SysMember;
 import com.yunwang.model.pojo.SysOrder;
 import com.yunwang.model.pojo.SysOrderFlow;
+import com.yunwang.model.pojo.SysResource;
+import com.yunwang.model.pojo.SysRsRcCatalog;
 import com.yunwang.service.SysMemberService;
 import com.yunwang.service.SysOrderService;
+import com.yunwang.service.SysResourceService;
+import com.yunwang.service.SysResourceTypeService;
 import com.yunwang.webservice.HandleMemberService;
 
 
@@ -21,6 +25,10 @@ public class HandleMemberServiceImpl implements HandleMemberService {
 	private SysMemberService sysMemberService;
 	@Autowired
 	private SysOrderService sysOrderService;
+	@Autowired
+	private SysResourceService sysResourceService;
+	@Autowired
+	private SysResourceTypeService sysResourceTypeService;
 	
 	@Override
 	public String sayHello(String name) {
@@ -58,5 +66,15 @@ public class HandleMemberServiceImpl implements HandleMemberService {
 	@Override
 	public List<SysOrderFlow> findOrderFlowByOrder(Integer orderId) {
 		return sysOrderService.findOrderFlow(orderId);
+	}
+
+	@Override
+	public List<SysRsRcCatalog> findByParentId(Integer parentId) {
+		return sysResourceTypeService.findRsRcCatalogByParentId(parentId);
+	}
+
+	@Override
+	public List<SysResource> findByCataLogId(Integer catalogId) {
+		return sysResourceService.findByRsRcCatalogId(catalogId);
 	}
 }
