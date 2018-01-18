@@ -583,4 +583,9 @@ public class SysResourceServiceImpl implements SysResourceService{
 	public List<SysResourceRel> findResourceByCataLogId(Integer catalogId) {
 		return sysResourceRelDao.findResourceByCataLogId(catalogId);
 	}
+
+	@Override
+	public List<SysRsRcAttribRel> findAttribRelByResourceId(Integer resourceId) {
+		return sysRsRcAttribRelDao.findByProperty("rsrcRelId",resourceId);
+	}
 }

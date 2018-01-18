@@ -10,6 +10,8 @@ import com.yunwang.model.pojo.SysOrder;
 import com.yunwang.model.pojo.SysOrderFlow;
 import com.yunwang.model.pojo.SysPcBrandCatalog;
 import com.yunwang.model.pojo.SysResourceRel;
+import com.yunwang.model.pojo.SysRsRcAttribCatalog;
+import com.yunwang.model.pojo.SysRsRcAttribRel;
 import com.yunwang.model.pojo.SysRsRcCatalog;
 import com.yunwang.model.pojo.SysRsRcPackage;
 
@@ -51,4 +53,12 @@ public interface HandleMemberService {
 	
 	//查询所有的子集资源类别
 	List<SysRsRcCatalog> findAllLastCatalog();
+	
+	//
+	SysResourceRel getResourceById(Integer relResourceId);
+	
+	List<SysRsRcAttribCatalog> findAttribCataByCatalog(Integer catalogId);
+	
+	List<SysRsRcAttribRel> findAttribByResourceId(Integer resourceId);
+	
 }

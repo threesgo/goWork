@@ -13,6 +13,8 @@ import com.yunwang.model.pojo.SysOrder;
 import com.yunwang.model.pojo.SysOrderFlow;
 import com.yunwang.model.pojo.SysPcBrandCatalog;
 import com.yunwang.model.pojo.SysResourceRel;
+import com.yunwang.model.pojo.SysRsRcAttribCatalog;
+import com.yunwang.model.pojo.SysRsRcAttribRel;
 import com.yunwang.model.pojo.SysRsRcCatalog;
 import com.yunwang.model.pojo.SysRsRcPackage;
 import com.yunwang.service.SysBrandService;
@@ -39,7 +41,6 @@ public class HandleMemberServiceImpl implements HandleMemberService {
 	private SysRsRcPackageService sysRsRcPackageService;
 	@Autowired
 	private SysBrandService sysBrandService;
-	
 	
 	@Override
 	public String sayHello(String name) {
@@ -132,5 +133,20 @@ public class HandleMemberServiceImpl implements HandleMemberService {
 				allChildren.add(sysRsRcCatalog);
 			}
 		}
+	}
+
+	@Override
+	public SysResourceRel getResourceById(Integer relResourceId) {
+		return sysResourceService.getRelResource(relResourceId);
+	}
+
+	@Override
+	public List<SysRsRcAttribCatalog> findAttribCataByCatalog(Integer catalogId) {
+		return sysResourceTypeService.findAllAttr(catalogId);
+	}
+
+	@Override
+	public List<SysRsRcAttribRel> findAttribByResourceId(Integer resourceId) {
+		return sysResourceService.findAttribRelByResourceId(resourceId);
 	}
 }

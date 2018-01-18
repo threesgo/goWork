@@ -10,6 +10,7 @@ import com.yunwang.model.pojo.SysResource;
 import com.yunwang.model.pojo.SysResourceRel;
 import com.yunwang.model.pojo.SysRsRcAttrib;
 import com.yunwang.model.pojo.SysRsRcAttribCatalog;
+import com.yunwang.model.pojo.SysRsRcAttribRel;
 import com.yunwang.model.pojo.SysRsRcCatalog;
 import com.yunwang.model.pojo.SysRsRcPackage;
 
@@ -60,4 +61,6 @@ public interface SysResourceService {
 	SysResource get(Integer id);
 
 	List<SysResourceRel> findResourceByCataLogId(Integer catalogId);
+
+	List<SysRsRcAttribRel> findAttribRelByResourceId(Integer resourceId);
 }
