@@ -58,4 +58,6 @@ public interface SysResourceService {
 	void update(SysResource sysResource);
 
 	SysResource get(Integer id);
+
+	List<SysResourceRel> findResourceByCataLogId(Integer catalogId);
 }

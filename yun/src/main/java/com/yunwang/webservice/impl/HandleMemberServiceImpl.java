@@ -1,20 +1,26 @@
 package com.yunwang.webservice.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.jws.WebService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.yunwang.model.pojo.SysBrand;
 import com.yunwang.model.pojo.SysMember;
 import com.yunwang.model.pojo.SysOrder;
 import com.yunwang.model.pojo.SysOrderFlow;
-import com.yunwang.model.pojo.SysResource;
+import com.yunwang.model.pojo.SysPcBrandCatalog;
+import com.yunwang.model.pojo.SysResourceRel;
 import com.yunwang.model.pojo.SysRsRcCatalog;
+import com.yunwang.model.pojo.SysRsRcPackage;
+import com.yunwang.service.SysBrandService;
 import com.yunwang.service.SysMemberService;
 import com.yunwang.service.SysOrderService;
 import com.yunwang.service.SysResourceService;
 import com.yunwang.service.SysResourceTypeService;
+import com.yunwang.service.SysRsRcPackageService;
 import com.yunwang.webservice.HandleMemberService;
 
 
@@ -29,6 +35,11 @@ public class HandleMemberServiceImpl implements HandleMemberService {
 	private SysResourceService sysResourceService;
 	@Autowired
 	private SysResourceTypeService sysResourceTypeService;
+	@Autowired
+	private SysRsRcPackageService sysRsRcPackageService;
+	@Autowired
+	private SysBrandService sysBrandService;
+	
 	
 	@Override
 	public String sayHello(String name) {
@@ -64,17 +75,62 @@ public class HandleMemberServiceImpl implements HandleMemberService {
 	}
 
 	@Override
-	public List<SysRsRcCatalog> findByParentId(Integer parentId) {
+	public List<SysRsRcCatalog> findCatalogByParentId(Integer parentId) {
 		return sysResourceTypeService.findRsRcCatalogByParentId(parentId);
 	}
 
 	@Override
-	public List<SysResource> findByCataLogId(Integer catalogId) {
-		return sysResourceService.findByRsRcCatalogId(catalogId);
+	public List<SysResourceRel> findResourceByCataLogId(Integer catalogId) {
+		return sysResourceService.findResourceByCataLogId(catalogId);
 	}
 
 	@Override
 	public SysOrder getOrderById(Integer id) {
 		return sysOrderService.get(id);
+	}
+
+	@Override
+	public List<SysRsRcPackage> findAllPackages() {
+		return sysRsRcPackageService.findAll("orderNo");
+	}
+
+	@Override
+	public List<SysBrand> findBrandByCatalogId(Integer catalogId) {
+		return sysBrandService.findByCatalogId(catalogId);
+	}
+
+	@Override
+	public List<SysPcBrandCatalog> findBrandCatalogByPackageId(Integer packageId) {
+		return sysRsRcPackageService.findAllPcBrandCatalog(packageId);
+	}
+
+	@Override
+	public List<SysRsRcCatalog> findAllLastCatalog() {
+		List<SysRsRcCatalog> allChildren = new ArrayList<SysRsRcCatalog>();
+		List<SysRsRcCatalog> sysRcRsrcOrgList = sysResourceTypeService.findRsRcCatalogByParentId(0);
+		for(SysRsRcCatalog sysRsRcCatalog:sysRcRsrcOrgList){
+			sysRsRcCatalog.setCombineName(sysRsRcCatalog.getCatalogName());
+			List<SysRsRcCatalog> childrenList = sysResourceTypeService.findRsRcCatalogByParentId(sysRsRcCatalog.getId());
+			if(childrenList.size()>0){
+				getChildrenCatalog(sysRsRcCatalog,childrenList,allChildren);
+			}else{
+				allChildren.add(sysRsRcCatalog);
+			}
+		}
+		return allChildren;
+	}
+	
+	private void getChildrenCatalog(SysRsRcCatalog pSysRsRcCatalog,
+			List<SysRsRcCatalog> sysRcRsrcOrgList,
+			List<SysRsRcCatalog> allChildren){
+		for(SysRsRcCatalog sysRsRcCatalog:sysRcRsrcOrgList){
+			sysRsRcCatalog.setCombineName(pSysRsRcCatalog.getCombineName()+">"+sysRsRcCatalog.getCatalogName());
+			List<SysRsRcCatalog> childrenList = sysResourceTypeService.findRsRcCatalogByParentId(sysRsRcCatalog.getId());
+			if(childrenList.size()>0){
+				getChildrenCatalog(sysRsRcCatalog,childrenList,allChildren);
+			}else{
+				allChildren.add(sysRsRcCatalog);
+			}
+		}
 	}
 }

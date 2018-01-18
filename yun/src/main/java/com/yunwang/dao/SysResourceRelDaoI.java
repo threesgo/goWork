@@ -32,4 +32,6 @@ public interface SysResourceRelDaoI extends BaseDaoI<SysResourceRel>{
 			String brandCatalogIds, Integer flowId,
 			int page, int rows, JSONObject seachJson);
 
+	List<SysResourceRel> findResourceByCataLogId(Integer catalogId);
+
 }

@@ -420,4 +420,11 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 		
 		return pagedSqlQuery(buf.toString(),page,rows,parmeMap,scalarMap);
 	}
+
+	@Override
+	public List<SysResourceRel> findResourceByCataLogId(Integer catalogId) {
+		Map<String, Object> map = new HashMap<String,Object>();
+		map.put("rsrcCatalogId",catalogId);
+		return find("SELECT model FROM SysResourceRel model WHERE model.rsrcCatalogId=:rsrcCatalogId",map);
+	}
 }

@@ -4,11 +4,14 @@ import java.util.List;
 
 import javax.jws.WebService;
 
+import com.yunwang.model.pojo.SysBrand;
 import com.yunwang.model.pojo.SysMember;
 import com.yunwang.model.pojo.SysOrder;
 import com.yunwang.model.pojo.SysOrderFlow;
-import com.yunwang.model.pojo.SysResource;
+import com.yunwang.model.pojo.SysPcBrandCatalog;
+import com.yunwang.model.pojo.SysResourceRel;
 import com.yunwang.model.pojo.SysRsRcCatalog;
+import com.yunwang.model.pojo.SysRsRcPackage;
 
 
 @WebService
@@ -31,7 +34,21 @@ public interface HandleMemberService {
 	
 	List<SysOrderFlow> findOrderFlowByOrder(Integer orderId);
 	
-	List<SysRsRcCatalog> findByParentId(Integer parentId);
+	//查询子集类别
+	List<SysRsRcCatalog> findCatalogByParentId(Integer parentId);
 	
-	List<SysResource> findByCataLogId(Integer catalogId);
+	//根据资源类别查询资源 
+	List<SysResourceRel> findResourceByCataLogId(Integer catalogId);
+	
+	//查询所有的套餐
+	List<SysRsRcPackage> findAllPackages();
+	
+	//查询资源类别与品牌的关联关系
+	List<SysBrand> findBrandByCatalogId(Integer catalogId);
+	
+	//查询套餐中资源类别与品牌的关联关系
+	List<SysPcBrandCatalog> findBrandCatalogByPackageId(Integer packageId);
+	
+	//查询所有的子集资源类别
+	List<SysRsRcCatalog> findAllLastCatalog();
 }
