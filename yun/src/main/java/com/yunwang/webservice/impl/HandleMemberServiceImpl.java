@@ -162,4 +162,9 @@ public class HandleMemberServiceImpl implements HandleMemberService {
 	public List<SysRsRcAttribRel> findAttribByResourceId(Integer resourceId) {
 		return sysResourceService.findAttribRelByResourceId(resourceId);
 	}
+
+	@Override
+	public List<SysResourceRel> findResourceByOrderId(Integer orderId) {
+		return sysResourceService.findByOrderId(orderId);
+	}
 }

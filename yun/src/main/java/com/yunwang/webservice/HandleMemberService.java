@@ -61,4 +61,5 @@ public interface HandleMemberService {
 	
 	List<SysRsRcAttribRel> findAttribByResourceId(Integer resourceId);
 	
+	List<SysResourceRel> findResourceByOrderId(Integer orderId);
 }
