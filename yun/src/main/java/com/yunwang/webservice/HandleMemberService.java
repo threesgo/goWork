@@ -52,7 +52,7 @@ public interface HandleMemberService {
 	List<SysPcBrandCatalog> findBrandCatalogByPackageId(Integer packageId);
 	
 	//查询所有的子集资源类别
-	List<SysRsRcCatalog> findAllLastCatalog();
+	List<SysRsRcCatalog> findAllLastCatalog(String filterJson);
 	
 	//
 	SysResourceRel getResourceById(Integer relResourceId);

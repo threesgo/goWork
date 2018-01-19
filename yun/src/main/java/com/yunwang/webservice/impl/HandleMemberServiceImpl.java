@@ -23,6 +23,7 @@ import com.yunwang.service.SysOrderService;
 import com.yunwang.service.SysResourceService;
 import com.yunwang.service.SysResourceTypeService;
 import com.yunwang.service.SysRsRcPackageService;
+import com.yunwang.util.string.MyStringUtil;
 import com.yunwang.webservice.HandleMemberService;
 
 
@@ -106,16 +107,22 @@ public class HandleMemberServiceImpl implements HandleMemberService {
 	}
 
 	@Override
-	public List<SysRsRcCatalog> findAllLastCatalog() {
+	public List<SysRsRcCatalog> findAllLastCatalog(String filterJson) {
 		List<SysRsRcCatalog> allChildren = new ArrayList<SysRsRcCatalog>();
 		List<SysRsRcCatalog> sysRcRsrcOrgList = sysResourceTypeService.findRsRcCatalogByParentId(0);
 		for(SysRsRcCatalog sysRsRcCatalog:sysRcRsrcOrgList){
 			sysRsRcCatalog.setCombineName(sysRsRcCatalog.getCatalogName());
 			List<SysRsRcCatalog> childrenList = sysResourceTypeService.findRsRcCatalogByParentId(sysRsRcCatalog.getId());
 			if(childrenList.size()>0){
-				getChildrenCatalog(sysRsRcCatalog,childrenList,allChildren);
+				getChildrenCatalog(sysRsRcCatalog,childrenList,allChildren,filterJson);
 			}else{
-				allChildren.add(sysRsRcCatalog);
+				if(MyStringUtil.isNotBlank(filterJson)){
+					if(sysRsRcCatalog.getCatalogName().contains(filterJson)){
+						allChildren.add(sysRsRcCatalog);
+					}
+				}else{
+					allChildren.add(sysRsRcCatalog);
+				}
 			}
 		}
 		return allChildren;
@@ -123,14 +130,20 @@ public class HandleMemberServiceImpl implements HandleMemberService {
 	
 	private void getChildrenCatalog(SysRsRcCatalog pSysRsRcCatalog,
 			List<SysRsRcCatalog> sysRcRsrcOrgList,
-			List<SysRsRcCatalog> allChildren){
+			List<SysRsRcCatalog> allChildren,String filterJson){
 		for(SysRsRcCatalog sysRsRcCatalog:sysRcRsrcOrgList){
 			sysRsRcCatalog.setCombineName(pSysRsRcCatalog.getCombineName()+">"+sysRsRcCatalog.getCatalogName());
 			List<SysRsRcCatalog> childrenList = sysResourceTypeService.findRsRcCatalogByParentId(sysRsRcCatalog.getId());
 			if(childrenList.size()>0){
-				getChildrenCatalog(sysRsRcCatalog,childrenList,allChildren);
+				getChildrenCatalog(sysRsRcCatalog,childrenList,allChildren,filterJson);
 			}else{
-				allChildren.add(sysRsRcCatalog);
+				if(MyStringUtil.isNotBlank(filterJson)){
+					if(sysRsRcCatalog.getCatalogName().contains(filterJson)){
+						allChildren.add(sysRsRcCatalog);
+					}
+				}else{
+					allChildren.add(sysRsRcCatalog);
+				}
 			}
 		}
 	}
