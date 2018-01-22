@@ -17,12 +17,14 @@ import com.yunwang.model.pojo.SysRsRcAttribCatalog;
 import com.yunwang.model.pojo.SysRsRcAttribRel;
 import com.yunwang.model.pojo.SysRsRcCatalog;
 import com.yunwang.model.pojo.SysRsRcPackage;
+import com.yunwang.model.pojo.SysSupplier;
 import com.yunwang.service.SysBrandService;
 import com.yunwang.service.SysMemberService;
 import com.yunwang.service.SysOrderService;
 import com.yunwang.service.SysResourceService;
 import com.yunwang.service.SysResourceTypeService;
 import com.yunwang.service.SysRsRcPackageService;
+import com.yunwang.service.SysSupplierService;
 import com.yunwang.util.string.MyStringUtil;
 import com.yunwang.webservice.HandleMemberService;
 
@@ -42,6 +44,8 @@ public class HandleMemberServiceImpl implements HandleMemberService {
 	private SysRsRcPackageService sysRsRcPackageService;
 	@Autowired
 	private SysBrandService sysBrandService;
+	@Autowired
+	private SysSupplierService sysSupplierService;
 	
 	@Override
 	public String sayHello(String name) {
@@ -166,5 +170,15 @@ public class HandleMemberServiceImpl implements HandleMemberService {
 	@Override
 	public List<SysResourceRel> findResourceByOrderId(Integer orderId) {
 		return sysResourceService.findByOrderId(orderId);
+	}
+
+	@Override
+	public SysBrand getSysBrandById(Integer brandId) {
+		return sysBrandService.get(brandId);
+	}
+
+	@Override
+	public SysSupplier getSysSupplierById(Integer supplierId) {
+		return sysSupplierService.get(supplierId);
 	}
 }

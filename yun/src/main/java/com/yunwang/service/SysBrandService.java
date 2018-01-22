@@ -24,4 +24,6 @@ public interface SysBrandService {
 
 	List<SysBrand> findByCatalogId(Integer id);
 
+	SysBrand get(Integer brandId);
+
 }

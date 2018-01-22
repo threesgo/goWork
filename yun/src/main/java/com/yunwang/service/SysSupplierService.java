@@ -23,4 +23,6 @@ public interface SysSupplierService {
 	void updateRelationCatalog(String ids, Integer supplierId);
 
 	List<SysSupplierCatalog> findAllRelCatalogSupplier(Integer supplierId);
+
+	SysSupplier get(Integer supplierId);
 }

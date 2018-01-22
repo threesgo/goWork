@@ -97,4 +97,9 @@ public class SysBrandServiceImpl implements SysBrandService{
 		// TODO Auto-generated method stub
 		return sysBrandDao.findByCatalogId(id);
 	}
+
+	@Override
+	public SysBrand get(Integer brandId) {
+		return sysBrandDao.get(SysBrand.class, brandId);
+	}
 }

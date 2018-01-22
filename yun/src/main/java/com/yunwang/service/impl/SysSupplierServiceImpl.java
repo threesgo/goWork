@@ -98,4 +98,9 @@ public class SysSupplierServiceImpl implements SysSupplierService {
 		// TODO Auto-generated method stub
 		return sysSupplierCatalogDao.findByProperty("supplierId", supplierId);
 	}
+
+	@Override
+	public SysSupplier get(Integer supplierId) {
+		return sysSupplierDao.get(SysSupplier.class, supplierId);
+	}
 }
