@@ -41,7 +41,7 @@ public interface HandleMemberService {
 	List<SysRsRcCatalog> findCatalogByParentId(Integer parentId);
 	
 	//根据资源类别查询资源 
-	List<SysResourceRel> findResourceByCataLogId(Integer catalogId);
+	List<SysResourceRel> findResourceByCataLogId(Integer catalogId,String seachJson);
 	
 	//查询所有的套餐
 	List<SysRsRcPackage> findAllPackages();

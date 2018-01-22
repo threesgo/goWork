@@ -34,4 +34,7 @@ public interface SysResourceRelDaoI extends BaseDaoI<SysResourceRel>{
 
 	List<SysResourceRel> findResourceByCataLogId(Integer catalogId);
 
+	List<SysResourceRel> findResourceByCataLogId(Integer catalogId,
+			String seachJson);
+
 }

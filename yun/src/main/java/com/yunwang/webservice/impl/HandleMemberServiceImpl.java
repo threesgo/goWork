@@ -86,8 +86,8 @@ public class HandleMemberServiceImpl implements HandleMemberService {
 	}
 
 	@Override
-	public List<SysResourceRel> findResourceByCataLogId(Integer catalogId) {
-		return sysResourceService.findResourceByCataLogId(catalogId);
+	public List<SysResourceRel> findResourceByCataLogId(Integer catalogId,String seachJson) {
+		return sysResourceService.findResourceByCataLogId(catalogId,seachJson);
 	}
 
 	@Override

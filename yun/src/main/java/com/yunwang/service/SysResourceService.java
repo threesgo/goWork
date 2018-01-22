@@ -63,4 +63,7 @@ public interface SysResourceService {
 	List<SysResourceRel> findResourceByCataLogId(Integer catalogId);
 
 	List<SysRsRcAttribRel> findAttribRelByResourceId(Integer resourceId);
+
+	List<SysResourceRel> findResourceByCataLogId(Integer catalogId,
+			String seachJson);
 }

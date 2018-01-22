@@ -427,4 +427,14 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 		map.put("rsrcCatalogId",catalogId);
 		return find("SELECT model FROM SysResourceRel model WHERE model.rsrcCatalogId=:rsrcCatalogId",map);
 	}
+
+	@Override
+	public List<SysResourceRel> findResourceByCataLogId(Integer catalogId,
+			String seachJson) {
+		Map<String, Object> map = new HashMap<String,Object>();
+		map.put("rsrcCatalogId",catalogId);
+		map.put("keyWord",seachJson);
+		return find("SELECT model FROM SysResourceRel model " 
+				+"WHERE model.rsrcCatalogId=:rsrcCatalogId AND model.keyWord LIKE :keyWord ",map);
+	}
 }
