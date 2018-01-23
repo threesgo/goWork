@@ -431,10 +431,14 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 	@Override
 	public List<SysResourceRel> findResourceByCataLogId(Integer catalogId,
 			String seachJson) {
+		StringBuffer buf = new StringBuffer("SELECT model FROM SysResourceRel model " 
+				+"WHERE model.rsrcCatalogId=:rsrcCatalogId ");
 		Map<String, Object> map = new HashMap<String,Object>();
 		map.put("rsrcCatalogId",catalogId);
-		map.put("keyWord",seachJson);
-		return find("SELECT model FROM SysResourceRel model " 
-				+"WHERE model.rsrcCatalogId=:rsrcCatalogId AND model.keyWord LIKE :keyWord ",map);
+		if(MyStringUtil.isNotBlank(seachJson)){
+			buf.append("AND model.keyWord LIKE :keyWord ");
+			map.put("keyWord","%"+seachJson+"%");
+		}
+		return find(buf.toString(),map);
 	}
 }
