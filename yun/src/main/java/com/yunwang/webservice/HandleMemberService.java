@@ -15,6 +15,7 @@ import com.yunwang.model.pojo.SysRsRcAttribRel;
 import com.yunwang.model.pojo.SysRsRcCatalog;
 import com.yunwang.model.pojo.SysRsRcPackage;
 import com.yunwang.model.pojo.SysSupplier;
+import com.yunwang.model.pojo.SysWorker;
 
 
 @WebService
@@ -67,4 +68,6 @@ public interface HandleMemberService {
 	SysBrand getSysBrandById(Integer brandId);
 	
 	SysSupplier getSysSupplierById(Integer supplierId);
+	
+	List<SysWorker> findWorkerByOrderId(Integer orderId);
 }
