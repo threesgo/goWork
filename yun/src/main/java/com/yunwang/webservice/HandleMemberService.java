@@ -70,4 +70,8 @@ public interface HandleMemberService {
 	SysSupplier getSysSupplierById(Integer supplierId);
 	
 	List<SysWorker> findWorkerByOrderId(Integer orderId);
+	
+	SysOrderFlow getOrderFlowById(Integer orderFlowId);
+	
+	List<SysResourceRel> findResourceByOrderFlowId(Integer orderFlowId);
 }

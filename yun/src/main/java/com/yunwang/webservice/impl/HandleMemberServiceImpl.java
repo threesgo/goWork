@@ -190,4 +190,14 @@ public class HandleMemberServiceImpl implements HandleMemberService {
 	public List<SysWorker> findWorkerByOrderId(Integer orderId) {
 		return sysWorkerService.findByOrderId(orderId);
 	}
+
+	@Override
+	public SysOrderFlow getOrderFlowById(Integer orderFlowId) {
+		return sysOrderService.getOrderFlow(orderFlowId);
+	}
+
+	@Override
+	public List<SysResourceRel> findResourceByOrderFlowId(Integer orderFlowId) {
+		return sysResourceService.findByFlowId(orderFlowId);
+	}
 }
