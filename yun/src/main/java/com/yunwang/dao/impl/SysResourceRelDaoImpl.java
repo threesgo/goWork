@@ -33,7 +33,7 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 	public Pager<SysResourceRel> findRelResources(SysRsRcPackage sysRsRcPackage,int page, int rows,
 			JSONObject seachJson) {
 		StringBuffer buf = new StringBuffer(
-				" SELECT model.ID id,model.RESOURCE_ID resourceId, " +
+				" SELECT model.ID id,model.RESOURCE_ID resourceId,model.IMAGE_PATH imagePath, " +
 				" model.KEY_WORD keyWord,model.RSRC_CODE rsrcCode,model.RSRC_NAME rsrcName," +
 				" model.ABBREVIA_NAME abbreviaName,model.ORDER_NO orderNo,model.RSRC_CATALOG_ID rsrcCatalogId," +
 				" model.SALE_PRICE salePrice,model.PURCHASE_PRICE purchasePrice,model.PURCHASE_PRICE purchasePrice,model.BRAND_ID brandId,model.SUPPLIER_ID supplierId,model.RELEASE_DATE releaseDate," +
@@ -87,6 +87,7 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 		Map<String, Type> scalarMap = new HashMap<String, Type>();
 		scalarMap.put("id", new IntegerType());
 		scalarMap.put("resourceId", new IntegerType());
+		scalarMap.put("imagePath", new StringType());
 		scalarMap.put("keyWord", new StringType());
 		scalarMap.put("rsrcName", new StringType());
 		scalarMap.put("rsrcCode", new StringType());
@@ -119,7 +120,7 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 	public Pager<SysResourceRel> findPackageResourceData(Integer packageId,
 			int page, int rows, JSONObject seachJson) {
 		StringBuffer buf = new StringBuffer(
-				" SELECT model.ID id,model.RESOURCE_ID resourceId, " +
+				" SELECT model.ID id,model.RESOURCE_ID resourceId,model.IMAGE_PATH imagePath, " +
 				" model.KEY_WORD keyWord,model.RSRC_CODE rsrcCode,model.RSRC_NAME rsrcName," +
 				" model.ABBREVIA_NAME abbreviaName,model.ORDER_NO orderNo,model.RSRC_CATALOG_ID rsrcCatalogId," +
 				" model.SALE_PRICE salePrice,model.PURCHASE_PRICE purchasePrice,model.PURCHASE_PRICE purchasePrice,model.BRAND_ID brandId,model.SUPPLIER_ID supplierId,model.RELEASE_DATE releaseDate," +
@@ -168,6 +169,7 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 		Map<String, Type> scalarMap = new HashMap<String, Type>();
 		scalarMap.put("id", new IntegerType());
 		scalarMap.put("resourceId", new IntegerType());
+		scalarMap.put("imagePath", new StringType());
 		scalarMap.put("keyWord", new StringType());
 		scalarMap.put("rsrcName", new StringType());
 		scalarMap.put("rsrcCode", new StringType());
@@ -194,7 +196,7 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 	@Override
 	public List<SysResourceRel> findByFlowId(Integer flowId) {
 		StringBuffer buf = new StringBuffer(
-				" SELECT model.ID id,model.RESOURCE_ID resourceId, " +
+				" SELECT model.ID id,model.RESOURCE_ID resourceId,model.IMAGE_PATH imagePath, " +
 				" model.KEY_WORD keyWord,model.RSRC_CODE rsrcCode,model.RSRC_NAME rsrcName," +
 				" model.ABBREVIA_NAME abbreviaName,model.ORDER_NO orderNo,model.RSRC_CATALOG_ID rsrcCatalogId," +
 				" model.SALE_PRICE salePrice,model.PURCHASE_PRICE purchasePrice,model.BRAND_ID brandId,model.SUPPLIER_ID supplierId,model.RELEASE_DATE releaseDate," +
@@ -212,6 +214,7 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 		Map<String, Type> scalarMap = new HashMap<String, Type>();
 		scalarMap.put("id", new IntegerType());
 		scalarMap.put("resourceId", new IntegerType());
+		scalarMap.put("imagePath", new StringType());
 		scalarMap.put("keyWord", new StringType());
 		scalarMap.put("rsrcName", new StringType());
 		scalarMap.put("rsrcCode", new StringType());
@@ -233,7 +236,7 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 	@Override
 	public List<SysResourceRel> findByOrderId(Integer orderId) {
 		StringBuffer buf = new StringBuffer(
-				" SELECT model.ID id,model.RESOURCE_ID resourceId, " +
+				" SELECT model.ID id,model.RESOURCE_ID resourceId,model.IMAGE_PATH imagePath, " +
 				" model.KEY_WORD keyWord,model.RSRC_CODE rsrcCode,model.RSRC_NAME rsrcName," +
 				" model.ABBREVIA_NAME abbreviaName,model.ORDER_NO orderNo,model.RSRC_CATALOG_ID rsrcCatalogId," +
 				" model.SALE_PRICE salePrice,model.PURCHASE_PRICE purchasePrice,model.BRAND_ID brandId,model.SUPPLIER_ID supplierId,model.RELEASE_DATE releaseDate," +
@@ -256,6 +259,7 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 		Map<String, Type> scalarMap = new HashMap<String, Type>();
 		scalarMap.put("id", new IntegerType());
 		scalarMap.put("resourceId", new IntegerType());
+		scalarMap.put("imagePath", new StringType());
 		scalarMap.put("keyWord", new StringType());
 		scalarMap.put("rsrcName", new StringType());
 		scalarMap.put("rsrcCode", new StringType());
@@ -277,7 +281,7 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 	public Pager<SysResourceRel> findByPackageIdsAndNotInFlow(String packageIds,
 			Integer flowId,int page, int rows, JSONObject seachJson) {
 		StringBuffer buf = new StringBuffer(
-				" SELECT model.ID id,model.RESOURCE_ID resourceId, " +
+				" SELECT model.ID id,model.RESOURCE_ID resourceId,model.IMAGE_PATH imagePath," +
 				" model.KEY_WORD keyWord,model.RSRC_CODE rsrcCode,model.RSRC_NAME rsrcName," +
 				" model.ABBREVIA_NAME abbreviaName,model.ORDER_NO orderNo,model.RSRC_CATALOG_ID rsrcCatalogId," +
 				" model.SALE_PRICE salePrice,model.PURCHASE_PRICE purchasePrice,model.BRAND_ID brandId,model.SUPPLIER_ID supplierId,model.RELEASE_DATE releaseDate," +
@@ -331,6 +335,7 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 		Map<String, Type> scalarMap = new HashMap<String, Type>();
 		scalarMap.put("id", new IntegerType());
 		scalarMap.put("resourceId", new IntegerType());
+		scalarMap.put("imagePath", new StringType());
 		scalarMap.put("keyWord", new StringType());
 		scalarMap.put("rsrcName", new StringType());
 		scalarMap.put("rsrcCode", new StringType());
