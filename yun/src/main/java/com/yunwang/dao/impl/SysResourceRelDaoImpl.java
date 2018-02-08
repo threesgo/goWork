@@ -245,7 +245,7 @@ public class SysResourceRelDaoImpl extends BaseDaoImpl<SysResourceRel> implement
 				" LEFT JOIN SYS_RESOURCE_REL model ON model.ID = orderResource.RESOURCE_ID " +
 				" LEFT JOIN SYS_RSRC_CATALOG rsCatalog ON model.RSRC_CATALOG_ID = rsCatalog.ID " +
 				" WHERE orderResource.ORDER_ID=:orderId " +
-				" GROUP BY model.ID,model.RESOURCE_ID," +
+				" GROUP BY model.ID,model.RESOURCE_ID,model.IMAGE_PATH," +
 				" model.KEY_WORD,model.RSRC_CODE,model.RSRC_NAME," +
 				" model.ABBREVIA_NAME,model.ORDER_NO,model.RSRC_CATALOG_ID," +
 				" model.SALE_PRICE,model.PURCHASE_PRICE,model.BRAND_ID,model.SUPPLIER_ID,model.RELEASE_DATE," +
